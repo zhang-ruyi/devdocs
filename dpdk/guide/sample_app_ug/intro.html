@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1. Introduction to the DPDK Sample Applications &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Compiling the Sample Applications" href="compiling.html" />
+    <link rel="prev" title="Sample Applications User Guides" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Introduction to the DPDK Sample Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-sample-applications">1.1. Running Sample Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-dpdk-sample-applications">1.2. The DPDK Sample Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">1. </span>Introduction to the DPDK Sample Applications</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/intro.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="introduction-to-the-dpdk-sample-applications">
+<h1><span class="section-number">1. </span>Introduction to the DPDK Sample Applications</h1>
+<p>The DPDK Sample Applications are small standalone applications which
+demonstrate various features of DPDK. They can be considered as a cookbook of
+DPDK features.  Users interested in getting started with DPDK can take the
+applications, try out the features, and then extend them to fit their needs.</p>
+<div class="section" id="running-sample-applications">
+<h2><span class="section-number">1.1. </span>Running Sample Applications</h2>
+<p>Some sample applications may have their own command-line parameters described in
+their respective guides, however all of them also share the same EAL parameters.
+Please refer to <a class="reference internal" href="../linux_gsg/linux_eal_parameters.html"><span class="doc">EAL parameters (Linux)</span></a>
+or <a class="reference internal" href="../freebsd_gsg/freebsd_eal_parameters.html"><span class="doc">EAL parameters (FreeBSD)</span></a> for
+a list of available EAL command-line options.</p>
+</div>
+<div class="section" id="the-dpdk-sample-applications">
+<h2><span class="section-number">1.2. </span>The DPDK Sample Applications</h2>
+<p>There are many sample applications available in the examples directory of DPDK.
+These examples range from simple to reasonably complex but most are designed
+to demonstrate one particular feature of DPDK. Some of the more interesting
+examples are highlighted below.</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="hello_world.html"><span class="doc">Hello World</span></a>: As with most introductions to a
+programming framework a good place to start is with the Hello World
+application. The Hello World example sets up the DPDK Environment Abstraction
+Layer (EAL), and prints a simple “Hello World” message to each of the DPDK
+enabled cores. This application doesn’t do any packet forwarding but it is a
+good way to test if the DPDK environment is compiled and set up properly.</p></li>
+<li><p><a class="reference internal" href="skeleton.html"><span class="doc">Basic Forwarding/Skeleton Application</span></a>: The Basic
+Forwarding/Skeleton contains the minimum amount of code required to enable
+basic packet forwarding with DPDK. This allows you to test if your network
+interfaces are working with DPDK.</p></li>
+<li><p><a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">Network Layer 2 forwarding</span></a>: The Network Layer 2
+forwarding, or <code class="docutils literal notranslate"><span class="pre">l2fwd</span></code> application does forwarding based on Ethernet MAC
+addresses like a simple switch.</p></li>
+<li><p><a class="reference internal" href="l2_forward_event.html"><span class="doc">Network Layer 2 forwarding</span></a>: The Network Layer 2
+forwarding, or <code class="docutils literal notranslate"><span class="pre">l2fwd-event</span></code> application does forwarding based on Ethernet MAC
+addresses like a simple switch. It demonstrates usage of poll and event mode
+IO mechanism under a single application.</p></li>
+<li><p><a class="reference internal" href="l3_forward.html"><span class="doc">Network Layer 3 forwarding</span></a>: The Network Layer3
+forwarding, or <code class="docutils literal notranslate"><span class="pre">l3fwd</span></code> application does forwarding based on Internet
+Protocol, IPv4 or IPv6 like a simple router.</p></li>
+<li><p><a class="reference internal" href="l3_forward_graph.html"><span class="doc">Network Layer 3 forwarding Graph</span></a>: The Network Layer3
+forwarding Graph, or <code class="docutils literal notranslate"><span class="pre">l3fwd_graph</span></code> application does forwarding based on IPv4
+like a simple router with DPDK Graph framework.</p></li>
+<li><p><a class="reference internal" href="ioat.html"><span class="doc">Hardware packet copying</span></a>: The Hardware packet copying,
+or <code class="docutils literal notranslate"><span class="pre">ioatfwd</span></code> application demonstrates how to use IOAT rawdev driver for
+copying packets between two threads.</p></li>
+<li><p><a class="reference internal" href="dist_app.html"><span class="doc">Packet Distributor</span></a>: The Packet Distributor
+demonstrates how to distribute packets arriving on an Rx port to different
+cores for processing and transmission.</p></li>
+<li><p><a class="reference internal" href="multi_process.html"><span class="doc">Multi-Process Application</span></a>: The
+multi-process application shows how two DPDK processes can work together using
+queues and memory pools to share information.</p></li>
+<li><p><a class="reference internal" href="rxtx_callbacks.html"><span class="doc">RX/TX callbacks Application</span></a>: The RX/TX
+callbacks sample application is a packet forwarding application that
+demonstrates the use of user defined callbacks on received and transmitted
+packets. The application calculates the latency of a packet between RX
+(packet arrival) and TX (packet transmission) by adding callbacks to the RX
+and TX packet processing functions.</p></li>
+<li><p><a class="reference internal" href="ipsec_secgw.html"><span class="doc">IPsec Security Gateway</span></a>: The IPsec Security
+Gateway application is minimal example of something closer to a real world
+example. This is also a good example of an application using the DPDK
+Cryptodev framework.</p></li>
+<li><p><a class="reference internal" href="ptpclient.html"><span class="doc">Precision Time Protocol (PTP) client</span></a>: The PTP
+client is another minimal implementation of a real world application.
+In this case the application is a PTP client that communicates with a PTP
+master clock to synchronize time on a Network Interface Card (NIC) using the
+IEEE1588 protocol.</p></li>
+<li><p><a class="reference internal" href="qos_scheduler.html"><span class="doc">Quality of Service (QoS) Scheduler</span></a>: The QoS
+Scheduler application demonstrates the use of DPDK to provide QoS scheduling.</p></li>
+</ul>
+<p>There are many more examples shown in the following chapters. Each of the
+documented sample applications show how to compile, configure and run the
+application as well as explaining the main functionality of the code.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="compiling.html" class="btn btn-neutral float-right" title="2. Compiling the Sample Applications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Sample Applications User Guides" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

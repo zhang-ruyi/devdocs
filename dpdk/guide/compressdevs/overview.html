@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>1. Compression Device Supported Functionality Matrices &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. ISA-L Compression Poll Mode Driver" href="isal.html" />
+    <link rel="prev" title="Compression Device Drivers" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Compression Device Drivers</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1. Compression Device Supported Functionality Matrices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#supported-feature-flags">1.1. Supported Feature Flags</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="isal.html">2. ISA-L Compression Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">3. OCTEON TX ZIP Compression Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat_comp.html">4. Intel(R) QuickAssist (QAT) Compression Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zlib.html">5. ZLIB Compression Poll Mode Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Compression Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">1. </span>Compression Device Supported Functionality Matrices</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/compressdevs/overview.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="compression-device-supported-functionality-matrices">
+<h1><span class="section-number">1. </span>Compression Device Supported Functionality Matrices</h1>
+<div class="section" id="supported-feature-flags">
+<h2><span class="section-number">1.1. </span>Supported Feature Flags</h2>
+<style>
+   .wy-nav-content {
+      opacity: .99;
+   }
+   table#id1 {
+      cursor: default;
+      overflow: hidden;
+   }
+   table#id1 p {
+      margin: 0;
+      line-height: inherit;
+   }
+   table#id1 th, table#id1 td {
+      text-align: center;
+      border: solid 1px #ddd;
+   }
+   table#id1 th {
+      padding: 0.5em 0;
+   }
+   table#id1 th, table#id1 th p {
+      font-size: 11px;
+      white-space: pre-wrap;
+      vertical-align: top;
+      min-width: 0.9em;
+   }
+   table#id1 col:first-child {
+      width: 0;
+   }
+   table#id1 th:first-child {
+      vertical-align: bottom;
+   }
+   table#id1 td {
+      padding: 1px;
+   }
+   table#id1 td, table#id1 td p {
+      font-size: 11px;
+   }
+   table#id1 td:first-child {
+      padding-left: 1em;
+      text-align: left;
+   }
+   table#id1 tr:nth-child(2n-1) td {
+      background-color: rgba(210, 210, 210, 0.2);
+   }
+   table#id1 th:not(:first-child):hover,
+   table#id1 td:not(:first-child):hover {
+      position: relative;
+   }
+   table#id1 th:not(:first-child):hover::after,
+   table#id1 td:not(:first-child):hover::after {
+      content: '';
+      height: 6000px;
+      top: -3000px;
+      width: 100%;
+      left: 0;
+      position: absolute;
+      z-index: -1;
+      background-color: #ffb;
+   }
+   table#id1 tr:hover td {
+      background-color: #ffb;
+   }
+</style><table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 1.8 </span><span class="caption-text">Features availability in compression drivers</span></caption>
+<colgroup>
+<col style="width: 88%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+<col style="width: 3%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Feature</p></th>
+<th class="head"><p>i
+s
+a
+l</p></th>
+<th class="head"><p>o
+c
+t
+e
+o
+n
+t
+x</p></th>
+<th class="head"><p>q
+a
+t</p></th>
+<th class="head"><p>z
+l
+i
+b</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HW Accelerated</p></td>
+<td></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>CPU SSE</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>CPU AVX</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>CPU AVX2</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>CPU AVX512</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>CPU NEON</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Stateful Compression</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Stateful Decompression</p></td>
+<td></td>
+<td></td>
+<td><p>Y</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Pass-through</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>OOP SGL In SGL Out</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td><p>Y</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>OOP SGL In LB  Out</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td><p>Y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>OOP LB  In SGL Out</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td><p>Y</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Deflate</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>LZS</p></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Adler32</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td><p>Y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Crc32</p></td>
+<td><p>Y</p></td>
+<td></td>
+<td><p>Y</p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p>Adler32&amp;Crc32</p></td>
+<td></td>
+<td></td>
+<td><p>Y</p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Fixed</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+<tr class="row-even"><td><p>Dynamic</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+<td><p>Y</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>“Pass-through” feature flag refers to the ability of the PMD
+to let input buffers pass-through it, copying the input to the output,
+without making any modifications to it (no compression done).</p></li>
+<li><p>“OOP SGL In SGL Out” feature flag stands for
+“Out-of-place Scatter-gather list Input, Scatter-gather list Output”,
+which means PMD supports different scatter-gather styled input and output buffers
+(i.e. both can consists of multiple segments).</p></li>
+<li><p>“OOP SGL In LB Out” feature flag stands for
+“Out-of-place Scatter-gather list Input, Linear Buffers Output”,
+which means PMD supports input from scatter-gathered styled buffers, outputting linear buffers
+(i.e. single segment).</p></li>
+<li><p>“OOP LB In SGL Out” feature flag stands for
+“Out-of-place Linear Buffers Input, Scatter-gather list Output”,
+which means PMD supports input from linear buffer, outputting scatter-gathered styled buffers.</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="isal.html" class="btn btn-neutral float-right" title="2. ISA-L Compression Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Compression Device Drivers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

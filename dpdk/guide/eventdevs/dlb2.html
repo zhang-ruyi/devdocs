@@ -1,0 +1,630 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>2. Driver for the Intel® Dynamic Load Balancer (DLB2) &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. NXP DPAA Eventdev Driver" href="dpaa.html" />
+    <link rel="prev" title="1. Driver for the Intel® Dynamic Load Balancer (DLB)" href="dlb.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Event Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dlb.html">1. Driver for the Intel® Dynamic Load Balancer (DLB)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Driver for the Intel® Dynamic Load Balancer (DLB2)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">2.1. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">2.2. Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eventdev-api-notes">2.3. Eventdev API Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#scheduling-domain-configuration">2.3.1. Scheduling Domain Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-balanced-queues">2.3.2. Load-Balanced Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">2.3.3. Load-Balanced Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#load-balanced-and-directed-ports">2.3.4. Load-balanced and Directed Ports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-id">2.3.5. Flow ID</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hardware-credits">2.3.6. Hardware Credits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#software-credits">2.3.7. Software Credits</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#priority">2.3.8. Priority</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#reconfiguration">2.3.9. Reconfiguration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#deferred-scheduling">2.3.10. Deferred Scheduling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#atomic-inflights-allocation">2.3.11. Atomic Inflights Allocation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#qid-depth-threshold">2.3.12. QID Depth Threshold</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#class-of-service">2.3.13. Class of service</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">3. NXP DPAA Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">4. NXP DPAA2 Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsw.html">5. Distributed Software Eventdev Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sw.html">6. Software Eventdev Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">7. OCTEON TX SSOVF Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">8. OCTEON TX2 SSO Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opdl.html">9. OPDL Eventdev Poll Mode Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Event Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">2. </span>Driver for the Intel® Dynamic Load Balancer (DLB2)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/eventdevs/dlb2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="driver-for-the-intel-dynamic-load-balancer-dlb2">
+<h1><span class="section-number">2. </span>Driver for the Intel® Dynamic Load Balancer (DLB2)</h1>
+<p>The DPDK dlb poll mode driver supports the Intel® Dynamic Load Balancer.</p>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">2.1. </span>Prerequisites</h2>
+<p>Follow the DPDK <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a> to setup
+the basic DPDK environment.</p>
+</div>
+<div class="section" id="configuration">
+<h2><span class="section-number">2.2. </span>Configuration</h2>
+<p>The DLB2 PF PMD is a user-space PMD that uses VFIO to gain direct
+device access. To use this operation mode, the PCIe PF device must be bound
+to a DPDK-compatible VFIO driver, such as vfio-pci.</p>
+</div>
+<div class="section" id="eventdev-api-notes">
+<h2><span class="section-number">2.3. </span>Eventdev API Notes</h2>
+<p>The DLB2 provides the functions of a DPDK event device; specifically, it
+supports atomic, ordered, and parallel scheduling events from queues to ports.
+However, the DLB2 hardware is not a perfect match to the eventdev API. Some DLB2
+features are abstracted by the PMD such as directed ports.</p>
+<p>In general the dlb PMD is designed for ease-of-use and does not require a
+detailed understanding of the hardware, but these details are important when
+writing high-performance code. This section describes the places where the
+eventdev API and DLB2 misalign.</p>
+<div class="section" id="scheduling-domain-configuration">
+<h3><span class="section-number">2.3.1. </span>Scheduling Domain Configuration</h3>
+<p>There are 32 scheduling domainis the DLB2.
+When one is configured, it allocates load-balanced and
+directed queues, ports, credits, and other hardware resources. Some
+resource allocations are user-controlled – the number of queues, for example
+– and others, like credit pools (one directed and one load-balanced pool per
+scheduling domain), are not.</p>
+<p>The DLB2 is a closed system eventdev, and as such the <code class="docutils literal notranslate"><span class="pre">nb_events_limit</span></code> device
+setup argument and the per-port <code class="docutils literal notranslate"><span class="pre">new_event_threshold</span></code> argument apply as
+defined in the eventdev header file. The limit is applied to all enqueues,
+regardless of whether it will consume a directed or load-balanced credit.</p>
+</div>
+<div class="section" id="load-balanced-queues">
+<h3><span class="section-number">2.3.2. </span>Load-Balanced Queues</h3>
+<p>A load-balanced queue can support atomic and ordered scheduling, or atomic and
+unordered scheduling, but not atomic and unordered and ordered scheduling. A
+queue’s scheduling types are controlled by the event queue configuration.</p>
+<p>If the user sets the <code class="docutils literal notranslate"><span class="pre">RTE_EVENT_QUEUE_CFG_ALL_TYPES</span></code> flag, the
+<code class="docutils literal notranslate"><span class="pre">nb_atomic_order_sequences</span></code> determines the supported scheduling types.
+With non-zero <code class="docutils literal notranslate"><span class="pre">nb_atomic_order_sequences</span></code>, the queue is configured for atomic
+and ordered scheduling. In this case, <code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_PARALLEL</span></code> scheduling is
+supported by scheduling those events as ordered events.  Note that when the
+event is dequeued, its sched_type will be <code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_ORDERED</span></code>. Else if
+<code class="docutils literal notranslate"><span class="pre">nb_atomic_order_sequences</span></code> is zero, the queue is configured for atomic and
+unordered scheduling. In this case, <code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_ORDERED</span></code> is unsupported.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">RTE_EVENT_QUEUE_CFG_ALL_TYPES</span></code> flag is not set, schedule_type
+dictates the queue’s scheduling type.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nb_atomic_order_sequences</span></code> queue configuration field sets the ordered
+queue’s reorder buffer size.  DLB2 has 4 groups of ordered queues, where each
+group is configured to contain either 1 queue with 1024 reorder entries, 2
+queues with 512 reorder entries, and so on down to 32 queues with 32 entries.</p>
+<p>When a load-balanced queue is created, the PMD will configure a new sequence
+number group on-demand if num_sequence_numbers does not match a pre-existing
+group with available reorder buffer entries. If all sequence number groups are
+in use, no new group will be created and queue configuration will fail. (Note
+that when the PMD is used with a virtual DLB2 device, it cannot change the
+sequence number configuration.)</p>
+<p>The queue’s <code class="docutils literal notranslate"><span class="pre">nb_atomic_flows</span></code> parameter is ignored by the DLB2 PMD, because
+the DLB2 does not limit the number of flows a queue can track. In the DLB2, all
+load-balanced queues can use the full 16-bit flow ID range.</p>
+</div>
+<div class="section" id="id1">
+<h3><span class="section-number">2.3.3. </span>Load-Balanced Queues</h3>
+<p>A load-balanced queue can support atomic and ordered scheduling, or atomic and
+unordered scheduling, but not atomic and unordered and ordered scheduling. A
+queue’s scheduling types are controlled by the event queue configuration.</p>
+<p>If the user sets the <code class="docutils literal notranslate"><span class="pre">RTE_EVENT_QUEUE_CFG_ALL_TYPES</span></code> flag, the
+<code class="docutils literal notranslate"><span class="pre">nb_atomic_order_sequences</span></code> determines the supported scheduling types.
+With non-zero <code class="docutils literal notranslate"><span class="pre">nb_atomic_order_sequences</span></code>, the queue is configured for atomic
+and ordered scheduling. In this case, <code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_PARALLEL</span></code> scheduling is
+supported by scheduling those events as ordered events.  Note that when the
+event is dequeued, its sched_type will be <code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_ORDERED</span></code>. Else if
+<code class="docutils literal notranslate"><span class="pre">nb_atomic_order_sequences</span></code> is zero, the queue is configured for atomic and
+unordered scheduling. In this case, <code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_ORDERED</span></code> is unsupported.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">RTE_EVENT_QUEUE_CFG_ALL_TYPES</span></code> flag is not set, schedule_type
+dictates the queue’s scheduling type.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">nb_atomic_order_sequences</span></code> queue configuration field sets the ordered
+queue’s reorder buffer size.  DLB2 has 4 groups of ordered queues, where each
+group is configured to contain either 1 queue with 1024 reorder entries, 2
+queues with 512 reorder entries, and so on down to 32 queues with 32 entries.</p>
+<p>When a load-balanced queue is created, the PMD will configure a new sequence
+number group on-demand if num_sequence_numbers does not match a pre-existing
+group with available reorder buffer entries. If all sequence number groups are
+in use, no new group will be created and queue configuration will fail. (Note
+that when the PMD is used with a virtual DLB2 device, it cannot change the
+sequence number configuration.)</p>
+<p>The queue’s <code class="docutils literal notranslate"><span class="pre">nb_atomic_flows</span></code> parameter is ignored by the DLB2 PMD, because
+the DLB2 does not limit the number of flows a queue can track. In the DLB2, all
+load-balanced queues can use the full 16-bit flow ID range.</p>
+</div>
+<div class="section" id="load-balanced-and-directed-ports">
+<h3><span class="section-number">2.3.4. </span>Load-balanced and Directed Ports</h3>
+<p>DLB2 ports come in two flavors: load-balanced and directed. The eventdev API
+does not have the same concept, but it has a similar one: ports and queues that
+are singly-linked (i.e. linked to a single queue or port, respectively).</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_event_dev_info_get()</span></code> function reports the number of available
+event ports and queues (among other things). For the DLB2 PMD, max_event_ports
+and max_event_queues report the number of available load-balanced ports and
+queues, and max_single_link_event_port_queue_pairs reports the number of
+available directed ports and queues.</p>
+<p>When a scheduling domain is created in <code class="docutils literal notranslate"><span class="pre">rte_event_dev_configure()</span></code>, the user
+specifies <code class="docutils literal notranslate"><span class="pre">nb_event_ports</span></code> and <code class="docutils literal notranslate"><span class="pre">nb_single_link_event_port_queues</span></code>, which
+control the total number of ports (load-balanced and directed) and the number
+of directed ports. Hence, the number of requested load-balanced ports is
+<code class="docutils literal notranslate"><span class="pre">nb_event_ports</span> <span class="pre">-</span> <span class="pre">nb_single_link_event_ports</span></code>. The <code class="docutils literal notranslate"><span class="pre">nb_event_queues</span></code> field
+specifies the total number of queues (load-balanced and directed). The number
+of directed queues comes from <code class="docutils literal notranslate"><span class="pre">nb_single_link_event_port_queues</span></code>, since
+directed ports and queues come in pairs.</p>
+<p>When a port is setup, the <code class="docutils literal notranslate"><span class="pre">RTE_EVENT_PORT_CFG_SINGLE_LINK</span></code> flag determines
+whether it should be configured as a directed (the flag is set) or a
+load-balanced (the flag is unset) port. Similarly, the
+<code class="docutils literal notranslate"><span class="pre">RTE_EVENT_QUEUE_CFG_SINGLE_LINK</span></code> queue configuration flag controls
+whether it is a directed or load-balanced queue.</p>
+<p>Load-balanced ports can only be linked to load-balanced queues, and directed
+ports can only be linked to directed queues. Furthermore, directed ports can
+only be linked to a single directed queue (and vice versa), and that link
+cannot change after the eventdev is started.</p>
+<p>The eventdev API does not have a directed scheduling type. To support directed
+traffic, the dlb PMD detects when an event is being sent to a directed queue
+and overrides its scheduling type. Note that the originally selected scheduling
+type (atomic, ordered, or parallel) is not preserved, and an event’s sched_type
+will be set to <code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_ATOMIC</span></code> when it is dequeued from a directed
+port.</p>
+</div>
+<div class="section" id="flow-id">
+<h3><span class="section-number">2.3.5. </span>Flow ID</h3>
+<p>The flow ID field is preserved in the event when it is scheduled in the
+DLB2.</p>
+</div>
+<div class="section" id="hardware-credits">
+<h3><span class="section-number">2.3.6. </span>Hardware Credits</h3>
+<p>DLB2 uses a hardware credit scheme to prevent software from overflowing hardware
+event storage, with each unit of storage represented by a credit. A port spends
+a credit to enqueue an event, and hardware refills the ports with credits as the
+events are scheduled to ports. Refills come from credit pools, and each port is
+a member of a load-balanced credit pool and a directed credit pool. The
+load-balanced credits are used to enqueue to load-balanced queues, and directed
+credits are used for directed queues.</p>
+<p>A DLB2 eventdev contains one load-balanced and one directed credit pool. These
+pools’ sizes are controlled by the nb_events_limit field in struct
+rte_event_dev_config. The load-balanced pool is sized to contain
+nb_events_limit credits, and the directed pool is sized to contain
+nb_events_limit/4 credits. The directed pool size can be overridden with the
+num_dir_credits vdev argument, like so:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--vdev=dlb1_event,num_dir_credits=&lt;value&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>This can be used if the default allocation is too low or too high for the
+specific application needs. The PMD also supports a vdev arg that limits the
+max_num_events reported by rte_event_dev_info_get():</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--vdev=dlb1_event,max_num_events=&lt;value&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>By default, max_num_events is reported as the total available load-balanced
+credits. If multiple DLB2-based applications are being used, it may be desirable
+to control how many load-balanced credits each application uses, particularly
+when application(s) are written to configure nb_events_limit equal to the
+reported max_num_events.</p>
+<p>Each port is a member of both credit pools. A port’s credit allocation is
+defined by its low watermark, high watermark, and refill quanta. These three
+parameters are calculated by the dlb PMD like so:</p>
+<ul class="simple">
+<li><p>The load-balanced high watermark is set to the port’s enqueue_depth.
+The directed high watermark is set to the minimum of the enqueue_depth and
+the directed pool size divided by the total number of ports.</p></li>
+<li><p>The refill quanta is set to half the high watermark.</p></li>
+<li><p>The low watermark is set to the minimum of 16 and the refill quanta.</p></li>
+</ul>
+<p>When the eventdev is started, each port is pre-allocated a high watermark’s
+worth of credits. For example, if an eventdev contains four ports with enqueue
+depths of 32 and a load-balanced credit pool size of 4096, each port will start
+with 32 load-balanced credits, and there will be 3968 credits available to
+replenish the ports. Thus, a single port is not capable of enqueueing up to the
+nb_events_limit (without any events being dequeued), since the other ports are
+retaining their initial credit allocation; in short, all ports must enqueue in
+order to reach the limit.</p>
+<p>If a port attempts to enqueue and has no credits available, the enqueue
+operation will fail and the application must retry the enqueue. Credits are
+replenished asynchronously by the DLB2 hardware.</p>
+</div>
+<div class="section" id="software-credits">
+<h3><span class="section-number">2.3.7. </span>Software Credits</h3>
+<p>The DLB2 is a “closed system” event dev, and the DLB2 PMD layers a software
+credit scheme on top of the hardware credit scheme in order to comply with
+the per-port backpressure described in the eventdev API.</p>
+<p>The DLB2’s hardware scheme is local to a queue/pipeline stage: a port spends a
+credit when it enqueues to a queue, and credits are later replenished after the
+events are dequeued and released.</p>
+<p>In the software credit scheme, a credit is consumed when a new (.op =
+RTE_EVENT_OP_NEW) event is injected into the system, and the credit is
+replenished when the event is released from the system (either explicitly with
+RTE_EVENT_OP_RELEASE or implicitly in dequeue_burst()).</p>
+<p>In this model, an event is “in the system” from its first enqueue into eventdev
+until it is last dequeued. If the event goes through multiple event queues, it
+is still considered “in the system” while a worker thread is processing it.</p>
+<p>A port will fail to enqueue if the number of events in the system exceeds its
+<code class="docutils literal notranslate"><span class="pre">new_event_threshold</span></code> (specified at port setup time). A port will also fail
+to enqueue if it lacks enough hardware credits to enqueue; load-balanced
+credits are used to enqueue to a load-balanced queue, and directed credits are
+used to enqueue to a directed queue.</p>
+<p>The out-of-credit situations are typically transient, and an eventdev
+application using the DLB2 ought to retry its enqueues if they fail.
+If enqueue fails, DLB2 PMD sets rte_errno as follows:</p>
+<ul class="simple">
+<li><p>-ENOSPC: Credit exhaustion (either hardware or software)</p></li>
+<li><p>-EINVAL: Invalid argument, such as port ID, queue ID, or sched_type.</p></li>
+</ul>
+<p>Depending on the pipeline the application has constructed, it’s possible to
+enter a credit deadlock scenario wherein the worker thread lacks the credit
+to enqueue an event, and it must dequeue an event before it can recover the
+credit. If the worker thread retries its enqueue indefinitely, it will not
+make forward progress. Such deadlock is possible if the application has event
+“loops”, in which an event in dequeued from queue A and later enqueued back to
+queue A.</p>
+<p>Due to this, workers should stop retrying after a time, release the events it
+is attempting to enqueue, and dequeue more events. It is important that the
+worker release the events and don’t simply set them aside to retry the enqueue
+again later, because the port has limited history list size (by default, twice
+the port’s dequeue_depth).</p>
+</div>
+<div class="section" id="priority">
+<h3><span class="section-number">2.3.8. </span>Priority</h3>
+<p>The DLB2 supports event priority and per-port queue service priority, as
+described in the eventdev header file. The DLB2 does not support ‘global’ event
+queue priority established at queue creation time.</p>
+<p>DLB2 supports 8 event and queue service priority levels. For both priority
+types, the PMD uses the upper three bits of the priority field to determine the
+DLB2 priority, discarding the 5 least significant bits. The 5 least significant
+event priority bits are not preserved when an event is enqueued.</p>
+</div>
+<div class="section" id="reconfiguration">
+<h3><span class="section-number">2.3.9. </span>Reconfiguration</h3>
+<p>The Eventdev API allows one to reconfigure a device, its ports, and its queues
+by first stopping the device, calling the configuration function(s), then
+restarting the device. The DLB2 does not support configuring an individual queue
+or port without first reconfiguring the entire device, however, so there are
+certain reconfiguration sequences that are valid in the eventdev API but not
+supported by the PMD.</p>
+<p>Specifically, the PMD supports the following configuration sequence:
+1. Configure and start the device
+2. Stop the device
+3. (Optional) Reconfigure the device
+4. (Optional) If step 3 is run:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li><p>Setup queue(s). The reconfigured queue(s) lose their previous port links.</p></li>
+<li><p>The reconfigured port(s) lose their previous queue links.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" start="5">
+<li><p>(Optional, only if steps 4a and 4b are run) Link port(s) to queue(s)</p></li>
+<li><p>Restart the device. If the device is reconfigured in step 3 but one or more
+of its ports or queues are not, the PMD will apply their previous
+configuration (including port-&gt;queue links) at this time.</p></li>
+</ol>
+<p>The PMD does not support the following configuration sequences:
+1. Configure and start the device
+2. Stop the device
+3. Setup queue or setup port
+4. Start the device</p>
+<p>This sequence is not supported because the event device must be reconfigured
+before its ports or queues can be.</p>
+</div>
+<div class="section" id="deferred-scheduling">
+<h3><span class="section-number">2.3.10. </span>Deferred Scheduling</h3>
+<p>The DLB2 PMD’s default behavior for managing a CQ is to “pop” the CQ once per
+dequeued event before returning from rte_event_dequeue_burst(). This frees the
+corresponding entries in the CQ, which enables the DLB2 to schedule more events
+to it.</p>
+<p>To support applications seeking finer-grained scheduling control – for example
+deferring scheduling to get the best possible priority scheduling and
+load-balancing – the PMD supports a deferred scheduling mode. In this mode,
+the CQ entry is not popped until the <em>subsequent</em> rte_event_dequeue_burst()
+call. This mode only applies to load-balanced event ports with dequeue depth of
+1.</p>
+<p>To enable deferred scheduling, use the defer_sched vdev argument like so:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--vdev=dlb1_event,defer_sched=on</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="atomic-inflights-allocation">
+<h3><span class="section-number">2.3.11. </span>Atomic Inflights Allocation</h3>
+<p>In the last stage prior to scheduling an atomic event to a CQ, DLB2 holds the
+inflight event in a temporary buffer that is divided among load-balanced
+queues. If a queue’s atomic buffer storage fills up, this can result in
+head-of-line-blocking. For example:</p>
+<ul class="simple">
+<li><p>An LDB queue allocated N atomic buffer entries</p></li>
+<li><p>All N entries are filled with events from flow X, which is pinned to CQ 0.</p></li>
+</ul>
+<p>Until CQ 0 releases 1+ events, no other atomic flows for that LDB queue can be
+scheduled. The likelihood of this case depends on the eventdev configuration,
+traffic behavior, event processing latency, potential for a worker to be
+interrupted or otherwise delayed, etc.</p>
+<p>By default, the PMD allocates 16 buffer entries for each load-balanced queue,
+which provides an even division across all 128 queues but potentially wastes
+buffer space (e.g. if not all queues are used, or aren’t used for atomic
+scheduling).</p>
+<p>The PMD provides a dev arg to override the default per-queue allocation. To
+increase a vdev’s per-queue atomic-inflight allocation to (for example) 64:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--vdev=dlb1_event,atm_inflights=64</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="qid-depth-threshold">
+<h3><span class="section-number">2.3.12. </span>QID Depth Threshold</h3>
+<p>DLB2 supports setting and tracking queue depth thresholds. Hardware uses
+the thresholds to track how full a queue is compared to its threshold.
+Four buckets are used</p>
+<ul class="simple">
+<li><p>Less than or equal to 50% of queue depth threshold</p></li>
+<li><p>Greater than 50%, but less than or equal to 75% of depth threshold</p></li>
+<li><p>Greater than 75%, but less than or equal to 100% of depth threshold</p></li>
+<li><p>Greater than 100% of depth thresholds</p></li>
+</ul>
+<p>Per queue threshold metrics are tracked in the DLB2 xstats, and are also
+returned in the impl_opaque field of each received event.</p>
+<p>The per qid threshold can be specified as part of the device args, and
+can be applied to all queue, a range of queues, or a single queue, as
+shown below.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--vdev=dlb2_event,qid_depth_thresh=all:&lt;threshold_value&gt;</span>
+<span class="go">--vdev=dlb2_event,qid_depth_thresh=qidA-qidB:&lt;threshold_value&gt;</span>
+<span class="go">--vdev=dlb2_event,qid_depth_thresh=qid:&lt;threshold_value&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="class-of-service">
+<h3><span class="section-number">2.3.13. </span>Class of service</h3>
+<p>DLB2 supports provisioning the DLB2 bandwidth into 4 classes of service.</p>
+<ul class="simple">
+<li><p>Class 4 corresponds to 40% of the DLB2 hardware bandwidth</p></li>
+<li><p>Class 3 corresponds to 30% of the DLB2 hardware bandwidth</p></li>
+<li><p>Class 2 corresponds to 20% of the DLB2 hardware bandwidth</p></li>
+<li><p>Class 1 corresponds to 10% of the DLB2 hardware bandwidth</p></li>
+<li><p>Class 0 corresponds to don’t care</p></li>
+</ul>
+<p>The classes are applied globally to the set of ports contained in this
+scheduling domain, which is more appropriate for the bifurcated
+PMD than for the PF PMD, since the PF PMD supports just 1 scheduling
+domain.</p>
+<p>Class of service can be specified in the devargs, as follows</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--vdev=dlb2_event,cos=&lt;0..4&gt;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dpaa.html" class="btn btn-neutral float-right" title="3. NXP DPAA Eventdev Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dlb.html" class="btn btn-neutral float-left" title="1. Driver for the Intel® Dynamic Load Balancer (DLB)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

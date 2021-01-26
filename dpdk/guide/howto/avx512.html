@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>13. Using AVX-512 with DPDK &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="DPDK Tools User Guides" href="../tools/index.html" />
+    <link rel="prev" title="12. Enable DPDK on OpenWrt" href="openwrt.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTo Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lm_bond_virtio_sriov.html">1. Live Migration of VM with SR-IOV VF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lm_virtio_vhost_user.html">2. Live Migration of VM with Virtio on host running vhost_user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_bifurcation.html">3. Flow Bifurcation How-to Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">4. Generic flow API - examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pvp_reference_benchmark.html">5. PVP reference benchmark setup using testpmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vfd.html">6. VF daemon (VFd)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio_user_for_container_networking.html">7. Virtio_user for Container Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio_user_as_exceptional_path.html">8. Virtio_user as Exceptional Path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_capture_framework.html">9. DPDK pdump Library and pdump Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry.html">10. DPDK Telemetry User Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug_troubleshoot.html">11. Debug &amp; Troubleshoot guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openwrt.html">12. Enable DPDK on OpenWrt</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">13. Using AVX-512 with DPDK</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-api-in-apps">13.1. Using the API in apps</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-command-line-argument">13.2. Using the command-line argument</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">HowTo Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">13. </span>Using AVX-512 with DPDK</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/howto/avx512.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-avx-512-with-dpdk">
+<h1><span class="section-number">13. </span>Using AVX-512 with DPDK</h1>
+<p>AVX-512 is not used by default in DPDK, but it can be selected at runtime by apps through the use of EAL API,
+and by the user with a commandline argument. DPDK has a setting for max SIMD bitwidth,
+which can be modified and will then limit the vector path taken by the code.</p>
+<div class="section" id="using-the-api-in-apps">
+<h2><span class="section-number">13.1. </span>Using the API in apps</h2>
+<p>Apps can request DPDK uses AVX-512 at runtime, if it provides improved application performance.
+This can be done by modifying the EAL setting for max SIMD bitwidth to 512, as by default it is 256,
+which does not allow for AVX-512.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rte_vect_set_max_simd_bitwidth</span><span class="p">(</span><span class="n">RTE_VECT_SIMD_512</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This API should only be called once at initialization, before EAL init.
+For more information on the possible enum values to use as a parameter, go to <a class="reference internal" href="../prog_guide/env_abstraction_layer.html#max-simd-bitwidth"><span class="std std-ref">Max SIMD bitwidth</span></a>:</p>
+</div>
+<div class="section" id="using-the-command-line-argument">
+<h2><span class="section-number">13.2. </span>Using the command-line argument</h2>
+<p>The user can select to use AVX-512 at runtime, using the following argument to set the max bitwidth:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./app/dpdk-testpmd --force-max-simd-bitwidth=512
+</pre></div>
+</div>
+<p>This will override any further changes to the max SIMD bitwidth in DPDK,
+which is useful for testing purposes.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../tools/index.html" class="btn btn-neutral float-right" title="DPDK Tools User Guides" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="openwrt.html" class="btn btn-neutral float-left" title="12. Enable DPDK on OpenWrt" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

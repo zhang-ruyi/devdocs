@@ -1,0 +1,339 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>2. NXP QorIQ DPAA Board Support Package &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. NXP QorIQ DPAA2 Board Support Package" href="dpaa2.html" />
+    <link rel="prev" title="1. Mellanox BlueField Board Support Package" href="bluefield.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Platform Specific Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="bluefield.html">1. Mellanox BlueField Board Support Package</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. NXP QorIQ DPAA Board Support Package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#supported-dpaa-socs">2.1. Supported DPAA SoCs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-offload-hw-block-drivers">2.2. Common Offload HW Block Drivers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#steps-to-setup-platform">2.3. Steps To Setup Platform</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">3. NXP QorIQ DPAA2 Board Support Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">4. OCTEON TX Board Support Package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">5. Marvell OCTEON TX2 Platform Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Platform Specific Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">2. </span>NXP QorIQ DPAA Board Support Package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/platform/dpaa.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nxp-qoriq-dpaa-board-support-package">
+<h1><span class="section-number">2. </span>NXP QorIQ DPAA Board Support Package</h1>
+<p>This doc has information about steps to setup QorIQ dpaa
+based layerscape platform and information about common offload
+hw block drivers of <strong>NXP QorIQ DPAA</strong> SoC family.</p>
+<div class="section" id="supported-dpaa-socs">
+<h2><span class="section-number">2.1. </span>Supported DPAA SoCs</h2>
+<ul class="simple">
+<li><p>LS1046A/LS1026A</p></li>
+<li><p>LS1043A/LS1023A</p></li>
+</ul>
+<p>More information about SoC can be found at <a class="reference external" href="https://www.nxp.com/products/processors-and-microcontrollers/arm-based-processors-and-mcus/qoriq-layerscape-arm-processors:QORIQ-ARM">NXP Official Website</a>.</p>
+</div>
+<div class="section" id="common-offload-hw-block-drivers">
+<h2><span class="section-number">2.2. </span>Common Offload HW Block Drivers</h2>
+<ol class="arabic">
+<li><p><strong>Nics Driver</strong></p>
+<p>See <a class="reference internal" href="../nics/dpaa.html"><span class="doc">DPAA Poll Mode Driver</span></a> for NXP dpaa nic driver information.</p>
+</li>
+<li><p><strong>Cryptodev Driver</strong></p>
+<p>See <a class="reference internal" href="../cryptodevs/dpaa_sec.html"><span class="doc">NXP DPAA CAAM (DPAA_SEC)</span></a> for NXP dpaa cryptodev driver information.</p>
+</li>
+<li><p><strong>Eventdev Driver</strong></p>
+<p>See <a class="reference internal" href="../eventdevs/dpaa.html"><span class="doc">NXP DPAA Eventdev Driver</span></a> for NXP dpaa eventdev driver information.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="steps-to-setup-platform">
+<h2><span class="section-number">2.3. </span>Steps To Setup Platform</h2>
+<p>There are four main pre-requisites for executing DPAA PMD on a DPAA
+compatible board:</p>
+<ol class="arabic">
+<li><p><strong>ARM 64 Tool Chain</strong></p>
+<p>For example, the <a class="reference external" href="https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/gcc-linaro-7.3.1-2018.05-i686_aarch64-linux-gnu.tar.xz">*aarch64* Linaro Toolchain</a>.</p>
+</li>
+<li><p><strong>Linux Kernel</strong></p>
+<p>It can be obtained from <a class="reference external" href="https://source.codeaurora.org/external/qoriq/qoriq-components/linux">NXP’s Github hosting</a>.</p>
+</li>
+<li><p><strong>Rootfile system</strong></p>
+<p>Any <em>aarch64</em> supporting filesystem can be used. For example,
+Ubuntu 16.04 LTS (Xenial) or 18.04 (Bionic) userland which can be obtained
+from <a class="reference external" href="http://cdimage.ubuntu.com/ubuntu-base/releases/18.04/release/ubuntu-base-18.04.1-base-arm64.tar.gz">here</a>.</p>
+</li>
+<li><p><strong>FMC Tool</strong></p>
+<p>If one is planning to use more than 1 Recv queue and hardware capability to
+parse, classify and distribute the packets, the Frame Manager Configuration
+Tool (FMC) need to be executed to set the configurations of the queues before
+running the DPAA based DPDK application. This setting is persistent, the
+configuration will remain in the hardware till it is re-configured. This
+includes the queue state, RSS and other policies.
+This tool can be obtained from <a class="reference external" href="https://source.codeaurora.org/external/qoriq/qoriq-components/fmc">NXP (Freescale) Public Git Repository</a>.</p>
+<p>This tool needs configuration files which are available in the
+<a class="reference internal" href="dpaa2.html#extra-scripts"><span class="std std-ref">DPDK Extra Scripts</span></a>, described below for DPDK usages.</p>
+<p>Note that DPAA PMD can also be executed using images provided
+as part of SDK from NXP. The SDK includes all the above prerequisites
+necessary (i.e. fmc tool) to bring up a DPAA board.</p>
+<p>As an alternate method, DPAA PMDs starting from DPDK 20.11 also support the
+fmlib library integration. The driver will detect about any existing FMC
+based config (if /tmp/fmc.bin is present). DPAA FMD will be used only if no
+previous fmc config is existing.</p>
+<p>Note that fmlib based integratin rely on underlying fmd driver in kernel,
+which is available as part of NXP kernel or NXP SDK.</p>
+</li>
+</ol>
+<p>The following dependencies are not part of DPDK and must be installed
+separately:</p>
+<ul>
+<li><p><strong>NXP Linux SDK</strong></p>
+<p>NXP Linux software development kit (SDK) includes support for family
+of QorIQ® ARM-Architecture-based system on chip (SoC) processors
+and corresponding boards.</p>
+<p>It includes the Linux board support packages (BSPs) for NXP SoCs,
+a fully operational tool chain, kernel and board specific modules.</p>
+<p>SDK and related information can be obtained from:  <a class="reference external" href="http://www.nxp.com/products/software-and-tools/run-time-software/linux-sdk/linux-sdk-for-qoriq-processors:SDKLINUX">NXP QorIQ SDK</a>.</p>
+</li>
+</ul>
+<ul id="extra-scripts">
+<li><p><strong>DPDK Extra Scripts</strong></p>
+<p>DPAA based resources can be configured easily with the help of ready scripts
+as provided in the DPDK Extra repository.</p>
+<p><a class="reference external" href="https://source.codeaurora.org/external/qoriq/qoriq-components/dpdk-extras">DPDK Extras Scripts</a>.</p>
+</li>
+</ul>
+<p>Currently supported by DPDK:</p>
+<ul class="simple">
+<li><p>NXP SDK <strong>2.0+</strong> (preferred: LSDK 18.09).</p></li>
+<li><p>Supported architectures:  <strong>arm64 LE</strong>.</p></li>
+<li><p>Follow the DPDK <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a>
+to setup the basic DPDK environment.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dpaa2.html" class="btn btn-neutral float-right" title="3. NXP QorIQ DPAA2 Board Support Package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="bluefield.html" class="btn btn-neutral float-left" title="1. Mellanox BlueField Board Support Package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

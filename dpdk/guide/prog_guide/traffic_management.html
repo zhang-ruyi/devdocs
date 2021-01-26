@@ -1,0 +1,500 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>15. Traffic Management API &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="16. Wireless Baseband Device Library" href="bbdev.html" />
+    <link rel="prev" title="14. Traffic Metering and Policing API" href="traffic_metering_and_policing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">15. Traffic Management API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">15.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#capability-api">15.2. Capability API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#scheduling-algorithms">15.3. Scheduling Algorithms</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#traffic-shaping">15.4. Traffic Shaping</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#congestion-management">15.5. Congestion Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packet-marking">15.6. Packet Marking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#steps-to-setup-the-hierarchy">15.7. Steps to Setup the Hierarchy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initial-hierarchy-specification">15.7.1. Initial Hierarchy Specification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hierarchy-commit">15.7.2. Hierarchy Commit</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-time-hierarchy-updates">15.7.3. Run-Time Hierarchy Updates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">15. </span>Traffic Management API</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/traffic_management.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="traffic-management-api">
+<h1><span class="section-number">15. </span>Traffic Management API</h1>
+<div class="section" id="overview">
+<h2><span class="section-number">15.1. </span>Overview</h2>
+<p>This is the generic API for the Quality of Service (QoS) Traffic Management of
+Ethernet devices, which includes the following main features: hierarchical
+scheduling, traffic shaping, congestion management, packet marking. This API
+is agnostic of the underlying HW, SW or mixed HW-SW implementation.</p>
+<p>Main features:</p>
+<ul class="simple">
+<li><p>Part of DPDK rte_ethdev API</p></li>
+<li><p>Capability query API per port, per hierarchy level and per hierarchy node</p></li>
+<li><p>Scheduling algorithms: Strict Priority (SP), Weighed Fair Queuing (WFQ)</p></li>
+<li><p>Traffic shaping: single/dual rate, private (per node) and
+shared (by multiple nodes) shapers</p></li>
+<li><p>Congestion management for hierarchy leaf nodes: algorithms of tail drop, head
+drop, WRED, private (per node) and shared (by multiple nodes) WRED contexts</p></li>
+<li><p>Packet marking: IEEE 802.1q (VLAN DEI), IETF RFC 3168 (IPv4/IPv6 ECN for TCP
+and SCTP), IETF RFC 2597 (IPv4 / IPv6 DSCP)</p></li>
+</ul>
+</div>
+<div class="section" id="capability-api">
+<h2><span class="section-number">15.2. </span>Capability API</h2>
+<p>The aim of these APIs is to advertise the capability information (i.e critical
+parameter values) that the TM implementation (HW/SW) is able to support for the
+application. The APIs supports the information disclosure at the TM level, at
+any hierarchical level of the TM and at any node level of the specific
+hierarchical level. Such information helps towards rapid understanding of
+whether a specific implementation does meet the needs to the user application.</p>
+<p>At the TM level, users can get high level idea with the help of various
+parameters such as maximum number of nodes, maximum number of hierarchical
+levels, maximum number of shapers, maximum number of private shapers, type of
+scheduling algorithm (Strict Priority, Weighted Fair Queuing , etc.), etc.,
+supported by the implementation.</p>
+<p>Likewise, users can query the capability of the TM at the hierarchical level to
+have more granular knowledge about the specific level. The various parameters
+such as maximum number of nodes at the level, maximum number of leaf/non-leaf
+nodes at the level, type of the shaper(dual rate, single rate) supported at
+the level if node is non-leaf type etc., are exposed as a result of
+hierarchical level capability query.</p>
+<p>Finally, the node level capability API offers knowledge about the capability
+supported by the node at any specific level. The information whether the
+support is available for private shaper, dual rate shaper, maximum and minimum
+shaper rate, etc. is exposed by node level capability API.</p>
+</div>
+<div class="section" id="scheduling-algorithms">
+<h2><span class="section-number">15.3. </span>Scheduling Algorithms</h2>
+<p>The fundamental scheduling algorithms that are supported are Strict Priority
+(SP) and Weighted Fair Queuing (WFQ). The SP and WFQ algorithms are supported
+at the level of each node of the scheduling hierarchy, regardless of the node
+level/position in the tree. The SP algorithm is used to schedule between
+sibling nodes with different priority, while WFQ is used to schedule between
+groups of siblings that have the same priority.</p>
+<p>Algorithms such as Weighed Round Robin (WRR), byte-level WRR, Deficit WRR
+(DWRR), etc are considered approximations of the ideal WFQ and are therefore
+assimilated to WFQ, although an associated implementation-dependent accuracy,
+performance and resource usage trade-off might exist.</p>
+</div>
+<div class="section" id="traffic-shaping">
+<h2><span class="section-number">15.4. </span>Traffic Shaping</h2>
+<p>The TM API provides support for single rate and dual rate shapers (rate
+limiters) for the hierarchy nodes, subject to the specific implementation
+support being available.</p>
+<p>Each hierarchy node has zero or one private shaper (only one node using it)
+and/or zero, one or several shared shapers (multiple nodes use the same shaper
+instance). A private shaper is used to perform traffic shaping for a single
+node, while a shared shaper is used to perform traffic shaping for a group of
+nodes.</p>
+<p>The configuration of private and shared shapers is done through the definition
+of shaper profiles. Any shaper profile (single rate or dual rate shaper) can be
+used by one or several shaper instances (either private or shared).</p>
+<p>Single rate shapers use a single token bucket. Therefore, single rate shaper is
+configured by setting the rate of the committed bucket to zero, which
+effectively disables this bucket. The peak bucket is used to limit the rate
+and the burst size for the single rate shaper. Dual rate shapers use both the
+committed and the peak token buckets. The rate of the peak bucket has to be
+bigger than zero, as well as greater than or equal to the rate of the committed
+bucket.</p>
+</div>
+<div class="section" id="congestion-management">
+<h2><span class="section-number">15.5. </span>Congestion Management</h2>
+<p>Congestion management is used to control the admission of packets into a packet
+queue or group of packet queues on congestion. The congestion management
+algorithms that are supported are: Tail Drop, Head Drop and Weighted Random
+Early Detection (WRED). They are made available for every leaf node in the
+hierarchy, subject to the specific implementation supporting them.
+On request of writing a new packet into the current queue while the queue is
+full, the Tail Drop algorithm drops the new packet while leaving the queue
+unmodified, as opposed to the Head Drop* algorithm, which drops the packet
+at the head of the queue (the oldest packet waiting in the queue) and admits
+the new packet at the tail of the queue.</p>
+<p>The Random Early Detection (RED) algorithm works by proactively dropping more
+and more input packets as the queue occupancy builds up. When the queue is full
+or almost full, RED effectively works as Tail Drop. The Weighted RED (WRED)
+algorithm uses a separate set of RED thresholds for each packet color and uses
+separate set of RED thresholds for each packet color.</p>
+<p>Each hierarchy leaf node with WRED enabled as its congestion management mode
+has zero or one private WRED context (only one leaf node using it) and/or zero,
+one or several shared WRED contexts (multiple leaf nodes use the same WRED
+context). A private WRED context is used to perform congestion management for
+a single leaf node, while a shared WRED context is used to perform congestion
+management for a group of leaf nodes.</p>
+<p>The configuration of WRED private and shared contexts is done through the
+definition of WRED profiles. Any WRED profile can be used by one or several
+WRED contexts (either private or shared).</p>
+</div>
+<div class="section" id="packet-marking">
+<h2><span class="section-number">15.6. </span>Packet Marking</h2>
+<p>The TM APIs have been provided to support various types of packet marking such
+as VLAN DEI packet marking (IEEE 802.1Q), IPv4/IPv6 ECN marking of TCP and SCTP
+packets (IETF RFC 3168) and IPv4/IPv6 DSCP packet marking (IETF RFC 2597).
+All VLAN frames of a given color get their DEI bit set if marking is enabled
+for this color. In case, when marking for a given color is not enabled, the
+DEI bit is left as is (either set or not).</p>
+<p>All IPv4/IPv6 packets of a given color with ECN set to 2’b01 or 2’b10 carrying
+TCP or SCTP have their ECN set to 2’b11 if the marking feature is enabled for
+the current color, otherwise the ECN field is left as is.</p>
+<p>All IPv4/IPv6 packets have their color marked into DSCP bits 3 and 4 as
+follows: green mapped to Low Drop Precedence (2’b01), yellow to Medium (2’b10)
+and red to High (2’b11). Marking needs to be explicitly enabled for each color;
+when not enabled for a given color, the DSCP field of all packets with that
+color is left as is.</p>
+</div>
+<div class="section" id="steps-to-setup-the-hierarchy">
+<h2><span class="section-number">15.7. </span>Steps to Setup the Hierarchy</h2>
+<p>The TM hierarchical tree consists of leaf nodes and non-leaf nodes. Each leaf
+node sits on top of a scheduling queue of the current Ethernet port. Therefore,
+the leaf nodes have predefined IDs in the range of 0… (N-1), where N is the
+number of scheduling queues of the current Ethernet port. The non-leaf nodes
+have their IDs generated by the application outside of the above range, which
+is reserved for leaf nodes.</p>
+<p>Each non-leaf node has multiple inputs (its children nodes) and single output
+(which is input to its parent node). It arbitrates its inputs using Strict
+Priority (SP) and Weighted Fair Queuing (WFQ) algorithms to schedule input
+packets to its output while observing its shaping (rate limiting) constraints.</p>
+<p>The children nodes with different priorities are scheduled using the SP
+algorithm based on their priority, with 0 as the highest priority. Children
+with the same priority are scheduled using the WFQ algorithm according to their
+weights. The WFQ weight of a given child node is relative to the sum of the
+weights of all its sibling nodes that have the same priority, with 1 as the
+lowest weight. For each SP priority, the WFQ weight mode can be set as either
+byte-based or packet-based.</p>
+<div class="section" id="initial-hierarchy-specification">
+<h3><span class="section-number">15.7.1. </span>Initial Hierarchy Specification</h3>
+<p>The hierarchy is specified by incrementally adding nodes to build up the
+scheduling tree. The first node that is added to the hierarchy becomes the root
+node and all the nodes that are subsequently added have to be added as
+descendants of the root node. The parent of the root node has to be specified
+as RTE_TM_NODE_ID_NULL and there can only be one node with this parent ID
+(i.e. the root node). The unique ID that is assigned to each node when the node
+is created is further used to update the node configuration or to connect
+children nodes to it.</p>
+<p>During this phase, some limited checks on the hierarchy specification can be
+conducted, usually limited in scope to the current node, its parent node and
+its sibling nodes. At this time, since the hierarchy is not fully defined,
+there is typically no real action performed by the underlying implementation.</p>
+</div>
+<div class="section" id="hierarchy-commit">
+<h3><span class="section-number">15.7.2. </span>Hierarchy Commit</h3>
+<p>The hierarchy commit API is called during the port initialization phase (before
+the Ethernet port is started) to freeze the start-up hierarchy.  This function
+typically performs the following steps:</p>
+<ul class="simple">
+<li><p>It validates the start-up hierarchy that was previously defined for the
+current port through successive node add API invocations.</p></li>
+<li><p>Assuming successful validation, it performs all the necessary implementation
+specific operations to install the specified hierarchy on the current port,
+with immediate effect once the port is started.</p></li>
+</ul>
+<p>This function fails when the currently configured hierarchy is not supported by
+the Ethernet port, in which case the user can abort or try out another
+hierarchy configuration (e.g. a hierarchy with less leaf nodes), which can be
+built from scratch or by modifying the existing hierarchy configuration. Note
+that this function can still fail due to other causes (e.g. not enough memory
+available in the system, etc.), even though the specified hierarchy is
+supported in principle by the current port.</p>
+</div>
+<div class="section" id="run-time-hierarchy-updates">
+<h3><span class="section-number">15.7.3. </span>Run-Time Hierarchy Updates</h3>
+<p>The TM API provides support for on-the-fly changes to the scheduling hierarchy,
+thus operations such as node add/delete, node suspend/resume, parent node
+update, etc., can be invoked after the Ethernet port has been started, subject
+to the specific implementation supporting them. The set of dynamic updates
+supported by the implementation is advertised through the port capability set.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="bbdev.html" class="btn btn-neutral float-right" title="16. Wireless Baseband Device Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="traffic_metering_and_policing.html" class="btn btn-neutral float-left" title="14. Traffic Metering and Policing API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

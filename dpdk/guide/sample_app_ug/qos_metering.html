@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>29. QoS Metering Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="30. QoS Scheduler Sample Application" href="qos_scheduler.html" />
+    <link rel="prev" title="28. Multi-process Sample Application" href="multi_process.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">29. QoS Metering Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">29.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">29.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">29.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">29.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">29. </span>QoS Metering Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/qos_metering.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="qos-metering-sample-application">
+<h1><span class="section-number">29. </span>QoS Metering Sample Application</h1>
+<p>The QoS meter sample application is an example that demonstrates the use of DPDK to provide QoS marking and metering,
+as defined by RFC2697 for Single Rate Three Color Marker (srTCM) and RFC 2698 for Two Rate Three Color Marker (trTCM) algorithm.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">29.1. </span>Overview</h2>
+<p>The application uses a single thread for reading the packets from the RX port,
+metering, marking them with the appropriate color (green, yellow or red) and writing them to the TX port.</p>
+<p>A policing scheme can be applied before writing the packets to the TX port by dropping or
+changing the color of the packet in a static manner depending on both the input and output colors of the packets that are processed by the meter.</p>
+<p>The operation mode can be selected as compile time out of the following options:</p>
+<ul class="simple">
+<li><p>Simple forwarding</p></li>
+<li><p>srTCM color blind</p></li>
+<li><p>srTCM color aware</p></li>
+<li><p>srTCM color blind</p></li>
+<li><p>srTCM color aware</p></li>
+</ul>
+<p>Please refer to RFC2697 and RFC2698 for details about the srTCM and trTCM configurable parameters
+(CIR, CBS and EBS for srTCM; CIR, PIR, CBS and PBS for trTCM).</p>
+<p>The color blind modes are functionally equivalent with the color-aware modes when
+all the incoming packets are colored as green.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">29.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">qos_meter</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">29.3. </span>Running the Application</h2>
+<p>The application execution command line is as below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./dpdk-qos_meter [EAL options] -- -p PORTMASK</span>
+</pre></div>
+</div>
+<p>The application is constrained to use a single core in the EAL core mask and 2 ports only in the application port mask
+(first port from the port mask is used for RX and the other port in the core mask is used for TX).</p>
+<p>Refer to <em>DPDK Getting Started Guide</em> for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">29.4. </span>Explanation</h2>
+<p>Selecting one of the metering modes is done with these defines:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#define APP_MODE_FWD   0</span>
+<span class="cp">#define APP_MODE_SRTCM_COLOR_BLIND  1</span>
+<span class="cp">#define APP_MODE_SRTCM_COLOR_AWARE  2</span>
+<span class="cp">#define APP_MODE_TRTCM_COLOR_BLIND  3</span>
+<span class="cp">#define APP_MODE_TRTCM_COLOR_AWARE  4</span>
+
+<span class="cp">#define APP_MODE  APP_MODE_SRTCM_COLOR_BLIND</span>
+</pre></div>
+</div>
+<p>To simplify debugging (for example, by using the traffic generator RX side MAC address based packet filtering feature),
+the color is defined as the LSB byte of the destination MAC address.</p>
+<p>The traffic meter parameters are configured in the application source code with following default values:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_meter_srtcm_params</span> <span class="n">app_srtcm_params</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="p">{.</span><span class="n">cir</span> <span class="o">=</span> <span class="mi">1000000</span> <span class="o">*</span> <span class="mi">46</span><span class="p">,</span> <span class="p">.</span><span class="n">cbs</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span> <span class="p">.</span><span class="n">ebs</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">},</span>
+
+<span class="p">};</span>
+
+<span class="k">struct</span> <span class="n">rte_meter_trtcm_params</span> <span class="n">app_trtcm_params</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+
+    <span class="p">{.</span><span class="n">cir</span> <span class="o">=</span> <span class="mi">1000000</span> <span class="o">*</span> <span class="mi">46</span><span class="p">,</span> <span class="p">.</span><span class="n">pir</span> <span class="o">=</span> <span class="mi">1500000</span> <span class="o">*</span> <span class="mi">46</span><span class="p">,</span> <span class="p">.</span><span class="n">cbs</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">,</span> <span class="p">.</span><span class="n">pbs</span> <span class="o">=</span> <span class="mi">2048</span><span class="p">},</span>
+
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Assuming the input traffic is generated at line rate and all packets are 64 bytes Ethernet frames (IPv4 packet size of 46 bytes)
+and green, the expected output traffic should be marked as shown in the following table:</p>
+<span id="table-qos-metering-1"></span><table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 29.1 </span><span class="caption-text">Output Traffic Marking</span></caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 27%" />
+<col style="width: 29%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p><strong>Mode</strong></p></th>
+<th class="head"><p><strong>Green (Mpps)</strong></p></th>
+<th class="head"><p><strong>Yellow (Mpps)</strong></p></th>
+<th class="head"><p><strong>Red (Mpps)</strong></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>srTCM blind</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>12.88</p></td>
+</tr>
+<tr class="row-odd"><td><p>srTCM color</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>12.88</p></td>
+</tr>
+<tr class="row-even"><td><p>trTCM blind</p></td>
+<td><p>1</p></td>
+<td><p>0.5</p></td>
+<td><p>13.38</p></td>
+</tr>
+<tr class="row-odd"><td><p>trTCM color</p></td>
+<td><p>1</p></td>
+<td><p>0.5</p></td>
+<td><p>13.38</p></td>
+</tr>
+<tr class="row-even"><td><p>FWD</p></td>
+<td><p>14.88</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>To set up the policing scheme as desired, it is necessary to modify the main.h source file,
+where this policy is implemented as a static structure, as follows:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">policer_table</span><span class="p">[</span><span class="n">e_RTE_METER_COLORS</span><span class="p">][</span><span class="n">e_RTE_METER_COLORS</span><span class="p">]</span> <span class="o">=</span>
+<span class="p">{</span>
+   <span class="p">{</span> <span class="n">GREEN</span><span class="p">,</span> <span class="n">RED</span><span class="p">,</span> <span class="n">RED</span><span class="p">},</span>
+   <span class="p">{</span> <span class="n">DROP</span><span class="p">,</span> <span class="n">YELLOW</span><span class="p">,</span> <span class="n">RED</span><span class="p">},</span>
+   <span class="p">{</span> <span class="n">DROP</span><span class="p">,</span> <span class="n">DROP</span><span class="p">,</span> <span class="n">RED</span><span class="p">}</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Where rows indicate the input color, columns indicate the output color,
+and the value that is stored in the table indicates the action to be taken for that particular case.</p>
+<p>There are four different actions:</p>
+<ul class="simple">
+<li><p>GREEN: The packet’s color is changed to green.</p></li>
+<li><p>YELLOW: The packet’s color is changed to yellow.</p></li>
+<li><p>RED: The packet’s color is changed to red.</p></li>
+<li><p>DROP: The packet is dropped.</p></li>
+</ul>
+<p>In this particular case:</p>
+<ul class="simple">
+<li><p>Every packet which input and output color are the same, keeps the same color.</p></li>
+<li><p>Every packet which color has improved is dropped (this particular case can’t happen, so these values will not be used).</p></li>
+<li><p>For the rest of the cases, the color is changed to red.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>In color blind mode, first row GREEN color is only valid.</p></li>
+<li><p>To drop the packet, policer_table action has to be set to DROP.</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="qos_scheduler.html" class="btn btn-neutral float-right" title="30. QoS Scheduler Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="multi_process.html" class="btn btn-neutral float-left" title="28. Multi-process Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

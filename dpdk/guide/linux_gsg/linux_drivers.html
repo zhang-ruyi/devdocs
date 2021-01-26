@@ -1,0 +1,538 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>5. Linux Drivers &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. Running Sample Applications" href="build_sample_apps.html" />
+    <link rel="prev" title="4. Cross compile DPDK for ARM64" href="cross_build_dpdk_for_arm64.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started Guide for Linux</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sys_reqs.html">2. System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_dpdk.html">3. Compiling the DPDK Target from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cross_build_dpdk_for_arm64.html">4. Cross compile DPDK for ARM64</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. Linux Drivers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vfio">5.1. VFIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vfio-no-iommu-mode">5.2. VFIO no-IOMMU mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#uio">5.3. UIO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bifurcated-driver">5.4. Bifurcated Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#binding-and-unbinding-network-ports-to-from-the-kernel-modules">5.5. Binding and Unbinding Network Ports to/from the Kernel Modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#troubleshooting-vfio">5.6. Troubleshooting VFIO</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="build_sample_apps.html">6. Running Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="linux_eal_parameters.html">7. EAL parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enable_func.html">8. Enabling Additional Functionality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nic_perf_intel_platform.html">9. How to get best performance with NICs on Intel platforms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Getting Started Guide for Linux</a> &raquo;</li>
+        
+      <li><span class="section-number">5. </span>Linux Drivers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/linux_gsg/linux_drivers.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="linux-drivers">
+<span id="linux-gsg-linux-drivers"></span><h1><span class="section-number">5. </span>Linux Drivers</h1>
+<p>Different PMDs may require different kernel drivers in order to work properly.
+Depending on the PMD being used, a corresponding kernel driver should be loaded,
+and network ports should be bound to that driver.</p>
+<div class="section" id="vfio">
+<h2><span class="section-number">5.1. </span>VFIO</h2>
+<p>VFIO is a robust and secure driver that relies on IOMMU protection.
+To make use of VFIO, the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> module must be loaded:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo modprobe vfio-pci</span>
+</pre></div>
+</div>
+<p>VFIO kernel is usually present by default in all distributions,
+however please consult your distributions documentation to make sure that is the case.</p>
+<p>Since Linux version 5.7,
+the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> module supports the creation of virtual functions.
+After the PF is bound to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> module,
+the user can create the VFs using the <code class="docutils literal notranslate"><span class="pre">sysfs</span></code> interface,
+and these VFs will be bound to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> module automatically.</p>
+<p>When the PF is bound to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>,
+by default it will have a randomly generated VF token.
+For security reasons, this token is write only,
+so the user cannot read it from the kernel directly.
+To access the VFs, the user needs to create a new token,
+and use it to initialize both VF and PF devices.
+The tokens are in UUID format,
+so any UUID generation tool can be used to create a new token.</p>
+<p>This VF token can be passed to DPDK by using EAL parameter <code class="docutils literal notranslate"><span class="pre">--vfio-vf-token</span></code>.
+The token will be used for all PF and VF ports within the application.</p>
+<ol class="arabic">
+<li><p>Generate the VF token by uuid command</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">14d63f20-8445-11ea-8900-1f9ce7d5650d</span>
+</pre></div>
+</div>
+</li>
+<li><p>Load the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> module with <code class="docutils literal notranslate"><span class="pre">enable_sriov</span></code> parameter set</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo modprobe vfio-pci enable_sriov=1</span>
+</pre></div>
+</div>
+</li>
+<li><p>Bind the PCI devices to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> driver</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./usertools/dpdk-devbind.py -b vfio-pci 0000:86:00.0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create the desired number of VF devices</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo 2 &gt; /sys/bus/pci/devices/0000:86:00.0/sriov_numvfs</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the DPDK application that will manage the PF device</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&lt;build_dir&gt;/app/dpdk-testpmd -l 22-25 -n 4 -a 86:00.0 \</span>
+<span class="go">--vfio-vf-token=14d63f20-8445-11ea-8900-1f9ce7d5650d --file-prefix=pf -- -i</span>
+</pre></div>
+</div>
+</li>
+<li><p>Start the DPDK application that will manage the VF device</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&lt;build_dir&gt;/app/dpdk-testpmd -l 26-29 -n 4 -a 86:02.0 \</span>
+<span class="go">--vfio-vf-token=14d63f20-8445-11ea-8900-1f9ce7d5650d --file-prefix=vf0 -- -i</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>To make use of full VFIO functionality,
+both kernel and BIOS must support and be configured
+to use IO virtualization (such as Intel® VT-d).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Linux versions earlier than version 3.6 do not support VFIO.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Linux versions earlier than version 5.7 do not support the creation of
+virtual functions within the VFIO framework.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In most cases, specifying “iommu=on” as kernel parameter should be enough to
+configure the Linux kernel to use IOMMU.</p>
+</div>
+<p>For proper operation of VFIO when running DPDK applications as a non-privileged user, correct permissions should also be set up.
+For more information, please refer to <a class="reference internal" href="enable_func.html#running-without-root-privileges"><span class="std std-ref">Running DPDK Applications Without Root Privileges</span></a>.</p>
+</div>
+<div class="section" id="vfio-no-iommu-mode">
+<h2><span class="section-number">5.2. </span>VFIO no-IOMMU mode</h2>
+<p>If there is no IOMMU available on the system, VFIO can still be used,
+but it has to be loaded with an additional module parameter:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">modprobe vfio enable_unsafe_noiommu_mode=1</span>
+</pre></div>
+</div>
+<p>Alternatively, one can also enable this option in an already loaded kernel module:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo 1 &gt; /sys/module/vfio/parameters/enable_unsafe_noiommu_mode</span>
+</pre></div>
+</div>
+<p>After that, VFIO can be used with hardware devices as usual.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It may be required to unload all VFIO related-modules before probing
+the module again with <code class="docutils literal notranslate"><span class="pre">enable_unsafe_noiommu_mode=1</span></code> parameter.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Since no-IOMMU mode forgoes IOMMU protection, it is inherently unsafe.
+That said, it does make it possible for the user
+to keep the degree of device access and programming that VFIO has,
+in situations where IOMMU is not available.</p>
+</div>
+</div>
+<div class="section" id="uio">
+<h2><span class="section-number">5.3. </span>UIO</h2>
+<p>In situations where using VFIO is not an option, there are alternative drivers one can use.
+In many cases, the standard <code class="docutils literal notranslate"><span class="pre">uio_pci_generic</span></code> module included in the Linux kernel
+can be used as a substitute for VFIO. This module can be loaded using the command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo modprobe uio_pci_generic</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">uio_pci_generic</span></code> module doesn’t support the creation of virtual functions.</p>
+</div>
+<p>As an alternative to the <code class="docutils literal notranslate"><span class="pre">uio_pci_generic</span></code>, there is the <code class="docutils literal notranslate"><span class="pre">igb_uio</span></code> module
+which can be found in the repository <a class="reference external" href="http://git.dpdk.org/dpdk-kmods">dpdk-kmods</a>.
+It can be loaded as shown below:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo modprobe uio</span>
+<span class="go">sudo insmod igb_uio.ko</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If UEFI secure boot is enabled,
+the Linux kernel may disallow the use of UIO on the system.
+Therefore, devices for use by DPDK should be bound to the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> kernel module
+rather than any UIO-based module.
+For more details see <a class="reference internal" href="#linux-gsg-binding-kernel"><span class="std std-ref">Binding and Unbinding Network Ports to/from the Kernel Modules</span></a> below.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the devices used for DPDK are bound to the <code class="docutils literal notranslate"><span class="pre">uio_pci_generic</span></code> kernel module,
+please make sure that the IOMMU is disabled or is in passthrough mode.
+One can add <code class="docutils literal notranslate"><span class="pre">intel_iommu=off</span></code> or <code class="docutils literal notranslate"><span class="pre">amd_iommu=off</span></code> or <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span> <span class="pre">iommu=pt</span></code>
+in GRUB command line on x86_64 systems,
+or add <code class="docutils literal notranslate"><span class="pre">iommu.passthrough=1</span></code> on aarch64 systems.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using UIO drivers is inherently unsafe due to this method lacking IOMMU protection,
+and can only be done by root user.</p>
+</div>
+</div>
+<div class="section" id="bifurcated-driver">
+<span id="id1"></span><h2><span class="section-number">5.4. </span>Bifurcated Driver</h2>
+<p>PMDs which use the bifurcated driver co-exists with the device kernel driver.
+On such model the NIC is controlled by the kernel, while the data
+path is performed by the PMD directly on top of the device.</p>
+<p>Such model has the following benefits:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>It is secure and robust, as the memory management and isolation
+is done by the kernel.</p></li>
+<li><p>It enables the user to use legacy linux tools such as <code class="docutils literal notranslate"><span class="pre">ethtool</span></code> or
+<code class="docutils literal notranslate"><span class="pre">ifconfig</span></code> while running DPDK application on the same network ports.</p></li>
+<li><p>It enables the DPDK application to filter only part of the traffic,
+while the rest will be directed and handled by the kernel driver.
+The flow bifurcation is performed by the NIC hardware.
+As an example, using <a class="reference internal" href="../prog_guide/rte_flow.html#flow-isolated-mode"><span class="std std-ref">Flow isolated mode</span></a> allows to choose
+strictly what is received in DPDK.</p></li>
+</ul>
+</div></blockquote>
+<p>More about the bifurcated driver can be found in
+<a class="reference external" href="https://www.dpdk.org/wp-content/uploads/sites/35/2016/10/Day02-Session04-RonyEfraim-Userspace2016.pdf">Mellanox Bifurcated DPDK PMD</a>.</p>
+</div>
+<div class="section" id="binding-and-unbinding-network-ports-to-from-the-kernel-modules">
+<span id="linux-gsg-binding-kernel"></span><h2><span class="section-number">5.5. </span>Binding and Unbinding Network Ports to/from the Kernel Modules</h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>PMDs which use the bifurcated driver should not be unbound from their kernel drivers.
+This section is for PMDs which use the UIO or VFIO drivers.</p>
+</div>
+<p>As of release 1.4, DPDK applications no longer automatically unbind all supported network ports from the kernel driver in use.
+Instead, in case the PMD being used use the VFIO or UIO drivers,
+all ports that are to be used by a DPDK application must be bound to
+the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>, <code class="docutils literal notranslate"><span class="pre">uio_pci_generic</span></code>, or <code class="docutils literal notranslate"><span class="pre">igb_uio</span></code> module
+before the application is run.
+For such PMDs, any network ports under Linux* control will be ignored and cannot be used by the application.</p>
+<p>To bind ports to the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>, <code class="docutils literal notranslate"><span class="pre">uio_pci_generic</span></code> or <code class="docutils literal notranslate"><span class="pre">igb_uio</span></code> module
+for DPDK use, or to return ports to Linux control,
+a utility script called <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> is provided in the <code class="docutils literal notranslate"><span class="pre">usertools</span></code> subdirectory.
+This utility can be used to provide a view of the current state of the network ports on the system,
+and to bind and unbind those ports from the different kernel modules,
+including the VFIO and UIO modules.
+The following are some examples of how the script can be used.
+A full description of the script and its parameters can be obtained
+by calling the script with the <code class="docutils literal notranslate"><span class="pre">--help</span></code> or <code class="docutils literal notranslate"><span class="pre">--usage</span></code> options.
+Note that the UIO or VFIO kernel modules to be used,
+should be loaded into the kernel before running the <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> script.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Due to the way VFIO works, there are certain limitations
+to which devices can be used with VFIO.
+Mainly it comes down to how IOMMU groups work.
+Any Virtual Function device can usually be used with VFIO on its own,
+but physical devices may require either all ports bound to VFIO,
+or some of them bound to VFIO while others not being bound to anything at all.</p>
+<p>If your device is behind a PCI-to-PCI bridge,
+the bridge will then be part of the IOMMU group in which your device is in.
+Therefore, the bridge driver should also be unbound from the bridge PCI device
+for VFIO to work with devices behind the bridge.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>While any user can run the <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> script
+to view the status of the network ports,
+binding or unbinding network ports requires root privileges.</p>
+</div>
+<p>To see the status of all network ports on the system:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./usertools/dpdk-devbind.py --status</span>
+
+<span class="go">Network devices using DPDK-compatible driver</span>
+<span class="go">============================================</span>
+<span class="go">0000:82:00.0 &#39;82599EB 10-GbE NIC&#39; drv=uio_pci_generic unused=ixgbe</span>
+<span class="go">0000:82:00.1 &#39;82599EB 10-GbE NIC&#39; drv=uio_pci_generic unused=ixgbe</span>
+
+<span class="go">Network devices using kernel driver</span>
+<span class="go">===================================</span>
+<span class="go">0000:04:00.0 &#39;I350 1-GbE NIC&#39; if=em0  drv=igb unused=uio_pci_generic *Active*</span>
+<span class="go">0000:04:00.1 &#39;I350 1-GbE NIC&#39; if=eth1 drv=igb unused=uio_pci_generic</span>
+<span class="go">0000:04:00.2 &#39;I350 1-GbE NIC&#39; if=eth2 drv=igb unused=uio_pci_generic</span>
+<span class="go">0000:04:00.3 &#39;I350 1-GbE NIC&#39; if=eth3 drv=igb unused=uio_pci_generic</span>
+
+<span class="go">Other network devices</span>
+<span class="go">=====================</span>
+<span class="go">&lt;none&gt;</span>
+</pre></div>
+</div>
+<p>To bind device <code class="docutils literal notranslate"><span class="pre">eth1</span></code>,``04:00.1``, to the <code class="docutils literal notranslate"><span class="pre">uio_pci_generic</span></code> driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./usertools/dpdk-devbind.py --bind=uio_pci_generic 04:00.1</span>
+</pre></div>
+</div>
+<p>or, alternatively,</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./usertools/dpdk-devbind.py --bind=uio_pci_generic eth1</span>
+</pre></div>
+</div>
+<p>To restore device <code class="docutils literal notranslate"><span class="pre">82:00.0</span></code> to its original kernel binding:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./usertools/dpdk-devbind.py --bind=ixgbe 82:00.0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="troubleshooting-vfio">
+<h2><span class="section-number">5.6. </span>Troubleshooting VFIO</h2>
+<p>In certain situations, using <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> script
+to bind a device to VFIO driver may fail.
+The first place to check is the kernel messages:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dmesg | tail</span>
+<span class="go">...</span>
+<span class="go">[ 1297.875090] vfio-pci: probe of 0000:31:00.0 failed with error -22</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>In most cases, the <code class="docutils literal notranslate"><span class="pre">error</span> <span class="pre">-22</span></code> indicates that the VFIO subsystem
+could not be enabled because there is no IOMMU support.</p>
+<p>To check whether the kernel has been booted with correct parameters,
+one can check the kernel command-line:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cat /proc/cmdline</span>
+</pre></div>
+</div>
+<p>Please refer to earlier sections on how to configure kernel parameters
+correctly for your system.</p>
+<p>If the kernel is configured correctly, one also has to make sure that
+the BIOS configuration has virtualization features (such as Intel® VT-d).
+There is no standard way to check if the platform is configured correctly,
+so please check with your platform documentation to see if it has such features,
+and how to enable them.</p>
+<p>In certain distributions, default kernel configuration is such that
+the no-IOMMU mode is disabled altogether at compile time.
+This can be checked in the boot configuration of your system:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cat /boot/config-$(uname -r) | grep NOIOMMU</span>
+<span class="gp">#</span> CONFIG_VFIO_NOIOMMU is not <span class="nb">set</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">CONFIG_VFIO_NOIOMMU</span></code> is not enabled in the kernel configuration,
+VFIO driver will not support the no-IOMMU mode,
+and other alternatives (such as UIO drivers) will have to be used.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="build_sample_apps.html" class="btn btn-neutral float-right" title="6. Running Sample Applications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cross_build_dpdk_for_arm64.html" class="btn btn-neutral float-left" title="4. Cross compile DPDK for ARM64" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

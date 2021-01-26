@@ -1,0 +1,748 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>33. MLX4 poll mode driver library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="34. MLX5 poll mode driver" href="mlx5.html" />
+    <link rel="prev" title="32. Memif Poll Mode Driver" href="memif.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">2. Features Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_and_test.html">3. Compiling and testing a PMD for a NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_packet.html">4. AF_PACKET Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_xdp.html">5. AF_XDP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ark.html">6. ARK Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atlantic.html">7. Aquantia Atlantic DPDK Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avp.html">8. AVP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="axgbe.html">9. AXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">10. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnxt.html">11. BNXT Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">12. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">13. DPAA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">14. DPAA2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">15. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">16. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enetc.html">17. ENETC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">18. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">19. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hinic.html">20. HINIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hns3.html">21. HNS3 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">22. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ice.html">23. ICE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igb.html">24. IGB Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igc.html">25. IGC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ionic.html">26. IONIC Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipn3ke.html">27. IPN3KE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">28. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">29. Intel Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kni.html">30. KNI Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="liquidio.html">31. LiquidIO VF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memif.html">32. Memif Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">33. MLX4 poll mode driver library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-details">33.1. Implementation details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration">33.2. Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compilation-options">33.2.1. Compilation options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#environment-variables">33.2.2. Environment variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-time-configuration">33.2.3. Run-time configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kernel-module-parameters">33.2.4. Kernel module parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">33.3. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">33.4. Prerequisites</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#current-rdma-core-package-and-linux-kernel-recommended">33.4.1. Current RDMA core package and Linux kernel (recommended)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#mellanox-ofed-as-a-fallback">33.4.2. Mellanox OFED as a fallback</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-start-guide">33.5. Quick Start Guide</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-tuning">33.6. Performance tuning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage-example">33.7. Usage example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">34. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvneta.html">35. MVNETA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvpp2.html">36. MVPP2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netvsc.html">37. Netvsc poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfb.html">38. NFB poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">39. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">40. NULL Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">41. OCTEON TX Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">42. OCTEON TX2 Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfe.html">43. PFE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qede.html">44. QEDE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sfc_efx.html">45. Solarflare libefx-based Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="softnic.html">46. Soft NIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">47. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tap.html">48. Tun|Tap Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thunderx.html">49. ThunderX NICVF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txgbe.html">50. TXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdev_netvsc.html">51. VDEV_NETVSC driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">52. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">53. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">54. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">55. Libpcap and Ring Based Poll Mode Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fail_safe.html">56. Fail-safe poll mode driver library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">33. </span>MLX4 poll mode driver library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/mlx4.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mlx4-poll-mode-driver-library">
+<h1><span class="section-number">33. </span>MLX4 poll mode driver library</h1>
+<p>The MLX4 poll mode driver library (<strong>librte_net_mlx4</strong>) implements support
+for <strong>Mellanox ConnectX-3</strong> and <strong>Mellanox ConnectX-3 Pro</strong> 10/40 Gbps adapters
+as well as their virtual functions (VF) in SR-IOV context.</p>
+<p>Information and documentation about this family of adapters can be found on
+the <a class="reference external" href="http://www.mellanox.com">Mellanox website</a>. Help is also provided by
+the <a class="reference external" href="http://community.mellanox.com/welcome">Mellanox community</a>.</p>
+<p>There is also a <a class="reference external" href="http://www.mellanox.com/page/products_dyn?product_family=209&amp;mtag=pmd_for_dpdk">section dedicated to this poll mode driver</a>.</p>
+<div class="section" id="implementation-details">
+<h2><span class="section-number">33.1. </span>Implementation details</h2>
+<p>Most Mellanox ConnectX-3 devices provide two ports but expose a single PCI
+bus address, thus unlike most drivers, librte_net_mlx4 registers itself as a
+PCI driver that allocates one Ethernet device per detected port.</p>
+<p>For this reason, one cannot block (or allow) a single port without also
+blocking (or allowing) the others on the same device.</p>
+<p>Besides its dependency on libibverbs (that implies libmlx4 and associated
+kernel support), librte_net_mlx4 relies heavily on system calls for control
+operations such as querying/updating the MTU and flow control parameters.</p>
+<p>For security reasons and robustness, this driver only deals with virtual
+memory addresses. The way resources allocations are handled by the kernel
+combined with hardware specifications that allow it to handle virtual memory
+addresses directly ensure that DPDK applications cannot access random
+physical memory (or memory that does not belong to the current process).</p>
+<p>This capability allows the PMD to coexist with kernel network interfaces
+which remain functional, although they stop receiving unicast packets as
+long as they share the same MAC address.</p>
+<p>The <a class="reference internal" href="../prog_guide/rte_flow.html#flow-isolated-mode"><span class="std std-ref">Flow isolated mode</span></a> is supported.</p>
+<p>Compiling librte_net_mlx4 causes DPDK to be linked against libibverbs.</p>
+</div>
+<div class="section" id="configuration">
+<h2><span class="section-number">33.2. </span>Configuration</h2>
+<div class="section" id="compilation-options">
+<h3><span class="section-number">33.2.1. </span>Compilation options</h3>
+<p>The ibverbs libraries can be linked with this PMD in a number of ways,
+configured by the <code class="docutils literal notranslate"><span class="pre">ibverbs_link</span></code> build option:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">shared</span></code> (default): the PMD depends on some .so files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dlopen</span></code>: Split the dependencies glue in a separate library
+loaded when needed by dlopen.
+It make dependencies on libibverbs and libmlx4 optional,
+and has no performance impact.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">static</span></code>: Embed static flavor of the dependencies libibverbs and libmlx4
+in the PMD shared library or the executable static binary.</p></li>
+</ul>
+</div>
+<div class="section" id="environment-variables">
+<h3><span class="section-number">33.2.2. </span>Environment variables</h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">MLX4_GLUE_PATH</span></code></p>
+<p>A list of directories in which to search for the rdma-core “glue” plug-in,
+separated by colons or semi-colons.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="run-time-configuration">
+<h3><span class="section-number">33.2.3. </span>Run-time configuration</h3>
+<ul>
+<li><p>librte_net_mlx4 brings kernel network interfaces up during initialization
+because it is affected by their state. Forcing them down prevents packets
+reception.</p></li>
+<li><p><strong>ethtool</strong> operations on related kernel interfaces also affect the PMD.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">port</span></code> parameter [int]</p>
+<p>This parameter provides a physical port to probe and can be specified multiple
+times for additional ports. All ports are probed by default if left
+unspecified.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mr_ext_memseg_en</span></code> parameter [int]</p>
+<p>A nonzero value enables extending memseg when registering DMA memory. If
+enabled, the number of entries in MR (Memory Region) lookup table on datapath
+is minimized and it benefits performance. On the other hand, it worsens memory
+utilization because registered memory is pinned by kernel driver. Even if a
+page in the extended chunk is freed, that doesn’t become reusable until the
+entire memory is freed.</p>
+<p>Enabled by default.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="kernel-module-parameters">
+<h3><span class="section-number">33.2.4. </span>Kernel module parameters</h3>
+<p>The <strong>mlx4_core</strong> kernel module has several parameters that affect the
+behavior and/or the performance of librte_net_mlx4. Some of them are described
+below.</p>
+<ul>
+<li><p><strong>num_vfs</strong> (integer or triplet, optionally prefixed by device address
+strings)</p>
+<p>Create the given number of VFs on the specified devices.</p>
+</li>
+<li><p><strong>log_num_mgm_entry_size</strong> (integer)</p>
+<p>Device-managed flow steering (DMFS) is required by DPDK applications. It is
+enabled by using a negative value, the last four bits of which have a
+special meaning.</p>
+<ul class="simple">
+<li><p><strong>-1</strong>: force device-managed flow steering (DMFS).</p></li>
+<li><p><strong>-7</strong>: configure optimized steering mode to improve performance with the
+following limitation: VLAN filtering is not supported with this mode.
+This is the recommended mode in case VLAN filter is not needed.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">33.3. </span>Limitations</h2>
+<ul class="simple">
+<li><p>For secondary process:</p>
+<ul>
+<li><p>Forked secondary process not supported.</p></li>
+<li><p>External memory unregistered in EAL memseg list cannot be used for DMA
+unless such memory has been registered by <code class="docutils literal notranslate"><span class="pre">mlx4_mr_update_ext_mp()</span></code> in
+primary process and remapped to the same virtual address in secondary
+process. If the external memory is registered by primary process but has
+different virtual address in secondary process, unexpected error may happen.</p></li>
+</ul>
+</li>
+<li><p>CRC stripping is supported by default and always reported as “true”.
+The ability to enable/disable CRC stripping requires OFED version
+4.3-1.5.0.0 and above  or rdma-core version v18 and above.</p></li>
+<li><p>TSO (Transmit Segmentation Offload) is supported in OFED version
+4.4 and above.</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">33.4. </span>Prerequisites</h2>
+<p>This driver relies on external libraries and kernel drivers for resources
+allocations and initialization. The following dependencies are not part of
+DPDK and must be installed separately:</p>
+<ul>
+<li><p><strong>libibverbs</strong> (provided by rdma-core package)</p>
+<p>User space verbs framework used by librte_net_mlx4. This library provides
+a generic interface between the kernel and low-level user space drivers
+such as libmlx4.</p>
+<p>It allows slow and privileged operations (context initialization, hardware
+resources allocations) to be managed by the kernel and fast operations to
+never leave user space.</p>
+</li>
+<li><p><strong>libmlx4</strong> (provided by rdma-core package)</p>
+<p>Low-level user space driver library for Mellanox ConnectX-3 devices,
+it is automatically loaded by libibverbs.</p>
+<p>This library basically implements send/receive calls to the hardware
+queues.</p>
+</li>
+<li><p><strong>Kernel modules</strong></p>
+<p>They provide the kernel-side verbs API and low level device drivers that
+manage actual hardware initialization and resources sharing with user
+space processes.</p>
+<p>Unlike most other PMDs, these modules must remain loaded and bound to
+their devices:</p>
+<ul class="simple">
+<li><p>mlx4_core: hardware driver managing Mellanox ConnectX-3 devices.</p></li>
+<li><p>mlx4_en: Ethernet device driver that provides kernel network interfaces.</p></li>
+<li><p>mlx4_ib: InifiniBand device driver.</p></li>
+<li><p>ib_uverbs: user space driver for verbs (entry point for libibverbs).</p></li>
+</ul>
+</li>
+<li><p><strong>Firmware update</strong></p>
+<p>Mellanox OFED releases include firmware updates for ConnectX-3 adapters.</p>
+<p>Because each release provides new features, these updates must be applied to
+match the kernel modules and libraries they come with.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Both libraries are BSD and GPL licensed. Linux kernel modules are GPL
+licensed.</p>
+</div>
+<p>Depending on system constraints and user preferences either RDMA core library
+with a recent enough Linux kernel release (recommended) or Mellanox OFED,
+which provides compatibility with older releases.</p>
+<div class="section" id="current-rdma-core-package-and-linux-kernel-recommended">
+<h3><span class="section-number">33.4.1. </span>Current RDMA core package and Linux kernel (recommended)</h3>
+<ul>
+<li><p>Minimal Linux kernel version: 4.14.</p></li>
+<li><p>Minimal RDMA core version: v15 (see <a class="reference external" href="https://raw.githubusercontent.com/linux-rdma/rdma-core/master/README.md">RDMA core installation documentation</a>).</p></li>
+<li><p>Starting with rdma-core v21, static libraries can be built:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cd build
+CFLAGS=-fPIC cmake -DIN_PLACE=1 -DENABLE_STATIC=1 -GNinja ..
+ninja
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="mellanox-ofed-as-a-fallback">
+<span id="id1"></span><h3><span class="section-number">33.4.2. </span>Mellanox OFED as a fallback</h3>
+<ul class="simple">
+<li><p><a class="reference external" href="http://www.mellanox.com/page/products_dyn?product_family=26&amp;mtag=linux_sw_drivers">Mellanox OFED</a> version: <strong>4.4, 4.5, 4.6</strong>.</p></li>
+<li><p>firmware version: <strong>2.42.5000</strong> and above.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Several versions of Mellanox OFED are available. Installing the version
+this DPDK release was developed and tested against is strongly
+recommended. Please check the <a class="reference internal" href="#prerequisites">prerequisites</a>.</p>
+</div>
+<div class="section" id="installing-mellanox-ofed">
+<h4><span class="section-number">33.4.2.1. </span>Installing Mellanox OFED</h4>
+<ol class="arabic">
+<li><p>Download latest Mellanox OFED.</p></li>
+<li><p>Install the required libraries and kernel modules either by installing
+only the required set, or by installing the entire Mellanox OFED:</p>
+<p>For bare metal use:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./mlnxofedinstall --dpdk --upstream-libs
+</pre></div>
+</div>
+<p>For SR-IOV hypervisors use:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./mlnxofedinstall --dpdk --upstream-libs --enable-sriov --hypervisor
+</pre></div>
+</div>
+<p>For SR-IOV virtual machine use:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./mlnxofedinstall --dpdk --upstream-libs --guest
+</pre></div>
+</div>
+</li>
+<li><p>Verify the firmware is the correct one:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ibv_devinfo
+</pre></div>
+</div>
+</li>
+<li><p>Set all ports links to Ethernet, follow instructions on the screen:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>connectx_port_config
+</pre></div>
+</div>
+</li>
+<li><p>Continue with <a class="reference internal" href="#qsg-2"><span class="std std-ref">section 2 of the Quick Start Guide</span></a>.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="quick-start-guide">
+<span id="qsg"></span><h2><span class="section-number">33.5. </span>Quick Start Guide</h2>
+<ol class="arabic">
+<li><p>Set all ports links to Ethernet:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>PCI=&lt;NIC PCI address&gt;
+echo eth &gt; &quot;/sys/bus/pci/devices/$PCI/mlx4_port0&quot;
+echo eth &gt; &quot;/sys/bus/pci/devices/$PCI/mlx4_port1&quot;
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If using Mellanox OFED one can permanently set the port link
+to Ethernet using connectx_port_config tool provided by it.
+<a class="reference internal" href="#mellanox-ofed-as-a-fallback"><span class="std std-ref">Mellanox OFED as a fallback</span></a>:</p>
+</div>
+</li>
+</ol>
+<ol class="arabic" id="qsg-2" start="2">
+<li><p>In case of bare metal or hypervisor, configure optimized steering mode
+by adding the following line to <code class="docutils literal notranslate"><span class="pre">/etc/modprobe.d/mlx4_core.conf</span></code>:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>options mlx4_core log_num_mgm_entry_size=-7
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If VLAN filtering is used, set log_num_mgm_entry_size=-1.
+Performance degradation can occur on this case.</p>
+</div>
+</li>
+<li><p>Restart the driver:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/etc/init.d/openibd restart
+</pre></div>
+</div>
+<p>or:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>service openibd restart
+</pre></div>
+</div>
+</li>
+<li><p>Install DPDK and you are ready to go.
+See <a class="reference internal" href="../linux_gsg/build_dpdk.html"><span class="doc">compilation instructions</span></a>.</p></li>
+</ol>
+</div>
+<div class="section" id="performance-tuning">
+<h2><span class="section-number">33.6. </span>Performance tuning</h2>
+<ol class="arabic">
+<li><p>Verify the optimized steering mode is configured:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>cat /sys/module/mlx4_core/parameters/log_num_mgm_entry_size
+</pre></div>
+</div>
+</li>
+<li><p>Use the CPU near local NUMA node to which the PCIe adapter is connected,
+for better performance. For VMs, verify that the right CPU
+and NUMA node are pinned according to the above. Run:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>lstopo-no-graphics
+</pre></div>
+</div>
+<p>to identify the NUMA node to which the PCIe adapter is connected.</p>
+</li>
+<li><p>If more than one adapter is used, and root complex capabilities allow
+to put both adapters on the same NUMA node without PCI bandwidth degradation,
+it is recommended to locate both adapters on the same NUMA node.
+This in order to forward packets from one to the other without
+NUMA performance penalty.</p></li>
+<li><p>Disable pause frames:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ethtool -A &lt;netdev&gt; rx off tx off
+</pre></div>
+</div>
+</li>
+<li><p>Verify IO non-posted prefetch is disabled by default. This can be checked
+via the BIOS configuration. Please contact you server provider for more
+information about the settings.</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On some machines, depends on the machine integrator, it is beneficial
+to set the PCI max read request parameter to 1K. This can be
+done in the following way:</p>
+<p>To query the read request size use:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>setpci -s &lt;NIC PCI address&gt; 68.w
+</pre></div>
+</div>
+<p>If the output is different than 3XXX, set it by:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>setpci -s &lt;NIC PCI address&gt; 68.w=3XXX
+</pre></div>
+</div>
+<p>The XXX can be different on different systems. Make sure to configure
+according to the setpci output.</p>
+</div>
+<ol class="arabic simple" start="6">
+<li><p>To minimize overhead of searching Memory Regions:</p>
+<ul class="simple">
+<li><p>‘–socket-mem’ is recommended to pin memory by predictable amount.</p></li>
+<li><p>Configure per-lcore cache when creating Mempools for packet buffer.</p></li>
+<li><p>Refrain from dynamically allocating/freeing memory in run-time.</p></li>
+</ul>
+</li>
+</ol>
+</div>
+<div class="section" id="usage-example">
+<h2><span class="section-number">33.7. </span>Usage example</h2>
+<p>This section demonstrates how to launch <strong>testpmd</strong> with Mellanox ConnectX-3
+devices managed by librte_net_mlx4.</p>
+<ol class="arabic">
+<li><p>Load the kernel modules:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>modprobe -a ib_uverbs mlx4_en mlx4_core mlx4_ib
+</pre></div>
+</div>
+<p>Alternatively if MLNX_OFED is fully installed, the following script can
+be run:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>/etc/init.d/openibd restart
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>User space I/O kernel modules (uio and igb_uio) are not used and do
+not have to be loaded.</p>
+</div>
+</li>
+<li><p>Make sure Ethernet interfaces are in working order and linked to kernel
+verbs. Related sysfs entries should be present:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ls -d /sys/class/net/*/device/infiniband_verbs/uverbs* | cut -d / -f 5
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>eth2
+eth3
+eth4
+eth5
+</pre></div>
+</div>
+</li>
+<li><p>Optionally, retrieve their PCI bus addresses to be used with the allow argument:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{
+    for intf in eth2 eth3 eth4 eth5;
+    do
+        (cd &quot;/sys/class/net/${intf}/device/&quot; &amp;&amp; pwd -P);
+    done;
+} |
+sed -n &#39;s,.*/\(.*\),-a \1,p&#39;
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0000:83:00.0
+-a 0000:83:00.0
+-a 0000:84:00.0
+-a 0000:84:00.0
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are only two distinct PCI bus addresses because the Mellanox
+ConnectX-3 adapters installed on this system are dual port.</p>
+</div>
+</li>
+<li><p>Request huge pages:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>echo 1024 &gt; /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages/nr_hugepages
+</pre></div>
+</div>
+</li>
+<li><p>Start testpmd with basic parameters:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>testpmd -l 8-15 -n 4 -a 0000:83:00.0 -a 0000:84:00.0 -- --rxq=2 --txq=2 -i
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>[...]
+EAL: PCI device 0000:83:00.0 on NUMA socket 1
+EAL:   probe driver: 15b3:1007 librte_net_mlx4
+PMD: librte_net_mlx4: PCI information matches, using device &quot;mlx4_0&quot; (VF: false)
+PMD: librte_net_mlx4: 2 port(s) detected
+PMD: librte_net_mlx4: port 1 MAC address is 00:02:c9:b5:b7:50
+PMD: librte_net_mlx4: port 2 MAC address is 00:02:c9:b5:b7:51
+EAL: PCI device 0000:84:00.0 on NUMA socket 1
+EAL:   probe driver: 15b3:1007 librte_net_mlx4
+PMD: librte_net_mlx4: PCI information matches, using device &quot;mlx4_1&quot; (VF: false)
+PMD: librte_net_mlx4: 2 port(s) detected
+PMD: librte_net_mlx4: port 1 MAC address is 00:02:c9:b5:ba:b0
+PMD: librte_net_mlx4: port 2 MAC address is 00:02:c9:b5:ba:b1
+Interactive-mode selected
+Configuring Port 0 (socket 0)
+PMD: librte_net_mlx4: 0x867d60: TX queues number update: 0 -&gt; 2
+PMD: librte_net_mlx4: 0x867d60: RX queues number update: 0 -&gt; 2
+Port 0: 00:02:C9:B5:B7:50
+Configuring Port 1 (socket 0)
+PMD: librte_net_mlx4: 0x867da0: TX queues number update: 0 -&gt; 2
+PMD: librte_net_mlx4: 0x867da0: RX queues number update: 0 -&gt; 2
+Port 1: 00:02:C9:B5:B7:51
+Configuring Port 2 (socket 0)
+PMD: librte_net_mlx4: 0x867de0: TX queues number update: 0 -&gt; 2
+PMD: librte_net_mlx4: 0x867de0: RX queues number update: 0 -&gt; 2
+Port 2: 00:02:C9:B5:BA:B0
+Configuring Port 3 (socket 0)
+PMD: librte_net_mlx4: 0x867e20: TX queues number update: 0 -&gt; 2
+PMD: librte_net_mlx4: 0x867e20: RX queues number update: 0 -&gt; 2
+Port 3: 00:02:C9:B5:BA:B1
+Checking link statuses...
+Port 0 Link Up - speed 10000 Mbps - full-duplex
+Port 1 Link Up - speed 40000 Mbps - full-duplex
+Port 2 Link Up - speed 10000 Mbps - full-duplex
+Port 3 Link Up - speed 40000 Mbps - full-duplex
+Done
+testpmd&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="mlx5.html" class="btn btn-neutral float-right" title="34. MLX5 poll mode driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="memif.html" class="btn btn-neutral float-left" title="32. Memif Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

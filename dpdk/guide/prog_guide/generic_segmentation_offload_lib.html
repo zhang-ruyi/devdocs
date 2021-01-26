@@ -1,0 +1,528 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>34. Generic Segmentation Offload Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="35. The librte_pdump Library" href="pdump_lib.html" />
+    <link rel="prev" title="33. Generic Receive Offload Library" href="generic_receive_offload_lib.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">34. Generic Segmentation Offload Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">34.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">34.2. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#packet-segmentation">34.3. Packet Segmentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gso-output-segment-format">34.3.1. GSO Output Segment Format</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-gso-packet-types">34.4. Supported GSO Packet Types</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tcp-ipv4-gso">34.4.1. TCP/IPv4 GSO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#udp-ipv4-gso">34.4.2. UDP/IPv4 GSO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vxlan-gso">34.4.3. VxLAN GSO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#gre-gso">34.4.4. GRE GSO</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-segment-a-packet">34.5. How to Segment a Packet</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">34. </span>Generic Segmentation Offload Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/generic_segmentation_offload_lib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="generic-segmentation-offload-library">
+<h1><span class="section-number">34. </span>Generic Segmentation Offload Library</h1>
+<div class="section" id="overview">
+<h2><span class="section-number">34.1. </span>Overview</h2>
+<p>Generic Segmentation Offload (GSO) is a widely used software implementation of
+TCP Segmentation Offload (TSO), which reduces per-packet processing overhead.
+Much like TSO, GSO gains performance by enabling upper layer applications to
+process a smaller number of large packets (e.g. MTU size of 64KB), instead of
+processing higher numbers of small packets (e.g. MTU size of 1500B), thus
+reducing per-packet overhead.</p>
+<p>For example, GSO allows guest kernel stacks to transmit over-sized TCP segments
+that far exceed the kernel interface’s MTU; this eliminates the need to segment
+packets within the guest, and improves the data-to-overhead ratio of both the
+guest-host link, and PCI bus. The expectation of the guest network stack in this
+scenario is that segmentation of egress frames will take place either in the NIC
+HW, or where that hardware capability is unavailable, either in the host
+application, or network stack.</p>
+<p>Bearing that in mind, the GSO library enables DPDK applications to segment
+packets in software. Note however, that GSO is implemented as a standalone
+library, and not via a ‘fallback’ mechanism (i.e. for when TSO is unsupported
+in the underlying hardware); that is, applications must explicitly invoke the
+GSO library to segment packets, they also must call <code class="docutils literal notranslate"><span class="pre">rte_pktmbuf_free()</span></code>
+to free mbuf GSO segments attached after calling <code class="docutils literal notranslate"><span class="pre">rte_gso_segment()</span></code>.
+The size of GSO segments (<code class="docutils literal notranslate"><span class="pre">segsz</span></code>) is configurable by the application.</p>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">34.2. </span>Limitations</h2>
+<ol class="arabic simple">
+<li><p>The GSO library doesn’t check if input packets have correct checksums.</p></li>
+<li><p>In addition, the GSO library doesn’t re-calculate checksums for segmented
+packets (that task is left to the application).</p></li>
+<li><p>IP fragments are unsupported by the GSO library.</p></li>
+<li><p>The egress interface’s driver must support multi-segment packets.</p></li>
+<li><p>Currently, the GSO library supports the following IPv4 packet types:</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>TCP</p></li>
+<li><p>UDP</p></li>
+<li><p>VxLAN</p></li>
+<li><p>GRE</p></li>
+</ul>
+<blockquote>
+<div><p>See <a class="reference internal" href="#supported-gso-packet-types">Supported GSO Packet Types</a> for further details.</p>
+</div></blockquote>
+</div></blockquote>
+</div>
+<div class="section" id="packet-segmentation">
+<h2><span class="section-number">34.3. </span>Packet Segmentation</h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_gso_segment()</span></code> function is the GSO library’s primary
+segmentation API.</p>
+<p>Before performing segmentation, an application must create a GSO context object
+<code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">rte_gso_ctx)</span></code>, which provides the library with some of the
+information required to understand how the packet should be segmented. Refer to
+<a class="reference internal" href="#how-to-segment-a-packet">How to Segment a Packet</a> for additional details on same. Once the GSO context
+has been created, and populated, the application can then use the
+<code class="docutils literal notranslate"><span class="pre">rte_gso_segment()</span></code> function to segment packets.</p>
+<p>The GSO library typically stores each segment that it creates in two parts: the
+first part contains a copy of the original packet’s headers, while the second
+part contains a pointer to an offset within the original packet. This mechanism
+is explained in more detail in <a class="reference internal" href="#gso-output-segment-format">GSO Output Segment Format</a>.</p>
+<p>The GSO library supports both single- and multi-segment input mbufs.</p>
+<div class="section" id="gso-output-segment-format">
+<h3><span class="section-number">34.3.1. </span>GSO Output Segment Format</h3>
+<p>To reduce the number of expensive memcpy operations required when segmenting a
+packet, the GSO library typically stores each segment that it creates as a
+two-part mbuf (technically, this is termed a ‘two-segment’ mbuf; however, since
+the elements produced by the API are also called ‘segments’, for clarity the
+term ‘part’ is used here instead).</p>
+<p>The first part of each output segment is a direct mbuf and contains a copy of
+the original packet’s headers, which must be prepended to each output segment.
+These headers are copied from the original packet into each output segment.</p>
+<p>The second part of each output segment, represents a section of data from the
+original packet, i.e. a data segment. Rather than copy the data directly from
+the original packet into the output segment (which would impact performance
+considerably), the second part of each output segment is an indirect mbuf,
+which contains no actual data, but simply points to an offset within the
+original packet.</p>
+<p>The combination of the ‘header’ segment and the ‘data’ segment constitutes a
+single logical output GSO segment of the original packet. This is illustrated
+in <a class="reference internal" href="#figure-gso-output-segment-format"><span class="std std-numref">Fig. 34.1</span></a>.</p>
+<div class="figure align-center" id="id1">
+<span id="figure-gso-output-segment-format"></span><img alt="../_images/gso-output-segment-format.svg" src="../_images/gso-output-segment-format.svg" /><p class="caption"><span class="caption-number">Fig. 34.1 </span><span class="caption-text">Two-part GSO output segment</span></p>
+</div>
+<p>In one situation, the output segment may contain additional ‘data’ segments.
+This only occurs when:</p>
+<ul class="simple">
+<li><p>the input packet on which GSO is to be performed is represented by a
+multi-segment mbuf.</p></li>
+<li><p>the output segment is required to contain data that spans the boundaries
+between segments of the input multi-segment mbuf.</p></li>
+</ul>
+<p>The GSO library traverses each segment of the input packet, and produces
+numerous output segments; for optimal performance, the number of output
+segments is kept to a minimum. Consequently, the GSO library maximizes the
+amount of data contained within each output segment; i.e. each output segment
+<code class="docutils literal notranslate"><span class="pre">segsz</span></code> bytes of data. The only exception to this is in the case of the very
+final output segment; if <code class="docutils literal notranslate"><span class="pre">pkt_len</span></code> % <code class="docutils literal notranslate"><span class="pre">segsz</span></code>, then the final segment is
+smaller than the rest.</p>
+<p>In order for an output segment to meet its MSS, it may need to include data from
+multiple input segments. Due to the nature of indirect mbufs (each indirect mbuf
+can point to only one direct mbuf), the solution here is to add another indirect
+mbuf to the output segment; this additional segment then points to the next
+input segment. If necessary, this chaining process is repeated, until the sum of
+all of the data ‘contained’ in the output segment reaches <code class="docutils literal notranslate"><span class="pre">segsz</span></code>. This
+ensures that the amount of data contained within each output segment is uniform,
+with the possible exception of the last segment, as previously described.</p>
+<p><a class="reference internal" href="#figure-gso-three-seg-mbuf"><span class="std std-numref">Fig. 34.2</span></a> illustrates an example of a three-part
+output segment. In this example, the output segment needs to include data from
+the end of one input segment, and the beginning of another. To achieve this,
+an additional indirect mbuf is chained to the second part of the output segment,
+and is attached to the next input segment (i.e. it points to the data in the
+next input segment).</p>
+<div class="figure align-center" id="id2">
+<span id="figure-gso-three-seg-mbuf"></span><img alt="../_images/gso-three-seg-mbuf.svg" src="../_images/gso-three-seg-mbuf.svg" /><p class="caption"><span class="caption-number">Fig. 34.2 </span><span class="caption-text">Three-part GSO output segment</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="supported-gso-packet-types">
+<h2><span class="section-number">34.4. </span>Supported GSO Packet Types</h2>
+<div class="section" id="tcp-ipv4-gso">
+<h3><span class="section-number">34.4.1. </span>TCP/IPv4 GSO</h3>
+<p>TCP/IPv4 GSO supports segmentation of suitably large TCP/IPv4 packets, which
+may also contain an optional VLAN tag.</p>
+</div>
+<div class="section" id="udp-ipv4-gso">
+<h3><span class="section-number">34.4.2. </span>UDP/IPv4 GSO</h3>
+<p>UDP/IPv4 GSO supports segmentation of suitably large UDP/IPv4 packets, which
+may also contain an optional VLAN tag. UDP GSO is the same as IP fragmentation.
+Specifically, UDP GSO treats the UDP header as a part of the payload and
+does not modify it during segmentation. Therefore, after UDP GSO, only the
+first output packet has the original UDP header, and others just have l2
+and l3 headers.</p>
+</div>
+<div class="section" id="vxlan-gso">
+<h3><span class="section-number">34.4.3. </span>VxLAN GSO</h3>
+<p>VxLAN packets GSO supports segmentation of suitably large VxLAN packets,
+which contain an outer IPv4 header, inner TCP/IPv4 headers, and optional
+inner and/or outer VLAN tag(s).</p>
+</div>
+<div class="section" id="gre-gso">
+<h3><span class="section-number">34.4.4. </span>GRE GSO</h3>
+<p>GRE GSO supports segmentation of suitably large GRE packets, which contain
+an outer IPv4 header, inner TCP/IPv4 headers, and an optional VLAN tag.</p>
+</div>
+</div>
+<div class="section" id="how-to-segment-a-packet">
+<h2><span class="section-number">34.5. </span>How to Segment a Packet</h2>
+<p>To segment an outgoing packet, an application must:</p>
+<ol class="arabic">
+<li><p>First create a GSO context <code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">rte_gso_ctx)</span></code>; this contains:</p>
+<ul>
+<li><p>a pointer to the mbuf pool for allocating the direct buffers, which are
+used to store the GSO segments’ packet headers.</p></li>
+<li><p>a pointer to the mbuf pool for allocating indirect buffers, which are
+used to locate GSO segments’ packet payloads.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>An application may use the same pool for both direct and indirect
+buffers. However, since indirect mbufs simply store a pointer, the
+application may reduce its memory consumption by creating a separate memory
+pool, containing smaller elements, for the indirect pool.</p>
+</div>
+</li>
+<li><p>the size of each output segment, including packet headers and payload,
+measured in bytes.</p></li>
+<li><p>the bit mask of required GSO types. The GSO library uses the same macros as
+those that describe a physical device’s TX offloading capabilities (i.e.
+<code class="docutils literal notranslate"><span class="pre">DEV_TX_OFFLOAD_*_TSO</span></code>) for gso_types. For example, if an application
+wants to segment TCP/IPv4 packets, it should set gso_types to
+<code class="docutils literal notranslate"><span class="pre">DEV_TX_OFFLOAD_TCP_TSO</span></code>. The only other supported values currently
+supported for gso_types are <code class="docutils literal notranslate"><span class="pre">DEV_TX_OFFLOAD_VXLAN_TNL_TSO</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">DEV_TX_OFFLOAD_GRE_TNL_TSO</span></code>; a combination of these macros is also
+allowed.</p></li>
+<li><p>a flag, that indicates whether the IPv4 headers of output segments should
+contain fixed or incremental ID values.</p></li>
+</ul>
+</li>
+</ol>
+<ol class="arabic simple" start="2">
+<li><p>Set the appropriate ol_flags in the mbuf.</p>
+<ul class="simple">
+<li><p>The GSO library use the value of an mbuf’s <code class="docutils literal notranslate"><span class="pre">ol_flags</span></code> attribute to
+determine how a packet should be segmented. It is the application’s
+responsibility to ensure that these flags are set.</p></li>
+<li><p>For example, in order to segment TCP/IPv4 packets, the application should
+add the <code class="docutils literal notranslate"><span class="pre">PKT_TX_IPV4</span></code> and <code class="docutils literal notranslate"><span class="pre">PKT_TX_TCP_SEG</span></code> flags to the mbuf’s
+ol_flags.</p></li>
+<li><p>If checksum calculation in hardware is required, the application should
+also add the <code class="docutils literal notranslate"><span class="pre">PKT_TX_TCP_CKSUM</span></code> and <code class="docutils literal notranslate"><span class="pre">PKT_TX_IP_CKSUM</span></code> flags.</p></li>
+</ul>
+</li>
+<li><p>Check if the packet should be processed. Packets with one of the
+following properties are not processed and are returned immediately:</p>
+<ul class="simple">
+<li><p>Packet length is less than <code class="docutils literal notranslate"><span class="pre">segsz</span></code> (i.e. GSO is not required).</p></li>
+<li><p>Packet type is not supported by GSO library (see
+<a class="reference internal" href="#supported-gso-packet-types">Supported GSO Packet Types</a>).</p></li>
+<li><p>Application has not enabled GSO support for the packet type.</p></li>
+<li><p>Packet’s ol_flags have been incorrectly set.</p></li>
+</ul>
+</li>
+<li><p>Allocate space in which to store the output GSO segments. If the amount of
+space allocated by the application is insufficient, segmentation will fail.</p></li>
+<li><p>Invoke the GSO segmentation API, <code class="docutils literal notranslate"><span class="pre">rte_gso_segment()</span></code>.</p></li>
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">rte_pktmbuf_free()</span></code> to free mbuf <code class="docutils literal notranslate"><span class="pre">rte_gso_segment()</span></code> segments.</p></li>
+<li><p>If required, update the L3 and L4 checksums of the newly-created segments.
+For tunneled packets, the outer IPv4 headers’ checksums should also be
+updated. Alternatively, the application may offload checksum calculation
+to HW.</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pdump_lib.html" class="btn btn-neutral float-right" title="35. The librte_pdump Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="generic_receive_offload_lib.html" class="btn btn-neutral float-left" title="33. Generic Receive Offload Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

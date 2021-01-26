@@ -1,0 +1,361 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>9. OPDL Eventdev Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Rawdev Drivers" href="../rawdevs/index.html" />
+    <link rel="prev" title="8. OCTEON TX2 SSO Eventdev Driver" href="octeontx2.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Event Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dlb.html">1. Driver for the Intel® Dynamic Load Balancer (DLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlb2.html">2. Driver for the Intel® Dynamic Load Balancer (DLB2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">3. NXP DPAA Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">4. NXP DPAA2 Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsw.html">5. Distributed Software Eventdev Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sw.html">6. Software Eventdev Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">7. OCTEON TX SSOVF Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">8. OCTEON TX2 SSO Eventdev Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. OPDL Eventdev Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">9.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-and-options">9.2. Configuration and Options</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#single-port-queue">9.2.1. Single Port Queue</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#queue-dependencies">9.2.2. Queue Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">9.3. Limitations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#validation-statistics">9.3.1. Validation &amp; Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Event Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">9. </span>OPDL Eventdev Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/eventdevs/opdl.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="opdl-eventdev-poll-mode-driver">
+<h1><span class="section-number">9. </span>OPDL Eventdev Poll Mode Driver</h1>
+<p>The OPDL (Ordered Packet Distribution Library) eventdev is a specificimplementation of the eventdev API. It is particularly suited to packetprocessing workloads that have high throughput and low latency requirements.All packets follow the same path through the device. The order in whichpackets  follow is determined by the order in which queues are set up.Events are left on the ring until they are transmitted. As a result packetsdo not go out of order</p>
+<div class="section" id="features">
+<h2><span class="section-number">9.1. </span>Features</h2>
+<p>The OPDL  eventdev implements a subset of features of the eventdev API;</p>
+<dl class="simple">
+<dt>Queues</dt><dd><ul class="simple">
+<li><p>Atomic</p></li>
+<li><p>Ordered (Parallel is supported as parallel is a subset of Ordered)</p></li>
+<li><p>Single-Link</p></li>
+</ul>
+</dd>
+<dt>Ports</dt><dd><ul class="simple">
+<li><p>Load balanced (for Atomic, Ordered, Parallel queues)</p></li>
+<li><p>Single Link (for single-link queues)</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="configuration-and-options">
+<h2><span class="section-number">9.2. </span>Configuration and Options</h2>
+<p>The software eventdev is a vdev device, and as such can be created from the
+application code, or from the EAL command line:</p>
+<ul class="simple">
+<li><p>Call <code class="docutils literal notranslate"><span class="pre">rte_vdev_init(&quot;event_opdl0&quot;)</span></code> from the application</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">--vdev=&quot;event_opdl0&quot;</span></code> in the EAL options, which will call
+rte_vdev_init() internally</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./your_eventdev_application --vdev=&quot;event_opdl0&quot;</span>
+</pre></div>
+</div>
+<div class="section" id="single-port-queue">
+<h3><span class="section-number">9.2.1. </span>Single Port Queue</h3>
+<p>It is possible to create a Single Port Queue <code class="docutils literal notranslate"><span class="pre">RTE_EVENT_QUEUE_CFG_SINGLE_LINK</span></code>.
+Packets dequeued from this queue do not need to be re-enqueued (as is the
+case with an ordered queue). The purpose of this queue is to allow for
+asynchronous handling of packets in the middle of a pipeline. Ordered
+queues in the middle of a pipeline cannot delete packets.</p>
+</div>
+<div class="section" id="queue-dependencies">
+<h3><span class="section-number">9.2.2. </span>Queue Dependencies</h3>
+<p>As stated the order in which packets travel through queues is static in
+nature. They go through the queues in the order the queues are setup at
+initialisation <code class="docutils literal notranslate"><span class="pre">rte_event_queue_setup()</span></code>. For example if an application
+sets up 3 queues, Q0, Q1, Q2 and has 3 associated ports P0, P1, P2 and
+P3 then packets must be</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Enqueued onto Q0 (typically through P0), then</p></li>
+<li><p>Dequeued from Q0 (typically through P1), then</p></li>
+<li><p>Enqueued onto Q1 (also through P1), then</p></li>
+<li><p>Dequeued from Q2 (typically through P2),  then</p></li>
+<li><p>Enqueued onto Q3 (also through P2), then</p></li>
+<li><p>Dequeued from Q3 (typically through P3) and then transmitted on the relevant eth port</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">9.3. </span>Limitations</h2>
+<p>The opdl implementation has a number of limitations. These limitations are
+due to the static nature of the underlying queues. It is because of this
+that the implementation can achieve such high throughput and low latency</p>
+<p>The following list is a comprehensive outline of the what is supported and
+the limitations / restrictions imposed by the opdl pmd</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>The order in which packets moved between queues is static and fixed (dynamic scheduling is not supported).</p></li>
+<li><p>NEW, RELEASE are not explicitly supported. RX (first enqueue) implicitly adds NEW event types, and TX (last dequeue) implicitly does RELEASE event types.</p></li>
+<li><p>All packets follow the same path through device queues.</p></li>
+<li><p>Flows within queues are NOT supported.</p></li>
+<li><p>Event priority is NOT supported.</p></li>
+<li><p>Once the device is stopped all inflight events are lost. Applications should clear all inflight events before stopping it.</p></li>
+<li><p>Each port can only be associated with one queue.</p></li>
+<li><p>Each queue can have multiple ports associated with it.</p></li>
+<li><p>Each worker core has to dequeue the maximum burst size for that port.</p></li>
+<li><p>For performance, the rte_event flow_id should not be updated once packetis enqueued on RX.</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="validation-statistics">
+<h3><span class="section-number">9.3.1. </span>Validation &amp; Statistics</h3>
+<p>Validation can be turned on through a command line parameter</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--vdev=&quot;event_opdl0,do_validation=1,self_test=1&quot;</span>
+</pre></div>
+</div>
+<p>If validation is turned on every packet (as opposed to just the first in
+each burst), is validated to have come from the right queue. Statistics
+are also produced in this mode. The statistics are available through the
+eventdev xstats API. Statistics are per port as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>claim_pkts_requested</p></li>
+<li><p>claim_pkts_granted</p></li>
+<li><p>claim_non_empty</p></li>
+<li><p>claim_empty</p></li>
+<li><p>total_cycles</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../rawdevs/index.html" class="btn btn-neutral float-right" title="Rawdev Drivers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="octeontx2.html" class="btn btn-neutral float-left" title="8. OCTEON TX2 SSO Eventdev Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

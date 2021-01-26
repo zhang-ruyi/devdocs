@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>28. LPM6 Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="29. Flow Classification Library" href="flow_classify_lib.html" />
+    <link rel="prev" title="27. LPM Library" href="lpm_lib.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">28. LPM6 Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#lpm6-api-overview">28.1. LPM6 API Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#implementation-details">28.1.1. Implementation Details</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#addition">28.1.2. Addition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lookup">28.1.3. Lookup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#limitations-in-the-number-of-rules">28.1.4. Limitations in the Number of Rules</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#use-case-ipv6-forwarding">28.2. Use Case: IPv6 Forwarding</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">28. </span>LPM6 Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/lpm6_lib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="lpm6-library">
+<h1><span class="section-number">28. </span>LPM6 Library</h1>
+<p>The LPM6 (LPM for IPv6) library component implements the Longest Prefix Match (LPM) table search method for 128-bit keys
+that is typically used to find the best match route in IPv6 forwarding applications.</p>
+<div class="section" id="lpm6-api-overview">
+<h2><span class="section-number">28.1. </span>LPM6 API Overview</h2>
+<p>The main configuration parameters for the LPM6 library are:</p>
+<ul class="simple">
+<li><p>Maximum number of rules: This defines the size of the table that holds the rules,
+and therefore the maximum number of rules that can be added.</p></li>
+<li><p>Number of tbl8s: A tbl8 is a node of the trie that the LPM6 algorithm is based on.</p></li>
+</ul>
+<p>This parameter is related to the number of rules you can have,
+but there is no way to accurately predict the number needed to hold a specific number of rules,
+since it strongly depends on the depth and IP address of every rule.
+One tbl8 consumes 1 kb of memory. As a recommendation, 65536 tbl8s should be sufficient to store
+several thousand IPv6 rules, but the number can vary depending on the case.</p>
+<p>An LPM prefix is represented by a pair of parameters (128-bit key, depth), with depth in the range of 1 to 128.
+An LPM rule is represented by an LPM prefix and some user data associated with the prefix.
+The prefix serves as the unique identifier for the LPM rule.
+In this implementation, the user data is 21-bits long and is called “next hop”,
+which corresponds to its main use of storing the ID of the next hop in a routing table entry.</p>
+<p>The main methods exported for the LPM component are:</p>
+<ul class="simple">
+<li><p>Add LPM rule: The LPM rule is provided as input.
+If there is no rule with the same prefix present in the table, then the new rule is added to the LPM table.
+If a rule with the same prefix is already present in the table, the next hop of the rule is updated.
+An error is returned when there is no available space left.</p></li>
+<li><p>Delete LPM rule: The prefix of the LPM rule is provided as input.
+If a rule with the specified prefix is present in the LPM table, then it is removed.</p></li>
+<li><p>Lookup LPM key: The 128-bit key is provided as input.
+The algorithm selects the rule that represents the best match for the given key and returns the next hop of that rule.
+In the case that there are multiple rules present in the LPM table that have the same 128-bit value,
+the algorithm picks the rule with the highest depth as the best match rule,
+which means the rule has the highest number of most significant bits matching between the input key and the rule key.</p></li>
+</ul>
+<div class="section" id="implementation-details">
+<h3><span class="section-number">28.1.1. </span>Implementation Details</h3>
+<p>This is a modification of the algorithm used for IPv4 (see <a class="reference internal" href="lpm_lib.html#lpm4-details"><span class="std std-ref">Implementation Details</span></a>).
+In this case, instead of using two levels, one with a tbl24 and a second with a tbl8, 14 levels are used.</p>
+<p>The implementation can be seen as a multi-bit trie where the <em>stride</em>
+or number of bits inspected on each level varies from level to level.
+Specifically, 24 bits are inspected on the root node, and the remaining 104 bits are inspected in groups of 8 bits.
+This effectively means that the trie has 14 levels at the most, depending on the rules that are added to the table.</p>
+<p>The algorithm allows the lookup operation to be performed with a number of memory accesses
+that directly depends on the length of the rule and
+whether there are other rules with bigger depths and the same key in the data structure.
+It can vary from 1 to 14 memory accesses, with 5 being the average value for the lengths
+that are most commonly used in IPv6.</p>
+<p>The main data structure is built using the following elements:</p>
+<ul class="simple">
+<li><p>A table with 224 entries</p></li>
+<li><p>A number of tables, configurable by the user through the API, with 28 entries</p></li>
+</ul>
+<p>The first table, called tbl24, is indexed using the first 24 bits of the IP address be looked up,
+while the rest of the tables, called tbl8s,
+are indexed using the rest of the bytes of the IP address, in chunks of 8 bits.
+This means that depending on the outcome of trying to match the IP address of an incoming packet to the rule stored in the tbl24
+or the subsequent tbl8s we might need to continue the lookup process in deeper levels of the tree.</p>
+<p>Similar to the limitation presented in the algorithm for IPv4,
+to store every possible IPv6 rule, we would need a table with 2^128 entries.
+This is not feasible due to resource restrictions.</p>
+<p>By splitting the process in different tables/levels and limiting the number of tbl8s,
+we can greatly reduce memory consumption while maintaining a very good lookup speed (one memory access per level).</p>
+<div class="figure align-default" id="id1">
+<img alt="../_images/tbl24_tbl8_tbl8.png" src="../_images/tbl24_tbl8_tbl8.png" />
+<p class="caption"><span class="caption-number">Fig. 28.3 </span><span class="caption-text">Table split into different levels</span></p>
+</div>
+<p>An entry in a table contains the following fields:</p>
+<ul class="simple">
+<li><p>next hop / index to the tbl8</p></li>
+<li><p>depth of the rule (length)</p></li>
+<li><p>valid flag</p></li>
+<li><p>valid group flag</p></li>
+<li><p>external entry flag</p></li>
+</ul>
+<p>The first field can either contain a number indicating the tbl8 in which the lookup process should continue
+or the next hop itself if the longest prefix match has already been found.
+The depth or length of the rule is the number of bits of the rule that is stored in a specific entry.
+The flags are used to determine whether the entry/table is valid or not
+and whether the search process have finished or not respectively.</p>
+<p>Both types of tables share the same structure.</p>
+<p>The other main data structure is a table containing the main information about the rules (IP, next hop and depth).
+This is a higher level table, used for different things:</p>
+<ul class="simple">
+<li><p>Check whether a rule already exists or not, prior to addition or deletion,
+without having to actually perform a lookup.</p></li>
+</ul>
+<p>When deleting, to check whether there is a rule containing the one that is to be deleted.
+This is important, since the main data structure will have to be updated accordingly.</p>
+</div>
+<div class="section" id="addition">
+<h3><span class="section-number">28.1.2. </span>Addition</h3>
+<p>When adding a rule, there are different possibilities.
+If the rule’s depth is exactly 24 bits, then:</p>
+<ul class="simple">
+<li><p>Use the rule (IP address) as an index to the tbl24.</p></li>
+<li><p>If the entry is invalid (i.e. it doesn’t already contain a rule) then set its next hop to its value,
+the valid flag to 1 (meaning this entry is in use),
+and the external entry flag to 0 (meaning the lookup process ends at this point,
+since this is the longest prefix that matches).</p></li>
+</ul>
+<p>If the rule’s depth is bigger than 24 bits but a multiple of 8, then:</p>
+<ul class="simple">
+<li><p>Use the first 24 bits of the rule as an index to the tbl24.</p></li>
+<li><p>If the entry is invalid (i.e. it doesn’t already contain a rule) then look for a free tbl8,
+set the index to the tbl8 to this value,
+the valid flag to 1 (meaning this entry is in use),
+and the external entry flag to 1
+(meaning the lookup process must continue since the rule hasn’t been explored completely).</p></li>
+<li><p>Use the following 8 bits of the rule as an index to the next tbl8.</p></li>
+<li><p>Repeat the process until the tbl8 at the right level (depending on the depth) has been reached
+and fill it with the next hop, setting the next entry flag to 0.</p></li>
+</ul>
+<p>If the rule’s depth is any other value, prefix expansion must be performed.
+This means the rule is copied to all the entries (as long as they are not in use) which would also cause a match.</p>
+<p>As a simple example, let’s assume the depth is 20 bits.
+This means that there are 2^(24-20) = 16 different combinations of the first 24 bits of an IP address that would cause a match.
+Hence, in this case, we copy the exact same entry to every position indexed by one of these combinations.</p>
+<p>By doing this we ensure that during the lookup process, if a rule matching the IP address exists,
+it is found in, at the most, 14 memory accesses,
+depending on how many times we need to move to the next table.
+Prefix expansion is one of the keys of this algorithm, since it improves the speed dramatically by adding redundancy.</p>
+<p>Prefix expansion can be performed at any level.
+So, for example, is the depth is 34 bits, it will be performed in the third level (second tbl8-based level).</p>
+</div>
+<div class="section" id="lookup">
+<h3><span class="section-number">28.1.3. </span>Lookup</h3>
+<p>The lookup process is much simpler and quicker. In this case:</p>
+<ul class="simple">
+<li><p>Use the first 24 bits of the IP address as an index to the tbl24.
+If the entry is not in use, then it means we don’t have a rule matching this IP.
+If it is valid and the external entry flag is set to 0, then the next hop is returned.</p></li>
+<li><p>If it is valid and the external entry flag is set to 1, then we use the tbl8 index to find out the tbl8 to be checked,
+and the next 8 bits of the IP address as an index to this table.
+Similarly, if the entry is not in use, then we don’t have a rule matching this IP address.
+If it is valid then check the external entry flag for a new tbl8 to be inspected.</p></li>
+<li><p>Repeat the process until either we find an invalid entry (lookup miss) or a valid entry with the external entry flag set to 0.
+Return the next hop in the latter case.</p></li>
+</ul>
+</div>
+<div class="section" id="limitations-in-the-number-of-rules">
+<h3><span class="section-number">28.1.4. </span>Limitations in the Number of Rules</h3>
+<p>There are different things that limit the number of rules that can be added.
+The first one is the maximum number of rules, which is a parameter passed through the API.
+Once this number is reached, it is not possible to add any more rules to the routing table unless one or more are removed.</p>
+<p>The second limitation is in the number of tbl8s available.
+If we exhaust tbl8s, we won’t be able to add any more rules.
+How to know how many of them are necessary for a specific routing table is hard to determine in advance.</p>
+<p>In this algorithm, the maximum number of tbl8s a single rule can consume is 13,
+which is the number of levels minus one, since the first three bytes are resolved in the tbl24. However:</p>
+<ul class="simple">
+<li><p>Typically, on IPv6, routes are not longer than 48 bits, which means rules usually take up to 3 tbl8s.</p></li>
+</ul>
+<p>As explained in the LPM for IPv4 algorithm, it is possible and very likely that several rules will share one or more tbl8s,
+depending on what their first bytes are.
+If they share the same first 24 bits, for instance, the tbl8 at the second level will be shared.
+This might happen again in deeper levels, so, effectively,
+two 48 bit-long rules may use the same three tbl8s if the only difference is in their last byte.</p>
+<p>The number of tbl8s is a parameter exposed to the user through the API in this version of the algorithm,
+due to its impact in memory consumption and the number or rules that can be added to the LPM table.
+One tbl8 consumes 1 kilobyte of memory.</p>
+</div>
+</div>
+<div class="section" id="use-case-ipv6-forwarding">
+<h2><span class="section-number">28.2. </span>Use Case: IPv6 Forwarding</h2>
+<p>The LPM algorithm is used to implement the Classless Inter-Domain Routing (CIDR) strategy used by routers implementing IP forwarding.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="flow_classify_lib.html" class="btn btn-neutral float-right" title="29. Flow Classification Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="lpm_lib.html" class="btn btn-neutral float-left" title="27. LPM Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

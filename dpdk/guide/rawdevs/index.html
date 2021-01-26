@@ -1,0 +1,307 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Rawdev Drivers &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. NXP DPAA2 CMDIF Driver" href="dpaa2_cmdif.html" />
+    <link rel="prev" title="9. OPDL Eventdev Poll Mode Driver" href="../eventdevs/opdl.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Rawdev Drivers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_cmdif.html">1. NXP DPAA2 CMDIF Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_qdma.html">2. NXP DPAA2 QDMA Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ifpga.html">3. IFPGA Rawdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">4. IOAT Rawdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">5. NTB Rawdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html">6. OCTEON TX2 DMA Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_ep.html">7. Marvell OCTEON TX2 End Point Rawdev Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Rawdev Drivers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/rawdevs/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rawdev-drivers">
+<h1>Rawdev Drivers</h1>
+<p>The following are a list of raw device PMDs, which can be used from an
+application through rawdev API.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dpaa2_cmdif.html">1. NXP DPAA2 CMDIF Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_cmdif.html#features">1.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_cmdif.html#supported-dpaa2-socs">1.2. Supported DPAA2 SoCs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_cmdif.html#prerequisites">1.3. Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_cmdif.html#enabling-logs">1.4. Enabling logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_cmdif.html#initialization">1.5. Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dpaa2_qdma.html">2. NXP DPAA2 QDMA Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_qdma.html#features">2.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_qdma.html#supported-dpaa2-socs">2.2. Supported DPAA2 SoCs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_qdma.html#prerequisites">2.3. Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_qdma.html#enabling-logs">2.4. Enabling logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_qdma.html#initialization">2.5. Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ifpga.html">3. IFPGA Rawdev Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ifpga.html#implementation-details">3.1. Implementation details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ifpga.html#run-time-parameters">3.2. Run-time parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ioat.html">4. IOAT Rawdev Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html#hardware-requirements">4.1. Hardware Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html#compilation">4.2. Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html#device-setup">4.3. Device Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html#using-ioat-rawdev-devices">4.4. Using IOAT Rawdev Devices</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ntb.html">5. NTB Rawdev Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#bios-setting-on-intel-xeon">5.1. BIOS setting on Intel Xeon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#device-setup">5.2. Device Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#prerequisites">5.3. Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#ring-layout">5.4. Ring Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#limitation">5.5. Limitation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="octeontx2_dma.html">6. OCTEON TX2 DMA Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html#features">6.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html#prerequisites-and-compilation-procedure">6.2. Prerequisites and Compilation procedure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html#enabling-logs">6.3. Enabling logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html#initialization">6.4. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html#device-setup">6.5. Device Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html#device-configuration">6.6. Device Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html#performing-data-transfer">6.7. Performing Data Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html#self-test">6.8. Self test</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="octeontx2_ep.html">7. Marvell OCTEON TX2 End Point Rawdev Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_ep.html#features">7.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_ep.html#initialization">7.2. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_ep.html#device-setup">7.3. Device Setup</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_ep.html#device-configuration">7.4. Device Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_ep.html#performing-data-transfer">7.5. Performing Data Transfer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_ep.html#self-test">7.6. Self test</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dpaa2_cmdif.html" class="btn btn-neutral float-right" title="1. NXP DPAA2 CMDIF Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../eventdevs/opdl.html" class="btn btn-neutral float-left" title="9. OPDL Eventdev Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

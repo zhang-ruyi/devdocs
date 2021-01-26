@@ -1,0 +1,664 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>39. Event Device Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="40. Event Ethernet Rx Adapter Library" href="event_ethernet_rx_adapter.html" />
+    <link rel="prev" title="38. Thread Safety of DPDK Functions" href="thread_safety_dpdk_functions.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">39. Event Device Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#event-struct">39.1. Event struct</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#event-metadata">39.1.1. Event Metadata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event-payload">39.1.2. Event Payload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#queues">39.1.3. Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ports">39.1.4. Ports</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api-walk-through">39.2. API Walk-through</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#init-and-config">39.2.1. Init and Config</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-up-queues">39.2.2. Setting up Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#setting-up-ports">39.2.3. Setting up Ports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linking-queues-and-ports">39.2.4. Linking Queues and Ports</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#starting-the-eventdev">39.2.5. Starting the EventDev</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ingress-of-new-events">39.2.6. Ingress of New Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forwarding-of-events">39.2.7. Forwarding of Events</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#egress-of-events">39.2.8. Egress of Events</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#summary">39.3. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">39. </span>Event Device Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/eventdev.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="event-device-library">
+<h1><span class="section-number">39. </span>Event Device Library</h1>
+<p>The DPDK Event device library is an abstraction that provides the application
+with features to schedule events. This is achieved using the PMD architecture
+similar to the ethdev or cryptodev APIs, which may already be familiar to the
+reader.</p>
+<p>The eventdev framework introduces the event driven programming model. In a
+polling model, lcores poll ethdev ports and associated Rx queues directly
+to look for a packet. By contrast in an event driven model, lcores call the
+scheduler that selects packets for them based on programmer-specified criteria.
+The Eventdev library adds support for an event driven programming model, which
+offers applications automatic multicore scaling, dynamic load balancing,
+pipelining, packet ingress order maintenance and synchronization services to
+simplify application packet processing.</p>
+<p>By introducing an event driven programming model, DPDK can support both polling
+and event driven programming models for packet processing, and applications are
+free to choose whatever model (or combination of the two) best suits their
+needs.</p>
+<p>Step-by-step instructions of the eventdev design is available in the <a class="reference internal" href="#api-walk-through">API
+Walk-through</a> section later in this document.</p>
+<div class="section" id="event-struct">
+<h2><span class="section-number">39.1. </span>Event struct</h2>
+<p>The eventdev API represents each event with a generic struct, which contains a
+payload and metadata required for scheduling by an eventdev.  The
+<code class="docutils literal notranslate"><span class="pre">rte_event</span></code> struct is a 16 byte C structure, defined in
+<code class="docutils literal notranslate"><span class="pre">libs/librte_eventdev/rte_eventdev.h</span></code>.</p>
+<div class="section" id="event-metadata">
+<h3><span class="section-number">39.1.1. </span>Event Metadata</h3>
+<p>The rte_event structure contains the following metadata fields, which the
+application fills in to have the event scheduled as required:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">flow_id</span></code> - The targeted flow identifier for the enq/deq operation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event_type</span></code> - The source of this event, e.g. RTE_EVENT_TYPE_ETHDEV or CPU.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sub_event_type</span></code> - Distinguishes events inside the application, that have
+the same event_type (see above)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">op</span></code> - This field takes one of the RTE_EVENT_OP_* values, and tells the
+eventdev about the status of the event - valid values are NEW, FORWARD or
+RELEASE.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sched_type</span></code> - Represents the type of scheduling that should be performed
+on this event, valid values are the RTE_SCHED_TYPE_ORDERED, ATOMIC and
+PARALLEL.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">queue_id</span></code> - The identifier for the event queue that the event is sent to.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">priority</span></code> - The priority of this event, see RTE_EVENT_DEV_PRIORITY.</p></li>
+</ul>
+</div>
+<div class="section" id="event-payload">
+<h3><span class="section-number">39.1.2. </span>Event Payload</h3>
+<p>The rte_event struct contains a union for payload, allowing flexibility in what
+the actual event being scheduled is. The payload is a union of the following:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">uint64_t</span> <span class="pre">u64</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*event_ptr</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_mbuf</span> <span class="pre">*mbuf</span></code></p></li>
+</ul>
+<p>These three items in a union occupy the same 64 bits at the end of the rte_event
+structure. The application can utilize the 64 bits directly by accessing the
+u64 variable, while the event_ptr and mbuf are provided as convenience
+variables.  For example the mbuf pointer in the union can used to schedule a
+DPDK packet.</p>
+</div>
+<div class="section" id="queues">
+<h3><span class="section-number">39.1.3. </span>Queues</h3>
+<p>An event queue is a queue containing events that are scheduled by the event
+device. An event queue contains events of different flows associated with
+scheduling types, such as atomic, ordered, or parallel.</p>
+<div class="section" id="queue-all-types-capable">
+<h4><span class="section-number">39.1.3.1. </span>Queue All Types Capable</h4>
+<p>If RTE_EVENT_DEV_CAP_QUEUE_ALL_TYPES capability bit is set in the event device,
+then events of any type may be sent to any queue. Otherwise, the queues only
+support events of the type that it was created with.</p>
+</div>
+<div class="section" id="queue-all-types-incapable">
+<h4><span class="section-number">39.1.3.2. </span>Queue All Types Incapable</h4>
+<p>In this case, each stage has a specified scheduling type.  The application
+configures each queue for a specific type of scheduling, and just enqueues all
+events to the eventdev. An example of a PMD of this type is the eventdev
+software PMD.</p>
+<p>The Eventdev API supports the following scheduling types per queue:</p>
+<ul class="simple">
+<li><p>Atomic</p></li>
+<li><p>Ordered</p></li>
+<li><p>Parallel</p></li>
+</ul>
+<p>Atomic, Ordered and Parallel are load-balanced scheduling types: the output
+of the queue can be spread out over multiple CPU cores.</p>
+<p>Atomic scheduling on a queue ensures that a single flow is not present on two
+different CPU cores at the same time. Ordered allows sending all flows to any
+core, but the scheduler must ensure that on egress the packets are returned to
+ingress order on downstream queue enqueue. Parallel allows sending all flows
+to all CPU cores, without any re-ordering guarantees.</p>
+</div>
+<div class="section" id="single-link-flag">
+<h4><span class="section-number">39.1.3.3. </span>Single Link Flag</h4>
+<p>There is a SINGLE_LINK flag which allows an application to indicate that only
+one port will be connected to a queue.  Queues configured with the single-link
+flag follow a FIFO like structure, maintaining ordering but it is only capable
+of being linked to a single port (see below for port and queue linking details).</p>
+</div>
+</div>
+<div class="section" id="ports">
+<h3><span class="section-number">39.1.4. </span>Ports</h3>
+<p>Ports are the points of contact between worker cores and the eventdev. The
+general use-case will see one CPU core using one port to enqueue and dequeue
+events from an eventdev. Ports are linked to queues in order to retrieve events
+from those queues (more details in <a class="reference internal" href="#linking-queues-and-ports">Linking Queues and Ports</a> below).</p>
+</div>
+</div>
+<div class="section" id="api-walk-through">
+<h2><span class="section-number">39.2. </span>API Walk-through</h2>
+<p>This section will introduce the reader to the eventdev API, showing how to
+create and configure an eventdev and use it for a two-stage atomic pipeline
+with one core each for RX and TX. RX and TX cores are shown here for
+illustration, refer to Eventdev Adapter documentation for further details.
+The diagram below shows the final state of the application after this
+walk-through:</p>
+<div class="figure align-default" id="id1">
+<span id="figure-eventdev-usage1"></span><img alt="../_images/eventdev_usage.svg" src="../_images/eventdev_usage.svg" /><p class="caption"><span class="caption-number">Fig. 39.1 </span><span class="caption-text">Sample eventdev usage, with RX, two atomic stages and a single-link to TX.</span></p>
+</div>
+<p>A high level overview of the setup steps are:</p>
+<ul class="simple">
+<li><p>rte_event_dev_configure()</p></li>
+<li><p>rte_event_queue_setup()</p></li>
+<li><p>rte_event_port_setup()</p></li>
+<li><p>rte_event_port_link()</p></li>
+<li><p>rte_event_dev_start()</p></li>
+</ul>
+<div class="section" id="init-and-config">
+<h3><span class="section-number">39.2.1. </span>Init and Config</h3>
+<p>The eventdev library uses vdev options to add devices to the DPDK application.
+The <code class="docutils literal notranslate"><span class="pre">--vdev</span></code> EAL option allows adding eventdev instances to your DPDK
+application, using the name of the eventdev PMD as an argument.</p>
+<p>For example, to create an instance of the software eventdev scheduler, the
+following vdev arguments should be provided to the application EAL command line:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./dpdk_application --vdev=&quot;event_sw0&quot;</span>
+</pre></div>
+</div>
+<p>In the following code, we configure eventdev instance with 3 queues
+and 6 ports as follows. The 3 queues consist of 2 Atomic and 1 Single-Link,
+while the 6 ports consist of 4 workers, 1 RX and 1 TX.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="k">struct</span> <span class="n">rte_event_dev_config</span> <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">nb_event_queues</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">nb_event_ports</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">nb_events_limit</span>  <span class="o">=</span> <span class="mi">4096</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">nb_event_queue_flows</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">nb_event_port_dequeue_depth</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">nb_event_port_enqueue_depth</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_dev_configure</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">config</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The remainder of this walk-through assumes that dev_id is 0.</p>
+</div>
+<div class="section" id="setting-up-queues">
+<h3><span class="section-number">39.2.2. </span>Setting up Queues</h3>
+<p>Once the eventdev itself is configured, the next step is to configure queues.
+This is done by setting the appropriate values in a queue_conf structure, and
+calling the setup function. Repeat this step for each queue, starting from
+0 and ending at <code class="docutils literal notranslate"><span class="pre">nb_event_queues</span> <span class="pre">-</span> <span class="pre">1</span></code> from the event_dev config above.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_event_queue_conf</span> <span class="n">atomic_conf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">schedule_type</span> <span class="o">=</span> <span class="n">RTE_SCHED_TYPE_ATOMIC</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">priority</span> <span class="o">=</span> <span class="n">RTE_EVENT_DEV_PRIORITY_NORMAL</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">nb_atomic_flows</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">nb_atomic_order_sequences</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="n">rte_event_queue_conf</span> <span class="n">single_link_conf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">event_queue_cfg</span> <span class="o">=</span> <span class="n">RTE_EVENT_QUEUE_CFG_SINGLE_LINK</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="kt">int</span> <span class="n">dev_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">atomic_q_1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">atomic_q_2</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">single_link_q</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_queue_setup</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">atomic_q_1</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">atomic_conf</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_queue_setup</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">atomic_q_2</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">atomic_conf</span><span class="p">);</span>
+<span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_queue_setup</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">single_link_q</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">single_link_conf</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>As shown above, queue IDs are as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>id 0, atomic queue #1</p></li>
+<li><p>id 1, atomic queue #2</p></li>
+<li><p>id 2, single-link queue</p></li>
+</ul>
+</div></blockquote>
+<p>These queues are used for the remainder of this walk-through.</p>
+</div>
+<div class="section" id="setting-up-ports">
+<h3><span class="section-number">39.2.3. </span>Setting up Ports</h3>
+<p>Once queues are set up successfully, create the ports as required.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_event_port_conf</span> <span class="n">rx_conf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">dequeue_depth</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">enqueue_depth</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">new_event_threshold</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="n">rte_event_port_conf</span> <span class="n">worker_conf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">dequeue_depth</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">enqueue_depth</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">new_event_threshold</span> <span class="o">=</span> <span class="mi">4096</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="k">struct</span> <span class="n">rte_event_port_conf</span> <span class="n">tx_conf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">dequeue_depth</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">enqueue_depth</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">new_event_threshold</span> <span class="o">=</span> <span class="mi">4096</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="kt">int</span> <span class="n">dev_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">rx_port_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">worker_port_id</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_port_setup</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">rx_port_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rx_conf</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">worker_port_id</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">worker_port_id</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">;</span> <span class="n">worker_port_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_port_setup</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">worker_port_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">worker_conf</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="n">tx_port_id</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_port_setup</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">tx_port_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">tx_conf</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>As shown above:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>port 0: RX core</p></li>
+<li><p>ports 1,2,3,4: Workers</p></li>
+<li><p>port 5: TX core</p></li>
+</ul>
+</div></blockquote>
+<p>These ports are used for the remainder of this walk-through.</p>
+</div>
+<div class="section" id="linking-queues-and-ports">
+<h3><span class="section-number">39.2.4. </span>Linking Queues and Ports</h3>
+<p>The final step is to “wire up” the ports to the queues. After this, the
+eventdev is capable of scheduling events, and when cores request work to do,
+the correct events are provided to that core. Note that the RX core takes input
+from e.g.: a NIC so it is not linked to any eventdev queues.</p>
+<p>Linking all workers to atomic queues, and the TX core to the single-link queue
+can be achieved like this:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint8_t</span> <span class="n">rx_port_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="kt">uint8_t</span> <span class="n">tx_port_id</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kt">uint8_t</span> <span class="n">atomic_qs</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">};</span>
+<span class="kt">uint8_t</span> <span class="n">single_link_q</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="kt">uint8_t</span> <span class="n">priority</span> <span class="o">=</span> <span class="n">RTE_EVENT_DEV_PRIORITY_NORMAL</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">worker_port_id</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">worker_port_id</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">worker_port_id</span> <span class="o">&lt;=</span> <span class="mi">4</span><span class="p">;</span> <span class="n">worker_port_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">links_made</span> <span class="o">=</span> <span class="n">rte_event_port_link</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">worker_port_id</span><span class="p">,</span> <span class="n">atomic_qs</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="kt">int</span> <span class="n">links_made</span> <span class="o">=</span> <span class="n">rte_event_port_link</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">tx_port_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">single_link_q</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">priority</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="starting-the-eventdev">
+<h3><span class="section-number">39.2.5. </span>Starting the EventDev</h3>
+<p>A single function call tells the eventdev instance to start processing
+events. Note that all queues must be linked to for the instance to start, as
+if any queue is not linked to, enqueuing to that queue will cause the
+application to backpressure and eventually stall due to no space in the
+eventdev.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_dev_start</span><span class="p">(</span><span class="n">dev_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>EventDev needs to be started before starting the event producers such
+as event_eth_rx_adapter, event_timer_adapter and event_crypto_adapter.</p>
+</div>
+</div>
+<div class="section" id="ingress-of-new-events">
+<h3><span class="section-number">39.2.6. </span>Ingress of New Events</h3>
+<p>Now that the eventdev is set up, and ready to receive events, the RX core must
+enqueue some events into the system for it to schedule. The events to be
+scheduled are ordinary DPDK packets, received from an eth_rx_burst() as normal.
+The following code shows how those packets can be enqueued into the eventdev:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="kt">uint16_t</span> <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_eth_rx_burst</span><span class="p">(</span><span class="n">eth_port</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">mbufs</span><span class="p">,</span> <span class="n">BATCH_SIZE</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ev</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">flow_id</span> <span class="o">=</span> <span class="n">mbufs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">hash</span><span class="p">.</span><span class="n">rss</span><span class="p">;</span>
+        <span class="n">ev</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">op</span> <span class="o">=</span> <span class="n">RTE_EVENT_OP_NEW</span><span class="p">;</span>
+        <span class="n">ev</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">sched_type</span> <span class="o">=</span> <span class="n">RTE_SCHED_TYPE_ATOMIC</span><span class="p">;</span>
+        <span class="n">ev</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">queue_id</span> <span class="o">=</span> <span class="n">atomic_q_1</span><span class="p">;</span>
+        <span class="n">ev</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">event_type</span> <span class="o">=</span> <span class="n">RTE_EVENT_TYPE_ETHDEV</span><span class="p">;</span>
+        <span class="n">ev</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">sub_event_type</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">ev</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">priority</span> <span class="o">=</span> <span class="n">RTE_EVENT_DEV_PRIORITY_NORMAL</span><span class="p">;</span>
+        <span class="n">ev</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">mbuf</span> <span class="o">=</span> <span class="n">mbufs</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="kt">int</span> <span class="n">nb_tx</span> <span class="o">=</span> <span class="n">rte_event_enqueue_burst</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">rx_port_id</span><span class="p">,</span> <span class="n">ev</span><span class="p">,</span> <span class="n">nb_rx</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">nb_tx</span> <span class="o">!=</span> <span class="n">nb_rx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="n">nb_tx</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">mbufs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="forwarding-of-events">
+<h3><span class="section-number">39.2.7. </span>Forwarding of Events</h3>
+<p>Now that the RX core has injected events, there is work to be done by the
+workers. Note that each worker will dequeue as many events as it can in a burst,
+process each one individually, and then burst the packets back into the
+eventdev.</p>
+<p>The worker can lookup the events source from <code class="docutils literal notranslate"><span class="pre">event.queue_id</span></code>, which should
+indicate to the worker what workload needs to be performed on the event.
+Once done, the worker can update the <code class="docutils literal notranslate"><span class="pre">event.queue_id</span></code> to a new value, to send
+the event to the next stage in the pipeline.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">timeout</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">rte_event</span> <span class="n">events</span><span class="p">[</span><span class="n">BATCH_SIZE</span><span class="p">];</span>
+<span class="kt">uint16_t</span> <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_event_dequeue_burst</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">worker_port_id</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">BATCH_SIZE</span><span class="p">,</span> <span class="n">timeout</span><span class="p">);</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* process mbuf using events[i].queue_id as pipeline stage */</span>
+        <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">mbuf</span> <span class="o">=</span> <span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">mbuf</span><span class="p">;</span>
+        <span class="cm">/* Send event to next stage in pipeline */</span>
+        <span class="n">events</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">queue_id</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">uint16_t</span> <span class="n">nb_tx</span> <span class="o">=</span> <span class="n">rte_event_enqueue_burst</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">worker_port_id</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">nb_rx</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="egress-of-events">
+<h3><span class="section-number">39.2.8. </span>Egress of Events</h3>
+<p>Finally, when the packet is ready for egress or needs to be dropped, we need
+to inform the eventdev that the packet is no longer being handled by the
+application. This can be done by calling dequeue() or dequeue_burst(), which
+indicates that the previous burst of packets is no longer in use by the
+application.</p>
+<p>An event driven worker thread has following typical workflow on fastpath:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">rte_event_dequeue_burst</span><span class="p">(...);</span>
+        <span class="p">(</span><span class="n">event</span> <span class="n">processing</span><span class="p">)</span>
+        <span class="n">rte_event_enqueue_burst</span><span class="p">(...);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="summary">
+<h2><span class="section-number">39.3. </span>Summary</h2>
+<p>The eventdev library allows an application to easily schedule events as it
+requires, either using a run-to-completion or pipeline processing model.  The
+queues and ports abstract the logical functionality of an eventdev, providing
+the application with a generic method to schedule events.  With the flexible
+PMD infrastructure applications benefit of improvements in existing eventdevs
+and additions of new ones without modification.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="event_ethernet_rx_adapter.html" class="btn btn-neutral float-right" title="40. Event Ethernet Rx Adapter Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="thread_safety_dpdk_functions.html" class="btn btn-neutral float-left" title="38. Thread Safety of DPDK Functions" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

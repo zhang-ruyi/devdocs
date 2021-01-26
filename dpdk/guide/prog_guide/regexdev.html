@@ -1,0 +1,463 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>19. RegEx Device Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="20. Security Library" href="rte_security.html" />
+    <link rel="prev" title="18. Compression Device Library" href="compressdev.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">19. RegEx Device Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design-principles">19.1. Design Principles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-management">19.2. Device Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-creation">19.2.1. Device Creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-identification">19.2.2. Device Identification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-configuration">19.2.3. Device Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-of-rules-database">19.2.4. Configuration of Rules Database</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuration-of-queue-pairs">19.2.5. Configuration of Queue Pairs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logical-cores-memory-and-queues-pair-relationships">19.2.6. Logical Cores, Memory and Queues Pair Relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#device-features-and-capabilities">19.3. Device Features and Capabilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#enqueue-dequeue-burst-apis">19.3.1. Enqueue / Dequeue Burst APIs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">19. </span>RegEx Device Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/regexdev.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="regex-device-library">
+<h1><span class="section-number">19. </span>RegEx Device Library</h1>
+<p>The RegEx library provides a RegEx device framework for management and
+provisioning of hardware and software RegEx poll mode drivers, defining generic
+APIs which support a number of different RegEx operations.</p>
+<div class="section" id="design-principles">
+<h2><span class="section-number">19.1. </span>Design Principles</h2>
+<p>The RegEx library follows the same basic principles as those used in DPDK’s
+Ethernet Device framework and the Crypto framework. The RegEx framework provides
+a generic Crypto device framework which supports both physical (hardware)
+and virtual (software) RegEx devices as well as a generic RegEx API which allows
+RegEx devices to be managed and configured and supports RegEx operations to be
+provisioned on RegEx poll mode driver.</p>
+</div>
+<div class="section" id="device-management">
+<h2><span class="section-number">19.2. </span>Device Management</h2>
+<div class="section" id="device-creation">
+<h3><span class="section-number">19.2.1. </span>Device Creation</h3>
+<p>Physical RegEx devices are discovered during the PCI probe/enumeration of the
+EAL function which is executed at DPDK initialization, based on
+their PCI device identifier, each unique PCI BDF (bus/bridge, device,
+function). Specific physical ReEx devices, like other physical devices in DPDK
+can be listed using the EAL command line options.</p>
+</div>
+<div class="section" id="device-identification">
+<h3><span class="section-number">19.2.2. </span>Device Identification</h3>
+<p>Each device, whether virtual or physical is uniquely designated by two
+identifiers:</p>
+<ul class="simple">
+<li><p>A unique device index used to designate the RegEx device in all functions
+exported by the regexdev API.</p></li>
+<li><p>A device name used to designate the RegEx device in console messages, for
+administration or debugging purposes.</p></li>
+</ul>
+</div>
+<div class="section" id="device-configuration">
+<h3><span class="section-number">19.2.3. </span>Device Configuration</h3>
+<p>The configuration of each RegEx device includes the following operations:</p>
+<ul class="simple">
+<li><p>Allocation of resources, including hardware resources if a physical device.</p></li>
+<li><p>Resetting the device into a well-known default state.</p></li>
+<li><p>Initialization of statistics counters.</p></li>
+</ul>
+<p>The rte_regexdev_configure API is used to configure a RegEx device.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="nf">rte_regexdev_configure</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">dev_id</span><span class="p">,</span>
+                           <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_regexdev_config</span> <span class="o">*</span><span class="n">cfg</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_regexdev_config</span></code> structure is used to pass the configuration
+parameters for the RegEx device for example  number of queue pairs, number of
+groups, max number of matches and so on.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_regexdev_config</span> <span class="p">{</span>
+     <span class="kt">uint16_t</span> <span class="n">nb_max_matches</span><span class="p">;</span>
+     <span class="cm">/**&lt; Maximum matches per scan configured on this device.</span>
+<span class="cm">      * This value cannot exceed the *max_matches*</span>
+<span class="cm">      * which previously provided in rte_regexdev_info_get().</span>
+<span class="cm">      * The value 0 is allowed, in which case, value 1 used.</span>
+<span class="cm">      * @see struct rte_regexdev_info::max_matches</span>
+<span class="cm">      */</span>
+     <span class="kt">uint16_t</span> <span class="n">nb_queue_pairs</span><span class="p">;</span>
+     <span class="cm">/**&lt; Number of RegEx queue pairs to configure on this device.</span>
+<span class="cm">      * This value cannot exceed the *max_queue_pairs* which previously</span>
+<span class="cm">      * provided in rte_regexdev_info_get().</span>
+<span class="cm">      * @see struct rte_regexdev_info::max_queue_pairs</span>
+<span class="cm">      */</span>
+     <span class="kt">uint32_t</span> <span class="n">nb_rules_per_group</span><span class="p">;</span>
+     <span class="cm">/**&lt; Number of rules per group to configure on this device.</span>
+<span class="cm">      * This value cannot exceed the *max_rules_per_group*</span>
+<span class="cm">      * which previously provided in rte_regexdev_info_get().</span>
+<span class="cm">      * The value 0 is allowed, in which case,</span>
+<span class="cm">      * struct rte_regexdev_info::max_rules_per_group used.</span>
+<span class="cm">      * @see struct rte_regexdev_info::max_rules_per_group</span>
+<span class="cm">      */</span>
+     <span class="kt">uint16_t</span> <span class="n">nb_groups</span><span class="p">;</span>
+     <span class="cm">/**&lt; Number of groups to configure on this device.</span>
+<span class="cm">      * This value cannot exceed the *max_groups*</span>
+<span class="cm">      * which previously provided in rte_regexdev_info_get().</span>
+<span class="cm">      * @see struct rte_regexdev_info::max_groups</span>
+<span class="cm">      */</span>
+     <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">rule_db</span><span class="p">;</span>
+     <span class="cm">/**&lt; Import initial set of prebuilt rule database on this device.</span>
+<span class="cm">      * The value NULL is allowed, in which case, the device will not</span>
+<span class="cm">      * be configured prebuilt rule database. Application may use</span>
+<span class="cm">      * rte_regexdev_rule_db_update() or rte_regexdev_rule_db_import() API</span>
+<span class="cm">      * to update or import rule database after the</span>
+<span class="cm">      * rte_regexdev_configure().</span>
+<span class="cm">      * @see rte_regexdev_rule_db_update(), rte_regexdev_rule_db_import()</span>
+<span class="cm">      */</span>
+     <span class="kt">uint32_t</span> <span class="n">rule_db_len</span><span class="p">;</span>
+     <span class="cm">/**&lt; Length of *rule_db* buffer. */</span>
+     <span class="kt">uint32_t</span> <span class="n">dev_cfg_flags</span><span class="p">;</span>
+     <span class="cm">/**&lt; RegEx device configuration flags, See RTE_REGEXDEV_CFG_*  */</span>
+ <span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuration-of-rules-database">
+<h3><span class="section-number">19.2.4. </span>Configuration of Rules Database</h3>
+<p>Each Regex device should be configured with the rule database.
+There are two modes of setting the rule database, online or offline.
+The online mode means, that the rule database in being compiled by the
+RegEx PMD while in the offline mode the rule database is compiled by external
+compiler, and is being loaded to the PMD as a buffer.
+The configuration mode is depended on the PMD capabilities.</p>
+<p>Online rule configuration is done using the following API functions:
+<code class="docutils literal notranslate"><span class="pre">rte_regexdev_rule_db_update</span></code> which add / remove rules from the rules
+precomplied list, and <code class="docutils literal notranslate"><span class="pre">rte_regexdev_rule_db_compile_activate</span></code>
+which compile the rules and loads them to the RegEx HW.</p>
+<p>Offline rule configuration can be done by adding a pointer to the compiled
+rule database in the configuration step, or by using
+<code class="docutils literal notranslate"><span class="pre">rte_regexdev_rule_db_import</span></code> API.</p>
+</div>
+<div class="section" id="configuration-of-queue-pairs">
+<h3><span class="section-number">19.2.5. </span>Configuration of Queue Pairs</h3>
+<p>Each RegEx device can be configured with number of queue pairs.
+Each queue pair is configured using <code class="docutils literal notranslate"><span class="pre">rte_regexdev_queue_pair_setup</span></code></p>
+</div>
+<div class="section" id="logical-cores-memory-and-queues-pair-relationships">
+<h3><span class="section-number">19.2.6. </span>Logical Cores, Memory and Queues Pair Relationships</h3>
+<p>Multiple logical cores should never share the same queue pair for enqueuing
+operations or dequeuing operations on the same RegEx device since this would
+require global locks and hinder performance.</p>
+</div>
+</div>
+<div class="section" id="device-features-and-capabilities">
+<h2><span class="section-number">19.3. </span>Device Features and Capabilities</h2>
+<p>RegEx devices may support different feature set.
+In order to get the supported PMD feature <code class="docutils literal notranslate"><span class="pre">rte_regexdev_info_get</span></code>
+API which return the info of the device and it’s supported features.</p>
+<div class="section" id="enqueue-dequeue-burst-apis">
+<h3><span class="section-number">19.3.1. </span>Enqueue / Dequeue Burst APIs</h3>
+<p>The burst enqueue API uses a RegEx device identifier and a queue pair
+identifier to specify the device queue pair to schedule the processing on.
+The <code class="docutils literal notranslate"><span class="pre">nb_ops</span></code> parameter is the number of operations to process which are
+supplied in the <code class="docutils literal notranslate"><span class="pre">ops</span></code> array of <code class="docutils literal notranslate"><span class="pre">rte_regex_ops</span></code> structures.
+The enqueue function returns the number of operations it actually enqueued for
+processing, a return value equal to <code class="docutils literal notranslate"><span class="pre">nb_ops</span></code> means that all packets have been
+enqueued.</p>
+<p>Data pointed in each op, should not be released until the dequeue of for that
+op.</p>
+<p>The dequeue API uses the same format as the enqueue API of processed but
+the <code class="docutils literal notranslate"><span class="pre">nb_ops</span></code> and <code class="docutils literal notranslate"><span class="pre">ops</span></code> parameters are now used to specify the max processed
+operations the user wishes to retrieve and the location in which to store them.
+The API call returns the actual number of processed operations returned, this
+can never be larger than <code class="docutils literal notranslate"><span class="pre">nb_ops</span></code>.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="rte_security.html" class="btn btn-neutral float-right" title="20. Security Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="compressdev.html" class="btn btn-neutral float-left" title="18. Compression Device Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

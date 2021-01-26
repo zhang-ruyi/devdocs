@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>14. Keep Alive Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="15. Packet copying using Intel® QuickData Technology" href="ioat.html" />
+    <link rel="prev" title="13. Kernel NIC Interface Sample Application" href="kernel_nic_interface.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">14. Keep Alive Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">14.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">14.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">14.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">14.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">14. </span>Keep Alive Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/keep_alive.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="keep-alive-sample-application">
+<h1><span class="section-number">14. </span>Keep Alive Sample Application</h1>
+<p>The Keep Alive application is a simple example of a
+heartbeat/watchdog for packet processing cores. It demonstrates how
+to detect ‘failed’ DPDK cores and notify a fault management entity
+of this failure. Its purpose is to ensure the failure of the core
+does not result in a fault that is not detectable by a management
+entity.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">14.1. </span>Overview</h2>
+<p>The application demonstrates how to protect against ‘silent outages’
+on packet processing cores. A Keep Alive Monitor Agent Core (main)
+monitors the state of packet processing cores (worker cores) by
+dispatching pings at a regular time interval (default is 5ms) and
+monitoring the state of the cores. Cores states are: Alive, MIA, Dead
+or Buried. MIA indicates a missed ping, and Dead indicates two missed
+pings within the specified time interval. When a core is Dead, a
+callback function is invoked to restart the packet processing core;
+A real life application might use this callback function to notify a
+higher level fault management entity of the core failure in order to
+take the appropriate corrective action.</p>
+<p>Note: Only the worker cores are monitored. A local (on the host) mechanism
+or agent to supervise the Keep Alive Monitor Agent Core DPDK core is required
+to detect its failure.</p>
+<p>Note: This application is based on the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>. As
+such, the initialization and run-time paths are very similar to those
+of the L2 forwarding application.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">14.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">l2fwd_keep_alive</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">14.3. </span>Running the Application</h2>
+<p>The application has a number of command line options:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-l2fwd-keepalive [EAL options] \</span>
+<span class="go">        -- -p PORTMASK [-q NQ] [-K PERIOD] [-T PERIOD]</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">PORTMASK</span></code>: A hexadecimal bitmask of the ports to configure</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">q</span> <span class="pre">NQ</span></code>: A number of queues (=ports) per lcore (default is 1)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">K</span> <span class="pre">PERIOD</span></code>: Heartbeat check period in ms(5ms default; 86400 max)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span> <span class="pre">PERIOD</span></code>: statistics will be refreshed each PERIOD seconds (0 to
+disable, 10 default, 86400 maximum).</p></li>
+</ul>
+<p>To run the application in linux environment with 4 lcores, 16 ports
+8 RX queues per lcore and a ping interval of 10ms, issue the command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-l2fwd-keepalive -l 0-3 -n 4 -- -q 8 -p ffff -K 10</span>
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on
+running applications and the Environment Abstraction Layer (EAL)
+options.</p>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">14.4. </span>Explanation</h2>
+<p>The following sections provide some explanation of the The
+Keep-Alive/’Liveliness’ conceptual scheme. As mentioned in the
+overview section, the initialization and run-time paths are very
+similar to those of the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>.</p>
+<p>The Keep-Alive/’Liveliness’ conceptual scheme:</p>
+<ul class="simple">
+<li><p>A Keep- Alive Agent Runs every N Milliseconds.</p></li>
+<li><p>DPDK Cores respond to the keep-alive agent.</p></li>
+<li><p>If keep-alive agent detects time-outs, it notifies the
+fault management entity through a callback function.</p></li>
+</ul>
+<p>The following sections provide some explanation of the code aspects
+that are specific to the Keep Alive sample application.</p>
+<p>The keepalive functionality is initialized with a struct
+rte_keepalive and the callback function to invoke in the
+case of a timeout.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rte_global_keepalive_info</span> <span class="o">=</span> <span class="n">rte_keepalive_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">dead_core</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">rte_global_keepalive_info</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;keepalive_create() failed&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The function that issues the pings keepalive_dispatch_pings()
+is configured to run every check_period milliseconds.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">rte_timer_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hb_timer</span><span class="p">,</span>
+        <span class="p">(</span><span class="n">check_period</span> <span class="o">*</span> <span class="n">rte_get_timer_hz</span><span class="p">())</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span>
+        <span class="n">PERIODICAL</span><span class="p">,</span>
+        <span class="n">rte_lcore_id</span><span class="p">(),</span>
+        <span class="o">&amp;</span><span class="n">rte_keepalive_dispatch_pings</span><span class="p">,</span>
+        <span class="n">rte_global_keepalive_info</span>
+        <span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Keepalive setup failure.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The rest of the initialization and run-time path follows
+the same paths as the L2 forwarding application. The only
+addition to the main processing loop is the mark alive
+functionality and the example random failures.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rte_keepalive_mark_alive</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rte_global_keepalive_info</span><span class="p">);</span>
+<span class="n">cur_tsc</span> <span class="o">=</span> <span class="n">rte_rdtsc</span><span class="p">();</span>
+
+<span class="cm">/* Die randomly within 7 secs for demo purposes.. */</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">cur_tsc</span> <span class="o">-</span> <span class="n">tsc_initial</span> <span class="o">&gt;</span> <span class="n">tsc_lifetime</span><span class="p">)</span>
+<span class="k">break</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The rte_keepalive_mark_alive function simply sets the core state to alive.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span>
+<span class="nf">rte_keepalive_mark_alive</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_keepalive</span> <span class="o">*</span><span class="n">keepcfg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">keepcfg</span><span class="o">-&gt;</span><span class="n">live_data</span><span class="p">[</span><span class="n">rte_lcore_id</span><span class="p">()].</span><span class="n">core_state</span> <span class="o">=</span> <span class="n">RTE_KA_STATE_ALIVE</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="ioat.html" class="btn btn-neutral float-right" title="15. Packet copying using Intel® QuickData Technology" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="kernel_nic_interface.html" class="btn btn-neutral float-left" title="13. Kernel NIC Interface Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

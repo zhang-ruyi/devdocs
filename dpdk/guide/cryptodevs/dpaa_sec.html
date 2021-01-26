@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>9. NXP DPAA CAAM (DPAA_SEC) &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. KASUMI Crypto Poll Mode Driver" href="kasumi.html" />
+    <link rel="prev" title="8. NXP DPAA2 CAAM (DPAA2_SEC)" href="dpaa2_sec.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Crypto Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Crypto Device Supported Functionality Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html">2. AESN-NI Multi Buffer Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html">3. AES-NI GCM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html">4. ARMv8 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html">5. Broadcom FlexSparc Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html">6. NXP CAAM JOB RING (caam_jr)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html">7. AMD CCP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html">8. NXP DPAA2 CAAM (DPAA2_SEC)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. NXP DPAA CAAM (DPAA_SEC)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#architecture">9.1. Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation">9.2. Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#features">9.3. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-dpaa-socs">9.4. Supported DPAA SoCs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#allowing-blocking">9.5. Allowing &amp; Blocking</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">9.6. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">9.7. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enabling-logs">9.8. Enabling logs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html">10. KASUMI Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">11. Cavium OCTEON TX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">12. Marvell OCTEON TX2 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html">13. OpenSSL Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvsam.html">14. MVSAM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nitrox.html">15. Marvell NITROX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">16. Null Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html">17. Cryptodev Scheduler Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html">18. SNOW 3G Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat.html">19. Intel(R) QuickAssist (QAT) Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">20. Virtio Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zuc.html">21. ZUC Crypto Poll Mode Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Crypto Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">9. </span>NXP DPAA CAAM (DPAA_SEC)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/cryptodevs/dpaa_sec.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nxp-dpaa-caam-dpaa-sec">
+<h1><span class="section-number">9. </span>NXP DPAA CAAM (DPAA_SEC)</h1>
+<p>The DPAA_SEC PMD provides poll mode crypto driver support for NXP DPAA CAAM
+hardware accelerator.</p>
+<div class="section" id="architecture">
+<h2><span class="section-number">9.1. </span>Architecture</h2>
+<p>SEC is the SOC’s security engine, which serves as NXP’s latest cryptographic
+acceleration and offloading hardware. It combines functions previously
+implemented in separate modules to create a modular and scalable acceleration
+and assurance engine. It also implements block encryption algorithms, stream
+cipher algorithms, hashing algorithms, public key algorithms, run-time
+integrity checking, and a hardware random number generator. SEC performs
+higher-level cryptographic operations than previous NXP cryptographic
+accelerators. This provides significant improvement to system level performance.</p>
+<p>DPAA_SEC is one of the hardware resource in DPAA Architecture. More information
+on DPAA Architecture is described in <a class="reference internal" href="../nics/dpaa.html#dpaa-overview"><span class="std std-ref">DPAA Overview</span></a>.</p>
+<p>DPAA_SEC PMD is one of DPAA drivers which interacts with QBMAN to create,
+configure and destroy the device instance using queue pair with CAAM portal.</p>
+<p>DPAA_SEC PMD also uses some of the other hardware resources like buffer pools,
+queues, queue portals to store and to enqueue/dequeue data to the hardware SEC.</p>
+</div>
+<div class="section" id="implementation">
+<h2><span class="section-number">9.2. </span>Implementation</h2>
+<p>SEC provides platform assurance by working with SecMon, which is a companion
+logic block that tracks the security state of the SOC. SEC is programmed by
+means of descriptors (not to be confused with frame descriptors (FDs)) that
+indicate the operations to be performed and link to the message and
+associated data. SEC incorporates two DMA engines to fetch the descriptors,
+read the message data, and write the results of the operations. The DMA
+engine provides a scatter/gather capability so that SEC can read and write
+data scattered in memory. SEC may be configured by means of software for
+dynamic changes in byte ordering. The default configuration for this version
+of SEC is little-endian mode.</p>
+</div>
+<div class="section" id="features">
+<h2><span class="section-number">9.3. </span>Features</h2>
+<p>The DPAA PMD has support for:</p>
+<p>Cipher algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_3DES_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES128_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES192_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES256_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES128_CTR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES192_CTR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES256_CTR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_SNOW3G_UEA2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_ZUC_EEA3</span></code></p></li>
+</ul>
+<p>Hash algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA1_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA224_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA256_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA384_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA512_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SNOW3G_UIA2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_MD5_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_ZUC_EIA3</span></code></p></li>
+</ul>
+<p>AEAD algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AEAD_AES_GCM</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="supported-dpaa-socs">
+<h2><span class="section-number">9.4. </span>Supported DPAA SoCs</h2>
+<ul class="simple">
+<li><p>LS1046A/LS1026A</p></li>
+<li><p>LS1043A/LS1023A</p></li>
+</ul>
+</div>
+<div class="section" id="allowing-blocking">
+<h2><span class="section-number">9.5. </span>Allowing &amp; Blocking</h2>
+<p>For blocking a DPAA device, following commands can be used.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&lt;dpdk app&gt; &lt;EAL args&gt; -b &quot;dpaa:dpaa_sec-X&quot; -- ...</span>
+<span class="go">e.g. &quot;dpaa:dpaa_sec-1&quot;</span>
+
+<span class="go">or to disable all 4 SEC devices</span>
+<span class="go">-b &quot;dpaa:dpaa_sec-1&quot;  -b &quot;dpaa:dpaa_sec-2&quot; -b &quot;dpaa:dpaa_sec-3&quot; -b &quot;dpaa:dpaa_sec-4&quot;</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">9.6. </span>Limitations</h2>
+<ul class="simple">
+<li><p>Hash followed by Cipher mode is not supported</p></li>
+<li><p>Only supports the session-oriented API implementation (session-less APIs are not supported).</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">9.7. </span>Prerequisites</h2>
+<p>DPAA_SEC driver has similar pre-requisites as described in <a class="reference internal" href="../nics/dpaa.html#dpaa-overview"><span class="std std-ref">DPAA Overview</span></a>.</p>
+<p>See <a class="reference internal" href="../platform/dpaa.html"><span class="doc">NXP QorIQ DPAA Board Support Package</span></a> for setup information</p>
+<ul class="simple">
+<li><p>Follow the DPDK <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a> to setup the basic DPDK environment.</p></li>
+</ul>
+</div>
+<div class="section" id="enabling-logs">
+<h2><span class="section-number">9.8. </span>Enabling logs</h2>
+<p>For enabling logs, use the following EAL parameter:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./your_crypto_application &lt;EAL args&gt; --log-level=pmd.crypto.dpaa:&lt;level&gt;</span>
+</pre></div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">pmd.crypto.dpaa</span></code> as log matching criteria, all Crypto PMD logs can be
+enabled which are lower than logging <code class="docutils literal notranslate"><span class="pre">level</span></code>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="kasumi.html" class="btn btn-neutral float-right" title="10. KASUMI Crypto Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dpaa2_sec.html" class="btn btn-neutral float-left" title="8. NXP DPAA2 CAAM (DPAA2_SEC)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

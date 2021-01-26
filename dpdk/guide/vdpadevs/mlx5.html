@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>5. MLX5 vDPA driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="REGEX Device Drivers" href="../regexdevs/index.html" />
+    <link rel="prev" title="4. IFCVF vDPA driver" href="ifc.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">vDPA Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="features_overview.html">1. Overview of vDPA Drivers Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features_overview.html#references">2. References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features_overview.html#features-table">3. Features Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ifc.html">4. IFCVF vDPA driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. MLX5 vDPA driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design">5.1. Design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-nics">5.2. Supported NICs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">5.3. Prerequisites</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#compilation-option">5.3.1. Compilation option</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-time-configuration">5.3.2. Run-time configuration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">vDPA Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">5. </span>MLX5 vDPA driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/vdpadevs/mlx5.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mlx5-vdpa-driver">
+<h1><span class="section-number">5. </span>MLX5 vDPA driver</h1>
+<p>The MLX5 vDPA (vhost data path acceleration) driver library
+(<strong>librte_vdpa_mlx5</strong>) provides support for <strong>Mellanox ConnectX-6</strong>,
+<strong>Mellanox ConnectX-6 Dx</strong> and <strong>Mellanox BlueField</strong> families of
+10/25/40/50/100/200 Gb/s adapters as well as their virtual functions (VF) in
+SR-IOV context.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This driver is enabled automatically when using “meson” build system which
+will detect dependencies.</p>
+</div>
+<div class="section" id="design">
+<h2><span class="section-number">5.1. </span>Design</h2>
+<p>For security reasons and robustness, this driver only deals with virtual
+memory addresses. The way resources allocations are handled by the kernel,
+combined with hardware specifications that allow to handle virtual memory
+addresses directly, ensure that DPDK applications cannot access random
+physical memory (or memory that does not belong to the current process).</p>
+<p>The PMD can use libibverbs and libmlx5 to access the device firmware
+or directly the hardware components.
+There are different levels of objects and bypassing abilities
+to get the best performances:</p>
+<ul class="simple">
+<li><p>Verbs is a complete high-level generic API</p></li>
+<li><p>Direct Verbs is a device-specific API</p></li>
+<li><p>DevX allows to access firmware objects</p></li>
+<li><p>Direct Rules manages flow steering at low-level hardware layer</p></li>
+</ul>
+<p>Enabling librte_vdpa_mlx5 causes DPDK applications to be linked against
+libibverbs.</p>
+<p>A Mellanox mlx5 PCI device can be probed by either net/mlx5 driver or vdpa/mlx5
+driver but not in parallel. Hence, the user should decide the driver by the
+<code class="docutils literal notranslate"><span class="pre">class</span></code> parameter in the device argument list.
+By default, the mlx5 device will be probed by the net/mlx5 driver.</p>
+</div>
+<div class="section" id="supported-nics">
+<h2><span class="section-number">5.2. </span>Supported NICs</h2>
+<ul class="simple">
+<li><p>Mellanox® ConnectX®-6 200G MCX654106A-HCAT (2x200G)</p></li>
+<li><p>Mellanox® ConnectX®-6 Dx EN 25G MCX621102AN-ADAT (2x25G)</p></li>
+<li><p>Mellanox® ConnectX®-6 Dx EN 100G MCX623106AN-CDAT (2x100G)</p></li>
+<li><p>Mellanox® ConnectX®-6 Dx EN 200G MCX623105AN-VDAT (1x200G)</p></li>
+<li><p>Mellanox® BlueField SmartNIC 25G MBF1M332A-ASCAT (2x25G)</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">5.3. </span>Prerequisites</h2>
+<ul class="simple">
+<li><p>Mellanox OFED version: <strong>5.0</strong>
+see <a class="reference internal" href="../nics/mlx5.html"><span class="doc">MLX5 poll mode driver</span></a> guide for more Mellanox OFED details.</p></li>
+</ul>
+<div class="section" id="compilation-option">
+<h3><span class="section-number">5.3.1. </span>Compilation option</h3>
+<p>The meson option <code class="docutils literal notranslate"><span class="pre">ibverbs_link</span></code> is <strong>shared</strong> by default,
+but can be configured to have the following values:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">dlopen</span></code></p>
+<p>Build PMD with additional code to make it loadable without hard
+dependencies on <strong>libibverbs</strong> nor <strong>libmlx5</strong>, which may not be installed
+on the target system.</p>
+<p>In this mode, their presence is still required for it to run properly,
+however their absence won’t prevent a DPDK application from starting (with
+DPDK shared build disabled) and they won’t show up as missing with <code class="docutils literal notranslate"><span class="pre">ldd(1)</span></code>.</p>
+<p>It works by moving these dependencies to a purpose-built rdma-core “glue”
+plug-in which must be installed in a directory whose name is based
+on <code class="docutils literal notranslate"><span class="pre">RTE_EAL_PMD_PATH</span></code> suffixed with <code class="docutils literal notranslate"><span class="pre">-glue</span></code>.</p>
+<p>This option has no performance impact.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">static</span></code></p>
+<p>Embed static flavor of the dependencies <strong>libibverbs</strong> and <strong>libmlx5</strong>
+in the PMD shared library or the executable static binary.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Default armv8a configuration of meson build sets <code class="docutils literal notranslate"><span class="pre">RTE_CACHE_LINE_SIZE</span></code>
+to 128 then brings performance degradation.</p>
+</div>
+</div>
+<div class="section" id="run-time-configuration">
+<h3><span class="section-number">5.3.2. </span>Run-time configuration</h3>
+<ul class="simple">
+<li><p><strong>ethtool</strong> operations on related kernel interfaces also affect the PMD.</p></li>
+</ul>
+<div class="section" id="driver-options">
+<h4><span class="section-number">5.3.2.1. </span>Driver options</h4>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">class</span></code> parameter [string]</p>
+<p>Select the class of the driver that should probe the device.
+<cite>vdpa</cite> for the mlx5 vDPA driver.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event_mode</span></code> parameter [int]</p>
+<ul class="simple">
+<li><p>0, Completion queue scheduling will be managed by a timer thread which
+automatically adjusts its delays to the coming traffic rate.</p></li>
+<li><p>1, Completion queue scheduling will be managed by a timer thread with fixed
+delay time.</p></li>
+<li><p>2, Completion queue scheduling will be managed by interrupts. Each CQ burst
+arms the CQ in order to get an interrupt event in the next traffic burst.</p></li>
+<li><p>Default mode is 0.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">event_us</span></code> parameter [int]</p>
+<p>Per mode micro-seconds parameter - relevant only for event mode 0 and 1:</p>
+<ul class="simple">
+<li><p>0, A nonzero value to set timer step in micro-seconds. The timer thread
+dynamic delay change steps according to this value. Default value is 1us.</p></li>
+<li><p>1, A nonzero value to set fixed timer delay in micro-seconds. Default value
+is 100us.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">no_traffic_time</span></code> parameter [int]</p>
+<p>A nonzero value defines the traffic off time, in seconds, that moves the
+driver to no-traffic mode. In this mode the timer events are stopped and
+interrupts are configured to the device in order to notify traffic for the
+driver. Default value is 2s.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="error-handling">
+<h4><span class="section-number">5.3.2.2. </span>Error handling</h4>
+<p>Upon potential hardware errors, mlx5 PMD try to recover, give up if failed 3
+times in 3 seconds, virtq will be put in disable state. User should check log
+to get error information, or query vdpa statistics counter to know error type
+and count report.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../regexdevs/index.html" class="btn btn-neutral float-right" title="REGEX Device Drivers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ifc.html" class="btn btn-neutral float-left" title="4. IFCVF vDPA driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

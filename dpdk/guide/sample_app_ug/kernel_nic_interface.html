@@ -1,0 +1,560 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>13. Kernel NIC Interface Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="14. Keep Alive Sample Application" href="keep_alive.html" />
+    <link rel="prev" title="12. IP Reassembly Sample Application" href="ip_reassembly.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">13. Kernel NIC Interface Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">13.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">13.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-kni-example-application">13.3. Running the kni Example Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-configurations">13.3.1. Example Configurations</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#kni-operations">13.4. KNI Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">13.5. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialization">13.5.1. Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-forwarding">13.5.2. Packet Forwarding</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">13. </span>Kernel NIC Interface Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/kernel_nic_interface.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kernel-nic-interface-sample-application">
+<h1><span class="section-number">13. </span>Kernel NIC Interface Sample Application</h1>
+<p>The Kernel NIC Interface (KNI) is a DPDK control plane solution that
+allows userspace applications to exchange packets with the kernel networking stack.
+To accomplish this, DPDK userspace applications use an IOCTL call
+to request the creation of a KNI virtual device in the Linux* kernel.
+The IOCTL call provides interface information and the DPDK’s physical address space,
+which is re-mapped into the kernel address space by the KNI kernel loadable module
+that saves the information to a virtual device context.
+The DPDK creates FIFO queues for packet ingress and egress
+to the kernel module for each device allocated.</p>
+<p>The KNI kernel loadable module is a standard net driver,
+which upon receiving the IOCTL call access the DPDK’s FIFO queue to
+receive/transmit packets from/to the DPDK userspace application.
+The FIFO queues contain pointers to data packets in the DPDK. This:</p>
+<ul class="simple">
+<li><p>Provides a faster mechanism to interface with the kernel net stack and eliminates system calls</p></li>
+<li><p>Facilitates the DPDK using standard Linux* userspace net tools (tshark, rsync, and so on)</p></li>
+<li><p>Eliminate the copy_to_user and copy_from_user operations on packets.</p></li>
+</ul>
+<p>The Kernel NIC Interface sample application is a simple example that demonstrates the use
+of the DPDK to create a path for packets to go through the Linux* kernel.
+This is done by creating one or more kernel net devices for each of the DPDK ports.
+The application allows the use of standard Linux tools (ethtool, iproute, tshark) with the DPDK ports and
+also the exchange of packets between the DPDK application and the Linux* kernel.</p>
+<p>The Kernel NIC Interface sample application requires that the
+KNI kernel module <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> be loaded into the kernel.  See
+<a class="reference internal" href="../prog_guide/kernel_nic_interface.html"><span class="doc">Kernel NIC Interface</span></a> for more information on loading
+the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">13.1. </span>Overview</h2>
+<p>The Kernel NIC Interface sample application <code class="docutils literal notranslate"><span class="pre">kni</span></code> allocates one or more
+KNI interfaces for each physical NIC port.  For each physical NIC port,
+<code class="docutils literal notranslate"><span class="pre">kni</span></code> uses two DPDK threads in user space; one thread reads from the port and
+writes to the corresponding KNI interfaces and the other thread reads from
+the KNI interfaces and writes the data unmodified to the physical NIC port.</p>
+<p>It is recommended to configure one KNI interface for each physical NIC port.
+The application can be configured with more than one KNI interface for
+each physical NIC port for performance testing or it can work together with
+VMDq support in future.</p>
+<p>The packet flow through the Kernel NIC Interface application is as shown
+in the following figure.</p>
+<div class="figure align-default" id="id1">
+<span id="figure-kernel-nic"></span><img alt="../_images/kernel_nic.png" src="../_images/kernel_nic.png" />
+<p class="caption"><span class="caption-number">Fig. 13.1 </span><span class="caption-text">Kernel NIC Application Packet Flow</span></p>
+</div>
+<p>If link monitoring is enabled with the <code class="docutils literal notranslate"><span class="pre">-m</span></code> command line flag, one
+additional pthread is launched which will check the link status of each
+physical NIC port and will update the carrier status of the corresponding
+KNI interface(s) to match the physical NIC port’s state.  This means that
+the KNI interface(s) will be disabled automatically when the Ethernet link
+goes down and enabled when the Ethernet link goes up.</p>
+<p>If link monitoring is enabled, the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module should be loaded
+such that the <a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni-default-carrier-state"><span class="std std-ref">default carrier state</span></a> is
+set to <em>off</em>.  This ensures that the KNI interface is only enabled <em>after</em>
+the Ethernet link of the corresponding NIC port has reached the linkup state.</p>
+<p>If link monitoring is not enabled, the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module should be
+loaded with the <a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni-default-carrier-state"><span class="std std-ref">default carrier state</span></a>
+set to <em>on</em>.  This sets the carrier state of the KNI interfaces to <em>on</em>
+when the KNI interfaces are enabled without regard to the actual link state
+of the corresponding NIC port.  This is useful for testing in loopback
+mode where the NIC port may not be physically connected to anything.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">13.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">examples/kni</span></code> sub-directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This application is intended as a linux only.</p>
+</div>
+</div>
+<div class="section" id="running-the-kni-example-application">
+<h2><span class="section-number">13.3. </span>Running the kni Example Application</h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">kni</span></code> example application requires a number of command line options:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dpdk-kni [EAL options] -- -p PORTMASK --config=&quot;(port,lcore_rx,lcore_tx[,lcore_kthread,...])[,(port,lcore_rx,lcore_tx[,lcore_kthread,...])]&quot; [-P] [-m]</span>
+</pre></div>
+</div>
+<p>Where:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PORTMASK</span></code>:</p>
+<p>Hexadecimal bitmask of ports to configure.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--config=&quot;(port,lcore_rx,lcore_tx[,lcore_kthread,...])[,(port,lcore_rx,lcore_tx[,lcore_kthread,...])]&quot;</span></code>:</p>
+<p>Determines which lcores the Rx and Tx DPDK tasks, and (optionally)
+the KNI kernel thread(s) are bound to for each physical port.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-P</span></code>:</p>
+<p>Optional flag to set all ports to promiscuous mode so that packets are
+accepted regardless of the packet’s Ethernet MAC destination address.
+Without this option, only packets with the Ethernet MAC destination
+address set to the Ethernet address of the port are accepted.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m</span></code>:</p>
+<p>Optional flag to enable monitoring and updating of the Ethernet
+carrier state.  With this option set, a thread will be started which
+will periodically check the Ethernet link status of the physical
+Ethernet ports and set the carrier state of the corresponding KNI
+network interface to match it.  This means that the KNI interface will
+be disabled automatically when the Ethernet link goes down and enabled
+when the Ethernet link goes up.</p>
+</li>
+</ul>
+<p>Refer to <em>DPDK Getting Started Guide</em> for general information on running
+applications and the Environment Abstraction Layer (EAL) options.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">coremask</span></code> or <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">corelist</span></code> parameter of the EAL options must
+include the lcores specified by <code class="docutils literal notranslate"><span class="pre">lcore_rx</span></code> and <code class="docutils literal notranslate"><span class="pre">lcore_tx</span></code> for each port,
+but does not need to include lcores specified by <code class="docutils literal notranslate"><span class="pre">lcore_kthread</span></code> as those
+cores are used to pin the kernel threads in the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">--config</span></code> parameter must include a set of
+<code class="docutils literal notranslate"><span class="pre">(port,lcore_rx,lcore_tx,[lcore_kthread,...])</span></code> values for each physical
+port specified in the <code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PORTMASK</span></code> parameter.</p>
+<p>The optional <code class="docutils literal notranslate"><span class="pre">lcore_kthread</span></code> lcore ID parameter in <code class="docutils literal notranslate"><span class="pre">--config</span></code> can be
+specified zero, one or more times for each physical port.</p>
+<p>If no lcore ID is specified for <code class="docutils literal notranslate"><span class="pre">lcore_kthread</span></code>, one KNI interface will
+be created for the physical port <code class="docutils literal notranslate"><span class="pre">port</span></code> and the KNI kernel thread(s)
+will have no specific core affinity.</p>
+<p>If one or more lcore IDs are specified for <code class="docutils literal notranslate"><span class="pre">lcore_kthread</span></code>, a KNI interface
+will be created for each lcore ID specified, bound to the physical port
+<code class="docutils literal notranslate"><span class="pre">port</span></code>.  If the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module is loaded in <a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni-kernel-thread-mode"><span class="std std-ref">multiple
+kernel thread</span></a> mode, a kernel thread will be created
+for each KNI interface and bound to the specified core.  If the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code>
+kernel module is loaded in <a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni-kernel-thread-mode"><span class="std std-ref">single kernel thread</span></a>
+mode, only one kernel thread is started for all KNI interfaces.  The kernel
+thread will be bound to the first <code class="docutils literal notranslate"><span class="pre">lcore_kthread</span></code> lcore ID specified.</p>
+<div class="section" id="example-configurations">
+<h3><span class="section-number">13.3.1. </span>Example Configurations</h3>
+<p>The following commands will first load the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module in
+<a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni-kernel-thread-mode"><span class="std std-ref">multiple kernel thread</span></a> mode.  The <code class="docutils literal notranslate"><span class="pre">kni</span></code>
+application is then started using two ports;  Port 0 uses lcore 4 for the
+Rx task, lcore 6 for the Tx task, and will create a single KNI interface
+<code class="docutils literal notranslate"><span class="pre">vEth0_0</span></code> with the kernel thread bound to lcore 8.  Port 1 uses lcore
+5 for the Rx task, lcore 7 for the Tx task, and will create a single KNI
+interface <code class="docutils literal notranslate"><span class="pre">vEth1_0</span></code> with the kernel thread bound to lcore 9.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> rmmod rte_kni
+<span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">kthread_mode</span><span class="o">=</span>multiple
+<span class="gp">#</span> ./&lt;build-dir&gt;/examples/dpdk-kni -l <span class="m">4</span>-7 -n <span class="m">4</span> -- -P -p 0x3 -m --config<span class="o">=</span><span class="s2">&quot;(0,4,6,8),(1,5,7,9)&quot;</span>
+</pre></div>
+</div>
+<p>The following example is identical, except an additional <code class="docutils literal notranslate"><span class="pre">lcore_kthread</span></code>
+core is specified per physical port.  In this case, <code class="docutils literal notranslate"><span class="pre">kni</span></code> will create
+four KNI interfaces: <code class="docutils literal notranslate"><span class="pre">vEth0_0</span></code>/<code class="docutils literal notranslate"><span class="pre">vEth0_1</span></code> bound to physical port 0 and
+<code class="docutils literal notranslate"><span class="pre">vEth1_0</span></code>/<code class="docutils literal notranslate"><span class="pre">vEth1_1</span></code> bound to physical port 1.</p>
+<p>The kernel thread for each interface will be bound as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">vEth0_0</span></code> - bound to lcore 8.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vEth0_1</span></code> - bound to lcore 10.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vEth1_0</span></code> - bound to lcore 9.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">vEth1_1</span></code> - bound to lcore 11</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> rmmod rte_kni
+<span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">kthread_mode</span><span class="o">=</span>multiple
+<span class="gp">#</span> ./&lt;build-dir&gt;/examples/dpdk-kni -l <span class="m">4</span>-7 -n <span class="m">4</span> -- -P -p 0x3 -m --config<span class="o">=</span><span class="s2">&quot;(0,4,6,8,10),(1,5,7,9,11)&quot;</span>
+</pre></div>
+</div>
+<p>The following example can be used to test the interface between the <code class="docutils literal notranslate"><span class="pre">kni</span></code>
+test application and the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module.  In this example,
+the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module is loaded in <a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni-kernel-thread-mode"><span class="std std-ref">single kernel thread
+mode</span></a>, <a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni-loopback-mode"><span class="std std-ref">loopback mode</span></a>
+enabled, and the <a class="reference internal" href="../prog_guide/kernel_nic_interface.html#kni-default-carrier-state"><span class="std std-ref">default carrier state</span></a>
+is set to <em>on</em> so that the corresponding physical NIC port does not have
+to be connected in order to use the KNI interface.  One KNI interface
+<code class="docutils literal notranslate"><span class="pre">vEth0_0</span></code> is created for port 0 and one KNI interface <code class="docutils literal notranslate"><span class="pre">vEth1_0</span></code> is
+created for port 1.  Since <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> is loaded in “single kernel thread”
+mode, the one kernel thread is bound to lcore 8.</p>
+<p>Since the physical NIC ports are not being used, link monitoring can be
+disabled by <strong>not</strong> specifying the <code class="docutils literal notranslate"><span class="pre">-m</span></code> flag to <code class="docutils literal notranslate"><span class="pre">kni</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> rmmod rte_kni
+<span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">lo_mode</span><span class="o">=</span>lo_mode_fifo <span class="nv">carrier</span><span class="o">=</span>on
+<span class="gp">#</span> ./&lt;build-dir&gt;/examples/dpdk-kni -l <span class="m">4</span>-7 -n <span class="m">4</span> -- -P -p 0x3 --config<span class="o">=</span><span class="s2">&quot;(0,4,6,8),(1,5,7,9)&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="kni-operations">
+<h2><span class="section-number">13.4. </span>KNI Operations</h2>
+<p>Once the <code class="docutils literal notranslate"><span class="pre">kni</span></code> application is started, the user can use the normal
+Linux commands to manage the KNI interfaces as if they were any other
+Linux network interface.</p>
+<p>Enable KNI interface and assign an IP address:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> ip addr add dev vEth0_0 <span class="m">192</span>.168.0.1
+</pre></div>
+</div>
+<p>Show KNI interface configuration and statistics:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> ip -s -d addr show vEth0_0
+</pre></div>
+</div>
+<p>The user can also check and reset the packet statistics inside the <code class="docutils literal notranslate"><span class="pre">kni</span></code>
+application by sending the app the USR1 and USR2 signals:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> Print statistics
+<span class="gp">#</span> pkill -USR1 kni
+
+<span class="gp">#</span> Zero statistics
+<span class="gp">#</span> pkill -USR2 kni
+</pre></div>
+</div>
+<p>Dump network traffic:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> tshark -n -i vEth0_0
+</pre></div>
+</div>
+<p>The normal Linux commands can also be used to change the MAC address and
+MTU size used by the physical NIC which corresponds to the KNI interface.
+However, if more than one KNI interface is configured for a physical port,
+these commands will only work on the first KNI interface for that port.</p>
+<p>Change the MAC address:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> ip link <span class="nb">set</span> dev vEth0_0 lladdr 0C:01:02:03:04:08
+</pre></div>
+</div>
+<p>Change the MTU size:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> ip link <span class="nb">set</span> dev vEth0_0 mtu <span class="m">1450</span>
+</pre></div>
+</div>
+<p>Limited ethtool support:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> ethtool -i vEth0_0
+</pre></div>
+</div>
+<p>When the <code class="docutils literal notranslate"><span class="pre">kni</span></code> application is closed, all the KNI interfaces are deleted
+from the Linux kernel.</p>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">13.5. </span>Explanation</h2>
+<p>The following sections provide some explanation of code.</p>
+<div class="section" id="initialization">
+<h3><span class="section-number">13.5.1. </span>Initialization</h3>
+<p>Setup of mbuf pool, driver and queues is similar to the setup done in the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>..
+In addition, one or more kernel NIC interfaces are allocated for each
+of the configured ports according to the command line parameters.</p>
+<p>The code for allocating the kernel NIC interfaces for a specific port is
+in the function <code class="docutils literal notranslate"><span class="pre">kni_alloc</span></code>.</p>
+<p>The other step in the initialization process that is unique to this sample application
+is the association of each port with lcores for RX, TX and kernel threads.</p>
+<ul class="simple">
+<li><p>One lcore to read from the port and write to the associated one or more KNI devices</p></li>
+<li><p>Another lcore to read from one or more KNI devices and write to the port</p></li>
+<li><p>Other lcores for pinning the kernel threads on one by one</p></li>
+</ul>
+<p>This is done by using the <code class="docutils literal notranslate"><span class="pre">kni_port_params_array[]</span></code> array, which is indexed by the port ID.
+The code is in the function <code class="docutils literal notranslate"><span class="pre">parse_config</span></code>.</p>
+</div>
+<div class="section" id="packet-forwarding">
+<h3><span class="section-number">13.5.2. </span>Packet Forwarding</h3>
+<p>After the initialization steps are completed, the main_loop() function is run on each lcore.
+This function first checks the lcore_id against the user provided lcore_rx and lcore_tx
+to see if this lcore is reading from or writing to kernel NIC interfaces.</p>
+<p>For the case that reads from a NIC port and writes to the kernel NIC interfaces (<code class="docutils literal notranslate"><span class="pre">kni_ingress</span></code>),
+the packet reception is the same as in L2 Forwarding sample application
+(see <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-rx-tx-packets"><span class="std std-ref">Receive, Process and Transmit Packets</span></a>).
+The packet transmission is done by sending mbufs into the kernel NIC interfaces by <code class="docutils literal notranslate"><span class="pre">rte_kni_tx_burst()</span></code>.
+The KNI library automatically frees the mbufs after the kernel successfully copied the mbufs.</p>
+<p>For the other case that reads from kernel NIC interfaces
+and writes to a physical NIC port (<code class="docutils literal notranslate"><span class="pre">kni_egress</span></code>),
+packets are retrieved by reading mbufs from kernel NIC interfaces by <code class="docutils literal notranslate"><span class="pre">rte_kni_rx_burst()</span></code>.
+The packet transmission is the same as in the L2 Forwarding sample application
+(see <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-rx-tx-packets"><span class="std std-ref">Receive, Process and Transmit Packets</span></a>).</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="keep_alive.html" class="btn btn-neutral float-right" title="14. Keep Alive Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ip_reassembly.html" class="btn btn-neutral float-left" title="12. IP Reassembly Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

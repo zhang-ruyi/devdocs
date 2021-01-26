@@ -1,0 +1,702 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>49. ThunderX NICVF Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="50. TXGBE Poll Mode Driver" href="txgbe.html" />
+    <link rel="prev" title="48. Tun|Tap Poll Mode Driver" href="tap.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">2. Features Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_and_test.html">3. Compiling and testing a PMD for a NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_packet.html">4. AF_PACKET Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_xdp.html">5. AF_XDP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ark.html">6. ARK Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atlantic.html">7. Aquantia Atlantic DPDK Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avp.html">8. AVP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="axgbe.html">9. AXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">10. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnxt.html">11. BNXT Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">12. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">13. DPAA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">14. DPAA2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">15. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">16. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enetc.html">17. ENETC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">18. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">19. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hinic.html">20. HINIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hns3.html">21. HNS3 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">22. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ice.html">23. ICE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igb.html">24. IGB Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igc.html">25. IGC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ionic.html">26. IONIC Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipn3ke.html">27. IPN3KE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">28. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">29. Intel Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kni.html">30. KNI Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="liquidio.html">31. LiquidIO VF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memif.html">32. Memif Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">33. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">34. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvneta.html">35. MVNETA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvpp2.html">36. MVPP2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netvsc.html">37. Netvsc poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfb.html">38. NFB poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">39. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">40. NULL Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">41. OCTEON TX Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">42. OCTEON TX2 Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfe.html">43. PFE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qede.html">44. QEDE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sfc_efx.html">45. Solarflare libefx-based Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="softnic.html">46. Soft NIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">47. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tap.html">48. Tun|Tap Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">49. ThunderX NICVF Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">49.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-thunderx-socs">49.2. Supported ThunderX SoCs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">49.3. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#driver-compilation-and-testing">49.4. Driver compilation and testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#linux">49.5. Linux</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sr-iov-prerequisites-and-sample-application-notes">49.5.1. SR-IOV: Prerequisites and sample Application Notes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiple-queue-set-per-dpdk-port-configuration">49.5.2. Multiple Queue Set per DPDK port configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lbk-hw-access">49.5.3. LBK HW Access</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#example-device-binding">49.5.4. Example device binding</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#thunder-nic-vf-s">49.5.5. Thunder-nic VF’s</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-options">49.6. Debugging Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-params">49.7. Module params</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#skip-data-bytes">49.7.1. skip_data_bytes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">49.8. Limitations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#crc-stripping">49.8.1. CRC stripping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maximum-packet-length">49.8.2. Maximum packet length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maximum-packet-segments">49.8.3. Maximum packet segments</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id1">49.8.4. skip_data_bytes</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="txgbe.html">50. TXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdev_netvsc.html">51. VDEV_NETVSC driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">52. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">53. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">54. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">55. Libpcap and Ring Based Poll Mode Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fail_safe.html">56. Fail-safe poll mode driver library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">49. </span>ThunderX NICVF Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/thunderx.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="thunderx-nicvf-poll-mode-driver">
+<h1><span class="section-number">49. </span>ThunderX NICVF Poll Mode Driver</h1>
+<p>The ThunderX NICVF PMD (<strong>librte_net_thunderx</strong>) provides poll mode driver
+support for the inbuilt NIC found in the <strong>Cavium ThunderX</strong> SoC family
+as well as their virtual functions (VF) in SR-IOV context.</p>
+<p>More information can be found at <a class="reference external" href="http://www.cavium.com/ThunderX_ARM_Processors.html">Cavium, Inc Official Website</a>.</p>
+<div class="section" id="features">
+<h2><span class="section-number">49.1. </span>Features</h2>
+<p>Features of the ThunderX PMD are:</p>
+<ul class="simple">
+<li><p>Multiple queues for TX and RX</p></li>
+<li><p>Receive Side Scaling (RSS)</p></li>
+<li><p>Packet type information</p></li>
+<li><p>Checksum offload</p></li>
+<li><p>Promiscuous mode</p></li>
+<li><p>Multicast mode</p></li>
+<li><p>Port hardware statistics</p></li>
+<li><p>Jumbo frames</p></li>
+<li><p>Link state information</p></li>
+<li><p>Setting up link state.</p></li>
+<li><p>Scattered and gather for TX and RX</p></li>
+<li><p>VLAN stripping</p></li>
+<li><p>SR-IOV VF</p></li>
+<li><p>NUMA support</p></li>
+<li><p>Multi queue set support (up to 96 queues (12 queue sets)) per port</p></li>
+<li><p>Skip data bytes</p></li>
+</ul>
+</div>
+<div class="section" id="supported-thunderx-socs">
+<h2><span class="section-number">49.2. </span>Supported ThunderX SoCs</h2>
+<ul class="simple">
+<li><p>CN88xx</p></li>
+<li><p>CN81xx</p></li>
+<li><p>CN83xx</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">49.3. </span>Prerequisites</h2>
+<ul class="simple">
+<li><p>Follow the DPDK <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a> to setup the basic DPDK environment.</p></li>
+</ul>
+</div>
+<div class="section" id="driver-compilation-and-testing">
+<h2><span class="section-number">49.4. </span>Driver compilation and testing</h2>
+<p>Refer to the document <a class="reference internal" href="build_and_test.html#pmd-build-and-test"><span class="std std-ref">compiling and testing a PMD for a NIC</span></a>
+for details.</p>
+<p>Use config/arm/arm64-thunderx-linux-gcc as a meson cross-file when cross-compiling.</p>
+</div>
+<div class="section" id="linux">
+<h2><span class="section-number">49.5. </span>Linux</h2>
+<div class="section" id="sr-iov-prerequisites-and-sample-application-notes">
+<h3><span class="section-number">49.5.1. </span>SR-IOV: Prerequisites and sample Application Notes</h3>
+<p>Current ThunderX NIC PF/VF kernel modules maps each physical Ethernet port
+automatically to virtual function (VF) and presented them as PCIe-like SR-IOV device.
+This section provides instructions to configure SR-IOV with Linux OS.</p>
+<ol class="arabic">
+<li><p>Verify PF devices capabilities using <code class="docutils literal notranslate"><span class="pre">lspci</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">lspci -vvv</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0002:01:00.0 Ethernet controller: Cavium Networks Device a01e (rev 01)</span>
+<span class="go">...</span>
+<span class="go">Capabilities: [100 v1] Alternative Routing-ID Interpretation (ARI)</span>
+<span class="go">...</span>
+<span class="go">Capabilities: [180 v1] Single Root I/O Virtualization (SR-IOV)</span>
+<span class="go">...</span>
+<span class="go">Kernel driver in use: thunder-nic</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unless <code class="docutils literal notranslate"><span class="pre">thunder-nic</span></code> driver is in use make sure your kernel config includes <code class="docutils literal notranslate"><span class="pre">CONFIG_THUNDER_NIC_PF</span></code> setting.</p>
+</div>
+</li>
+<li><p>Verify VF devices capabilities and drivers using <code class="docutils literal notranslate"><span class="pre">lspci</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">lspci -vvv</span>
+</pre></div>
+</div>
+<p>Example output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0002:01:00.1 Ethernet controller: Cavium Networks Device 0011 (rev 01)</span>
+<span class="go">...</span>
+<span class="go">Capabilities: [100 v1] Alternative Routing-ID Interpretation (ARI)</span>
+<span class="go">...</span>
+<span class="go">Kernel driver in use: thunder-nicvf</span>
+<span class="go">...</span>
+
+<span class="go">0002:01:00.2 Ethernet controller: Cavium Networks Device 0011 (rev 01)</span>
+<span class="go">...</span>
+<span class="go">Capabilities: [100 v1] Alternative Routing-ID Interpretation (ARI)</span>
+<span class="go">...</span>
+<span class="go">Kernel driver in use: thunder-nicvf</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Unless <code class="docutils literal notranslate"><span class="pre">thunder-nicvf</span></code> driver is in use make sure your kernel config includes <code class="docutils literal notranslate"><span class="pre">CONFIG_THUNDER_NIC_VF</span></code> setting.</p>
+</div>
+</li>
+<li><p>Pass VF device to VM context (PCIe Passthrough):</p>
+<p>The VF devices may be passed through to the guest VM using qemu or
+virt-manager or virsh etc.</p>
+<p>Example qemu guest launch command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo qemu-system-aarch64 -name vm1 \</span>
+<span class="go">-machine virt,gic_version=3,accel=kvm,usb=off \</span>
+<span class="go">-cpu host -m 4096 \</span>
+<span class="go">-smp 4,sockets=1,cores=8,threads=1 \</span>
+<span class="go">-nographic -nodefaults \</span>
+<span class="go">-kernel &lt;kernel image&gt; \</span>
+<span class="go">-append &quot;root=/dev/vda console=ttyAMA0 rw hugepagesz=512M hugepages=3&quot; \</span>
+<span class="go">-device vfio-pci,host=0002:01:00.1 \</span>
+<span class="go">-drive file=&lt;rootfs.ext3&gt;,if=none,id=disk1,format=raw  \</span>
+<span class="go">-device virtio-blk-device,scsi=off,drive=disk1,id=virtio-disk1,bootindex=1 \</span>
+<span class="go">-netdev tap,id=net0,ifname=tap0,script=/etc/qemu-ifup_thunder \</span>
+<span class="go">-device virtio-net-device,netdev=net0 \</span>
+<span class="go">-serial stdio \</span>
+<span class="go">-mem-path /dev/hugepages</span>
+</pre></div>
+</div>
+</li>
+<li><p>Enable <strong>VFIO-NOIOMMU</strong> mode (optional):</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo 1 &gt; /sys/module/vfio/parameters/enable_unsafe_noiommu_mode</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>VFIO-NOIOMMU</strong> is required only when running in VM context and should not be enabled otherwise.</p>
+</div>
+</li>
+<li><p>Running testpmd:</p>
+<p>Follow instructions available in the document
+<a class="reference internal" href="build_and_test.html#pmd-build-and-test"><span class="std std-ref">compiling and testing a PMD for a NIC</span></a>
+to run testpmd.</p>
+<p>Example output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/app/dpdk-testpmd -l 0-3 -n 4 -a 0002:01:00.2 \</span>
+<span class="go">  -- -i --no-flush-rx \</span>
+<span class="go">  --port-topology=loop</span>
+
+<span class="go">...</span>
+
+<span class="go">PMD: rte_nicvf_pmd_init(): librte_net_thunderx nicvf version 1.0</span>
+
+<span class="go">...</span>
+<span class="go">EAL:   probe driver: 177d:11 rte_nicvf_pmd</span>
+<span class="go">EAL:   using IOMMU type 1 (Type 1)</span>
+<span class="go">EAL:   PCI memory mapped at 0x3ffade50000</span>
+<span class="go">EAL: Trying to map BAR 4 that contains the MSI-X table.</span>
+<span class="go">     Trying offsets: 0x40000000000:0x0000, 0x10000:0x1f0000</span>
+<span class="go">EAL:   PCI memory mapped at 0x3ffadc60000</span>
+<span class="go">PMD: nicvf_eth_dev_init(): nicvf: device (177d:11) 2:1:0:2</span>
+<span class="go">PMD: nicvf_eth_dev_init(): node=0 vf=1 mode=tns-bypass sqs=false</span>
+<span class="go">     loopback_supported=true</span>
+<span class="go">PMD: nicvf_eth_dev_init(): Port 0 (177d:11) mac=a6:c6:d9:17:78:01</span>
+<span class="go">Interactive-mode selected</span>
+<span class="go">Configuring Port 0 (socket 0)</span>
+<span class="go">...</span>
+
+<span class="go">PMD: nicvf_dev_configure(): Configured ethdev port0 hwcap=0x0</span>
+<span class="go">Port 0: A6:C6:D9:17:78:01</span>
+<span class="go">Checking link statuses...</span>
+<span class="go">Port 0 Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Done</span>
+<span class="go">testpmd&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="multiple-queue-set-per-dpdk-port-configuration">
+<h3><span class="section-number">49.5.2. </span>Multiple Queue Set per DPDK port configuration</h3>
+<p>There are two types of VFs:</p>
+<ul class="simple">
+<li><p>Primary VF</p></li>
+<li><p>Secondary VF</p></li>
+</ul>
+<p>Each port consists of a primary VF and n secondary VF(s). Each VF provides 8 Tx/Rx queues to a port.
+When a given port is configured to use more than 8 queues, it requires one (or more) secondary VF.
+Each secondary VF adds 8 additional queues to the queue set.</p>
+<p>During PMD driver initialization, the primary VF’s are enumerated by checking the
+specific flag (see sqs message in DPDK boot log - sqs indicates secondary queue set).
+They are at the beginning of VF list (the remain ones are secondary VF’s).</p>
+<p>The primary VFs are used as master queue sets. Secondary VFs provide
+additional queue sets for primary ones. If a port is configured for more then
+8 queues than it will request for additional queues from secondary VFs.</p>
+<p>Secondary VFs cannot be shared between primary VFs.</p>
+<p>Primary VFs are present on the beginning of the ‘Network devices using kernel
+driver’ list, secondary VFs are on the remaining on the remaining part of the list.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The VNIC driver in the multiqueue setup works differently than other drivers like <cite>ixgbe</cite>.
+We need to bind separately each specific queue set device with the <code class="docutils literal notranslate"><span class="pre">usertools/dpdk-devbind.py</span></code> utility.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Depending on the hardware used, the kernel driver sets a threshold <code class="docutils literal notranslate"><span class="pre">vf_id</span></code>. VFs that try to attached with an id below or equal to
+this boundary are considered primary VFs. VFs that try to attach with an id above this boundary are considered secondary VFs.</p>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="lbk-hw-access">
+<h3><span class="section-number">49.5.3. </span>LBK HW Access</h3>
+<p>Loopback HW Unit (LBK) receives packets from NIC-RX and sends packets back to NIC-TX.
+The loopback block has N channels and contains data buffering that is shared across
+all channels. Four primary VFs are reserved as loopback ports.</p>
+</div>
+<div class="section" id="example-device-binding">
+<h3><span class="section-number">49.5.4. </span>Example device binding</h3>
+<p>If a system has three interfaces, a total of 18 VF devices will be created
+on a non-NUMA machine.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>NUMA systems have 12 VFs per port and non-NUMA 6 VFs per port.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> usertools/dpdk-devbind.py --status
+
+<span class="go">Network devices using DPDK-compatible driver</span>
+<span class="go">============================================</span>
+<span class="go">&lt;none&gt;</span>
+
+<span class="go">Network devices using kernel driver</span>
+<span class="go">===================================</span>
+<span class="go">0000:01:10.0 &#39;THUNDERX BGX (Common Ethernet Interface) a026&#39; if= drv=thunder-BGX unused=vfio-pci</span>
+<span class="go">0000:01:10.1 &#39;THUNDERX BGX (Common Ethernet Interface) a026&#39; if= drv=thunder-BGX unused=vfio-pci</span>
+<span class="go">0001:01:00.0 &#39;THUNDERX Network Interface Controller a01e&#39; if= drv=thunder-nic unused=vfio-pci</span>
+<span class="go">0001:01:00.1 &#39;Device a034&#39; if=eth0 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:00.2 &#39;Device a034&#39; if=eth1 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:00.3 &#39;Device a034&#39; if=eth2 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:00.4 &#39;Device a034&#39; if=eth3 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:00.5 &#39;Device a034&#39; if=eth4 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:00.6 &#39;Device a034&#39; if=lbk0 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:00.7 &#39;Device a034&#39; if=lbk1 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:01.0 &#39;Device a034&#39; if=lbk2 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:01.1 &#39;Device a034&#39; if=lbk3 drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:01.2 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:01.3 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:01.4 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:01.5 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:01.6 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:01.7 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:02.0 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:02.1 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+<span class="go">0001:01:02.2 &#39;Device a034&#39; if= drv=thunder-nicvf unused=vfio-pci</span>
+
+<span class="go">Other network devices</span>
+<span class="go">=====================</span>
+<span class="go">0002:00:03.0 &#39;Device a01f&#39; unused=vfio-pci,uio_pci_generic</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Here total no of primary VFs = 5 (variable, depends on no of ethernet ports present) + 4 (fixed, loopback ports).
+Ethernet ports are indicated as <cite>if=eth0</cite> while loopback ports as <cite>if=lbk0</cite>.</p>
+</div>
+</div></blockquote>
+<p>We want to bind two physical interfaces with 24 queues each device, we attach two primary VFs
+and four secondary VFs. In our example we choose two 10G interfaces eth1 (0002:01:00.2) and eth2 (0002:01:00.3).
+We will choose four secondary queue sets from the ending of the list (0001:01:01.2-0002:01:02.2).</p>
+<ol class="arabic">
+<li><p>Bind two primary VFs to the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usertools/dpdk-devbind.py -b vfio-pci 0002:01:00.2</span>
+<span class="go">usertools/dpdk-devbind.py -b vfio-pci 0002:01:00.3</span>
+</pre></div>
+</div>
+</li>
+<li><p>Bind four primary VFs to the <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">usertools/dpdk-devbind.py -b vfio-pci 0002:01:01.7</span>
+<span class="go">usertools/dpdk-devbind.py -b vfio-pci 0002:01:02.0</span>
+<span class="go">usertools/dpdk-devbind.py -b vfio-pci 0002:01:02.1</span>
+<span class="go">usertools/dpdk-devbind.py -b vfio-pci 0002:01:02.2</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The nicvf thunderx driver will make use of attached secondary VFs automatically during the interface configuration stage.</p>
+</div>
+<div class="section" id="thunder-nic-vf-s">
+<h3><span class="section-number">49.5.5. </span>Thunder-nic VF’s</h3>
+<dl>
+<dt>Use sysfs to distinguish thunder-nic primary VFs and secondary VFs.</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ls -l /sys/bus/pci/drivers/thunder-nic/</span>
+<span class="go">total 0</span>
+<span class="go">drwxr-xr-x  2 root root     0 Jan 22 11:19 ./</span>
+<span class="go">drwxr-xr-x 86 root root     0 Jan 22 11:07 ../</span>
+<span class="go">lrwxrwxrwx  1 root root     0 Jan 22 11:19 0001:01:00.0 -&gt; &#39;../../../../devices/platform/soc@0/849000000000.pci/pci0001:00/0001:00:10.0/0001:01:00.0&#39;/</span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cat /sys/bus/pci/drivers/thunder-nic/0001\:01\:00.0/sriov_sqs_assignment</span>
+<span class="go">12</span>
+<span class="go">0 0001:01:00.1 vfio-pci +: 12 13</span>
+<span class="go">1 0001:01:00.2 thunder-nicvf -:</span>
+<span class="go">2 0001:01:00.3 thunder-nicvf -:</span>
+<span class="go">3 0001:01:00.4 thunder-nicvf -:</span>
+<span class="go">4 0001:01:00.5 thunder-nicvf -:</span>
+<span class="go">5 0001:01:00.6 thunder-nicvf -:</span>
+<span class="go">6 0001:01:00.7 thunder-nicvf -:</span>
+<span class="go">7 0001:01:01.0 thunder-nicvf -:</span>
+<span class="go">8 0001:01:01.1 thunder-nicvf -:</span>
+<span class="go">9 0001:01:01.2 thunder-nicvf -:</span>
+<span class="go">10 0001:01:01.3 thunder-nicvf -:</span>
+<span class="go">11 0001:01:01.4 thunder-nicvf -:</span>
+<span class="go">12 0001:01:01.5 vfio-pci: 0</span>
+<span class="go">13 0001:01:01.6 vfio-pci: 0</span>
+<span class="go">14 0001:01:01.7 thunder-nicvf: 255</span>
+<span class="go">15 0001:01:02.0 thunder-nicvf: 255</span>
+<span class="go">16 0001:01:02.1 thunder-nicvf: 255</span>
+<span class="go">17 0001:01:02.2 thunder-nicvf: 255</span>
+<span class="go">18 0001:01:02.3 thunder-nicvf: 255</span>
+<span class="go">19 0001:01:02.4 thunder-nicvf: 255</span>
+<span class="go">20 0001:01:02.5 thunder-nicvf: 255</span>
+<span class="go">21 0001:01:02.6 thunder-nicvf: 255</span>
+<span class="go">22 0001:01:02.7 thunder-nicvf: 255</span>
+<span class="go">23 0001:01:03.0 thunder-nicvf: 255</span>
+<span class="go">24 0001:01:03.1 thunder-nicvf: 255</span>
+<span class="go">25 0001:01:03.2 thunder-nicvf: 255</span>
+<span class="go">26 0001:01:03.3 thunder-nicvf: 255</span>
+<span class="go">27 0001:01:03.4 thunder-nicvf: 255</span>
+<span class="go">28 0001:01:03.5 thunder-nicvf: 255</span>
+<span class="go">29 0001:01:03.6 thunder-nicvf: 255</span>
+<span class="go">30 0001:01:03.7 thunder-nicvf: 255</span>
+<span class="go">31 0001:01:04.0 thunder-nicvf: 255</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Every column that ends with ‘thunder-nicvf: number’ can be used as secondary VF.
+In printout above all entres after ‘14 0001:01:01.7 thunder-nicvf: 255’ can be used as secondary VF.</p>
+</div>
+</div>
+<div class="section" id="debugging-options">
+<h2><span class="section-number">49.6. </span>Debugging Options</h2>
+<dl>
+<dt>EAL command option to change  log level</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--log-level=pmd.net.thunderx.driver:info</span>
+<span class="go">or</span>
+<span class="go">--log-level=pmd.net.thunderx.driver,7</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+<div class="section" id="module-params">
+<h2><span class="section-number">49.7. </span>Module params</h2>
+<div class="section" id="skip-data-bytes">
+<h3><span class="section-number">49.7.1. </span>skip_data_bytes</h3>
+<p>This feature is used to create a hole between HEADROOM and actual data. Size of hole is specified
+in bytes as module param(“skip_data_bytes”) to pmd.
+This scheme is useful when application would like to insert vlan header without disturbing HEADROOM.</p>
+<dl>
+<dt>Example:</dt><dd><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">-a 0002:01:00.2,skip_data_bytes=8</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">49.8. </span>Limitations</h2>
+<div class="section" id="crc-stripping">
+<h3><span class="section-number">49.8.1. </span>CRC stripping</h3>
+<p>The ThunderX SoC family NICs strip the CRC for every packets coming into the
+host interface irrespective of the offload configuration.</p>
+</div>
+<div class="section" id="maximum-packet-length">
+<h3><span class="section-number">49.8.2. </span>Maximum packet length</h3>
+<p>The ThunderX SoC family NICs support a maximum of a 9K jumbo frame. The value
+is fixed and cannot be changed. So, even when the <code class="docutils literal notranslate"><span class="pre">rxmode.max_rx_pkt_len</span></code>
+member of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_eth_conf</span></code> is set to a value lower than 9200, frames
+up to 9200 bytes can still reach the host interface.</p>
+</div>
+<div class="section" id="maximum-packet-segments">
+<h3><span class="section-number">49.8.3. </span>Maximum packet segments</h3>
+<p>The ThunderX SoC family NICs support up to 12 segments per packet when working
+in scatter/gather mode. So, setting MTU will result with <code class="docutils literal notranslate"><span class="pre">EINVAL</span></code> when the
+frame size does not fit in the maximum number of segments.</p>
+</div>
+<div class="section" id="id1">
+<h3><span class="section-number">49.8.4. </span>skip_data_bytes</h3>
+<p>Maximum limit of skip_data_bytes is 128 bytes and number of bytes should be multiple of 8.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="txgbe.html" class="btn btn-neutral float-right" title="50. TXGBE Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tap.html" class="btn btn-neutral float-left" title="48. Tun|Tap Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

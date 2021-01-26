@@ -1,0 +1,358 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>7. Virtio_user for Container Networking &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Virtio_user as Exceptional Path" href="virtio_user_as_exceptional_path.html" />
+    <link rel="prev" title="6. VF daemon (VFd)" href="vfd.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTo Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lm_bond_virtio_sriov.html">1. Live Migration of VM with SR-IOV VF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lm_virtio_vhost_user.html">2. Live Migration of VM with Virtio on host running vhost_user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_bifurcation.html">3. Flow Bifurcation How-to Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">4. Generic flow API - examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pvp_reference_benchmark.html">5. PVP reference benchmark setup using testpmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vfd.html">6. VF daemon (VFd)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7. Virtio_user for Container Networking</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">7.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sample-usage">7.2. Sample Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">7.3. Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="virtio_user_as_exceptional_path.html">8. Virtio_user as Exceptional Path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_capture_framework.html">9. DPDK pdump Library and pdump Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry.html">10. DPDK Telemetry User Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug_troubleshoot.html">11. Debug &amp; Troubleshoot guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openwrt.html">12. Enable DPDK on OpenWrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avx512.html">13. Using AVX-512 with DPDK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">HowTo Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">7. </span>Virtio_user for Container Networking</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/howto/virtio_user_for_container_networking.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="virtio-user-for-container-networking">
+<span id="id1"></span><h1><span class="section-number">7. </span>Virtio_user for Container Networking</h1>
+<p>Container becomes more and more popular for strengths, like low overhead, fast
+boot-up time, and easy to deploy, etc. How to use DPDK to accelerate container
+networking becomes a common question for users. There are two use models of
+running DPDK inside containers, as shown in
+<a class="reference internal" href="#figure-use-models-for-running-dpdk-in-containers"><span class="std std-numref">Fig. 7.15</span></a>.</p>
+<div class="figure align-default" id="id2">
+<span id="figure-use-models-for-running-dpdk-in-containers"></span><img alt="../_images/use_models_for_running_dpdk_in_containers.svg" src="../_images/use_models_for_running_dpdk_in_containers.svg" /><p class="caption"><span class="caption-number">Fig. 7.15 </span><span class="caption-text">Use models of running DPDK inside container</span></p>
+</div>
+<p>This page will only cover aggregation model.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">7.1. </span>Overview</h2>
+<p>The virtual device, virtio-user, with unmodified vhost-user backend, is designed
+for high performance user space container networking or inter-process
+communication (IPC).</p>
+<p>The overview of accelerating container networking by virtio-user is shown
+in <a class="reference internal" href="#figure-virtio-user-for-container-networking"><span class="std std-numref">Fig. 7.16</span></a>.</p>
+<div class="figure align-default" id="id3">
+<span id="figure-virtio-user-for-container-networking"></span><img alt="../_images/virtio_user_for_container_networking.svg" src="../_images/virtio_user_for_container_networking.svg" /><p class="caption"><span class="caption-number">Fig. 7.16 </span><span class="caption-text">Overview of accelerating container networking by virtio-user</span></p>
+</div>
+<p>Different virtio PCI devices we usually use as a para-virtualization I/O in the
+context of QEMU/VM, the basic idea here is to present a kind of virtual devices,
+which can be attached and initialized by DPDK. The device emulation layer by
+QEMU in VM’s context is saved by just registering a new kind of virtual device
+in DPDK’s ether layer. And to minimize the change, we reuse already-existing
+virtio PMD code (driver/net/virtio/).</p>
+<p>Virtio, in essence, is a shm-based solution to transmit/receive packets. How is
+memory shared? In VM’s case, qemu always shares the whole physical layout of VM
+to vhost backend. But it’s not feasible for a container, as a process, to share
+all virtual memory regions to backend. So only those virtual memory regions
+(aka, hugepages initialized in DPDK) are sent to backend. It restricts that only
+addresses in these areas can be used to transmit or receive packets.</p>
+</div>
+<div class="section" id="sample-usage">
+<h2><span class="section-number">7.2. </span>Sample Usage</h2>
+<p>Here we use Docker as container engine. It also applies to LXC, Rocket with
+some minor changes.</p>
+<ol class="arabic">
+<li><p>Write a Dockerfile like below.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cat &lt;&lt;EOT &gt;&gt; Dockerfile</span>
+<span class="go">FROM ubuntu:latest</span>
+<span class="go">WORKDIR /usr/src/dpdk</span>
+<span class="go">COPY . /usr/src/dpdk</span>
+<span class="go">ENV PATH &quot;$PATH:/usr/src/dpdk/&lt;build_dir&gt;/app/&quot;</span>
+<span class="go">EOT</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Build a Docker image.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker build -t dpdk-app-testpmd .</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Start a testpmd on the host with a vhost-user port.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span><span class="o">(</span>testpmd<span class="o">)</span> -l <span class="m">0</span>-1 -n <span class="m">4</span> --socket-mem <span class="m">1024</span>,1024 <span class="se">\</span>
+    --vdev <span class="s1">&#39;eth_vhost0,iface=/tmp/sock0&#39;</span> <span class="se">\</span>
+    --file-prefix<span class="o">=</span>host --no-pci -- -i
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p>Start a container instance with a virtio-user port.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">docker run -i -t -v /tmp/sock0:/var/run/usvhost \</span>
+<span class="go">    -v /dev/hugepages:/dev/hugepages \</span>
+<span class="go">    dpdk-app-testpmd testpmd -l 6-7 -n 4 -m 1024 --no-pci \</span>
+<span class="go">    --vdev=virtio_user0,path=/var/run/usvhost \</span>
+<span class="go">    --file-prefix=container \</span>
+<span class="go">    -- -i</span>
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ol>
+<p>Note: If we run all above setup on the host, it’s a shm-based IPC.</p>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">7.3. </span>Limitations</h2>
+<dl class="simple">
+<dt>We have below limitations in this solution:</dt><dd><ul class="simple">
+<li><p>Cannot work with –huge-unlink option. As we need to reopen the hugepage
+file to share with vhost backend.</p></li>
+<li><p>Cannot work with –no-huge option. Currently, DPDK uses anonymous mapping
+under this option which cannot be reopened to share with vhost backend.</p></li>
+<li><p>Cannot work when there are more than VHOST_MEMORY_MAX_NREGIONS(8) hugepages.
+If you have more regions (especially when 2MB hugepages are used), the option,
+–single-file-segments, can help to reduce the number of shared files.</p></li>
+<li><p>Applications should not use file name like HUGEFILE_FMT (“%smap_%d”). That
+will bring confusion when sharing hugepage files with backend by name.</p></li>
+<li><p>Root privilege is a must. DPDK resolves physical addresses of hugepages
+which seems not necessary, and some discussions are going on to remove this
+restriction.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="virtio_user_as_exceptional_path.html" class="btn btn-neutral float-right" title="8. Virtio_user as Exceptional Path" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="vfd.html" class="btn btn-neutral float-left" title="6. VF daemon (VFd)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

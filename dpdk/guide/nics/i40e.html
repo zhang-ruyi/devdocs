@@ -1,0 +1,1151 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>22. I40E Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="23. ICE Poll Mode Driver" href="ice.html" />
+    <link rel="prev" title="21. HNS3 Poll Mode Driver" href="hns3.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">2. Features Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_and_test.html">3. Compiling and testing a PMD for a NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_packet.html">4. AF_PACKET Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_xdp.html">5. AF_XDP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ark.html">6. ARK Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atlantic.html">7. Aquantia Atlantic DPDK Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avp.html">8. AVP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="axgbe.html">9. AXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">10. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnxt.html">11. BNXT Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">12. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">13. DPAA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">14. DPAA2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">15. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">16. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enetc.html">17. ENETC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">18. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">19. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hinic.html">20. HINIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hns3.html">21. HNS3 Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">22. I40E Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">22.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">22.2. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#recommended-matching-list">22.3. Recommended Matching List</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pre-installation-configuration">22.4. Pre-Installation Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#config-file-options">22.4.1. Config File Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#runtime-config-options">22.4.2. Runtime Config Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vector-rx-pre-conditions">22.4.3. Vector RX Pre-conditions</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#driver-compilation-and-testing">22.5. Driver compilation and testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sr-iov-prerequisites-and-sample-application-notes">22.6. SR-IOV: Prerequisites and sample Application Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sample-application-notes">22.7. Sample Application Notes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-filter">22.7.1. Vlan filter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-director">22.7.2. Flow Director</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#floating-veb">22.7.3. Floating VEB</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dynamic-device-personalization-ddp">22.7.4. Dynamic Device Personalization (DDP)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-set-configuration">22.7.5. Input set configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#queue-region-configuration">22.7.6. Queue region configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generic-flow-api">22.7.7. Generic flow API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations-or-known-issues">22.8. Limitations or Known issues</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mpls-packet-classification">22.8.1. MPLS packet classification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#byte-rx-descriptor-setting-on-dpdk-vf">22.8.2. 16 Byte RX Descriptor setting on DPDK VF</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#receive-packets-with-ethertype-0x88a8">22.8.3. Receive packets with Ethertype 0x88A8</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#incorrect-rx-statistics-when-packet-is-oversize">22.8.4. Incorrect Rx statistics when packet is oversize</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-tx-statistics-may-be-incorrect-when-register-overflowed">22.8.5. RX/TX statistics may be incorrect when register overflowed</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vf-tc-max-bandwidth-setting">22.8.6. VF &amp; TC max bandwidth setting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tc-tx-scheduling-mode-setting">22.8.7. TC TX scheduling mode setting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vf-performance-is-impacted-by-pci-extended-tag-setting">22.8.8. VF performance is impacted by PCI extended tag setting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-strip-of-vf">22.8.9. Vlan strip of VF</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dcb-function">22.8.10. DCB function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#global-configuration-warning">22.8.11. Global configuration warning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cloud-filter">22.8.12. Cloud Filter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#high-performance-of-small-packets-on-40gbe-nic">22.9. High Performance of Small Packets on 40GbE NIC</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use-16-bytes-rx-descriptor-size">22.9.1. Use 16 Bytes RX Descriptor Size</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#input-set-requirement-of-each-pctype-for-fdir">22.9.2. Input set requirement of each pctype for FDIR</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#example-of-getting-best-performance-with-l3fwd-example">22.10. Example of getting best performance with l3fwd example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tx-bytes-affected-by-the-link-status-change">22.10.1. Tx bytes affected by the link status change</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ice.html">23. ICE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igb.html">24. IGB Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igc.html">25. IGC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ionic.html">26. IONIC Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipn3ke.html">27. IPN3KE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">28. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">29. Intel Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kni.html">30. KNI Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="liquidio.html">31. LiquidIO VF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memif.html">32. Memif Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">33. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">34. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvneta.html">35. MVNETA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvpp2.html">36. MVPP2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netvsc.html">37. Netvsc poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfb.html">38. NFB poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">39. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">40. NULL Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">41. OCTEON TX Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">42. OCTEON TX2 Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfe.html">43. PFE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qede.html">44. QEDE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sfc_efx.html">45. Solarflare libefx-based Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="softnic.html">46. Soft NIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">47. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tap.html">48. Tun|Tap Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thunderx.html">49. ThunderX NICVF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txgbe.html">50. TXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdev_netvsc.html">51. VDEV_NETVSC driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">52. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">53. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">54. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">55. Libpcap and Ring Based Poll Mode Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fail_safe.html">56. Fail-safe poll mode driver library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">22. </span>I40E Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/i40e.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i40e-poll-mode-driver">
+<h1><span class="section-number">22. </span>I40E Poll Mode Driver</h1>
+<p>The i40e PMD (<strong>librte_net_i40e</strong>) provides poll mode driver support for
+10/25/40 Gbps Intel® Ethernet 700 Series Network Adapters based on
+the Intel Ethernet Controller X710/XL710/XXV710 and Intel Ethernet
+Connection X722 (only support part of features).</p>
+<div class="section" id="features">
+<h2><span class="section-number">22.1. </span>Features</h2>
+<p>Features of the i40e PMD are:</p>
+<ul class="simple">
+<li><p>Multiple queues for TX and RX</p></li>
+<li><p>Receiver Side Scaling (RSS)</p></li>
+<li><p>MAC/VLAN filtering</p></li>
+<li><p>Packet type information</p></li>
+<li><p>Flow director</p></li>
+<li><p>Cloud filter</p></li>
+<li><p>Checksum offload</p></li>
+<li><p>VLAN/QinQ stripping and inserting</p></li>
+<li><p>TSO offload</p></li>
+<li><p>Promiscuous mode</p></li>
+<li><p>Multicast mode</p></li>
+<li><p>Port hardware statistics</p></li>
+<li><p>Jumbo frames</p></li>
+<li><p>Link state information</p></li>
+<li><p>Link flow control</p></li>
+<li><p>Mirror on port, VLAN and VSI</p></li>
+<li><p>Interrupt mode for RX</p></li>
+<li><p>Scattered and gather for TX and RX</p></li>
+<li><p>Vector Poll mode driver</p></li>
+<li><p>DCB</p></li>
+<li><p>VMDQ</p></li>
+<li><p>SR-IOV VF</p></li>
+<li><p>Hot plug</p></li>
+<li><p>IEEE1588/802.1AS timestamping</p></li>
+<li><p>VF Daemon (VFD) - EXPERIMENTAL</p></li>
+<li><p>Dynamic Device Personalization (DDP)</p></li>
+<li><p>Queue region configuration</p></li>
+<li><p>Virtual Function Port Representors</p></li>
+<li><p>Malicious Device Drive event catch and notify</p></li>
+<li><p>Generic flow API</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">22.2. </span>Prerequisites</h2>
+<ul>
+<li><p>Identifying your adapter using <a class="reference external" href="http://www.intel.com/support">Intel Support</a> and get the latest NVM/FW images.</p></li>
+<li><p>Follow the DPDK <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a> to setup the basic DPDK environment.</p></li>
+<li><p>To get better performance on Intel platforms, please follow the “How to get best performance with NICs on Intel platforms”
+section of the <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a>.</p></li>
+<li><p>Upgrade the NVM/FW version following the <a class="reference external" href="https://www-ssl.intel.com/content/www/us/en/embedded/products/networking/nvm-update-tool-quick-linux-usage-guide.html">Intel® Ethernet NVM Update Tool Quick Usage Guide for Linux</a> and <a class="reference external" href="https://www.intel.com/content/www/us/en/embedded/products/networking/nvm-update-tool-quick-efi-usage-guide.html">Intel® Ethernet NVM Update Tool: Quick Usage Guide for EFI</a> if needed.</p></li>
+<li><p>For information about supported media, please refer to this document: <a class="reference external" href="http://www.intel.com/content/dam/www/public/us/en/documents/release-notes/xl710-ethernet-controller-feature-matrix.pdf">Intel® Ethernet Controller X710/XXV710/XL710 Feature Support Matrix</a>.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Some adapters based on the Intel(R) Ethernet Controller 700 Series only
+support Intel Ethernet Optics modules. On these adapters, other modules are not
+supported and will not function.</p></li>
+<li><p>For connections based on Intel(R) Ethernet Controller 700 Series,
+support is dependent on your system board. Please see your vendor for details.</p></li>
+<li><p>In all cases Intel recommends using Intel Ethernet Optics; other modules
+may function but are not validated by Intel. Contact Intel for supported media types.</p></li>
+</ul>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="recommended-matching-list">
+<h2><span class="section-number">22.3. </span>Recommended Matching List</h2>
+<p>It is highly recommended to upgrade the i40e kernel driver and firmware to
+avoid the compatibility issues with i40e PMD. Here is the suggested matching
+list which has been tested and verified. The detailed information can refer
+to chapter Tested Platforms/Tested NICs in release notes.</p>
+<p>For X710/XL710/XXV710,</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 42%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>DPDK version</p></th>
+<th class="head"><p>Kernel driver version</p></th>
+<th class="head"><p>Firmware version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>20.11</p></td>
+<td><p>2.13.10</p></td>
+<td><p>8.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>20.08</p></td>
+<td><p>2.12.6</p></td>
+<td><p>7.30</p></td>
+</tr>
+<tr class="row-even"><td><p>20.05</p></td>
+<td><p>2.11.27</p></td>
+<td><p>7.30</p></td>
+</tr>
+<tr class="row-odd"><td><p>20.02</p></td>
+<td><p>2.10.19</p></td>
+<td><p>7.20</p></td>
+</tr>
+<tr class="row-even"><td><p>19.11</p></td>
+<td><p>2.9.21</p></td>
+<td><p>7.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>19.08</p></td>
+<td><p>2.8.43</p></td>
+<td><p>7.00</p></td>
+</tr>
+<tr class="row-even"><td><p>19.05</p></td>
+<td><p>2.7.29</p></td>
+<td><p>6.80</p></td>
+</tr>
+<tr class="row-odd"><td><p>19.02</p></td>
+<td><p>2.7.26</p></td>
+<td><p>6.80</p></td>
+</tr>
+<tr class="row-even"><td><p>18.11</p></td>
+<td><p>2.4.6</p></td>
+<td><p>6.01</p></td>
+</tr>
+<tr class="row-odd"><td><p>18.08</p></td>
+<td><p>2.4.6</p></td>
+<td><p>6.01</p></td>
+</tr>
+<tr class="row-even"><td><p>18.05</p></td>
+<td><p>2.4.6</p></td>
+<td><p>6.01</p></td>
+</tr>
+<tr class="row-odd"><td><p>18.02</p></td>
+<td><p>2.4.3</p></td>
+<td><p>6.01</p></td>
+</tr>
+<tr class="row-even"><td><p>17.11</p></td>
+<td><p>2.1.26</p></td>
+<td><p>6.01</p></td>
+</tr>
+<tr class="row-odd"><td><p>17.08</p></td>
+<td><p>2.0.19</p></td>
+<td><p>6.01</p></td>
+</tr>
+<tr class="row-even"><td><p>17.05</p></td>
+<td><p>1.5.23</p></td>
+<td><p>5.05</p></td>
+</tr>
+<tr class="row-odd"><td><p>17.02</p></td>
+<td><p>1.5.23</p></td>
+<td><p>5.05</p></td>
+</tr>
+<tr class="row-even"><td><p>16.11</p></td>
+<td><p>1.5.23</p></td>
+<td><p>5.05</p></td>
+</tr>
+<tr class="row-odd"><td><p>16.07</p></td>
+<td><p>1.4.25</p></td>
+<td><p>5.04</p></td>
+</tr>
+<tr class="row-even"><td><p>16.04</p></td>
+<td><p>1.4.25</p></td>
+<td><p>5.02</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p>For X722,</p>
+<blockquote>
+<div><table class="docutils align-default">
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 42%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>DPDK version</p></th>
+<th class="head"><p>Kernel driver version</p></th>
+<th class="head"><p>Firmware version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>20.11</p></td>
+<td><p>2.13.10</p></td>
+<td><p>5.00</p></td>
+</tr>
+<tr class="row-odd"><td><p>20.08</p></td>
+<td><p>2.12.6</p></td>
+<td><p>4.11</p></td>
+</tr>
+<tr class="row-even"><td><p>20.05</p></td>
+<td><p>2.11.27</p></td>
+<td><p>4.11</p></td>
+</tr>
+<tr class="row-odd"><td><p>20.02</p></td>
+<td><p>2.10.19</p></td>
+<td><p>4.11</p></td>
+</tr>
+<tr class="row-even"><td><p>19.11</p></td>
+<td><p>2.9.21</p></td>
+<td><p>4.10</p></td>
+</tr>
+<tr class="row-odd"><td><p>19.08</p></td>
+<td><p>2.9.21</p></td>
+<td><p>4.10</p></td>
+</tr>
+<tr class="row-even"><td><p>19.05</p></td>
+<td><p>2.7.29</p></td>
+<td><p>3.33</p></td>
+</tr>
+<tr class="row-odd"><td><p>19.02</p></td>
+<td><p>2.7.26</p></td>
+<td><p>3.33</p></td>
+</tr>
+<tr class="row-even"><td><p>18.11</p></td>
+<td><p>2.4.6</p></td>
+<td><p>3.33</p></td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+</div>
+<div class="section" id="pre-installation-configuration">
+<h2><span class="section-number">22.4. </span>Pre-Installation Configuration</h2>
+<div class="section" id="config-file-options">
+<h3><span class="section-number">22.4.1. </span>Config File Options</h3>
+<p>The following options can be modified in the <code class="docutils literal notranslate"><span class="pre">config/rte_config.h</span></code> file.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_LIBRTE_I40E_QUEUE_NUM_PER_PF</span></code> (default <code class="docutils literal notranslate"><span class="pre">64</span></code>)</p>
+<p>Number of queues reserved for PF.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_LIBRTE_I40E_QUEUE_NUM_PER_VM</span></code> (default <code class="docutils literal notranslate"><span class="pre">4</span></code>)</p>
+<p>Number of queues reserved for each VMDQ Pool.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="runtime-config-options">
+<h3><span class="section-number">22.4.2. </span>Runtime Config Options</h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Reserved</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">Queues</span> <span class="pre">per</span> <span class="pre">VF</span></code> (default <code class="docutils literal notranslate"><span class="pre">4</span></code>)</p>
+<p>The number of reserved queue per VF is determined by its host PF. If the
+PCI address of an i40e PF is aaaa:bb.cc, the number of reserved queues per
+VF can be configured with EAL parameter like -a aaaa:bb.cc,queue-num-per-vf=n.
+The value n can be 1, 2, 4, 8 or 16. If no such parameter is configured, the
+number of reserved queues per VF is 4 by default. If VF request more than
+reserved queues per VF, PF will able to allocate max to 16 queues after a VF
+reset.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Support</span> <span class="pre">multiple</span> <span class="pre">driver</span></code> (default <code class="docutils literal notranslate"><span class="pre">disable</span></code>)</p>
+<p>There was a multiple driver support issue during use of 700 series Ethernet
+Adapter with both Linux kernel and DPDK PMD. To fix this issue, <code class="docutils literal notranslate"><span class="pre">devargs</span></code>
+parameter <code class="docutils literal notranslate"><span class="pre">support-multi-driver</span></code> is introduced, for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 84:00.0,support-multi-driver=1
+</pre></div>
+</div>
+<p>With the above configuration, DPDK PMD will not change global registers, and
+will switch PF interrupt from IntN to Int0 to avoid interrupt conflict between
+DPDK and Linux Kernel.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Support</span> <span class="pre">VF</span> <span class="pre">Port</span> <span class="pre">Representor</span></code> (default <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">enabled</span></code>)</p>
+<p>The i40e PF PMD supports the creation of VF port representors for the control
+and monitoring of i40e virtual function devices. Each port representor
+corresponds to a single virtual function of that device. Using the <code class="docutils literal notranslate"><span class="pre">devargs</span></code>
+option <code class="docutils literal notranslate"><span class="pre">representor</span></code> the user can specify which virtual functions to create
+port representors for on initialization of the PF PMD by passing the VF IDs of
+the VFs which are required.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a DBDF,representor=[0,1,4]
+</pre></div>
+</div>
+<p>Currently hot-plugging of representor ports is not supported so all required
+representors must be specified on the creation of the PF.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Use</span> <span class="pre">latest</span> <span class="pre">supported</span> <span class="pre">vector</span></code> (default <code class="docutils literal notranslate"><span class="pre">disable</span></code>)</p>
+<p>Latest supported vector path may not always get the best perf so vector path was
+recommended to use only on later platform. But users may want the latest vector path
+since it can get better perf in some real work loading cases. So <code class="docutils literal notranslate"><span class="pre">devargs</span></code> param
+<code class="docutils literal notranslate"><span class="pre">use-latest-supported-vec</span></code> is introduced, for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 84:00.0,use-latest-supported-vec=1
+</pre></div>
+</div>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Enable</span> <span class="pre">validation</span> <span class="pre">for</span> <span class="pre">VF</span> <span class="pre">message</span></code> (default <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">enabled</span></code>)</p>
+<p>The PF counts messages from each VF. If in any period of seconds the message
+statistic from a VF exceeds maximal limitation, the PF will ignore any new message
+from that VF for some seconds.
+Format – “<a class="reference external" href="mailto:maximal-message&#37;&#52;&#48;period-seconds">maximal-message<span>&#64;</span>period-seconds</a>:ignore-seconds”
+For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 84:00.0,vf_msg_cfg=80@120:180
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="vector-rx-pre-conditions">
+<h3><span class="section-number">22.4.3. </span>Vector RX Pre-conditions</h3>
+<p>For Vector RX it is assumed that the number of descriptor rings will be a power
+of 2. With this pre-condition, the ring pointer can easily scroll back to the
+head after hitting the tail without a conditional check. In addition Vector RX
+can use this assumption to do a bit mask using <code class="docutils literal notranslate"><span class="pre">ring_size</span> <span class="pre">-</span> <span class="pre">1</span></code>.</p>
+</div>
+</div>
+<div class="section" id="driver-compilation-and-testing">
+<h2><span class="section-number">22.5. </span>Driver compilation and testing</h2>
+<p>Refer to the document <a class="reference internal" href="build_and_test.html#pmd-build-and-test"><span class="std std-ref">compiling and testing a PMD for a NIC</span></a>
+for details.</p>
+</div>
+<div class="section" id="sr-iov-prerequisites-and-sample-application-notes">
+<h2><span class="section-number">22.6. </span>SR-IOV: Prerequisites and sample Application Notes</h2>
+<ol class="arabic">
+<li><p>Load the kernel module:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">modprobe i40e</span>
+</pre></div>
+</div>
+<p>Check the output in dmesg:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">i40e 0000:83:00.1 ens802f0: renamed from eth0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Bring up the PF ports:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ifconfig ens802f0 up</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create VF device(s):</p>
+<p>Echo the number of VFs to be created into the <code class="docutils literal notranslate"><span class="pre">sriov_numvfs</span></code> sysfs entry
+of the parent PF.</p>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo 2 &gt; /sys/devices/pci0000:00/0000:00:03.0/0000:81:00.0/sriov_numvfs</span>
+</pre></div>
+</div>
+</li>
+<li><p>Assign VF MAC address:</p>
+<p>Assign MAC address to the VF using iproute2 utility. The syntax is:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ip link set &lt;PF netdev id&gt; vf &lt;VF id&gt; mac &lt;macaddr&gt;</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ip link set ens802f0 vf 0 mac a0:b0:c0:d0:e0:f0</span>
+</pre></div>
+</div>
+</li>
+<li><p>Assign VF to VM, and bring up the VM.
+Please see the documentation for the <em>I40E/IXGBE/IGB Virtual Function Driver</em>.</p></li>
+<li><p>Running testpmd:</p>
+<p>Follow instructions available in the document
+<a class="reference internal" href="build_and_test.html#pmd-build-and-test"><span class="std std-ref">compiling and testing a PMD for a NIC</span></a>
+to run testpmd.</p>
+<p>Example output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">...</span>
+<span class="go">EAL: PCI device 0000:83:00.0 on NUMA socket 1</span>
+<span class="go">EAL: probe driver: 8086:1572 rte_i40e_pmd</span>
+<span class="go">EAL: PCI memory mapped at 0x7f7f80000000</span>
+<span class="go">EAL: PCI memory mapped at 0x7f7f80800000</span>
+<span class="go">PMD: eth_i40e_dev_init(): FW 5.0 API 1.5 NVM 05.00.02 eetrack 8000208a</span>
+<span class="go">Interactive-mode selected</span>
+<span class="go">Configuring Port 0 (socket 0)</span>
+<span class="go">...</span>
+
+<span class="go">PMD: i40e_dev_rx_queue_setup(): Rx Burst Bulk Alloc Preconditions are</span>
+<span class="go">satisfied.Rx Burst Bulk Alloc function will be used on port=0, queue=0.</span>
+
+<span class="go">...</span>
+<span class="go">Port 0: 68:05:CA:26:85:84</span>
+<span class="go">Checking link statuses...</span>
+<span class="go">Port 0 Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Done</span>
+
+<span class="go">testpmd&gt;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="sample-application-notes">
+<h2><span class="section-number">22.7. </span>Sample Application Notes</h2>
+<div class="section" id="vlan-filter">
+<h3><span class="section-number">22.7.1. </span>Vlan filter</h3>
+<p>Vlan filter only works when Promiscuous mode is off.</p>
+<p>To start <code class="docutils literal notranslate"><span class="pre">testpmd</span></code>, and add vlan 10 to port 0:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/app/dpdk-testpmd -l 0-15 -n 4 -- -i --forward-mode=mac</span>
+<span class="go">...</span>
+
+<span class="go">testpmd&gt; set promisc 0 off</span>
+<span class="go">testpmd&gt; rx_vlan add 10 0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="flow-director">
+<h3><span class="section-number">22.7.2. </span>Flow Director</h3>
+<p>The Flow Director works in receive mode to identify specific flows or sets of flows and route them to specific queues.
+The Flow Director filters can match the different fields for different type of packet: flow type, specific input set per flow type and the flexible payload.</p>
+<p>The default input set of each flow type is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>ipv4-other : src_ip_address, dst_ip_address
+ipv4-frag  : src_ip_address, dst_ip_address
+ipv4-tcp   : src_ip_address, dst_ip_address, src_port, dst_port
+ipv4-udp   : src_ip_address, dst_ip_address, src_port, dst_port
+ipv4-sctp  : src_ip_address, dst_ip_address, src_port, dst_port,
+             verification_tag
+ipv6-other : src_ip_address, dst_ip_address
+ipv6-frag  : src_ip_address, dst_ip_address
+ipv6-tcp   : src_ip_address, dst_ip_address, src_port, dst_port
+ipv6-udp   : src_ip_address, dst_ip_address, src_port, dst_port
+ipv6-sctp  : src_ip_address, dst_ip_address, src_port, dst_port,
+             verification_tag
+l2_payload : ether_type
+</pre></div>
+</div>
+<p>The flex payload is selected from offset 0 to 15 of packet’s payload by default, while it is masked out from matching.</p>
+<p>Start <code class="docutils literal notranslate"><span class="pre">testpmd</span></code> with <code class="docutils literal notranslate"><span class="pre">--disable-rss</span></code> and <code class="docutils literal notranslate"><span class="pre">--pkt-filter-mode=perfect</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/app/dpdk-testpmd -l 0-15 -n 4 -- -i --disable-rss \</span>
+<span class="go">              --pkt-filter-mode=perfect --rxq=8 --txq=8 --nb-cores=8 \</span>
+<span class="go">              --nb-ports=1</span>
+</pre></div>
+</div>
+<p>Add a rule to direct <code class="docutils literal notranslate"><span class="pre">ipv4-udp</span></code> packet whose <code class="docutils literal notranslate"><span class="pre">dst_ip=2.2.2.5,</span> <span class="pre">src_ip=2.2.2.3,</span> <span class="pre">src_port=32,</span> <span class="pre">dst_port=32</span></code> to queue 1:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; flow create 0 ingress pattern eth / ipv4 src is 2.2.2.3 \</span>
+<span class="go">         dst is 2.2.2.5 / udp src is 32 dst is 32 / end \</span>
+<span class="go">         actions mark id 1 / queue index 1 / end</span>
+</pre></div>
+</div>
+<p>Check the flow director status:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port fdir 0</span>
+
+<span class="gp">#</span><span class="c1">####################### FDIR infos for port 0      ####################</span>
+<span class="go">  MODE:   PERFECT</span>
+<span class="go">  SUPPORTED FLOW TYPE:  ipv4-frag ipv4-tcp ipv4-udp ipv4-sctp ipv4-other</span>
+<span class="go">                        ipv6-frag ipv6-tcp ipv6-udp ipv6-sctp ipv6-other</span>
+<span class="go">                        l2_payload</span>
+<span class="go">  FLEX PAYLOAD INFO:</span>
+<span class="go">  max_len:       16          payload_limit: 480</span>
+<span class="go">  payload_unit:  2           payload_seg:   3</span>
+<span class="go">  bitmask_unit:  2           bitmask_num:   2</span>
+<span class="go">  MASK:</span>
+<span class="go">    vlan_tci: 0x0000,</span>
+<span class="go">    src_ipv4: 0x00000000,</span>
+<span class="go">    dst_ipv4: 0x00000000,</span>
+<span class="go">    src_port: 0x0000,</span>
+<span class="go">    dst_port: 0x0000</span>
+<span class="go">    src_ipv6: 0x00000000,0x00000000,0x00000000,0x00000000,</span>
+<span class="go">    dst_ipv6: 0x00000000,0x00000000,0x00000000,0x00000000</span>
+<span class="go">  FLEX PAYLOAD SRC OFFSET:</span>
+<span class="go">    L2_PAYLOAD:    0      1      2      3      4      5      6  ...</span>
+<span class="go">    L3_PAYLOAD:    0      1      2      3      4      5      6  ...</span>
+<span class="go">    L4_PAYLOAD:    0      1      2      3      4      5      6  ...</span>
+<span class="go">  FLEX MASK CFG:</span>
+<span class="go">    ipv4-udp:    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv4-tcp:    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv4-sctp:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv4-other:  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv4-frag:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-udp:    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-tcp:    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-sctp:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-other:  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    ipv6-frag:   00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">    l2_payload:  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00</span>
+<span class="go">  guarant_count: 1           best_count:    0</span>
+<span class="go">  guarant_space: 512         best_space:    7168</span>
+<span class="go">  collision:     0           free:          0</span>
+<span class="go">  maxhash:       0           maxlen:        0</span>
+<span class="go">  add:           0           remove:        0</span>
+<span class="go">  f_add:         0           f_remove:      0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="floating-veb">
+<h3><span class="section-number">22.7.3. </span>Floating VEB</h3>
+<p>The Intel® Ethernet 700 Series support a feature called
+“Floating VEB”.</p>
+<p>A Virtual Ethernet Bridge (VEB) is an IEEE Edge Virtual Bridging (EVB) term
+for functionality that allows local switching between virtual endpoints within
+a physical endpoint and also with an external bridge/network.</p>
+<p>A “Floating” VEB doesn’t have an uplink connection to the outside world so all
+switching is done internally and remains within the host. As such, this
+feature provides security benefits.</p>
+<p>In addition, a Floating VEB overcomes a limitation of normal VEBs where they
+cannot forward packets when the physical link is down. Floating VEBs don’t need
+to connect to the NIC port so they can still forward traffic from VF to VF
+even when the physical link is down.</p>
+<p>Therefore, with this feature enabled VFs can be limited to communicating with
+each other but not an outside network, and they can do so even when there is
+no physical uplink on the associated NIC port.</p>
+<p>To enable this feature, the user should pass a <code class="docutils literal notranslate"><span class="pre">devargs</span></code> parameter to the
+EAL, for example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 84:00.0,enable_floating_veb=1
+</pre></div>
+</div>
+<p>In this configuration the PMD will use the floating VEB feature for all the
+VFs created by this PF device.</p>
+<p>Alternatively, the user can specify which VFs need to connect to this floating
+VEB using the <code class="docutils literal notranslate"><span class="pre">floating_veb_list</span></code> argument:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 84:00.0,enable_floating_veb=1,floating_veb_list=1;3-4
+</pre></div>
+</div>
+<p>In this example <code class="docutils literal notranslate"><span class="pre">VF1</span></code>, <code class="docutils literal notranslate"><span class="pre">VF3</span></code> and <code class="docutils literal notranslate"><span class="pre">VF4</span></code> connect to the floating VEB,
+while other VFs connect to the normal VEB.</p>
+<p>The current implementation only supports one floating VEB and one regular
+VEB. VFs can connect to a floating VEB or a regular VEB according to the
+configuration passed on the EAL command line.</p>
+<p>The floating VEB functionality requires a NIC firmware version of 5.0
+or greater.</p>
+</div>
+<div class="section" id="dynamic-device-personalization-ddp">
+<h3><span class="section-number">22.7.4. </span>Dynamic Device Personalization (DDP)</h3>
+<p>The Intel® Ethernet 700 Series except for the Intel Ethernet Connection
+X722 support a feature called “Dynamic Device Personalization (DDP)”,
+which is used to configure hardware by downloading a profile to support
+protocols/filters which are not supported by default. The DDP
+functionality requires a NIC firmware version of 6.0 or greater.</p>
+<p>Current implementation supports GTP-C/GTP-U/PPPoE/PPPoL2TP/ESP,
+steering can be used with rte_flow API.</p>
+<p>GTPv1 package is released, and it can be downloaded from
+<a class="reference external" href="https://downloadcenter.intel.com/download/27587">https://downloadcenter.intel.com/download/27587</a>.</p>
+<p>PPPoE package is released, and it can be downloaded from
+<a class="reference external" href="https://downloadcenter.intel.com/download/28040">https://downloadcenter.intel.com/download/28040</a>.</p>
+<p>ESP-AH package is released, and it can be downloaded from
+<a class="reference external" href="https://downloadcenter.intel.com/download/29446">https://downloadcenter.intel.com/download/29446</a>.</p>
+<p>Load a profile which supports GTP and store backup profile:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; ddp add 0 ./gtp.pkgo,./backup.pkgo</span>
+</pre></div>
+</div>
+<p>Delete a GTP profile and restore backup profile:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; ddp del 0 ./backup.pkgo</span>
+</pre></div>
+</div>
+<p>Get loaded DDP package info list:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; ddp get list 0</span>
+</pre></div>
+</div>
+<p>Display information about a GTP profile:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; ddp get info ./gtp.pkgo</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="input-set-configuration">
+<h3><span class="section-number">22.7.5. </span>Input set configuration</h3>
+<p>Input set for any PCTYPE can be configured with user defined configuration,
+For example, to use only 48bit prefix for IPv6 src address for IPv6 TCP RSS:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port config 0 pctype 43 hash_inset clear all</span>
+<span class="go">testpmd&gt; port config 0 pctype 43 hash_inset set field 13</span>
+<span class="go">testpmd&gt; port config 0 pctype 43 hash_inset set field 14</span>
+<span class="go">testpmd&gt; port config 0 pctype 43 hash_inset set field 15</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="queue-region-configuration">
+<h3><span class="section-number">22.7.6. </span>Queue region configuration</h3>
+<p>The Intel® Ethernet 700 Series supports a feature of queue regions
+configuration for RSS in the PF, so that different traffic classes or
+different packet classification types can be separated to different
+queues in different queue regions. There is an API for configuration
+of queue regions in RSS with a command line. It can parse the parameters
+of the region index, queue number, queue start index, user priority, traffic
+classes and so on. Depending on commands from the command line, it will call
+i40e private APIs and start the process of setting or flushing the queue
+region configuration. As this feature is specific for i40e only private
+APIs are used. These new <code class="docutils literal notranslate"><span class="pre">test_pmd</span></code> commands are as shown below. For
+details please refer to <a class="reference internal" href="../testpmd_app_ug/index.html"><span class="doc">Testpmd Application User Guide</span></a>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; set port (port_id) queue-region region_id (value) \</span>
+<span class="go">             queue_start_index (value) queue_num (value)</span>
+<span class="go">testpmd&gt; set port (port_id) queue-region region_id (value) flowtype (value)</span>
+<span class="go">testpmd&gt; set port (port_id) queue-region UP (value) region_id (value)</span>
+<span class="go">testpmd&gt; set port (port_id) queue-region flush (on|off)</span>
+<span class="go">testpmd&gt; show port (port_id) queue-region</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="generic-flow-api">
+<h3><span class="section-number">22.7.7. </span>Generic flow API</h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RSS</span> <span class="pre">Flow</span></code></p>
+<p>RSS Flow supports to set hash input set, hash function, enable hash
+and configure queue region.
+For example:
+Configure queue region as queue 0, 1, 2, 3.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; flow create 0 ingress pattern end actions rss types end \</span>
+<span class="go">  queues 0 1 2 3 end / end</span>
+</pre></div>
+</div>
+<p>Enable hash and set input set for ipv4-tcp.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; flow create 0 ingress pattern eth / ipv4 / tcp / end \</span>
+<span class="go">  actions rss types ipv4-tcp l3-src-only end queues end / end</span>
+</pre></div>
+</div>
+<p>Set symmetric hash enable for flow type ipv4-tcp.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; flow create 0 ingress pattern eth / ipv4 / tcp / end \</span>
+<span class="go">  actions rss types ipv4-tcp end queues end func symmetric_toeplitz / end</span>
+</pre></div>
+</div>
+<p>Set hash function as simple xor.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; flow create 0 ingress pattern end actions rss types end \</span>
+<span class="go">  queues end func simple_xor / end</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="limitations-or-known-issues">
+<h2><span class="section-number">22.8. </span>Limitations or Known issues</h2>
+<div class="section" id="mpls-packet-classification">
+<h3><span class="section-number">22.8.1. </span>MPLS packet classification</h3>
+<p>For firmware versions prior to 5.0, MPLS packets are not recognized by the NIC.
+The L2 Payload flow type in flow director can be used to classify MPLS packet
+by using a command in testpmd like:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>testpmd&gt; flow_director_filter 0 mode IP add flow l2_payload ether </dt><dd><p>0x8847 flexbytes () fwd pf queue &lt;N&gt; fd_id &lt;M&gt;</p>
+</dd>
+</dl>
+</div></blockquote>
+<p>With the NIC firmware version 5.0 or greater, some limited MPLS support
+is added: Native MPLS (MPLS in Ethernet) skip is implemented, while no
+new packet type, no classification or offload are possible. With this change,
+L2 Payload flow type in flow director cannot be used to classify MPLS packet
+as with previous firmware versions. Meanwhile, the Ethertype filter can be
+used to classify MPLS packet by using a command in testpmd like:</p>
+<blockquote>
+<div><dl class="simple">
+<dt>testpmd&gt; flow create 0 ingress pattern eth type is 0x8847 / end </dt><dd><p>actions queue index &lt;M&gt; / end</p>
+</dd>
+</dl>
+</div></blockquote>
+</div>
+<div class="section" id="byte-rx-descriptor-setting-on-dpdk-vf">
+<h3><span class="section-number">22.8.2. </span>16 Byte RX Descriptor setting on DPDK VF</h3>
+<p>Currently the VF’s RX descriptor mode is decided by PF. There’s no PF-VF
+interface for VF to request the RX descriptor mode, also no interface to notify
+VF its own RX descriptor mode.
+For all available versions of the i40e driver, these drivers don’t support 16
+byte RX descriptor. If the Linux i40e kernel driver is used as host driver,
+while DPDK i40e PMD is used as the VF driver, DPDK cannot choose 16 byte receive
+descriptor. The reason is that the RX descriptor is already set to 32 byte by
+the i40e kernel driver.
+In the future, if the Linux i40e driver supports 16 byte RX descriptor, user
+should make sure the DPDK VF uses the same RX descriptor mode, 16 byte or 32
+byte, as the PF driver.</p>
+<p>The same rule for DPDK PF + DPDK VF. The PF and VF should use the same RX
+descriptor mode. Or the VF RX will not work.</p>
+</div>
+<div class="section" id="receive-packets-with-ethertype-0x88a8">
+<h3><span class="section-number">22.8.3. </span>Receive packets with Ethertype 0x88A8</h3>
+<p>Due to the FW limitation, PF can receive packets with Ethertype 0x88A8
+only when floating VEB is disabled.</p>
+</div>
+<div class="section" id="incorrect-rx-statistics-when-packet-is-oversize">
+<h3><span class="section-number">22.8.4. </span>Incorrect Rx statistics when packet is oversize</h3>
+<p>When a packet is over maximum frame size, the packet is dropped.
+However, the Rx statistics, when calling <cite>rte_eth_stats_get</cite> incorrectly
+shows it as received.</p>
+</div>
+<div class="section" id="rx-tx-statistics-may-be-incorrect-when-register-overflowed">
+<h3><span class="section-number">22.8.5. </span>RX/TX statistics may be incorrect when register overflowed</h3>
+<p>The rx_bytes/tx_bytes statistics register is 48 bit length.
+Although this limitation is enlarged to 64 bit length on the software side,
+but there is no way to detect if the overflow occurred more than once.
+So rx_bytes/tx_bytes statistics data is correct when statistics are
+updated at least once between two overflows.</p>
+</div>
+<div class="section" id="vf-tc-max-bandwidth-setting">
+<h3><span class="section-number">22.8.6. </span>VF &amp; TC max bandwidth setting</h3>
+<p>The per VF max bandwidth and per TC max bandwidth cannot be enabled in parallel.
+The behavior is different when handling per VF and per TC max bandwidth setting.
+When enabling per VF max bandwidth, SW will check if per TC max bandwidth is
+enabled. If so, return failure.
+When enabling per TC max bandwidth, SW will check if per VF max bandwidth
+is enabled. If so, disable per VF max bandwidth and continue with per TC max
+bandwidth setting.</p>
+</div>
+<div class="section" id="tc-tx-scheduling-mode-setting">
+<h3><span class="section-number">22.8.7. </span>TC TX scheduling mode setting</h3>
+<p>There are 2 TX scheduling modes for TCs, round robin and strict priority mode.
+If a TC is set to strict priority mode, it can consume unlimited bandwidth.
+It means if APP has set the max bandwidth for that TC, it comes to no
+effect.
+It’s suggested to set the strict priority mode for a TC that is latency
+sensitive but no consuming much bandwidth.</p>
+</div>
+<div class="section" id="vf-performance-is-impacted-by-pci-extended-tag-setting">
+<h3><span class="section-number">22.8.8. </span>VF performance is impacted by PCI extended tag setting</h3>
+<p>To reach maximum NIC performance in the VF the PCI extended tag must be
+enabled. The DPDK i40e PF driver will set this feature during initialization,
+but the kernel PF driver does not. So when running traffic on a VF which is
+managed by the kernel PF driver, a significant NIC performance downgrade has
+been observed (for 64 byte packets, there is about 25% line-rate downgrade for
+a 25GbE device and about 35% for a 40GbE device).</p>
+<p>For kernel version &gt;= 4.11, the kernel’s PCI driver will enable the extended
+tag if it detects that the device supports it. So by default, this is not an
+issue. For kernels &lt;= 4.11 or when the PCI extended tag is disabled it can be
+enabled using the steps below.</p>
+<ol class="arabic">
+<li><p>Get the current value of the PCI configure register:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>setpci -s &lt;XX:XX.X&gt; a8.w
+</pre></div>
+</div>
+</li>
+<li><p>Set bit 8:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>value = value | 0x100
+</pre></div>
+</div>
+</li>
+<li><p>Set the PCI configure register with new value:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>setpci -s &lt;XX:XX.X&gt; a8.w=&lt;value&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="vlan-strip-of-vf">
+<h3><span class="section-number">22.8.9. </span>Vlan strip of VF</h3>
+<p>The VF vlan strip function is only supported in the i40e kernel driver &gt;= 2.1.26.</p>
+</div>
+<div class="section" id="dcb-function">
+<h3><span class="section-number">22.8.10. </span>DCB function</h3>
+<p>DCB works only when RSS is enabled.</p>
+</div>
+<div class="section" id="global-configuration-warning">
+<h3><span class="section-number">22.8.11. </span>Global configuration warning</h3>
+<p>I40E PMD will set some global registers to enable some function or set some
+configure. Then when using different ports of the same NIC with Linux kernel
+and DPDK, the port with Linux kernel will be impacted by the port with DPDK.
+For example, register I40E_GL_SWT_L2TAGCTRL is used to control L2 tag, i40e
+PMD uses I40E_GL_SWT_L2TAGCTRL to set vlan TPID. If setting TPID in port A
+with DPDK, then the configuration will also impact port B in the NIC with
+kernel driver, which don’t want to use the TPID.
+So PMD reports warning to clarify what is changed by writing global register.</p>
+</div>
+<div class="section" id="cloud-filter">
+<h3><span class="section-number">22.8.12. </span>Cloud Filter</h3>
+<p>When programming cloud filters for IPv4/6_UDP/TCP/SCTP with SRC port only or DST port only,
+it will make any cloud filter using inner_vlan or tunnel key invalid. Default configuration will be
+recovered only by NIC core reset.</p>
+</div>
+</div>
+<div class="section" id="high-performance-of-small-packets-on-40gbe-nic">
+<h2><span class="section-number">22.9. </span>High Performance of Small Packets on 40GbE NIC</h2>
+<p>As there might be firmware fixes for performance enhancement in latest version
+of firmware image, the firmware update might be needed for getting high performance.
+Check the Intel support website for the latest firmware updates.
+Users should consult the release notes specific to a DPDK release to identify
+the validated firmware version for a NIC using the i40e driver.</p>
+<div class="section" id="use-16-bytes-rx-descriptor-size">
+<h3><span class="section-number">22.9.1. </span>Use 16 Bytes RX Descriptor Size</h3>
+<p>As i40e PMD supports both 16 and 32 bytes RX descriptor sizes, and 16 bytes size can provide helps to high performance of small packets.
+In <code class="docutils literal notranslate"><span class="pre">config/rte_config.h</span></code> set the following to use 16 bytes size RX descriptors:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>#define RTE_LIBRTE_I40E_16BYTE_RX_DESC 1
+</pre></div>
+</div>
+</div>
+<div class="section" id="input-set-requirement-of-each-pctype-for-fdir">
+<h3><span class="section-number">22.9.2. </span>Input set requirement of each pctype for FDIR</h3>
+<p>Each PCTYPE can only have one specific FDIR input set at one time.
+For example, if creating 2 rte_flow rules with different input set for one PCTYPE,
+it will fail and return the info “Conflict with the first rule’s input set”,
+which means the current rule’s input set conflicts with the first rule’s.
+Remove the first rule if want to change the input set of the PCTYPE.</p>
+</div>
+</div>
+<div class="section" id="example-of-getting-best-performance-with-l3fwd-example">
+<h2><span class="section-number">22.10. </span>Example of getting best performance with l3fwd example</h2>
+<p>The following is an example of running the DPDK <code class="docutils literal notranslate"><span class="pre">l3fwd</span></code> sample application to get high performance with a
+server with Intel Xeon processors and Intel Ethernet CNA XL710.</p>
+<p>The example scenario is to get best performance with two Intel Ethernet CNA XL710 40GbE ports.
+See <a class="reference internal" href="#figure-intel-perf-test-setup"><span class="std std-numref">Fig. 22.8</span></a> for the performance test setup.</p>
+<div class="figure align-default" id="id1">
+<span id="figure-intel-perf-test-setup"></span><img alt="../_images/intel_perf_test_setup.svg" src="../_images/intel_perf_test_setup.svg" /><p class="caption"><span class="caption-number">Fig. 22.8 </span><span class="caption-text">Performance Test Setup</span></p>
+</div>
+<ol class="arabic">
+<li><p>Add two Intel Ethernet CNA XL710 to the platform, and use one port per card to get best performance.
+The reason for using two NICs is to overcome a PCIe v3.0 limitation since it cannot provide 80GbE bandwidth
+for two 40GbE ports, but two different PCIe v3.0 x8 slot can.
+Refer to the sample NICs output above, then we can select <code class="docutils literal notranslate"><span class="pre">82:00.0</span></code> and <code class="docutils literal notranslate"><span class="pre">85:00.0</span></code> as test ports:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>82:00.0 Ethernet [0200]: Intel XL710 for 40GbE QSFP+ [8086:1583]
+85:00.0 Ethernet [0200]: Intel XL710 for 40GbE QSFP+ [8086:1583]
+</pre></div>
+</div>
+</li>
+<li><p>Connect the ports to the traffic generator. For high speed testing, it’s best to use a hardware traffic generator.</p></li>
+<li><p>Check the PCI devices numa node (socket id) and get the cores number on the exact socket id.
+In this case, <code class="docutils literal notranslate"><span class="pre">82:00.0</span></code> and <code class="docutils literal notranslate"><span class="pre">85:00.0</span></code> are both in socket 1, and the cores on socket 1 in the referenced platform
+are 18-35 and 54-71.
+Note: Don’t use 2 logical cores on the same core (e.g core18 has 2 logical cores, core18 and core54), instead, use 2 logical
+cores from different cores (e.g core18 and core19).</p></li>
+<li><p>Bind these two ports to igb_uio.</p></li>
+<li><p>As to Intel Ethernet CNA XL710 40GbE port, we need at least two queue pairs to achieve best performance, then two queues per port
+will be required, and each queue pair will need a dedicated CPU core for receiving/transmitting packets.</p></li>
+<li><p>The DPDK sample application <code class="docutils literal notranslate"><span class="pre">l3fwd</span></code> will be used for performance testing, with using two ports for bi-directional forwarding.
+Compile the <code class="docutils literal notranslate"><span class="pre">l3fwd</span> <span class="pre">sample</span></code> with the default lpm mode.</p></li>
+<li><p>The command line of running l3fwd would be something like the following:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./dpdk-l3fwd -l 18-21 -n 4 -a 82:00.0 -a 85:00.0 \
+        -- -p 0x3 --config &#39;(0,0,18),(0,1,19),(1,0,20),(1,1,21)&#39;
+</pre></div>
+</div>
+<p>This means that the application uses core 18 for port 0, queue pair 0 forwarding, core 19 for port 0, queue pair 1 forwarding,
+core 20 for port 1, queue pair 0 forwarding, and core 21 for port 1, queue pair 1 forwarding.</p>
+</li>
+<li><p>Configure the traffic at a traffic generator.</p>
+<ul class="simple">
+<li><p>Start creating a stream on packet generator.</p></li>
+<li><p>Set the Ethernet II type to 0x0800.</p></li>
+</ul>
+</li>
+</ol>
+<div class="section" id="tx-bytes-affected-by-the-link-status-change">
+<h3><span class="section-number">22.10.1. </span>Tx bytes affected by the link status change</h3>
+<p>For firmware versions prior to 6.01 for X710 series and 3.33 for X722 series, the tx_bytes statistics data is affected by
+the link down event. Each time the link status changes to down, the tx_bytes decreases 110 bytes.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="ice.html" class="btn btn-neutral float-right" title="23. ICE Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="hns3.html" class="btn btn-neutral float-left" title="21. HNS3 Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

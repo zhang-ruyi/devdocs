@@ -1,0 +1,406 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>10. IP Fragmentation Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="11. IPv4 Multicast Sample Application" href="ipv4_multicast.html" />
+    <link rel="prev" title="9. Basic RTE Flow Filtering Sample Application" href="flow_filtering.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10. IP Fragmentation Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">10.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">10.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">10.3. Running the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">10. </span>IP Fragmentation Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/ip_frag.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ip-fragmentation-sample-application">
+<h1><span class="section-number">10. </span>IP Fragmentation Sample Application</h1>
+<p>The IPv4 Fragmentation application is a simple example of packet processing
+using the Data Plane Development Kit (DPDK).
+The application does L3 forwarding with IPv4 and IPv6 packet fragmentation.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">10.1. </span>Overview</h2>
+<p>The application demonstrates the use of zero-copy buffers for packet fragmentation.
+The initialization and run-time paths are very similar to those of the <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>.
+This guide highlights the differences between the two applications.</p>
+<p>There are three key differences from the L2 Forwarding sample application:</p>
+<ul class="simple">
+<li><p>The first difference is that the IP Fragmentation sample application makes use of indirect buffers.</p></li>
+<li><p>The second difference is that the forwarding decision is taken
+based on information read from the input packet’s IP header.</p></li>
+<li><p>The third difference is that the application differentiates between
+IP and non-IP traffic by means of offload flags.</p></li>
+</ul>
+<p>The Longest Prefix Match (LPM for IPv4, LPM6 for IPv6) table is used to store/lookup an outgoing port number,
+associated with that IP address.
+Any unmatched packets are forwarded to the originating port.</p>
+<p>By default, input frame sizes up to 9.5 KB are supported.
+Before forwarding, the input IP packet is fragmented to fit into the “standard” Ethernet* v2 MTU (1500 bytes).</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">10.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">ip_fragmentation</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">10.3. </span>Running the Application</h2>
+<p>The LPM object is created and loaded with the pre-configured entries read from
+global l3fwd_ipv4_route_array and l3fwd_ipv6_route_array tables.
+For each input packet, the packet forwarding decision
+(that is, the identification of the output interface for the packet) is taken as a result of LPM lookup.
+If the IP packet size is greater than default output MTU,
+then the input packet is fragmented and several fragments are sent via the output interface.</p>
+<p>Application usage:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-ip_fragmentation [EAL options] -- -p PORTMASK [-q NQ]</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p>-p PORTMASK is a hexadecimal bitmask of ports to configure</p></li>
+<li><p>-q NQ is the number of queue (=ports) per lcore (the default is 1)</p></li>
+</ul>
+<p>To run the example in linux environment with 2 lcores (2,4) over 2 ports(0,2) with 1 RX queue per lcore:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-ip_fragmentation -l 2,4 -n 3 -- -p 5</span>
+<span class="go">EAL: coremask set to 14</span>
+<span class="go">EAL: Detected lcore 0 on socket 0</span>
+<span class="go">EAL: Detected lcore 1 on socket 1</span>
+<span class="go">EAL: Detected lcore 2 on socket 0</span>
+<span class="go">EAL: Detected lcore 3 on socket 1</span>
+<span class="go">EAL: Detected lcore 4 on socket 0</span>
+<span class="go">...</span>
+
+<span class="go">Initializing port 0 on lcore 2... Address:00:1B:21:76:FA:2C, rxq=0 txq=2,0 txq=4,1</span>
+<span class="go">done: Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Skipping disabled port 1</span>
+<span class="go">Initializing port 2 on lcore 4... Address:00:1B:21:5C:FF:54, rxq=0 txq=2,0 txq=4,1</span>
+<span class="go">done: Link Up - speed 10000 Mbps - full-duplex</span>
+<span class="go">Skipping disabled port 3IP_FRAG: Socket 0: adding route 100.10.0.0/16 (port 0)</span>
+<span class="go">IP_FRAG: Socket 0: adding route 100.20.0.0/16 (port 1)</span>
+<span class="go">...</span>
+<span class="go">IP_FRAG: Socket 0: adding route 0101:0101:0101:0101:0101:0101:0101:0101/48 (port 0)</span>
+<span class="go">IP_FRAG: Socket 0: adding route 0201:0101:0101:0101:0101:0101:0101:0101/48 (port 1)</span>
+<span class="go">...</span>
+<span class="go">IP_FRAG: entering main loop on lcore 4</span>
+<span class="go">IP_FRAG: -- lcoreid=4 portid=2</span>
+<span class="go">IP_FRAG: entering main loop on lcore 2</span>
+<span class="go">IP_FRAG: -- lcoreid=2 portid=0</span>
+</pre></div>
+</div>
+<p>To run the example in linux environment with 1 lcore (4) over 2 ports(0,2) with 2 RX queues per lcore:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-ip_fragmentation -l 4 -n 3 -- -p 5 -q 2</span>
+</pre></div>
+</div>
+<p>To test the application, flows should be set up in the flow generator that match the values in the
+l3fwd_ipv4_route_array and/or l3fwd_ipv6_route_array table.</p>
+<p>The default l3fwd_ipv4_route_array table is:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">l3fwd_ipv4_route</span> <span class="n">l3fwd_ipv4_route_array</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span><span class="n">RTE_IPV4</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span>
+    <span class="p">{</span><span class="n">RTE_IPV4</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="p">{</span><span class="n">RTE_IPV4</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{</span><span class="n">RTE_IPV4</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{</span><span class="n">RTE_IPV4</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">4</span><span class="p">},</span>
+    <span class="p">{</span><span class="n">RTE_IPV4</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span>
+    <span class="p">{</span><span class="n">RTE_IPV4</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span>
+    <span class="p">{</span><span class="n">RTE_IPV4</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">7</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The default l3fwd_ipv6_route_array table is:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">l3fwd_ipv6_route</span> <span class="n">l3fwd_ipv6_route_array</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">0</span><span class="p">},</span>
+    <span class="p">{{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span>
+    <span class="p">{{</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">2</span><span class="p">},</span>
+    <span class="p">{{</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">3</span><span class="p">},</span>
+    <span class="p">{{</span><span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">4</span><span class="p">},</span>
+    <span class="p">{{</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">5</span><span class="p">},</span>
+    <span class="p">{{</span><span class="mi">7</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span>
+    <span class="p">{{</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">},</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">7</span><span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>For example, for the input IPv4 packet with destination address: 100.10.1.1 and packet length 9198 bytes,
+seven IPv4 packets will be sent out from port #0 to the destination address 100.10.1.1:
+six of those packets will have length 1500 bytes and one packet will have length 318 bytes.
+IP Fragmentation sample application provides basic NUMA support
+in that all the memory structures are allocated on all sockets that have active lcores on them.</p>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications
+and the Environment Abstraction Layer (EAL) options.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="ipv4_multicast.html" class="btn btn-neutral float-right" title="11. IPv4 Multicast Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="flow_filtering.html" class="btn btn-neutral float-left" title="9. Basic RTE Flow Filtering Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

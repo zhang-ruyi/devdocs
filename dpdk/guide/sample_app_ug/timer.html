@@ -1,0 +1,448 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>31. Timer Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="32. Packet Ordering Application" href="packet_ordering.html" />
+    <link rel="prev" title="30. QoS Scheduler Sample Application" href="qos_scheduler.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">31. Timer Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">31.1. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">31.2. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">31.3. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialization-and-main-loop">31.3.1. Initialization and Main Loop</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#managing-timers">31.3.2. Managing Timers</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">31. </span>Timer Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/timer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="timer-sample-application">
+<h1><span class="section-number">31. </span>Timer Sample Application</h1>
+<p>The Timer sample application is a simple application that demonstrates the use of a timer in a DPDK application.
+This application prints some messages from different lcores regularly, demonstrating the use of timers.</p>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">31.1. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">timer</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">31.2. </span>Running the Application</h2>
+<p>To run the example in linux environment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./&lt;build_dir&gt;/examples/dpdk-timer -l <span class="m">0</span>-3 -n <span class="m">4</span>
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">31.3. </span>Explanation</h2>
+<p>The following sections provide some explanation of the code.</p>
+<div class="section" id="initialization-and-main-loop">
+<h3><span class="section-number">31.3.1. </span>Initialization and Main Loop</h3>
+<p>In addition to EAL initialization, the timer subsystem must be initialized, by calling the rte_timer_subsystem_init() function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* init EAL */</span>
+
+<span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eal_init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rte_panic</span><span class="p">(</span><span class="s">&quot;Cannot init EAL</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="cm">/* init RTE timer library */</span>
+
+<span class="n">rte_timer_subsystem_init</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>After timer creation (see the next paragraph), the main loop is
+executed on each worker lcore using the well-known
+rte_eal_remote_launch() and also on the main.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* call lcore_mainloop() on every worker lcore  */</span>
+<span class="n">RTE_LCORE_FOREACH_WORKER</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">rte_eal_remote_launch</span><span class="p">(</span><span class="n">lcore_mainloop</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/* call it on main lcore too */</span>
+
+<span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="n">lcore_mainloop</span><span class="p">(</span><span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The main loop is very simple in this example:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/*</span>
+<span class="cm">     *   Call the timer handler on each core: as we don&#39;t</span>
+<span class="cm">     *   need a very precise timer, so only call</span>
+<span class="cm">     *   rte_timer_manage() every ~10ms (at 2 GHz). In a real</span>
+<span class="cm">     *   application, this will enhance performances as</span>
+<span class="cm">     *   reading the HPET timer is not efficient.</span>
+<span class="cm">    */</span>
+
+    <span class="n">cur_tsc</span> <span class="o">=</span> <span class="n">rte_rdtsc</span><span class="p">();</span>
+
+    <span class="n">diff_tsc</span> <span class="o">=</span> <span class="n">cur_tsc</span> <span class="o">-</span> <span class="n">prev_tsc</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">diff_tsc</span> <span class="o">&gt;</span> <span class="n">TIMER_RESOLUTION_CYCLES</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">rte_timer_manage</span><span class="p">();</span>
+        <span class="n">prev_tsc</span> <span class="o">=</span> <span class="n">cur_tsc</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As explained in the comment, it is better to use the TSC register (as it is a per-lcore register) to check if the
+rte_timer_manage() function must be called or not.
+In this example, the resolution of the timer is 10 milliseconds.</p>
+</div>
+<div class="section" id="managing-timers">
+<h3><span class="section-number">31.3.2. </span>Managing Timers</h3>
+<p>In the main() function, the two timers are initialized.
+This call to rte_timer_init() is necessary before doing any other operation on the timer structure.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* init timer structures */</span>
+
+<span class="n">rte_timer_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer0</span><span class="p">);</span>
+<span class="n">rte_timer_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer1</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Then, the two timers are configured:</p>
+<ul class="simple">
+<li><p>The first timer (timer0) is loaded on the main lcore and expires every second.
+Since the PERIODICAL flag is provided, the timer is reloaded automatically by the timer subsystem.
+The callback function is timer0_cb().</p></li>
+<li><p>The second timer (timer1) is loaded on the next available lcore every 333 ms.
+The SINGLE flag means that the timer expires only once and must be reloaded manually if required.
+The callback function is timer1_cb().</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* load timer0, every second, on main lcore, reloaded automatically */</span>
+
+<span class="n">hz</span> <span class="o">=</span> <span class="n">rte_get_hpet_hz</span><span class="p">();</span>
+
+<span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+
+<span class="n">rte_timer_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer0</span><span class="p">,</span> <span class="n">hz</span><span class="p">,</span> <span class="n">PERIODICAL</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">,</span> <span class="n">timer0_cb</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+<span class="cm">/* load timer1, every second/3, on next lcore, reloaded manually */</span>
+
+<span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_get_next_lcore</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+<span class="n">rte_timer_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer1</span><span class="p">,</span> <span class="n">hz</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">SINGLE</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">,</span> <span class="n">timer1_cb</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The callback for the first timer (timer0) only displays a message until a global counter reaches 20 (after 20 seconds).
+In this case, the timer is stopped using the rte_timer_stop() function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* timer0 callback */</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+<span class="nf">timer0_cb</span><span class="p">(</span><span class="n">__rte_unused</span> <span class="k">struct</span> <span class="n">rte_timer</span> <span class="o">*</span><span class="n">tim</span><span class="p">,</span> <span class="n">__rte_unused</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="kt">unsigned</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+    <span class="kt">unsigned</span> <span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s() on lcore %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">FUNCTION</span> <span class="p">,</span> <span class="n">lcore_id</span><span class="p">);</span>
+
+    <span class="cm">/* this timer is automatically reloaded until we decide to stop it, when counter reaches 20. */</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">counter</span> <span class="o">++</span><span class="p">)</span> <span class="o">==</span> <span class="mi">20</span><span class="p">)</span>
+        <span class="n">rte_timer_stop</span><span class="p">(</span><span class="n">tim</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The callback for the second timer (timer1) displays a message and reloads the timer on the next lcore, using the
+rte_timer_reset() function:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* timer1 callback */</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+<span class="nf">timer1_cb</span><span class="p">(</span><span class="n">__rte_unused</span> <span class="k">struct</span> <span class="n">rte_timer</span> <span class="o">*</span><span class="n">tim</span><span class="p">,</span> <span class="n">__rte_unused</span> <span class="kt">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+    <span class="kt">uint64_t</span> <span class="n">hz</span><span class="p">;</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s() on lcore %u</span><span class="se">\\</span><span class="s">n&quot;</span><span class="p">,</span> <span class="n">FUNCTION</span> <span class="p">,</span> <span class="n">lcore_id</span><span class="p">);</span>
+
+    <span class="cm">/* reload it on another lcore */</span>
+
+    <span class="n">hz</span> <span class="o">=</span> <span class="n">rte_get_hpet_hz</span><span class="p">();</span>
+
+    <span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_get_next_lcore</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+
+    <span class="n">rte_timer_reset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">timer1</span><span class="p">,</span> <span class="n">hz</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span> <span class="n">SINGLE</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">,</span> <span class="n">timer1_cb</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="packet_ordering.html" class="btn btn-neutral float-right" title="32. Packet Ordering Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="qos_scheduler.html" class="btn btn-neutral float-left" title="30. QoS Scheduler Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

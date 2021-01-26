@@ -1,0 +1,310 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>11. dpdk-test-regex Tool &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Testpmd Application User Guide" href="../testpmd_app_ug/index.html" />
+    <link rel="prev" title="10. dpdk-test-eventdev Application" href="testeventdev.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">DPDK Tools User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">1. dpdk-procinfo Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump.html">2. dpdk-pdump Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pmdinfo.html">3. dpdk-pmdinfo Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hugepages.html">4. dpdk-hugepages Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devbind.html">5. dpdk-devbind Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow-perf.html">6. Flow Performance Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testbbdev.html">7. dpdk-test-bbdev Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptoperf.html">8. dpdk-test-crypto-perf Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comp_perf.html">9. dpdk-test-compress-perf Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testeventdev.html">10. dpdk-test-eventdev Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">11. dpdk-test-regex Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">11.1. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-options">11.2. Application Options</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-tool">11.2.1. Running the Tool</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">DPDK Tools User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">11. </span>dpdk-test-regex Tool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/tools/testregex.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-test-regex-tool">
+<h1><span class="section-number">11. </span>dpdk-test-regex Tool</h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">dpdk-test-regex</span></code> tool is a Data Plane Development Kit (DPDK)
+application that allows functional testing and performance measurement for
+the RegEx PMDs.
+The test supports only one core and one PMD.
+It is based on precompiled rule file, and an input file, both of them can
+be selected using command-line options.</p>
+<p>In general case, each PMD has its own rule file.</p>
+<p>The test outputs the following data:</p>
+<ul class="simple">
+<li><p>Performance, in gigabit per second.</p></li>
+<li><p>Matching results (rule id, position, length), for each job.</p></li>
+<li><p>Matching results in absolute location (rule id, position , length),
+relative to the start of the input data.</p></li>
+</ul>
+<div class="section" id="limitations">
+<h2><span class="section-number">11.1. </span>Limitations</h2>
+<ul class="simple">
+<li><p>Only one queue is supported.</p></li>
+<li><p>Supports only precompiled rules.</p></li>
+</ul>
+</div>
+<div class="section" id="application-options">
+<h2><span class="section-number">11.2. </span>Application Options</h2>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">--rules</span> <span class="pre">NAME</span></code></dt><dd><p>precompiled rule file</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--data</span> <span class="pre">NAME</span></code></dt><dd><p>data file to use</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--nb_jobs</span> <span class="pre">N</span></code></dt><dd><p>number of jobs to use</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--perf</span> <span class="pre">N</span></code></dt><dd><p>only outputs the performance data</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--nb_iter</span> <span class="pre">N</span></code></dt><dd><p>number of iteration to run</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">--help</span></code></dt><dd><p>print application options</p>
+</dd>
+</dl>
+<div class="section" id="running-the-tool">
+<h3><span class="section-number">11.2.1. </span>Running the Tool</h3>
+<p><strong>Step 1: Compile a rule file</strong></p>
+<p>In order for the RegEx to work it must have a precompiled rule file.
+to generate this file there is a need to use a RegEx compiler that matches the
+RegEx PMD.</p>
+<p><strong>Step 2: Generate a data file</strong></p>
+<p>The data file, will be used as a source data for the RegEx to work on.</p>
+<p><strong>Step 3: Run the tool</strong></p>
+<p>The tool has a number of command line options. Here is the sample command line:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./dpdk-test-regex -a 83:00.0 -- --rules rule_file.rof2 --data data_file.txt --job 100
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../testpmd_app_ug/index.html" class="btn btn-neutral float-right" title="Testpmd Application User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="testeventdev.html" class="btn btn-neutral float-left" title="10. dpdk-test-eventdev Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

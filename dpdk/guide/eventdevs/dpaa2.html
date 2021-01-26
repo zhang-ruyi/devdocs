@@ -1,0 +1,337 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>4. NXP DPAA2 Eventdev Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Distributed Software Eventdev Poll Mode Driver" href="dsw.html" />
+    <link rel="prev" title="3. NXP DPAA Eventdev Driver" href="dpaa.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Event Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dlb.html">1. Driver for the Intel® Dynamic Load Balancer (DLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlb2.html">2. Driver for the Intel® Dynamic Load Balancer (DLB2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">3. NXP DPAA Eventdev Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. NXP DPAA2 Eventdev Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">4.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-dpaa2-socs">4.2. Supported DPAA2 SoCs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">4.3. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">4.4. Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enabling-logs">4.5. Enabling logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">4.6. Limitations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#platform-requirement">4.6.1. Platform Requirement</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#port-core-binding">4.6.2. Port-core binding</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dsw.html">5. Distributed Software Eventdev Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sw.html">6. Software Eventdev Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">7. OCTEON TX SSOVF Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">8. OCTEON TX2 SSO Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opdl.html">9. OPDL Eventdev Poll Mode Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Event Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">4. </span>NXP DPAA2 Eventdev Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/eventdevs/dpaa2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nxp-dpaa2-eventdev-driver">
+<h1><span class="section-number">4. </span>NXP DPAA2 Eventdev Driver</h1>
+<p>The dpaa2 eventdev is an implementation of the eventdev API, that provides a
+wide range of the eventdev features. The eventdev relies on a dpaa2 hw to
+perform event scheduling.</p>
+<p>More information can be found at <a class="reference external" href="http://www.nxp.com/products/microcontrollers-and-processors/arm-processors/qoriq-arm-processors:QORIQ-ARM">NXP Official Website</a>.</p>
+<div class="section" id="features">
+<h2><span class="section-number">4.1. </span>Features</h2>
+<p>The DPAA2 EVENTDEV implements many features in the eventdev API;</p>
+<ul class="simple">
+<li><p>Hardware based event scheduler</p></li>
+<li><p>8 event ports</p></li>
+<li><p>8 event queues</p></li>
+<li><p>Parallel flows</p></li>
+<li><p>Atomic flows</p></li>
+</ul>
+</div>
+<div class="section" id="supported-dpaa2-socs">
+<h2><span class="section-number">4.2. </span>Supported DPAA2 SoCs</h2>
+<ul class="simple">
+<li><p>LX2160A</p></li>
+<li><p>LS2084A/LS2044A</p></li>
+<li><p>LS2088A/LS2048A</p></li>
+<li><p>LS1088A/LS1048A</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">4.3. </span>Prerequisites</h2>
+<p>See <a class="reference internal" href="../platform/dpaa2.html"><span class="doc">NXP QorIQ DPAA2 Board Support Package</span></a> for setup information</p>
+<p>Currently supported by DPDK:</p>
+<ul class="simple">
+<li><p>NXP SDK <strong>19.09+</strong>.</p></li>
+<li><p>MC Firmware version <strong>10.18.0</strong> and higher.</p></li>
+<li><p>Supported architectures:  <strong>arm64 LE</strong>.</p></li>
+<li><p>Follow the DPDK <a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">Getting Started Guide for Linux</span></a> to setup the basic DPDK environment.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some part of fslmc bus code (mc flib - object library) routines are
+dual licensed (BSD &amp; GPLv2).</p>
+</div>
+</div>
+<div class="section" id="initialization">
+<h2><span class="section-number">4.4. </span>Initialization</h2>
+<p>The dpaa2 eventdev is exposed as a vdev device which consists of a set of dpcon
+devices and dpci devices. On EAL initialization, dpcon and dpci devices will be
+probed and then vdev device can be created from the application code by</p>
+<ul class="simple">
+<li><p>Invoking <code class="docutils literal notranslate"><span class="pre">rte_vdev_init(&quot;event_dpaa2&quot;)</span></code> from the application</p></li>
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">--vdev=&quot;event_dpaa2&quot;</span></code> in the EAL options, which will call
+rte_vdev_init() internally</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./your_eventdev_application --vdev=&quot;event_dpaa2&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enabling-logs">
+<h2><span class="section-number">4.5. </span>Enabling logs</h2>
+<p>For enabling logs, use the following EAL parameter:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./your_eventdev_application &lt;EAL args&gt; --log-level=pmd.event.dpaa2,&lt;level&gt;</span>
+</pre></div>
+</div>
+<p>Using <code class="docutils literal notranslate"><span class="pre">eventdev.dpaa2</span></code> as log matching criteria, all Event PMD logs can be
+enabled which are lower than logging <code class="docutils literal notranslate"><span class="pre">level</span></code>.</p>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">4.6. </span>Limitations</h2>
+<div class="section" id="platform-requirement">
+<h3><span class="section-number">4.6.1. </span>Platform Requirement</h3>
+<p>DPAA2 drivers for DPDK can only work on NXP SoCs as listed in the
+<code class="docutils literal notranslate"><span class="pre">Supported</span> <span class="pre">DPAA2</span> <span class="pre">SoCs</span></code>.</p>
+</div>
+<div class="section" id="port-core-binding">
+<h3><span class="section-number">4.6.2. </span>Port-core binding</h3>
+<p>DPAA2 EVENTDEV can support only one eventport per core.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dsw.html" class="btn btn-neutral float-right" title="5. Distributed Software Eventdev Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="dpaa.html" class="btn btn-neutral float-left" title="3. NXP DPAA Eventdev Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

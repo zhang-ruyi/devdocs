@@ -1,0 +1,350 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>9. dpdk-test-compress-perf Tool &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. dpdk-test-eventdev Application" href="testeventdev.html" />
+    <link rel="prev" title="8. dpdk-test-crypto-perf Application" href="cryptoperf.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">DPDK Tools User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">1. dpdk-procinfo Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump.html">2. dpdk-pdump Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pmdinfo.html">3. dpdk-pmdinfo Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hugepages.html">4. dpdk-hugepages Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devbind.html">5. dpdk-devbind Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow-perf.html">6. Flow Performance Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testbbdev.html">7. dpdk-test-bbdev Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptoperf.html">8. dpdk-test-crypto-perf Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. dpdk-test-compress-perf Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">9.1. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#eal-options">9.2. EAL Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-options">9.3. Application Options</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running-the-tool">9.3.1. Running the Tool</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testeventdev.html">10. dpdk-test-eventdev Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testregex.html">11. dpdk-test-regex Tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">DPDK Tools User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">9. </span>dpdk-test-compress-perf Tool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/tools/comp_perf.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-test-compress-perf-tool">
+<h1><span class="section-number">9. </span>dpdk-test-compress-perf Tool</h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">dpdk-test-compress-perf</span></code> tool is a Data Plane Development Kit (DPDK)
+utility that allows measuring performance parameters of PMDs available in the
+compress tree. User can use multiple cores to run tests on but only
+one type of compression PMD can be measured during single application
+execution. The tool reads the data from a file (–input-file),
+dumps all the file into a buffer and fills out the data of input mbufs,
+which are passed to compress device with compression operations.
+Then, the output buffers are fed into the decompression stage, and the resulting
+data is compared against the original data (verification phase). After that,
+a number of iterations are performed, compressing first and decompressing later,
+to check the throughput rate (showing cycles/iteration, cycles/Byte and Gbps,
+for compression and decompression).
+Another option: <code class="docutils literal notranslate"><span class="pre">pmd-cyclecount</span></code>, gives the user the opportunity to measure
+the number of cycles per operation for the 3 phases: setup, enqueue_burst and
+dequeue_burst, for both compression and decompression. An optional delay can be
+inserted between enqueue and dequeue so no cycles are wasted in retries while
+waiting for a hardware device to finish. Although artificial, this allows
+to measure the minimum offload cost which could be achieved in a perfectly
+tuned system. Comparing the results of the two tests gives information about
+the trade-off between throughput and cycle-count.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>if the max-num-sgl-segs x seg_sz &gt; input size then segments number in
+the chain will be lower than value passed into max-num-sgl-segs.</p>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">9.1. </span>Limitations</h2>
+<ul class="simple">
+<li><p>Stateful operation is not supported in this version.</p></li>
+</ul>
+</div>
+<div class="section" id="eal-options">
+<h2><span class="section-number">9.2. </span>EAL Options</h2>
+<p>The following are the EAL command-line options that can be used in conjunction
+with the <code class="docutils literal notranslate"><span class="pre">dpdk-test-compress-perf</span></code> application.
+See the DPDK Getting Started Guides for more information on these options.</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">&lt;COREMASK&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">-l</span> <span class="pre">&lt;CORELIST&gt;</span></code></p>
+<blockquote>
+<div><p>Set the hexadecimal bitmask of the cores to run on. The corelist is a
+list cores to use.</p>
+</div></blockquote>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>One lcore is needed for process admin, tests are run on all other cores.
+To run tests on two lcores, three lcores must be passed to the tool.</p>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">-a</span> <span class="pre">&lt;PCI&gt;</span></code></p>
+<blockquote>
+<div><p>Add a PCI device in allow list.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--vdev</span> <span class="pre">&lt;driver&gt;&lt;id&gt;</span></code></p>
+<blockquote>
+<div><p>Add a virtual device.</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="application-options">
+<h2><span class="section-number">9.3. </span>Application Options</h2>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">--ptest</span> <span class="pre">[throughput/verify/pmd-cyclecount]</span></code>: set test type (default: throughput)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--driver-name</span> <span class="pre">NAME</span></code>: compress driver to use</p>
+<p><code class="docutils literal notranslate"><span class="pre">--input-file</span> <span class="pre">NAME</span></code>: file to compress and decompress</p>
+<p><code class="docutils literal notranslate"><span class="pre">--extended-input-sz</span> <span class="pre">N</span></code>: extend file data up to this size (default: no extension)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--seg-sz</span> <span class="pre">N</span></code>: size of segment to store the data (default: 2048)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--burst-sz</span> <span class="pre">N</span></code>: compress operation burst size</p>
+<p><code class="docutils literal notranslate"><span class="pre">--pool-sz</span> <span class="pre">N</span></code>: mempool size for compress operations/mbufs (default: 8192)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--max-num-sgl-segs</span> <span class="pre">N</span></code>: maximum number of segments for each mbuf (default: 16)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--num-iter</span> <span class="pre">N</span></code>: number of times the file will be compressed/decompressed (default: 10000)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--operation</span> <span class="pre">[comp/decomp/comp_and_decomp]</span></code>: perform test on compression, decompression or both operations</p>
+<p><code class="docutils literal notranslate"><span class="pre">--huffman-enc</span> <span class="pre">[fixed/dynamic/default]</span></code>: Huffman encoding (default: dynamic)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--compress-level</span> <span class="pre">N</span></code>: compression level, which could be a single value, list or range (default: range between 1 and 9)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--window-sz</span> <span class="pre">N</span></code>: base two log value of compression window size (default: max supported by PMD)</p>
+<p><code class="docutils literal notranslate"><span class="pre">--external-mbufs</span></code>: allocate and use memzones as external buffers instead of keeping the data directly in mbuf areas</p>
+<p><code class="docutils literal notranslate"><span class="pre">--cc-delay-us</span> <span class="pre">N</span></code>: delay between enqueue and dequeue operations in microseconds, valid only for the cyclecount test (default: 500 us)</p>
+<p><code class="docutils literal notranslate"><span class="pre">-h</span></code>: prints this help</p>
+</div></blockquote>
+<div class="section" id="running-the-tool">
+<h3><span class="section-number">9.3.1. </span>Running the Tool</h3>
+<p>The tool has a number of command line options. Here is the sample command line:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/app/dpdk-test-compress-perf  -l 4 -- --driver-name compress_qat --input-file test.txt --seg-sz 8192</span>
+<span class="go"> --compress-level 1:1:9 --num-iter 10 --extended-input-sz 1048576  --max-num-sgl-segs 16 --huffman-enc fixed</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="testeventdev.html" class="btn btn-neutral float-right" title="10. dpdk-test-eventdev Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cryptoperf.html" class="btn btn-neutral float-left" title="8. dpdk-test-crypto-perf Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

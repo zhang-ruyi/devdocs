@@ -1,0 +1,420 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>43. Distributor Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="44. Virtual Machine Power Management Application" href="vm_power_management.html" />
+    <link rel="prev" title="42. Eventdev Pipeline Sample Application" href="eventdev_pipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">43. Distributor Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">43.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">43.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">43.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">43.4. Explanation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intel-sst-bf-support">43.5. Intel SST-BF Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debug-logging-support">43.6. Debug Logging Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#statistics">43.7. Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-initialization">43.8. Application Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">43. </span>Distributor Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/dist_app.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="distributor-sample-application">
+<h1><span class="section-number">43. </span>Distributor Sample Application</h1>
+<p>The distributor sample application is a simple example of packet distribution
+to cores using the Data Plane Development Kit (DPDK). It also makes use of
+Intel Speed Select Technology - Base Frequency (Intel SST-BF) to pin the
+distributor to the higher frequency core if available.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">43.1. </span>Overview</h2>
+<p>The distributor application performs the distribution of packets that are received
+on an RX_PORT to different cores. When processed by the cores, the destination
+port of a packet is the port from the enabled port mask adjacent to the one on
+which the packet was received, that is, if the first four ports are enabled
+(port mask 0xf), ports 0 and 1 RX/TX into each other, and ports 2 and 3 RX/TX
+into each other.</p>
+<p>This application can be used to benchmark performance using the traffic
+generator as shown in the figure below.</p>
+<div class="figure align-default" id="id1">
+<span id="figure-dist-perf"></span><img alt="../_images/dist_perf.svg" src="../_images/dist_perf.svg" /><p class="caption"><span class="caption-number">Fig. 43.1 </span><span class="caption-text">Performance Benchmarking Setup (Basic Environment)</span></p>
+</div>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">43.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">distributor</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">43.3. </span>Running the Application</h2>
+<ol class="arabic">
+<li><p>The application has a number of command line options:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build-dir&gt;/examples/dpdk-distributor [EAL options] -- -p PORTMASK</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul class="simple">
+<li><p>-p PORTMASK: Hexadecimal bitmask of ports to configure</p></li>
+</ul>
+</li>
+<li><p>To run the application in linux environment with 10 lcores, 4 ports,
+issue the command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./&lt;build-dir&gt;/examples/dpdk-distributor -l <span class="m">1</span>-9,22 -n <span class="m">4</span> -- -p f
+</pre></div>
+</div>
+</li>
+<li><p>Refer to the DPDK Getting Started Guide for general information on running
+applications and the Environment Abstraction Layer (EAL) options.</p></li>
+</ol>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">43.4. </span>Explanation</h2>
+<p>The distributor application consists of four types of threads: a receive
+thread (<code class="docutils literal notranslate"><span class="pre">lcore_rx()</span></code>), a distributor thread (<code class="docutils literal notranslate"><span class="pre">lcore_dist()</span></code>), a set of
+worker threads (<code class="docutils literal notranslate"><span class="pre">lcore_worker()</span></code>), and a transmit thread(<code class="docutils literal notranslate"><span class="pre">lcore_tx()</span></code>).
+How these threads work together is shown in <a class="reference internal" href="#figure-dist-app"><span class="std std-numref">Fig. 43.2</span></a> below.
+The <code class="docutils literal notranslate"><span class="pre">main()</span></code> function launches  threads of these four types.  Each thread
+has a while loop which will be doing processing and which is terminated
+only upon SIGINT or ctrl+C.</p>
+<p>The receive thread receives the packets using <code class="docutils literal notranslate"><span class="pre">rte_eth_rx_burst()</span></code> and will
+enqueue them to an rte_ring. The distributor thread will dequeue the packets
+from the ring and assign them to workers (using <code class="docutils literal notranslate"><span class="pre">rte_distributor_process()</span></code> API).
+This assignment is based on the tag (or flow ID) of the packet - indicated by
+the hash field in the mbuf. For IP traffic, this field is automatically filled
+by the NIC with the “usr” hash value for the packet, which works as a per-flow
+tag.  The distributor thread communicates with the worker threads using a
+cache-line swapping mechanism, passing up to 8 mbuf pointers at a time
+(one cache line) to each worker.</p>
+<p>More than one worker thread can exist as part of the application, and these
+worker threads do simple packet processing by requesting packets from
+the distributor, doing a simple XOR operation on the input port mbuf field
+(to indicate the output port which will be used later for packet transmission)
+and then finally returning the packets back to the distributor thread.</p>
+<p>The distributor thread will then call the distributor api
+<code class="docutils literal notranslate"><span class="pre">rte_distributor_returned_pkts()</span></code> to get the processed packets, and will enqueue
+them to another rte_ring for transfer to the TX thread for transmission on the
+output port. The transmit thread will dequeue the packets from the ring and
+transmit them on the output port specified in packet mbuf.</p>
+<p>Users who wish to terminate the running of the application have to press ctrl+C
+(or send SIGINT to the app). Upon this signal, a signal handler provided
+in the application will terminate all running threads gracefully and print
+final statistics to the user.</p>
+<div class="figure align-default" id="id2">
+<span id="figure-dist-app"></span><img alt="../_images/dist_app.svg" src="../_images/dist_app.svg" /><p class="caption"><span class="caption-number">Fig. 43.2 </span><span class="caption-text">Distributor Sample Application Layout</span></p>
+</div>
+</div>
+<div class="section" id="intel-sst-bf-support">
+<h2><span class="section-number">43.5. </span>Intel SST-BF Support</h2>
+<p>In DPDK 19.05, support was added to the power management library for
+Intel-SST-BF, a technology that allows some cores to run at a higher
+frequency than others. An application note for Intel SST-BF is available,
+and is entitled
+<a class="reference external" href="https://builders.intel.com/docs/networkbuilders/intel-speed-select-technology-base-frequency-enhancing-performance.pdf">Intel Speed Select Technology – Base Frequency - Enhancing Performance</a></p>
+<p>The distributor application was also enhanced to be aware of these higher
+frequency SST-BF cores, and when starting the application, if high frequency
+SST-BF cores are present in the core mask, the application will identify these
+cores and pin the workloads appropriately. The distributor core is usually
+the bottleneck, so this is given first choice of the high frequency SST-BF
+cores, followed by the rx core and the tx core.</p>
+</div>
+<div class="section" id="debug-logging-support">
+<h2><span class="section-number">43.6. </span>Debug Logging Support</h2>
+<p>Debug logging is provided as part of the application; the user needs to uncomment
+the line “#define DEBUG” defined in start of the application in main.c to enable debug logs.</p>
+</div>
+<div class="section" id="statistics">
+<h2><span class="section-number">43.7. </span>Statistics</h2>
+<p>The main function will print statistics on the console every second. These
+statistics include the number of packets enqueued and dequeued at each stage
+in the application, and also key statistics per worker, including how many
+packets of each burst size (1-8) were sent to each worker thread.</p>
+</div>
+<div class="section" id="application-initialization">
+<h2><span class="section-number">43.8. </span>Application Initialization</h2>
+<p>Command line parsing is done in the same way as it is done in the L2 Forwarding Sample
+Application. See <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-cmd-arguments"><span class="std std-ref">Command Line Arguments</span></a>.</p>
+<p>Mbuf pool initialization is done in the same way as it is done in the L2 Forwarding
+Sample Application. See <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-mbuf-init"><span class="std std-ref">Mbuf Pool Initialization</span></a>.</p>
+<p>Driver Initialization is done in same way as it is done in the L2 Forwarding Sample
+Application. See <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-dvr-init"><span class="std std-ref">Driver Initialization</span></a>.</p>
+<p>RX queue initialization is done in the same way as it is done in the L2 Forwarding
+Sample Application. See <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-rx-init"><span class="std std-ref">RX Queue Initialization</span></a>.</p>
+<p>TX queue initialization is done in the same way as it is done in the L2 Forwarding
+Sample Application. See <a class="reference internal" href="l2_forward_real_virtual.html#l2-fwd-app-tx-init"><span class="std std-ref">TX Queue Initialization</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="vm_power_management.html" class="btn btn-neutral float-right" title="44. Virtual Machine Power Management Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="eventdev_pipeline.html" class="btn btn-neutral float-left" title="42. Eventdev Pipeline Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

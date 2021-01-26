@@ -1,0 +1,633 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Sample Applications User Guides &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Introduction to the DPDK Sample Applications" href="intro.html" />
+    <link rel="prev" title="4. Running DPDK Applications" href="../windows_gsg/run_apps.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Sample Applications User Guides</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Sample Applications User Guides</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sample-applications-user-guides">
+<h1>Sample Applications User Guides</h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#running-sample-applications">1.1. Running Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#the-dpdk-sample-applications">1.2. The DPDK Sample Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html#to-compile-all-the-sample-applications">2.1. To compile all the sample applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html#to-compile-a-single-application">2.2. To compile a single application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html#overview">3.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html#compiling-the-application">3.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html#running-the-application">3.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html#explanation">3.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html#compiling-the-application">4.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html#running-the-application">4.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html#using-the-application">4.3. Using the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html#explanation">4.4. Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html#ethtool-interface">4.5. Ethtool interface</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html#compiling-the-application">5.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html#running-the-application">5.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html#explanation">5.3. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html#compiling-the-application">6.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html#running-the-application">6.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html#explanation">6.3. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html#compiling-the-application">7.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html#running-the-application">7.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html#explanation">7.3. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html#compiling-the-application">8.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html#running-the-application">8.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html#sample-ipv4-rules-file-txt">8.3. Sample ipv4_rules_file.txt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html#explanation">8.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html#compiling-the-application">9.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html#running-the-application">9.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html#explanation">9.3. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html#overview">10.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html#compiling-the-application">10.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html#running-the-application">10.3. Running the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html#overview">11.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html#compiling-the-application">11.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html#running-the-application">11.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html#explanation">11.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html#overview">12.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html#compiling-the-application">12.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html#running-the-application">12.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html#explanation">12.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#overview">13.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#compiling-the-application">13.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#running-the-kni-example-application">13.3. Running the kni Example Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#kni-operations">13.4. KNI Operations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#explanation">13.5. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html#overview">14.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html#compiling-the-application">14.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html#running-the-application">14.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html#explanation">14.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html#overview">15.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html#compiling-the-application">15.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html#running-the-application">15.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html#explanation">15.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html#overview">16.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html#compiling-the-application">16.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html#running-the-application">16.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html#explanation">16.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html#overview">17.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html#compiling-the-application">17.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html#running-the-application">17.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html#explanation">17.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html#overview">18.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html#compiling-the-application">18.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html#running-the-application">18.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html#explanation">18.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html#overview">19.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html#compiling-the-application">19.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html#running-the-application">19.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html#explanation">19.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html#compiling-the-application">20.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html#running-the-application">20.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html#explanation">20.3. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html#overview">21.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html#compiling-the-application">21.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html#running-the-application">21.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html#explanation">21.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html#overview">22.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html#compiling-the-application">22.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html#running-the-application">22.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html#explanation">22.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html#introduction">23.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html#overview">23.2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html#compiling-the-application">23.3. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html#running-the-application">23.4. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html#explanation">23.5. Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html#empty-poll-mode">23.6. Empty Poll Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html#telemetry-mode">23.7. Telemetry Mode</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html#overview">24.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html#compiling-the-application">24.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html#running-the-application">24.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html#explanation">24.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html#overview">25.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html#compiling-the-application">25.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html#running-the-application">25.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html#explanation">25.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html#overview">26.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html#compiling-the-application">26.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html#running-the-application">26.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html#explanation">26.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html#compiling-the-application">27.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html#running-the-application">27.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html#explanation">27.3. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html#example-applications">28.1. Example Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html#overview">29.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html#compiling-the-application">29.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html#running-the-application">29.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html#explanation">29.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html#overview">30.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html#compiling-the-application">30.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html#running-the-application">30.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html#explanation">30.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timer.html">31. Timer Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timer.html#compiling-the-application">31.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html#running-the-application">31.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html#explanation">31.3. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html#overview">32.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html#compiling-the-application">32.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html#running-the-application">32.3. Running the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html#overview">33.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html#compiling-the-application">33.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html#running-the-application">33.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html#explanation">33.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html#overview">34.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html#compiling-the-application">34.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html#running-the-application">34.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html#explanation">34.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html#testing-steps">35.1. Testing steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html#inject-packets">35.2. Inject packets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html#parameters">35.3. Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html#common-issues">35.4. Common Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html#testing-steps">36.1. Testing steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html#compiling-the-application">36.2. Compiling the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html#testing-steps">37.1. Testing steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html#compiling-the-application">37.2. Compiling the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html#testing-steps">38.1. Testing steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html#application-overview">39.1. Application overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html#running-the-application">39.2. Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html#application-stages">39.3. Application stages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html#examples">39.4. Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html#command-line-interface-cli">39.5. Command Line Interface (CLI)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html#overview">40.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html#compiling-the-application">40.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html#running-the-application">40.3. Running the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#application-overview">41.1. Application overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#running-the-application">41.2. Running the application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html#application-stages">41.3. Application stages</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html#compiling-the-application">42.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html#running-the-application">42.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html#observing-the-application">42.3. Observing the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html#overview">43.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html#compiling-the-application">43.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html#running-the-application">43.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html#explanation">43.4. Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html#intel-sst-bf-support">43.5. Intel SST-BF Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html#debug-logging-support">43.6. Debug Logging Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html#statistics">43.7. Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html#application-initialization">43.8. Application Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html#sample-application-architecture-overview">44.1. Sample Application Architecture Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html#configuration">44.2. Configuration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html#compiling-and-running-the-host-application">44.3. Compiling and Running the Host Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html#compiling-and-running-the-guest-applications">44.4. Compiling and Running the Guest Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html#json-interface-for-power-management-requests-and-policies">44.5. JSON Interface for Power Management Requests and Policies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html#limitations">45.1. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html#how-the-application-works">45.2. How the Application Works</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html#compiling-the-application">45.3. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html#running-the-application">45.4. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html#code-explanation">45.5. Code Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html#overview">46.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html#compiling-the-application">46.2. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html#running-the-application">46.3. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html#explanation">46.4. Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html#the-l-thread-subsystem">46.5. The L-thread subsystem</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html#overview">47.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html#limitations">47.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html#application-information">47.3. Application Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html#compiling-the-application">47.4. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html#running-the-application">47.5. Running the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html#overview">48.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html#constraints">48.2. Constraints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html#compiling-the-application">48.3. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html#running-the-application">48.4. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html#configurations">48.5. Configurations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html#test-directory">48.6. Test directory</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html#overview">49.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html#limitations">49.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html#compiling-the-application">49.3. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html#running-the-application">49.4. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html#using-packet-generator-with-baseband-device-sample-application">49.5. Using Packet Generator with baseband device sample application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#compiling-the-application">50.1. Compiling the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#running-the-application">50.2. Running the Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#command-line-options">50.3. Command-line Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html#using-the-application">50.4. Using the application</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="intro.html" class="btn btn-neutral float-right" title="1. Introduction to the DPDK Sample Applications" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../windows_gsg/run_apps.html" class="btn btn-neutral float-left" title="4. Running DPDK Applications" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

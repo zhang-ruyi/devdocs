@@ -1,0 +1,26 @@
+var vhost_8h =
+[
+    [ "spdk_vhost_event_fn", "vhost_8h.html#ac2c4b62eaf6503e5f5e520394f9f9fe1", null ],
+    [ "spdk_vhost_fini_cb", "vhost_8h.html#a8b37106ad173f20d05da87f89714700b", null ],
+    [ "spdk_vhost_init_cb", "vhost_8h.html#aed34ffbfc5835716ba35a9ee050e1e74", null ],
+    [ "spdk_vhost_blk_construct", "vhost_8h.html#a2095d6d1e85f5841375ac04b5cff50ec", null ],
+    [ "spdk_vhost_config_json", "vhost_8h.html#a256ce5abb39df6f4627e3fac7863998f", null ],
+    [ "spdk_vhost_dev_find", "vhost_8h.html#a08ca8ab0522c25869c31c163175e6299", null ],
+    [ "spdk_vhost_dev_get_cpumask", "vhost_8h.html#a6002d25166c3003efd3b6edb51cb84c0", null ],
+    [ "spdk_vhost_dev_get_name", "vhost_8h.html#aa06efc0d096d4414de40ed5c0b394622", null ],
+    [ "spdk_vhost_dev_next", "vhost_8h.html#aed851ed4cfcdf69b6221c8cad4688353", null ],
+    [ "spdk_vhost_dev_remove", "vhost_8h.html#aa6eba1ce0ac89c3287b755567795869b", null ],
+    [ "spdk_vhost_fini", "vhost_8h.html#af358eac95a16bd456349fcfaa00379bb", null ],
+    [ "spdk_vhost_get_coalescing", "vhost_8h.html#a8be392083ae01ad34cc05b1b5ce2b5e0", null ],
+    [ "spdk_vhost_init", "vhost_8h.html#ab35076d7e06edf2098b814929a04c7d5", null ],
+    [ "spdk_vhost_lock", "vhost_8h.html#afd4fd557673a9bc3518add4f5c0d611b", null ],
+    [ "spdk_vhost_scsi_dev_add_tgt", "vhost_8h.html#afe5b0a12a12a26d2ddfe6a64f2a8a5e2", null ],
+    [ "spdk_vhost_scsi_dev_construct", "vhost_8h.html#a01b54a11439216fb05196474e3ee20d1", null ],
+    [ "spdk_vhost_scsi_dev_get_tgt", "vhost_8h.html#a540442ab4b6ec0ba4157e514a09f2379", null ],
+    [ "spdk_vhost_scsi_dev_remove_tgt", "vhost_8h.html#ae1ea27c8ae7616e92d916e5c6fc34231", null ],
+    [ "spdk_vhost_set_coalescing", "vhost_8h.html#a8b8c054fdc8ed4ad573b2d0bcf2d4797", null ],
+    [ "spdk_vhost_set_socket_path", "vhost_8h.html#a15921078a895d090283fbbeaaddee76c", null ],
+    [ "spdk_vhost_shutdown_cb", "vhost_8h.html#afd7159f8eb1e0d65dad5bedaa6cc5e43", null ],
+    [ "spdk_vhost_trylock", "vhost_8h.html#a04d81053d41a72f5df978f7c05dfebd7", null ],
+    [ "spdk_vhost_unlock", "vhost_8h.html#adf01bd5ae7b0d761aa8e0e271de1ee9e", null ]
+];

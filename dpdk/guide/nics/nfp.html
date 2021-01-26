@@ -1,0 +1,465 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>39. NFP poll mode driver library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="40. NULL Poll Mode Driver" href="null.html" />
+    <link rel="prev" title="38. NFB poll mode driver library" href="nfb.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">2. Features Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_and_test.html">3. Compiling and testing a PMD for a NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_packet.html">4. AF_PACKET Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_xdp.html">5. AF_XDP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ark.html">6. ARK Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atlantic.html">7. Aquantia Atlantic DPDK Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avp.html">8. AVP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="axgbe.html">9. AXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">10. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnxt.html">11. BNXT Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">12. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">13. DPAA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">14. DPAA2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">15. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">16. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enetc.html">17. ENETC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">18. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">19. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hinic.html">20. HINIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hns3.html">21. HNS3 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">22. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ice.html">23. ICE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igb.html">24. IGB Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igc.html">25. IGC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ionic.html">26. IONIC Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipn3ke.html">27. IPN3KE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">28. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">29. Intel Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kni.html">30. KNI Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="liquidio.html">31. LiquidIO VF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memif.html">32. Memif Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">33. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">34. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvneta.html">35. MVNETA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvpp2.html">36. MVPP2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netvsc.html">37. Netvsc poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfb.html">38. NFB poll mode driver library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">39. NFP poll mode driver library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#dependencies">39.1. Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#building-the-software">39.2. Building the software</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#driver-compilation-and-testing">39.3. Driver compilation and testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-the-pf">39.4. Using the PF</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pf-multiport-support">39.5. PF multiport support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pf-multiprocess-support">39.6. PF multiprocess support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#system-configuration">39.7. System configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">40. NULL Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">41. OCTEON TX Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">42. OCTEON TX2 Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfe.html">43. PFE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qede.html">44. QEDE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sfc_efx.html">45. Solarflare libefx-based Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="softnic.html">46. Soft NIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">47. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tap.html">48. Tun|Tap Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thunderx.html">49. ThunderX NICVF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txgbe.html">50. TXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdev_netvsc.html">51. VDEV_NETVSC driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">52. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">53. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">54. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">55. Libpcap and Ring Based Poll Mode Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fail_safe.html">56. Fail-safe poll mode driver library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">39. </span>NFP poll mode driver library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/nfp.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nfp-poll-mode-driver-library">
+<h1><span class="section-number">39. </span>NFP poll mode driver library</h1>
+<p>Netronome’s sixth generation of flow processors pack 216 programmable
+cores and over 100 hardware accelerators that uniquely combine packet,
+flow, security and content processing in a single device that scales
+up to 400-Gb/s.</p>
+<p>This document explains how to use DPDK with the Netronome Poll Mode
+Driver (PMD) supporting Netronome’s Network Flow Processor 6xxx
+(NFP-6xxx) and Netronome’s Flow Processor 4xxx (NFP-4xxx).</p>
+<p>NFP is a SRIOV capable device and the PMD driver supports the physical
+function (PF) and the virtual functions (VFs).</p>
+<div class="section" id="dependencies">
+<h2><span class="section-number">39.1. </span>Dependencies</h2>
+<p>Before using the Netronome’s DPDK PMD some NFP configuration,
+which is not related to DPDK, is required. The system requires
+installation of <strong>Netronome’s BSP (Board Support Package)</strong> along
+with a specific NFP firmware application. Netronome’s NSP ABI
+version should be 0.20 or higher.</p>
+<p>If you have a NFP device you should already have the code and
+documentation for this configuration. Contact
+<strong>support&#64;netronome.com</strong> to obtain the latest available firmware.</p>
+<p>The NFP Linux netdev kernel driver for VFs has been a part of the
+vanilla kernel since kernel version 4.5, and support for the PF
+since kernel version 4.11. Support for older kernels can be obtained
+on Github at
+<strong>https://github.com/Netronome/nfp-drv-kmods</strong> along with the build
+instructions.</p>
+<p>NFP PMD needs to be used along with UIO <code class="docutils literal notranslate"><span class="pre">igb_uio</span></code> or VFIO (<code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>)
+Linux kernel driver.</p>
+</div>
+<div class="section" id="building-the-software">
+<h2><span class="section-number">39.2. </span>Building the software</h2>
+<p>Netronome’s PMD code is provided in the <strong>drivers/net/nfp</strong> directory.
+Although NFP PMD has Netronome´s BSP dependencies, it is possible to
+compile it along with other DPDK PMDs even if no BSP was installed previously.
+Of course, a DPDK app will require such a BSP installed for using the
+NFP PMD, along with a specific NFP firmware application.</p>
+<p>Once the DPDK is built all the DPDK apps and examples include support for
+the NFP PMD.</p>
+</div>
+<div class="section" id="driver-compilation-and-testing">
+<h2><span class="section-number">39.3. </span>Driver compilation and testing</h2>
+<p>Refer to the document <a class="reference internal" href="build_and_test.html#pmd-build-and-test"><span class="std std-ref">compiling and testing a PMD for a NIC</span></a>
+for details.</p>
+</div>
+<div class="section" id="using-the-pf">
+<h2><span class="section-number">39.4. </span>Using the PF</h2>
+<p>NFP PMD supports using the NFP PF as another DPDK port, but it does not
+have any functionality for controlling VFs. In fact, it is not possible to use
+the PMD with the VFs if the PF is being used by DPDK, that is, with the NFP PF
+bound to <code class="docutils literal notranslate"><span class="pre">igb_uio</span></code> or <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> kernel drivers. Future DPDK versions will
+have a PMD able to work with the PF and VFs at the same time and with the PF
+implementing VF management along with other PF-only functionalities/offloads.</p>
+<p>The PMD PF has extra work to do which will delay the DPDK app initialization
+like uploading the firmware and configure the Link state properly when starting or
+stopping a PF port. Since DPDK 18.05 the firmware upload happens when
+a PF is initialized, which was not always true with older DPDK versions.</p>
+<p>Depending on the Netronome product installed in the system, firmware files
+should be available under <code class="docutils literal notranslate"><span class="pre">/lib/firmware/netronome</span></code>. DPDK PMD supporting the
+PF looks for a firmware file in this order:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p>First try to find a firmware image specific for this device using the
+NFP serial number:</p>
+<blockquote>
+<div><p>serial-00-15-4d-12-20-65-10-ff.nffw</p>
+</div></blockquote>
+</li>
+<li><p>Then try the PCI name:</p>
+<blockquote>
+<div><p>pci-0000:04:00.0.nffw</p>
+</div></blockquote>
+</li>
+<li><p>Finally try the card type and media:</p>
+<blockquote>
+<div><p>nic_AMDA0099-0001_2x25.nffw</p>
+</div></blockquote>
+</li>
+</ol>
+</div></blockquote>
+<p>Netronome’s software packages install firmware files under <code class="docutils literal notranslate"><span class="pre">/lib/firmware/netronome</span></code>
+to support all the Netronome’s SmartNICs and different firmware applications.
+This is usually done using file names based on SmartNIC type and media and with a
+directory per firmware application. Options 1 and 2 for firmware filenames allow
+more than one SmartNIC, same type of SmartNIC or different ones, and to upload a
+different firmware to each SmartNIC.</p>
+<blockquote>
+<div><div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently the NFP PMD supports using the PF with Agilio Basic Firmware. See
+<a class="reference external" href="https://help.netronome.com/support/solutions">https://help.netronome.com/support/solutions</a> for more information on the
+various firmwares supported by the Netronome Agilio CX smartNIC.</p>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="pf-multiport-support">
+<h2><span class="section-number">39.5. </span>PF multiport support</h2>
+<p>The NFP PMD can work with up to 8 ports on the same PF device. The number of
+available ports is firmware and hardware dependent, and the driver looks for a
+firmware symbol during initialization to know how many can be used.</p>
+<p>DPDK apps work with ports, and a port is usually a PF or a VF PCI device.
+However, with the NFP PF multiport there is just one PF PCI device. Supporting
+this particular configuration requires the PMD to create ports in a special way,
+although once they are created, DPDK apps should be able to use them as normal
+PCI ports.</p>
+<p>NFP ports belonging to same PF can be seen inside PMD initialization with a
+suffix added to the PCI ID: wwww:xx:yy.z_port_n. For example, a PF with PCI ID
+0000:03:00.0 and four ports is seen by the PMD code as:</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0000:03:00.0_port_0</span>
+<span class="go">0000:03:00.0_port_1</span>
+<span class="go">0000:03:00.0_port_2</span>
+<span class="go">0000:03:00.0_port_3</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There are some limitations with multiport support: RX interrupts and
+device hot-plugging are not supported.</p>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="pf-multiprocess-support">
+<h2><span class="section-number">39.6. </span>PF multiprocess support</h2>
+<p>Due to how the driver needs to access the NFP through a CPP interface, which implies
+to use specific registers inside the chip, the number of secondary processes with PF
+ports is limited to only one.</p>
+<p>This limitation will be solved in future versions but having basic multiprocess support
+is important for allowing development and debugging through the PF using a secondary
+process which will create a CPP bridge for user space tools accessing the NFP.</p>
+</div>
+<div class="section" id="system-configuration">
+<h2><span class="section-number">39.7. </span>System configuration</h2>
+<ol class="arabic">
+<li><p><strong>Enable SR-IOV on the NFP device:</strong> The current NFP PMD supports the PF and
+the VFs on a NFP device. However, it is not possible to work with both at the
+same time because the VFs require the PF being bound to the NFP PF Linux
+netdev driver.  Make sure you are working with a kernel with NFP PF support or
+get the drivers from the above Github repository and follow the instructions
+for building and installing it.</p>
+<p>VFs need to be enabled before they can be used with the PMD.
+Before enabling the VFs it is useful to obtain information about the
+current NFP PCI device detected by the system:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">lspci -d19ee:</span>
+</pre></div>
+</div>
+<p>Now, for example, configure two virtual functions on a NFP-6xxx device
+whose PCI system identity is “0000:03:00.0”:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo 2 &gt; /sys/bus/pci/devices/0000:03:00.0/sriov_numvfs</span>
+</pre></div>
+</div>
+<p>The result of this command may be shown using lspci again:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">lspci -d19ee: -k</span>
+</pre></div>
+</div>
+<p>Two new PCI devices should appear in the output of the above command. The
+-k option shows the device driver, if any, that devices are bound to.
+Depending on the modules loaded at this point the new PCI devices may be
+bound to nfp_netvf driver.</p>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="null.html" class="btn btn-neutral float-right" title="40. NULL Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nfb.html" class="btn btn-neutral float-left" title="38. NFB poll mode driver library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

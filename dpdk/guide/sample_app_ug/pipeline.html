@@ -1,0 +1,393 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>41. Pipeline Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="42. Eventdev Pipeline Sample Application" href="eventdev_pipeline.html" />
+    <link rel="prev" title="40. Test Pipeline Application" href="test_pipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">41. Pipeline Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#application-overview">41.1. Application overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">41.2. Running the application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-stages">41.3. Application stages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialization">41.3.1. Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-time">41.3.2. Run-time</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">41. </span>Pipeline Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/pipeline.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pipeline-application">
+<h1><span class="section-number">41. </span>Pipeline Application</h1>
+<div class="section" id="application-overview">
+<h2><span class="section-number">41.1. </span>Application overview</h2>
+<p>This application showcases the features of the Software Switch (SWX) pipeline that is aligned with the P4 language.</p>
+<p>Each pipeline is created using a specification file that can either be manually developed or generated using a P4 compiler.</p>
+<p>Each pipeline is built through the CLI, either by invoking commands one by one, or through a CLI script.
+The CLI can also be used to update the pipeline tables or poll the pipeline statistics.</p>
+<p>Each pipeline is mapped to a specific application thread. Multiple pipelines can be mapped to the same thread.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">41.2. </span>Running the application</h2>
+<p>The application startup command line is:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>dpdk-pipeline [EAL_ARGS] -- [-s SCRIPT_FILE] [-h HOST] [-p PORT]
+</pre></div>
+</div>
+<p>The application startup arguments are:</p>
+<p><code class="docutils literal notranslate"><span class="pre">-s</span> <span class="pre">SCRIPT_FILE</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Optional: Yes</p></li>
+<li><p>Default: Not present</p></li>
+<li><p>Argument: Path to the CLI script file to be run at application startup.
+No CLI script file will run at startup if this argument is not present.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">-h</span> <span class="pre">HOST</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Optional: Yes</p></li>
+<li><p>Default: <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code></p></li>
+<li><p>Argument: IP Address of the host running the application to be used by
+remote TCP based client (telnet, netcat, etc.) for connection.</p></li>
+</ul>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PORT</span></code></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Optional: Yes</p></li>
+<li><p>Default: <code class="docutils literal notranslate"><span class="pre">8086</span></code></p></li>
+<li><p>Argument: TCP port number at which the application is running.
+This port number should be used by remote TCP client (such as telnet, netcat, etc.) to connect to host application.</p></li>
+</ul>
+</div></blockquote>
+<p>Refer to <em>DPDK Getting Started Guide</em> for general information on running applications and the Environment Abstraction Layer (EAL) options.</p>
+<p>The following is an example command to run the application configured for the VXLAN encapsulation example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./&lt;build_dir&gt;/examples/dpdk-pipeline -c 0x3 -- -s examples/vxlan.cli
+</pre></div>
+</div>
+<p>The application should start successfully and display as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">EAL: Detected 40 lcore(s)</span>
+<span class="go">EAL: Detected 2 NUMA nodes</span>
+<span class="go">EAL: Multi-process socket /var/run/.rte_unix</span>
+<span class="go">EAL: Probing VFIO support...</span>
+<span class="go">EAL: PCI device 0000:02:00.0 on NUMA socket 0</span>
+<span class="go">EAL:   probe driver: 8086:10fb net_ixgbe</span>
+<span class="go">...</span>
+</pre></div>
+</div>
+<p>To run remote client (e.g. telnet) to communicate with the application:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> telnet <span class="m">0</span>.0.0.0 <span class="m">8086</span>
+</pre></div>
+</div>
+<p>When running a telnet client as above, command prompt is displayed:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Trying 0.0.0.0...</span>
+<span class="go">Connected to 0.0.0.0.</span>
+<span class="go">Escape character is &#39;^]&#39;.</span>
+
+<span class="go">Welcome!</span>
+
+<span class="go">pipeline&gt;</span>
+</pre></div>
+</div>
+<p>Once application and telnet client start running, messages can be sent from client to application.</p>
+</div>
+<div class="section" id="application-stages">
+<h2><span class="section-number">41.3. </span>Application stages</h2>
+<div class="section" id="initialization">
+<h3><span class="section-number">41.3.1. </span>Initialization</h3>
+<p>During this stage, EAL layer is initialised and application specific arguments are parsed. Furthermore, the data structures
+for application objects are initialized. In case of any initialization error, an error message is displayed and the application
+is terminated.</p>
+</div>
+<div class="section" id="run-time">
+<h3><span class="section-number">41.3.2. </span>Run-time</h3>
+<p>The main thread is creating and managing all the application objects based on CLI input.</p>
+<p>Each data plane thread runs one or several pipelines previously assigned to it in round-robin order. Each data plane thread
+executes two tasks in time-sharing mode:</p>
+<ol class="arabic simple">
+<li><p><em>Packet processing task</em>: Process bursts of input packets read from the pipeline input ports.</p></li>
+<li><p><em>Message handling task</em>: Periodically, the data plane thread pauses the packet processing task and polls for request
+messages send by the main thread. Examples: add/remove pipeline to/from current data plane thread, add/delete rules
+to/from given table of a specific pipeline owned by the current data plane thread, read statistics, etc.</p></li>
+</ol>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="eventdev_pipeline.html" class="btn btn-neutral float-right" title="42. Eventdev Pipeline Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="test_pipeline.html" class="btn btn-neutral float-left" title="40. Test Pipeline Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

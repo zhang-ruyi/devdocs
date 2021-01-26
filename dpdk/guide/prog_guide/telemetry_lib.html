@@ -1,0 +1,442 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>50. Telemetry Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="51. Berkeley Packet Filter Library" href="bpf_lib.html" />
+    <link rel="prev" title="49. Metrics Library" href="metrics_lib.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">50. Telemetry Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-callback-functions">50.1. Creating Callback Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#function-type">50.1.1. Function Type</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#formatting-data">50.1.2. Formatting Data</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#registering-commands">50.2. Registering Commands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-commands">50.3. Using Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">50. </span>Telemetry Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/telemetry_lib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="telemetry-library">
+<h1><span class="section-number">50. </span>Telemetry Library</h1>
+<p>The Telemetry library provides an interface to retrieve information from a
+variety of DPDK libraries. The library provides this information via socket
+connection, taking requests from a connected client and replying with the JSON
+response containing the requested telemetry information.</p>
+<p>Telemetry is enabled to run by default when running a DPDK application, and the
+telemetry information from enabled libraries is made available. Libraries are
+responsible for registering their own commands, and providing the callback
+function that will format the library specific stats into the correct data
+format, when requested.</p>
+<div class="section" id="creating-callback-functions">
+<h2><span class="section-number">50.1. </span>Creating Callback Functions</h2>
+<div class="section" id="function-type">
+<h3><span class="section-number">50.1.1. </span>Function Type</h3>
+<p>When creating a callback function in a library/app, it must be of the following type:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="nf">int</span> <span class="p">(</span><span class="o">*</span><span class="n">telemetry_cb</span><span class="p">)(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">params</span><span class="p">,</span>
+        <span class="k">struct</span> <span class="n">rte_tel_data</span> <span class="o">*</span><span class="n">info</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>An example callback function is shown below:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span>
+<span class="n">handle_example_cmd</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmd</span> <span class="n">__rte_unused</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">params</span> <span class="n">__rte_unused</span><span class="p">,</span>
+        <span class="k">struct</span> <span class="n">rte_tel_data</span> <span class="o">*</span><span class="n">d</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For more detail on the callback function parameters, please refer to the
+<a class="reference external" href="https://doc.dpdk.org/api/rte__telemetry_8h.html#a41dc74d561442bb6184ee6dd1f9b5bcc">definition in the API doc</a></p>
+<p><strong>Example Callback</strong></p>
+<p>This callback is an example of handling multiple commands in one callback,
+and also shows the use of params which holds a port ID. The <code class="docutils literal notranslate"><span class="pre">params</span></code> input needs
+to be validated and converted to the required integer type for port ID. The <code class="docutils literal notranslate"><span class="pre">cmd</span></code>
+parameter is then used in a comparison to decide which command was requested,
+which will decide what port information should fill the <code class="docutils literal notranslate"><span class="pre">rte_tel_data</span></code> structure.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span>
+<span class="nf">handle_cmd_request</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">cmd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">params</span><span class="p">,</span>
+      <span class="k">struct</span> <span class="n">rte_tel_data</span> <span class="o">*</span><span class="n">d</span><span class="p">)</span>
+<span class="p">{</span>
+   <span class="kt">int</span> <span class="n">port_id</span><span class="p">,</span> <span class="n">used</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+   <span class="k">if</span> <span class="p">(</span><span class="n">params</span> <span class="o">==</span> <span class="nb">NULL</span> <span class="o">||</span> <span class="n">strlen</span><span class="p">(</span><span class="n">params</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="o">!</span><span class="n">isdigit</span><span class="p">(</span><span class="o">*</span><span class="n">params</span><span class="p">))</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+   <span class="n">port_id</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">params</span><span class="p">);</span>
+   <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">rte_eth_dev_is_valid_port</span><span class="p">(</span><span class="n">port_id</span><span class="p">))</span>
+      <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+
+   <span class="k">if</span> <span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="s">&quot;/cmd_1&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="cm">/* Build up port data requested for command 1 */</span>
+   <span class="k">else</span>
+      <span class="cm">/* Build up port data requested for command 2 */</span>
+
+    <span class="k">return</span> <span class="n">used</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="formatting-data">
+<h3><span class="section-number">50.1.2. </span>Formatting Data</h3>
+<p>The callback function provided by the library must format its telemetry
+information in the required data format. The Telemetry library provides a data
+utilities API to build up the data structure with the required information.
+The telemetry library is then responsible for formatting the data structure
+into a JSON response before sending to the client.</p>
+<div class="section" id="array-data">
+<h4><span class="section-number">50.1.2.1. </span>Array Data</h4>
+<p>Some data will need to be formatted in a list structure. For example, if a
+callback needs to return five integer values in the data response, it can be
+constructed using the following functions to build up the list:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rte_tel_data_start_array</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">RTE_TEL_INT_VAL</span><span class="p">);</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">rte_tel_data_add_array_int</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The resulting response to the client shows the list data provided above
+by the handler function in the library/app, placed in a JSON reply by telemetry:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&quot;/example_lib/five_ints&quot;: [0, 1, 2, 3, 4]}
+</pre></div>
+</div>
+</div>
+<div class="section" id="dictionary-data">
+<h4><span class="section-number">50.1.2.2. </span>Dictionary Data</h4>
+<p>For data that needs to be structured in a dictionary with key/value pairs,
+the data utilities API can also be used. For example, some information about
+a brownie recipe is constructed in the callback function shown below:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rte_tel_data_start_dict</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+<span class="n">rte_tel_data_add_dict_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&quot;Recipe&quot;</span><span class="p">,</span> <span class="s">&quot;Brownies&quot;</span><span class="p">);</span>
+<span class="n">rte_tel_data_add_dict_int</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&quot;Prep time (mins)&quot;</span><span class="p">,</span> <span class="mi">25</span><span class="p">);</span>
+<span class="n">rte_tel_data_add_dict_int</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&quot;Cooking time (mins)&quot;</span><span class="p">,</span> <span class="mi">30</span><span class="p">);</span>
+<span class="n">rte_tel_data_add_dict_int</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&quot;Serves&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>The resulting response to the client shows the key/value data provided above
+by the handler function in telemetry, placed in a JSON reply by telemetry:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&quot;/example_lib/brownie_recipe&quot;: {&quot;Recipe&quot;: &quot;Brownies&quot;, &quot;Prep time (mins)&quot;: 25,
+  &quot;Cooking time (mins)&quot;: 30, &quot;Serves&quot;: 16}}
+</pre></div>
+</div>
+</div>
+<div class="section" id="string-data">
+<h4><span class="section-number">50.1.2.3. </span>String Data</h4>
+<p>Telemetry also supports single string data.
+The data utilities API can again be used for this, see the example below.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rte_tel_data_string</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="s">&quot;This is an example string&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Giving the following response to the client:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>{&quot;/example_lib/string_example&quot;: &quot;This is an example string&quot;}
+</pre></div>
+</div>
+<p>For more information on the range of data functions available in the API,
+please refer to the <a class="reference external" href="https://doc.dpdk.org/api-20.05/rte__telemetry_8h.html">API doc</a></p>
+</div>
+</div>
+</div>
+<div class="section" id="registering-commands">
+<h2><span class="section-number">50.2. </span>Registering Commands</h2>
+<p>Libraries and applications must register commands to make their information
+available via the Telemetry library. This involves providing a string command
+in the required format (“/library/command”), the callback function that
+will handle formatting the information when required, and help text for the
+command. An example command being registered is shown below:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rte_telemetry_register_cmd</span><span class="p">(</span><span class="s">&quot;/example_lib/string_example&quot;</span><span class="p">,</span> <span class="n">handle_string</span><span class="p">,</span>
+        <span class="s">&quot;Returns an example string. Takes no parameters&quot;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-commands">
+<h2><span class="section-number">50.3. </span>Using Commands</h2>
+<p>To use commands, with a DPDK app running (e.g. testpmd), use the
+<code class="docutils literal notranslate"><span class="pre">dpdk-telemetry.py</span></code> script.
+For details on its use, see the <a class="reference internal" href="../howto/telemetry.html"><span class="doc">DPDK Telemetry User Guide</span></a>.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="bpf_lib.html" class="btn btn-neutral float-right" title="51. Berkeley Packet Filter Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="metrics_lib.html" class="btn btn-neutral float-left" title="49. Metrics Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

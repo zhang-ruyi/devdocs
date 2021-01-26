@@ -1,0 +1,1301 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Programmer’s Guide &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Introduction" href="intro.html" />
+    <link rel="prev" title="50. NTB Sample Application" href="../sample_app_ug/ntb.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Programmer’s Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Programmer’s Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="programmer-s-guide">
+<h1>Programmer’s Guide</h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">1. Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#documentation-roadmap">1.1. Documentation Roadmap</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#related-publications">1.2. Related Publications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">2. Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#development-environment">2.1. Development Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#environment-abstraction-layer">2.2. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#core-components">2.3. Core Components</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#ring-manager-librte-ring">2.3.1. Ring Manager (librte_ring)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#memory-pool-manager-librte-mempool">2.3.2. Memory Pool Manager (librte_mempool)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#network-packet-buffer-management-librte-mbuf">2.3.3. Network Packet Buffer Management (librte_mbuf)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#timer-manager-librte-timer">2.3.4. Timer Manager (librte_timer)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#ethernet-poll-mode-driver-architecture">2.4. Ethernet* Poll Mode Driver Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#packet-forwarding-algorithm-support">2.5. Packet Forwarding Algorithm Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#librte-net">2.6. librte_net</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html#eal-in-a-linux-userland-execution-environment">3.1. EAL in a Linux-userland Execution Environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#initialization-and-core-launching">3.1.1. Initialization and Core Launching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#shutdown-and-cleanup">3.1.2. Shutdown and Cleanup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#multi-process-support">3.1.3. Multi-process Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#memory-mapping-discovery-and-memory-reservation">3.1.4. Memory Mapping Discovery and Memory Reservation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#support-for-externally-allocated-memory">3.1.5. Support for Externally Allocated Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#per-lcore-and-shared-variables">3.1.6. Per-lcore and Shared Variables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#logs">3.1.7. Logs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#cpu-feature-identification">3.1.8. CPU Feature Identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#user-space-interrupt-event">3.1.9. User Space Interrupt Event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#block-list">3.1.10. Block list</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#misc-functions">3.1.11. Misc Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#iova-mode-detection">3.1.12. IOVA Mode Detection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#iova-mode-configuration">3.1.13. IOVA Mode Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#max-simd-bitwidth">3.1.14. Max SIMD bitwidth</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html#memory-segments-and-memory-zones-memzone">3.2. Memory Segments and Memory Zones (memzone)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html#multiple-pthread">3.3. Multiple pthread</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#eal-pthread-and-lcore-affinity">3.3.1. EAL pthread and lcore Affinity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#non-eal-pthread-support">3.3.2. non-EAL pthread support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#public-thread-api">3.3.3. Public Thread API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#control-thread-api">3.3.4. Control Thread API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#known-issues">3.3.5. Known Issues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#cgroup-control">3.3.6. cgroup control</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html#malloc">3.4. Malloc</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#alignment-and-numa-constraints">3.4.1. Alignment and NUMA Constraints</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#use-cases">3.4.2. Use Cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="env_abstraction_layer.html#internal-implementation">3.4.3. Internal Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="service_cores.html">4. Service Cores</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html#service-core-initialization">4.1. Service Core Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html#enabling-services-on-cores">4.2. Enabling Services on Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html#service-core-statistics">4.3. Service Core Statistics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="trace_lib.html">5. Trace Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#overview">5.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#dpdk-tracing-library-features">5.2. DPDK tracing library features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#how-to-add-a-tracepoint">5.3. How to add a tracepoint?</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="trace_lib.html#create-the-tracepoint-header-file">5.3.1. Create the tracepoint header file</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trace_lib.html#register-the-tracepoint">5.3.2. Register the tracepoint</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#fast-path-tracepoint">5.4. Fast path tracepoint</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#event-record-mode">5.5. Event record mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#trace-file-location">5.6. Trace file location</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#view-and-analyze-the-recorded-events">5.7. View and analyze the recorded events</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="trace_lib.html#use-the-babeltrace-command-line-tool">5.7.1. Use the babeltrace command-line tool</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trace_lib.html#use-the-tracecompass-gui-tool">5.7.2. Use the tracecompass GUI tool</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#quick-start">5.8. Quick start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html#implementation-details">5.9. Implementation details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="trace_lib.html#trace-metadata-creation">5.9.1. Trace metadata creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trace_lib.html#trace-memory">5.9.2. Trace memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="trace_lib.html#trace-memory-layout">5.9.3. Trace memory layout</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html#what-is-quiescent-state">6.1. What is Quiescent State</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html#factors-affecting-the-rcu-mechanism">6.2. Factors affecting the RCU mechanism</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html#rcu-in-dpdk">6.3. RCU in DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html#how-to-use-this-library">6.4. How to use this library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html#resource-reclamation-framework-for-dpdk">6.5. Resource reclamation framework for DPDK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ring_lib.html">7. Ring Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#references-for-ring-implementation-in-freebsd">7.1. References for Ring Implementation in FreeBSD*</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#lockless-ring-buffer-in-linux">7.2. Lockless Ring Buffer in Linux*</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#additional-features">7.3. Additional Features</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#name">7.3.1. Name</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#use-cases">7.4. Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#anatomy-of-a-ring-buffer">7.5. Anatomy of a Ring Buffer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#single-producer-enqueue">7.5.1. Single Producer Enqueue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#single-consumer-dequeue">7.5.2. Single Consumer Dequeue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#multiple-producers-enqueue">7.5.3. Multiple Producers Enqueue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#modulo-32-bit-indexes">7.5.4. Modulo 32-bit Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#producer-consumer-synchronization-modes">7.6. Producer/consumer synchronization modes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#mp-mc-default-one">7.6.1. MP/MC (default one)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#sp-sc">7.6.2. SP/SC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#mp-rts-mc-rts">7.6.3. MP_RTS/MC_RTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ring_lib.html#mp-hts-mc-hts">7.6.4. MP_HTS/MC_HTS</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#ring-peek-api">7.7. Ring Peek API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#ring-peek-zero-copy-api">7.8. Ring Peek Zero Copy API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html#references">7.9. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="stack_lib.html">8. Stack Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html#implementation">8.1. Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="stack_lib.html#lock-based-stack">8.1.1. Lock-based Stack</a></li>
+<li class="toctree-l3"><a class="reference internal" href="stack_lib.html#lock-free-stack">8.1.2. Lock-free Stack</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html#cookies">9.1. Cookies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html#stats">9.2. Stats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html#memory-alignment-constraints-on-x86-architecture">9.3. Memory Alignment Constraints on x86 architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html#local-cache">9.4. Local Cache</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html#mempool-handlers">9.5. Mempool Handlers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html#use-cases">9.6. Use Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#design-of-packet-buffers">10.1. Design of Packet Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#buffers-stored-in-memory-pools">10.2. Buffers Stored in Memory Pools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#constructors">10.3. Constructors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#allocating-and-freeing-mbufs">10.4. Allocating and Freeing mbufs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#manipulating-mbufs">10.5. Manipulating mbufs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#meta-information">10.6. Meta Information</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="mbuf_lib.html#dynamic-fields-and-flags">10.6.1. Dynamic fields and flags</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#direct-and-indirect-buffers">10.7. Direct and Indirect Buffers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#debug">10.8. Debug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html#use-cases">10.9. Use Cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html#requirements-and-assumptions">11.1. Requirements and Assumptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html#design-principles">11.2. Design Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html#logical-cores-memory-and-nic-queues-relationships">11.3. Logical Cores, Memory and NIC Queues Relationships</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html#device-identification-ownership-and-configuration">11.4. Device Identification, Ownership and Configuration</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#device-identification">11.4.1. Device Identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#port-ownership">11.4.2. Port Ownership</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#device-configuration">11.4.3. Device Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#on-the-fly-configuration">11.4.4. On-the-Fly Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#configuration-of-transmit-queues">11.4.5. Configuration of Transmit Queues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#free-tx-mbuf-on-demand">11.4.6. Free Tx mbuf on Demand</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#hardware-offload">11.4.7. Hardware Offload</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html#poll-mode-driver-api">11.5. Poll Mode Driver API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#generalities">11.5.1. Generalities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#generic-packet-representation">11.5.2. Generic Packet Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#ethernet-device-api">11.5.3. Ethernet Device API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#ethernet-device-standard-device-arguments">11.5.4. Ethernet Device Standard Device Arguments</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#extended-statistics-api">11.5.5. Extended Statistics API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="poll_mode_drv.html#nic-reset-api">11.5.6. NIC Reset API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#overview">12.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#flow-rule">12.2. Flow rule</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#description">12.2.1. Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#attributes">12.2.2. Attributes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#pattern-item">12.2.3. Pattern item</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#matching-pattern">12.2.4. Matching pattern</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#meta-item-types">12.2.5. Meta item types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#data-matching-item-types">12.2.6. Data matching item types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#actions">12.2.7. Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#action-types">12.2.8. Action types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#negative-types">12.2.9. Negative types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#planned-types">12.2.10. Planned types</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#rules-management">12.3. Rules management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#validation">12.3.1. Validation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#creation">12.3.2. Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#destruction">12.3.3. Destruction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#flush">12.3.4. Flush</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#query">12.3.5. Query</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#flow-isolated-mode">12.4. Flow isolated mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#verbose-error-reporting">12.5. Verbose error reporting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#helpers">12.6. Helpers</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#error-initializer">12.6.1. Error initializer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#object-conversion">12.6.2. Object conversion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#tunneled-traffic-offload">12.6.3. Tunneled traffic offload</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#caveats">12.7. Caveats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#pmd-interface">12.8. PMD interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#device-compatibility">12.9. Device compatibility</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#global-bit-masks">12.9.1. Global bit-masks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#unsupported-layer-types">12.9.2. Unsupported layer types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#any-pattern-item">12.9.3. <code class="docutils literal notranslate"><span class="pre">ANY</span></code> pattern item</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#unsupported-actions">12.9.4. Unsupported actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_flow.html#flow-rules-priority">12.9.5. Flow rules priority</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html#future-evolutions">12.10. Future evolutions</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html#introduction">13.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html#port-representors">13.2. Port Representors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html#basic-sr-iov">13.3. Basic SR-IOV</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html#controlled-sr-iov">13.4. Controlled SR-IOV</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#initialization">13.4.1. Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#vf-representors">13.4.2. VF Representors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#traffic-steering">13.4.3. Traffic Steering</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html#flow-api-rte-flow">13.5. Flow API (rte_flow)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#extensions">13.5.1. Extensions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#traffic-direction">13.5.2. Traffic Direction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#transferring-traffic">13.5.3. Transferring Traffic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#pattern-items-and-actions">13.5.4. Pattern Items And Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#actions-order-and-repetition">13.5.5. Actions Order and Repetition</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html#switching-examples">13.6. Switching Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#associating-vf-1-with-physical-port-0">13.6.1. Associating VF 1 with Physical Port 0</a></li>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#sharing-broadcasts">13.6.2. Sharing Broadcasts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="switch_representation.html#encapsulating-vf-2-traffic-in-vxlan">13.6.3. Encapsulating VF 2 Traffic in VXLAN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html#overview">14.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html#configuration-steps">14.2. Configuration steps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html#run-time-processing">14.3. Run-time processing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html#overview">15.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html#capability-api">15.2. Capability API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html#scheduling-algorithms">15.3. Scheduling Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html#traffic-shaping">15.4. Traffic Shaping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html#congestion-management">15.5. Congestion Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html#packet-marking">15.6. Packet Marking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html#steps-to-setup-the-hierarchy">15.7. Steps to Setup the Hierarchy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="traffic_management.html#initial-hierarchy-specification">15.7.1. Initial Hierarchy Specification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_management.html#hierarchy-commit">15.7.2. Hierarchy Commit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="traffic_management.html#run-time-hierarchy-updates">15.7.3. Run-Time Hierarchy Updates</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html#design-principles">16.1. Design Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html#device-management">16.2. Device Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#device-creation">16.2.1. Device Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#device-identification">16.2.2. Device Identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#device-configuration">16.2.3. Device Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#queues-configuration">16.2.4. Queues Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#device-queues-management">16.2.5. Device &amp; Queues Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#logical-cores-memory-and-queues-relationships">16.2.6. Logical Cores, Memory and Queues Relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html#device-operation-capabilities">16.3. Device Operation Capabilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#capabilities-discovery">16.3.1. Capabilities Discovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html#operation-processing">16.4. Operation Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#enqueue-dequeue-burst-apis">16.4.1. Enqueue / Dequeue Burst APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#operation-representation">16.4.2. Operation Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#operation-management-and-allocation">16.4.3. Operation Management and Allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#bbdev-inbound-outbound-memory">16.4.4. BBDEV Inbound/Outbound Memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#bbdev-turbo-encode-operation">16.4.5. BBDEV Turbo Encode Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#bbdev-turbo-decode-operation">16.4.6. BBDEV Turbo Decode Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#bbdev-ldpc-encode-operation">16.4.7. BBDEV LDPC Encode Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#bbdev-ldpc-decode-operation">16.4.8. BBDEV LDPC Decode Operation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html#sample-code">16.5. Sample code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="bbdev.html#bbdev-device-api">16.5.1. BBDEV Device API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#design-principles">17.1. Design Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#device-management">17.2. Device Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#device-creation">17.2.1. Device Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#device-identification">17.2.2. Device Identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#device-configuration">17.2.3. Device Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#configuration-of-queue-pairs">17.2.4. Configuration of Queue Pairs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#logical-cores-memory-and-queues-pair-relationships">17.2.5. Logical Cores, Memory and Queues Pair Relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#device-features-and-capabilities">17.3. Device Features and Capabilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#device-features">17.3.1. Device Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#device-operation-capabilities">17.3.2. Device Operation Capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#capabilities-discovery">17.3.3. Capabilities Discovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#operation-processing">17.4. Operation Processing</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#private-data">17.4.1. Private data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#enqueue-dequeue-burst-apis">17.4.2. Enqueue / Dequeue Burst APIs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#operation-representation">17.4.3. Operation Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#operation-management-and-allocation">17.4.4. Operation Management and Allocation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#symmetric-cryptography-support">17.5. Symmetric Cryptography Support</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#session-and-session-management">17.5.1. Session and Session Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#transforms-and-transform-chaining">17.5.2. Transforms and Transform Chaining</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#symmetric-operations">17.5.3. Symmetric Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#synchronous-mode">17.6. Synchronous mode</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#cryptodev-raw-data-path-apis">17.6.1. Cryptodev Raw Data-path APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#sample-code">17.7. Sample code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#asymmetric-cryptography">17.8. Asymmetric Cryptography</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#id1">17.8.1. Session and Session Management</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#asymmetric-sessionless-support">17.8.2. Asymmetric Sessionless Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#id2">17.8.3. Transforms and Transform Chaining</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#asymmetric-operations">17.8.4. Asymmetric Operations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html#asymmetric-crypto-sample-code">17.9. Asymmetric crypto Sample code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="cryptodev_lib.html#asymmetric-crypto-device-api">17.9.1. Asymmetric Crypto Device API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#device-management">18.1. Device Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#device-creation">18.1.1. Device Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#device-identification">18.1.2. Device Identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#device-configuration">18.1.3. Device Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#configuration-of-queue-pairs">18.1.4. Configuration of Queue Pairs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#logical-cores-memory-and-queues-pair-relationships">18.1.5. Logical Cores, Memory and Queues Pair Relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#device-features-and-capabilities">18.2. Device Features and Capabilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#capabilities">18.2.1. Capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#capabilities-discovery">18.2.2. Capabilities Discovery</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#compression-operation">18.3. Compression Operation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#operation-representation">18.3.1. Operation Representation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#operation-management-and-allocation">18.3.2. Operation Management and Allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#passing-source-data-as-mbuf-chain">18.3.3. Passing source data as mbuf-chain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#operation-status">18.3.4. Operation Status</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#operation-status-after-enqueue-dequeue">18.3.5. Operation status after enqueue / dequeue</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#produced-consumed-and-operation-status">18.3.6. Produced, Consumed And Operation Status</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#transforms">18.4. Transforms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#compression-api-hash-support">18.5. Compression API Hash support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#compression-api-stateless-operation">18.6. Compression API Stateless operation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#priv-xform-in-stateless-operation">18.6.1. priv_xform in Stateless operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#stateless-and-out-of-space">18.6.2. Stateless and OUT_OF_SPACE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#hash-in-stateless">18.6.3. Hash in Stateless</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#checksum-in-stateless">18.6.4. Checksum in Stateless</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#compression-api-stateful-operation">18.7. Compression API Stateful operation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#stream-in-stateful-operation">18.7.1. Stream in Stateful operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#stateful-and-out-of-space">18.7.2. Stateful and OUT_OF_SPACE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#hash-in-stateful">18.7.3. Hash in Stateful</a></li>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#checksum-in-stateful">18.7.4. Checksum in Stateful</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#burst-in-compression-api">18.8. Burst in compression API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#enqueue-dequeue-burst-apis">18.8.1. Enqueue / Dequeue Burst APIs</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html#sample-code">18.9. Sample code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="compressdev.html#compression-device-api">18.9.1. Compression Device API</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html#design-principles">19.1. Design Principles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html#device-management">19.2. Device Management</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="regexdev.html#device-creation">19.2.1. Device Creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regexdev.html#device-identification">19.2.2. Device Identification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regexdev.html#device-configuration">19.2.3. Device Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regexdev.html#configuration-of-rules-database">19.2.4. Configuration of Rules Database</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regexdev.html#configuration-of-queue-pairs">19.2.5. Configuration of Queue Pairs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="regexdev.html#logical-cores-memory-and-queues-pair-relationships">19.2.6. Logical Cores, Memory and Queues Pair Relationships</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html#device-features-and-capabilities">19.3. Device Features and Capabilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="regexdev.html#enqueue-dequeue-burst-apis">19.3.1. Enqueue / Dequeue Burst APIs</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rte_security.html">20. Security Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html#design-principles">20.1. Design Principles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#inline-crypto">20.1.1. Inline Crypto</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#inline-protocol-offload">20.1.2. Inline protocol offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#lookaside-protocol-offload">20.1.3. Lookaside protocol offload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#pdcp-flow-diagram">20.1.4. PDCP Flow Diagram</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#docsis-protocol">20.1.5. DOCSIS Protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html#device-features-and-capabilities">20.2. Device Features and Capabilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#device-capabilities-for-security-operations">20.2.1. Device Capabilities For Security Operations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#capabilities-discovery">20.2.2. Capabilities Discovery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#security-session-create-free">20.2.3. Security Session Create/Free</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#security-session-configuration">20.2.4. Security session configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#security-api">20.2.5. Security API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="rte_security.html#flow-based-security-session">20.2.6. Flow based Security Session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html#introduction">21.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html#design">21.2. Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rawdev.html#device-identification">21.2.1. Device Identification</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html#link-bonding-modes-overview">22.1. Link Bonding Modes Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html#implementation-details">22.2. Implementation Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html#link-status-change-interrupts-polling">22.2.1. Link Status Change Interrupts / Polling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html#requirements-limitations">22.2.2. Requirements / Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html#configuration">22.2.3. Configuration</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html#using-link-bonding-devices">22.3. Using Link Bonding Devices</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html#using-the-poll-mode-driver-from-an-application">22.3.1. Using the Poll Mode Driver from an Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html#using-link-bonding-devices-from-the-eal-command-line">22.3.2. Using Link Bonding Devices from the EAL Command Line</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="timer_lib.html">23. Timer Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html#implementation-details">23.1. Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html#use-cases">23.2. Use Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html#references">23.3. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="hash_lib.html">24. Hash Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#hash-api-overview">24.1. Hash API Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#multi-process-support">24.2. Multi-process support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#multi-thread-support">24.3. Multi-thread support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#extendable-bucket-functionality-support">24.4. Extendable Bucket Functionality support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#implementation-details-non-extendable-bucket-case">24.5. Implementation Details (non Extendable Bucket Case)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#implementation-details-with-extendable-bucket">24.6. Implementation Details (with Extendable Bucket)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#entry-distribution-in-hash-table">24.7. Entry distribution in hash table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#use-case-flow-classification">24.8. Use Case: Flow Classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html#references">24.9. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html#introduction">25.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html#flow-based-distribution">25.2. Flow Based Distribution</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#computation-based-schemes">25.2.1. Computation Based Schemes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#flow-table-based-schemes">25.2.2. Flow-Table Based Schemes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#efd-based-scheme">25.2.3. EFD Based Scheme</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html#example-of-efd-library-usage">25.3. Example of EFD Library Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html#library-api-overview">25.4. Library API Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#efd-table-create">25.4.1. EFD Table Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#efd-insert-and-update">25.4.2. EFD Insert and Update</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#efd-lookup">25.4.3. EFD Lookup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#efd-delete">25.4.4. EFD Delete</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html#library-internals">25.5. Library Internals</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#insert-function-internals">25.5.1. Insert Function Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#lookup-function-internals">25.5.2. Lookup Function Internals</a></li>
+<li class="toctree-l3"><a class="reference internal" href="efd_lib.html#group-rebalancing-function-internals">25.5.3. Group Rebalancing Function Internals</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html#references">25.6. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="member_lib.html">26. Membership Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html#introduction">26.1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html#vector-of-bloom-filters">26.2. Vector of Bloom Filters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html#hash-table-based-set-summaries">26.3. Hash-Table based Set-Summaries</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="member_lib.html#set-summaries-with-false-negative-probability">26.3.1. Set-Summaries with False Negative Probability</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html#library-api-overview">26.4. Library API Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="member_lib.html#set-summary-create">26.4.1. Set-summary Create</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member_lib.html#set-summary-element-insertion">26.4.2. Set-summary Element Insertion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member_lib.html#set-summary-element-lookup">26.4.3. Set-summary Element Lookup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="member_lib.html#set-summary-element-delete">26.4.4. Set-summary Element Delete</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html#references">26.5. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html#lpm-api-overview">27.1. LPM API Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html#implementation-details">27.2. Implementation Details</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lpm_lib.html#addition">27.2.1. Addition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lpm_lib.html#deletion">27.2.2. Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lpm_lib.html#lookup">27.2.3. Lookup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lpm_lib.html#limitations-in-the-number-of-rules">27.2.4. Limitations in the Number of Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lpm_lib.html#use-case-ipv4-forwarding">27.2.5. Use Case: IPv4 Forwarding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lpm_lib.html#references">27.2.6. References</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html#lpm6-api-overview">28.1. LPM6 API Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lpm6_lib.html#implementation-details">28.1.1. Implementation Details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lpm6_lib.html#addition">28.1.2. Addition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lpm6_lib.html#lookup">28.1.3. Lookup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="lpm6_lib.html#limitations-in-the-number-of-rules">28.1.4. Limitations in the Number of Rules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html#use-case-ipv6-forwarding">28.2. Use Case: IPv6 Forwarding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html#overview">29.1. Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="flow_classify_lib.html#classifier-creation">29.1.1. Classifier creation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flow_classify_lib.html#adding-a-table-to-the-classifier">29.1.2. Adding a table to the Classifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flow_classify_lib.html#flow-parsing">29.1.3. Flow Parsing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flow_classify_lib.html#adding-flow-rules">29.1.4. Adding Flow Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flow_classify_lib.html#deleting-flow-rules">29.1.5. Deleting Flow Rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="flow_classify_lib.html#packet-matching">29.1.6. Packet Matching</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html#distributor-core-operation">30.1. Distributor Core Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html#worker-operation">30.2. Worker Operation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html#operation">31.1. Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html#implementation-details">31.2. Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html#use-case-packet-distributor">31.3. Use Case: Packet Distributor</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html#packet-fragmentation">32.1. Packet fragmentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html#packet-reassembly">32.2. Packet reassembly</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ip_fragment_reassembly_lib.html#ip-fragment-table">32.2.1. IP Fragment Table</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ip_fragment_reassembly_lib.html#id1">32.2.2. Packet Reassembly</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ip_fragment_reassembly_lib.html#debug-logging-and-statistics-collection">32.2.3. Debug logging and Statistics Collection</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html#overview">33.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html#two-sets-of-api">33.2. Two Sets of API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generic_receive_offload_lib.html#lightweight-mode-api">33.2.1. Lightweight Mode API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generic_receive_offload_lib.html#heavyweight-mode-api">33.2.2. Heavyweight Mode API</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html#reassembly-algorithm">33.3. Reassembly Algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generic_receive_offload_lib.html#challenges">33.3.1. Challenges</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generic_receive_offload_lib.html#key-based-reassembly-algorithm">33.3.2. Key-based Reassembly Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html#tcp-ipv4-gro">33.4. TCP/IPv4 GRO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html#vxlan-gro">33.5. VxLAN GRO</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html#gro-library-limitations">33.6. GRO Library Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html#overview">34.1. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html#limitations">34.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html#packet-segmentation">34.3. Packet Segmentation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generic_segmentation_offload_lib.html#gso-output-segment-format">34.3.1. GSO Output Segment Format</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html#supported-gso-packet-types">34.4. Supported GSO Packet Types</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="generic_segmentation_offload_lib.html#tcp-ipv4-gso">34.4.1. TCP/IPv4 GSO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generic_segmentation_offload_lib.html#udp-ipv4-gso">34.4.2. UDP/IPv4 GSO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generic_segmentation_offload_lib.html#vxlan-gso">34.4.3. VxLAN GSO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="generic_segmentation_offload_lib.html#gre-gso">34.4.4. GRE GSO</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html#how-to-segment-a-packet">34.5. How to Segment a Packet</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html#operation">35.1. Operation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html#implementation-details">35.2. Implementation Details</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html#use-case-packet-capturing">35.3. Use Case: Packet Capturing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html#memory-sharing">36.1. Memory Sharing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html#deployment-models">36.2. Deployment Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#symmetric-peer-processes">36.2.1. Symmetric/Peer Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#asymmetric-non-peer-processes">36.2.2. Asymmetric/Non-Peer Processes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#running-multiple-independent-dpdk-applications">36.2.3. Running Multiple Independent DPDK Applications</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#running-multiple-independent-groups-of-dpdk-applications">36.2.4. Running Multiple Independent Groups of DPDK Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html#multi-process-limitations">36.3. Multi-process Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html#communication-between-multiple-processes">36.4. Communication between multiple processes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#registering-for-incoming-messages">36.4.1. Registering for incoming messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#sending-messages">36.4.2. Sending messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#sending-requests">36.4.3. Sending requests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#receiving-and-responding-to-messages">36.4.4. Receiving and responding to messages</a></li>
+<li class="toctree-l3"><a class="reference internal" href="multi_proc_support.html#misc-considerations">36.4.5. Misc considerations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#the-dpdk-kni-kernel-module">37.1. The DPDK KNI Kernel Module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="kernel_nic_interface.html#loopback-mode">37.1.1. Loopback Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kernel_nic_interface.html#kernel-thread-mode">37.1.2. Kernel Thread Mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kernel_nic_interface.html#default-carrier-state">37.1.3. Default Carrier State</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#kni-creation-and-deletion">37.2. KNI Creation and Deletion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#dpdk-mbuf-flow">37.3. DPDK mbuf Flow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#use-case-ingress">37.4. Use Case: Ingress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#use-case-egress">37.5. Use Case: Egress</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#iova-va-support">37.6. IOVA = VA: Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html#ethtool">37.7. Ethtool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html#fast-path-apis">38.1. Fast-Path APIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html#performance-insensitive-api">38.2. Performance Insensitive API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html#library-initialization">38.3. Library Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html#interrupt-thread">38.4. Interrupt Thread</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="eventdev.html">39. Event Device Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html#event-struct">39.1. Event struct</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#event-metadata">39.1.1. Event Metadata</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#event-payload">39.1.2. Event Payload</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#queues">39.1.3. Queues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#ports">39.1.4. Ports</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html#api-walk-through">39.2. API Walk-through</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#init-and-config">39.2.1. Init and Config</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#setting-up-queues">39.2.2. Setting up Queues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#setting-up-ports">39.2.3. Setting up Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#linking-queues-and-ports">39.2.4. Linking Queues and Ports</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#starting-the-eventdev">39.2.5. Starting the EventDev</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#ingress-of-new-events">39.2.6. Ingress of New Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#forwarding-of-events">39.2.7. Forwarding of Events</a></li>
+<li class="toctree-l3"><a class="reference internal" href="eventdev.html#egress-of-events">39.2.8. Egress of Events</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html#summary">39.3. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html#api-walk-through">40.1. API Walk-through</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_rx_adapter.html#creating-an-adapter-instance">40.1.1. Creating an Adapter Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_rx_adapter.html#adding-rx-queues-to-the-adapter-instance">40.1.2. Adding Rx Queues to the Adapter Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_rx_adapter.html#querying-adapter-capabilities">40.1.3. Querying Adapter Capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_rx_adapter.html#configuring-the-service-function">40.1.4. Configuring the Service Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_rx_adapter.html#starting-the-adapter-instance">40.1.5. Starting the Adapter Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_rx_adapter.html#getting-adapter-statistics">40.1.6. Getting Adapter Statistics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_rx_adapter.html#interrupt-based-rx-queues">40.1.7. Interrupt Based Rx Queues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_rx_adapter.html#rx-callback-for-sw-rx-adapter">40.1.8. Rx Callback for SW Rx Adapter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html#api-walk-through">41.1. API Walk-through</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_tx_adapter.html#creating-an-adapter-instance">41.1.1. Creating an Adapter Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_tx_adapter.html#adding-tx-queues-to-the-adapter-instance">41.1.2. Adding Tx Queues to the Adapter Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_tx_adapter.html#querying-adapter-capabilities">41.1.3. Querying Adapter Capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_tx_adapter.html#linking-a-queue-to-the-adapter-s-event-port">41.1.4. Linking a Queue to the Adapter’s Event Port</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_tx_adapter.html#configuring-the-service-function">41.1.5. Configuring the Service Function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_tx_adapter.html#starting-the-adapter-instance">41.1.6. Starting the Adapter Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_tx_adapter.html#enqueuing-packets-to-the-adapter">41.1.7. Enqueuing Packets to the Adapter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_ethernet_tx_adapter.html#getting-adapter-statistics">41.1.8. Getting Adapter Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html#event-timer-struct">42.1. Event Timer struct</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#timer-expiry-event">42.1.1. Timer Expiry Event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#timeout-ticks">42.1.2. Timeout Ticks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#state">42.1.3. State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#user-metadata">42.1.4. User Metadata</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html#api-overview">42.2. API Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#create-and-configure-an-adapter-instance">42.2.1. Create and Configure an Adapter Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#retrieve-event-timer-adapter-contextual-information">42.2.2. Retrieve Event Timer Adapter Contextual Information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#configuring-the-service-component">42.2.3. Configuring the Service Component</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#starting-the-adapter-instance">42.2.4. Starting the Adapter Instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#arming-event-timers">42.2.5. Arming Event Timers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_timer_adapter.html#canceling-event-timers">42.2.6. Canceling Event Timers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html#processing-timer-expiry-events">42.3. Processing Timer Expiry Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html#summary">42.4. Summary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html#adapter-mode">43.1. Adapter Mode</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#rte-event-crypto-adapter-op-new-mode">43.1.1. RTE_EVENT_CRYPTO_ADAPTER_OP_NEW mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#rte-event-crypto-adapter-op-forward-mode">43.1.2. RTE_EVENT_CRYPTO_ADAPTER_OP_FORWARD mode</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html#api-overview">43.2. API Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#create-an-adapter-instance">43.2.1. Create an adapter instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#querying-adapter-capabilities">43.2.2. Querying adapter capabilities</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#adding-queue-pair-to-the-adapter-instance">43.2.3. Adding queue pair to the adapter instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#configure-the-service-function">43.2.4. Configure the service function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#set-event-request-response-information">43.2.5. Set event request/response information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#start-the-adapter-instance">43.2.6. Start the adapter instance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="event_crypto_adapter.html#get-adapter-statistics">43.2.7. Get adapter statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html#packet-pipeline-with-qos-support">44.1. Packet Pipeline with QoS Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html#hierarchical-scheduler">44.2. Hierarchical Scheduler</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#overview">44.2.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#scheduling-hierarchy">44.2.2. Scheduling Hierarchy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#application-programming-interface-api">44.2.3. Application Programming Interface (API)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#implementation">44.2.4. Implementation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#worst-case-scenarios-for-performance">44.2.5. Worst Case Scenarios for Performance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html#dropper">44.3. Dropper</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#configuration">44.3.1. Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#enqueue-operation">44.3.2. Enqueue Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#queue-empty-operation">44.3.3. Queue Empty Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#source-files-location">44.3.4. Source Files Location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#integration-with-the-dpdk-qos-scheduler">44.3.5. Integration with the DPDK QoS Scheduler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#integration-with-the-dpdk-qos-scheduler-sample-application">44.3.6. Integration with the DPDK QoS Scheduler Sample Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#id6">44.3.7. Application Programming Interface (API)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html#traffic-metering">44.4. Traffic Metering</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#functional-overview">44.4.1. Functional Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="qos_framework.html#id7">44.4.2. Implementation Overview</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="power_man.html">45. Power Management</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#cpu-frequency-scaling">45.1. CPU Frequency Scaling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#core-load-throttling-through-c-states">45.2. Core-load Throttling through C-States</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#per-core-turbo-boost">45.3. Per-core Turbo Boost</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#use-of-power-library-in-a-hyper-threaded-environment">45.4. Use of Power Library in a Hyper-Threaded Environment</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#api-overview-of-the-power-library">45.5. API Overview of the Power Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#user-cases">45.6. User Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#empty-poll-api">45.7. Empty Poll API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="power_man.html#abstract">45.7.1. Abstract</a></li>
+<li class="toctree-l3"><a class="reference internal" href="power_man.html#proposed-solution">45.7.2. Proposed Solution</a></li>
+<li class="toctree-l3"><a class="reference internal" href="power_man.html#api-overview-for-empty-poll-power-management">45.7.3. API Overview for Empty Poll Power Management</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#id1">45.8. User Cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html#references">45.9. References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html#overview">46.1. Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="packet_classif_access_ctrl.html#rule-definition">46.1.1. Rule definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packet_classif_access_ctrl.html#rt-memory-size-limit">46.1.2. RT memory size limit</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packet_classif_access_ctrl.html#classification-methods">46.1.3. Classification methods</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html#application-programming-interface-api-usage">46.2. Application Programming Interface (API) Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="packet_classif_access_ctrl.html#classify-with-multiple-categories">46.2.1. Classify with Multiple Categories</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html#design-objectives">47.1. Design Objectives</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html#overview">47.2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html#port-library-design">47.3. Port Library Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#port-types">47.3.1. Port Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#port-interface">47.3.2. Port Interface</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html#table-library-design">47.4. Table Library Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#table-types">47.4.1. Table Types</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#table-interface">47.4.2. Table Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#hash-table-design">47.4.3. Hash Table Design</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html#pipeline-library-design">47.5. Pipeline Library Design</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#connectivity-of-ports-and-tables">47.5.1. Connectivity of Ports and Tables</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#port-actions">47.5.2. Port Actions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#table-actions">47.5.3. Table Actions</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html#multicore-scaling">47.6. Multicore Scaling</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="packet_framework.html#shared-data-structures">47.6.1. Shared Data Structures</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html#interfacing-with-accelerators">47.7. Interfacing with Accelerators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html#the-software-switch-swx-pipeline">47.8. The Software Switch (SWX) Pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html#vhost-api-overview">48.1. Vhost API Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html#vhost-user-implementations">48.2. Vhost-user Implementations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html#guest-memory-requirement">48.3. Guest memory requirement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html#vhost-supported-vswitch-reference">48.4. Vhost supported vSwitch reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html#vhost-data-path-acceleration-vdpa">48.5. Vhost data path acceleration (vDPA)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html#initializing-the-library">49.1. Initializing the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html#registering-metrics">49.2. Registering metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html#updating-metric-values">49.3. Updating metric values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html#querying-metrics">49.4. Querying metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html#deinitialising-the-library">49.5. Deinitialising the library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html#bit-rate-statistics-library">49.6. Bit-rate statistics library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="metrics_lib.html#initialization">49.6.1. Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics_lib.html#controlling-the-sampling-rate">49.6.2. Controlling the sampling rate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html#latency-statistics-library">49.7. Latency statistics library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="metrics_lib.html#id2">49.7.1. Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics_lib.html#triggering-statistic-updates">49.7.2. Triggering statistic updates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics_lib.html#library-shutdown">49.7.3. Library shutdown</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metrics_lib.html#timestamp-and-latency-calculation">49.7.4. Timestamp and latency calculation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html#creating-callback-functions">50.1. Creating Callback Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="telemetry_lib.html#function-type">50.1.1. Function Type</a></li>
+<li class="toctree-l3"><a class="reference internal" href="telemetry_lib.html#formatting-data">50.1.2. Formatting Data</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html#registering-commands">50.2. Registering Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html#using-commands">50.3. Using Commands</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html#packet-data-load-instructions">51.1. Packet data load instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html#not-currently-supported-ebpf-features">51.2. Not currently supported eBPF features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html#sa-level-api">52.1. SA level API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ipsec_lib.html#rte-security-action-type-none">52.1.1. RTE_SECURITY_ACTION_TYPE_NONE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipsec_lib.html#rte-security-action-type-cpu-crypto">52.1.2. RTE_SECURITY_ACTION_TYPE_CPU_CRYPTO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipsec_lib.html#rte-security-action-type-inline-crypto">52.1.3. RTE_SECURITY_ACTION_TYPE_INLINE_CRYPTO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipsec_lib.html#rte-security-action-type-inline-protocol">52.1.4. RTE_SECURITY_ACTION_TYPE_INLINE_PROTOCOL</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipsec_lib.html#rte-security-action-type-lookaside-protocol">52.1.5. RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html#sa-database-api">52.2. SA database API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="ipsec_lib.html#create-destroy">52.2.1. Create/destroy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipsec_lib.html#add-delete-rules">52.2.2. Add/delete rules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ipsec_lib.html#lookup">52.2.3. Lookup</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html#supported-features">52.3. Supported features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html#limitations">52.4. Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html#features">53.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html#advantages-of-graph-architecture">53.2. Advantages of Graph architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html#performance-tuning-parameters">53.3. Performance tuning parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html#programming-model">53.4. Programming model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#anatomy-of-node">53.4.1. Anatomy of Node:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#node-creation-and-registration">53.4.2. Node creation and registration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#link-the-nodes-to-create-the-graph-topology">53.4.3. Link the Nodes to create the graph topology</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#create-the-graph-object">53.4.4. Create the graph object</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#multicore-graph-processing">53.4.5. Multicore graph processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#in-fast-path">53.4.6. In fast path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#context-update-when-graph-walk-in-action">53.4.7. Context update when graph walk in action</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#get-the-node-statistics-using-graph-cluster">53.4.8. Get the node statistics using graph cluster</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#node-writing-guidelines">53.4.9. Node writing guidelines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#static-nodes">53.4.10. Static nodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#intermediate-nodes">53.4.11. Intermediate nodes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html#graph-object-memory-layout">53.5. Graph object memory layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html#inbuilt-nodes">53.6. Inbuilt Nodes</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#ethdev-rx">53.6.1. ethdev_rx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#ethdev-tx">53.6.2. ethdev_tx</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#pkt-drop">53.6.3. pkt_drop</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#ip4-lookup">53.6.4. ip4_lookup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#ip4-rewrite">53.6.5. ip4_rewrite</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graph_lib.html#null">53.6.6. null</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="source_org.html">54. Source Organization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html#libraries">54.1. Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html#drivers">54.2. Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html#applications">54.3. Applications</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html#summary">55.1. Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html#getting-the-tools">55.2. Getting the Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html#configuring-the-build">55.3. Configuring the Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html#performing-the-build">55.4. Performing the Build</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html#installing-the-compiled-files">55.5. Installing the Compiled Files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html#cross-compiling-dpdk">55.6. Cross Compiling DPDK</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html#using-the-dpdk-within-an-application">55.7. Using the DPDK within an Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html#grouping-of-test-cases">56.1. Grouping of test cases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html#dealing-with-skipped-test-cases">56.2. Dealing with skipped test cases</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html#compiling-a-sample-application-in-the-development-kit-directory">57.1. Compiling a Sample Application in the Development Kit Directory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html#build-your-own-application-outside-the-development-kit">57.2. Build Your Own Application Outside the Development Kit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html#customizing-makefiles">57.3. Customizing Makefiles</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="build_app.html#application-makefile">57.3.1. Application Makefile</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html#introduction">58.1. Introduction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html#memory">59.1. Memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#memory-copy-do-not-use-libc-in-the-data-plane">59.1.1. Memory Copy: Do not Use libc in the Data Plane</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#memory-allocation">59.1.2. Memory Allocation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#concurrent-access-to-the-same-memory-area">59.1.3. Concurrent Access to the Same Memory Area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#numa">59.1.4. NUMA</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#distribution-across-memory-channels">59.1.5. Distribution Across Memory Channels</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#locking-memory-pages">59.1.6. Locking memory pages</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html#communication-between-lcores">59.2. Communication Between lcores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html#pmd-driver">59.3. PMD Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#lower-packet-latency">59.3.1. Lower Packet Latency</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html#locks-and-atomic-operations">59.4. Locks and Atomic Operations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#locks">59.4.1. Locks</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#atomic-operations-use-c11-atomic-builtins">59.4.2. Atomic Operations: Use C11 Atomic Builtins</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html#coding-considerations">59.5. Coding Considerations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#inline-functions">59.5.1. Inline Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="writing_efficient_code.html#branch-prediction">59.5.2. Branch Prediction</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html#setting-the-target-cpu-type">59.6. Setting the Target CPU Type</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html#profiling-on-x86">61.1. Profiling on x86</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html#profiling-on-arm64">61.2. Profiling on ARM64</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="profile_app.html#using-linux-perf">61.2.1. Using Linux perf</a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile_app.html#low-resolution-generic-counter">61.2.2. Low-resolution generic counter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="profile_app.html#high-resolution-cycle-counter">61.2.3. High-resolution cycle counter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="intro.html" class="btn btn-neutral float-right" title="1. Introduction" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../sample_app_ug/ntb.html" class="btn btn-neutral float-left" title="50. NTB Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

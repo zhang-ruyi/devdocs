@@ -1,0 +1,613 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>22. L3 Forwarding Graph Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="23. L3 Forwarding with Power Management Sample Application" href="l3_forward_power_man.html" />
+    <link rel="prev" title="21. L3 Forwarding Sample Application" href="l3_forward.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">22. L3 Forwarding Graph Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">22.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">22.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">22.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">22.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#graph-node-pre-init-configuration">22.4.1. Graph Node Pre-Init Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#graph-initialization">22.4.2. Graph Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#forwarding-data-route-next-hop-addition">22.4.3. Forwarding data(Route, Next-Hop) addition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-forwarding-using-graph-walk">22.4.4. Packet Forwarding using Graph Walk</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">22. </span>L3 Forwarding Graph Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/l3_forward_graph.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="l3-forwarding-graph-sample-application">
+<h1><span class="section-number">22. </span>L3 Forwarding Graph Sample Application</h1>
+<p>The L3 Forwarding Graph application is a simple example of packet processing
+using the DPDK Graph framework. The application performs L3 forwarding using
+Graph framework and nodes written for graph framework.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">22.1. </span>Overview</h2>
+<p>The application demonstrates the use of the graph framework and graph nodes
+<code class="docutils literal notranslate"><span class="pre">ethdev_rx</span></code>, <code class="docutils literal notranslate"><span class="pre">ip4_lookup</span></code>, <code class="docutils literal notranslate"><span class="pre">ip4_rewrite</span></code>, <code class="docutils literal notranslate"><span class="pre">ethdev_tx</span></code> and <code class="docutils literal notranslate"><span class="pre">pkt_drop</span></code> in DPDK to
+implement packet forwarding.</p>
+<p>The initialization is very similar to those of the <a class="reference internal" href="l3_forward.html"><span class="doc">L3 Forwarding Sample Application</span></a>.
+There is also additional initialization of graph for graph object creation
+and configuration per lcore.
+Run-time path is main thing that differs from L3 forwarding sample application.
+Difference is that forwarding logic starting from Rx, followed by LPM lookup,
+TTL update and finally Tx is implemented inside graph nodes. These nodes are
+interconnected in graph framework. Application main loop needs to walk over
+graph using <code class="docutils literal notranslate"><span class="pre">rte_graph_walk()</span></code> with graph objects created one per worker lcore.</p>
+<p>The lookup method is as per implementation of <code class="docutils literal notranslate"><span class="pre">ip4_lookup</span></code> graph node.
+The ID of the output interface for the input packet is the next hop returned by
+the LPM lookup. The set of LPM rules used by the application is statically
+configured and provided to <code class="docutils literal notranslate"><span class="pre">ip4_lookup</span></code> graph node and <code class="docutils literal notranslate"><span class="pre">ip4_rewrite</span></code> graph node
+using node control API <code class="docutils literal notranslate"><span class="pre">rte_node_ip4_route_add()</span></code> and <code class="docutils literal notranslate"><span class="pre">rte_node_ip4_rewrite_add()</span></code>.</p>
+<p>In the sample application, only IPv4 forwarding is supported as of now.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">22.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">l3fwd-graph</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">22.3. </span>Running the Application</h2>
+<p>The application has a number of command line options similar to l3fwd:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./dpdk-l3fwd-graph [EAL options] -- -p PORTMASK
+                               [-P]
+                               --config(port,queue,lcore)[,(port,queue,lcore)]
+                               [--eth-dest=X,MM:MM:MM:MM:MM:MM]
+                               [--enable-jumbo [--max-pkt-len PKTLEN]]
+                               [--no-numa]
+                               [--per-port-pool]
+</pre></div>
+</div>
+<p>Where,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PORTMASK:</span></code> Hexadecimal bitmask of ports to configure</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-P:</span></code> Optional, sets all ports to promiscuous mode so that packets are accepted regardless of the packet’s Ethernet MAC destination address.
+Without this option, only packets with the Ethernet MAC destination address set to the Ethernet address of the port are accepted.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--config</span> <span class="pre">(port,queue,lcore)[,(port,queue,lcore)]:</span></code> Determines which queues from which ports are mapped to which cores.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--eth-dest=X,MM:MM:MM:MM:MM:MM:</span></code> Optional, ethernet destination for port X.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--enable-jumbo:</span></code> Optional, enables jumbo frames.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max-pkt-len:</span></code> Optional, under the premise of enabling jumbo, maximum packet length in decimal (64-9600).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--no-numa:</span></code> Optional, disables numa awareness.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--per-port-pool:</span></code> Optional, set to use independent buffer pools per port. Without this option, single buffer pool is used for all ports.</p></li>
+</ul>
+<p>For example, consider a dual processor socket platform with 8 physical cores, where cores 0-7 and 16-23 appear on socket 0,
+while cores 8-15 and 24-31 appear on socket 1.</p>
+<p>To enable L3 forwarding between two ports, assuming that both ports are in the same socket, using two cores, cores 1 and 2,
+(which are in the same socket too), use the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-l3fwd-graph -l 1,2 -n 4 -- -p 0x3 --config=&quot;(0,0,1),(1,0,2)&quot;</span>
+</pre></div>
+</div>
+<p>In this command:</p>
+<ul class="simple">
+<li><p>The -l option enables cores 1, 2</p></li>
+<li><p>The -p option enables ports 0 and 1</p></li>
+<li><p>The –config option enables one queue on each port and maps each (port,queue) pair to a specific core.
+The following table shows the mapping in this example:</p></li>
+</ul>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 54%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>Port</strong></p></td>
+<td><p><strong>Queue</strong></p></td>
+<td><p><strong>lcore</strong></p></td>
+<td><p><strong>Description</strong></p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>Map queue 0 from port 0 to lcore 1.</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>2</p></td>
+<td><p>Map queue 0 from port 1 to lcore 2.</p></td>
+</tr>
+</tbody>
+</table>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<span id="l3-fwd-graph-explanation"></span><h2><span class="section-number">22.4. </span>Explanation</h2>
+<p>The following sections provide some explanation of the sample application code.
+As mentioned in the overview section, the initialization is similar to that of
+the <a class="reference internal" href="l3_forward.html"><span class="doc">L3 Forwarding Sample Application</span></a>. Run-time path though similar in functionality to that of
+<a class="reference internal" href="l3_forward.html"><span class="doc">L3 Forwarding Sample Application</span></a>, major part of the implementation is in graph nodes via used
+via <code class="docutils literal notranslate"><span class="pre">librte_node</span></code> library.
+The following sections describe aspects that are specific to the L3 Forwarding
+Graph sample application.</p>
+<div class="section" id="graph-node-pre-init-configuration">
+<h3><span class="section-number">22.4.1. </span>Graph Node Pre-Init Configuration</h3>
+<p>After device configuration and device Rx, Tx queue setup is complete,
+a minimal config of port id, num_rx_queues, num_tx_queues, mempools etc will
+be passed to <em>ethdev_*</em> node ctrl API <code class="docutils literal notranslate"><span class="pre">rte_node_eth_config()</span></code>. This will be
+lead to the clone of <code class="docutils literal notranslate"><span class="pre">ethdev_rx</span></code> and <code class="docutils literal notranslate"><span class="pre">ethdev_tx</span></code> nodes as <code class="docutils literal notranslate"><span class="pre">ethdev_rx-X-Y</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ethdev_tx-X</span></code> where X, Y represent port id and queue id associated with them.
+In case of <code class="docutils literal notranslate"><span class="pre">ethdev_tx-X</span></code> nodes, tx queue id assigned per instance of the node
+is same as graph id.</p>
+<p>These cloned nodes along with existing static nodes such as <code class="docutils literal notranslate"><span class="pre">ip4_lookup</span></code> and
+<code class="docutils literal notranslate"><span class="pre">ip4_rewrite</span></code> will be used in graph creation to associate node’s to lcore
+specific graph object.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">RTE_ETH_FOREACH_DEV</span><span class="p">(</span><span class="n">portid</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="cm">/* ... */</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_dev_configure</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="n">nb_rx_queue</span><span class="p">,</span>
+                                <span class="n">n_tx_queue</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">local_port_conf</span><span class="p">);</span>
+    <span class="cm">/* ... */</span>
+
+    <span class="cm">/* Init one TX queue per couple (lcore,port) */</span>
+    <span class="n">queueid</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">lcore_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">lcore_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_LCORE</span><span class="p">;</span> <span class="n">lcore_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* ... */</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_tx_queue_setup</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="n">queueid</span><span class="p">,</span> <span class="n">nb_txd</span><span class="p">,</span>
+                                     <span class="n">socketid</span><span class="p">,</span> <span class="n">txconf</span><span class="p">);</span>
+        <span class="cm">/* ... */</span>
+        <span class="n">queueid</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Setup ethdev node config */</span>
+    <span class="n">ethdev_conf</span><span class="p">[</span><span class="n">nb_conf</span><span class="p">].</span><span class="n">port_id</span> <span class="o">=</span> <span class="n">portid</span><span class="p">;</span>
+    <span class="n">ethdev_conf</span><span class="p">[</span><span class="n">nb_conf</span><span class="p">].</span><span class="n">num_rx_queues</span> <span class="o">=</span> <span class="n">nb_rx_queue</span><span class="p">;</span>
+    <span class="n">ethdev_conf</span><span class="p">[</span><span class="n">nb_conf</span><span class="p">].</span><span class="n">num_tx_queues</span> <span class="o">=</span> <span class="n">n_tx_queue</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">per_port_pool</span><span class="p">)</span>
+        <span class="n">ethdev_conf</span><span class="p">[</span><span class="n">nb_conf</span><span class="p">].</span><span class="n">mp</span> <span class="o">=</span> <span class="n">pktmbuf_pool</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="k">else</span>
+      <span class="n">ethdev_conf</span><span class="p">[</span><span class="n">nb_conf</span><span class="p">].</span><span class="n">mp</span> <span class="o">=</span> <span class="n">pktmbuf_pool</span><span class="p">[</span><span class="n">portid</span><span class="p">];</span>
+    <span class="n">ethdev_conf</span><span class="p">[</span><span class="n">nb_conf</span><span class="p">].</span><span class="n">mp_count</span> <span class="o">=</span> <span class="n">NB_SOCKETS</span><span class="p">;</span>
+
+    <span class="n">nb_conf</span><span class="o">++</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">lcore_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">lcore_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_LCORE</span><span class="p">;</span> <span class="n">lcore_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* Init RX queues */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">queue</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">queue</span> <span class="o">&lt;</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_queue</span><span class="p">;</span> <span class="o">++</span><span class="n">queue</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* ... */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">per_port_pool</span><span class="p">)</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_rx_queue_setup</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="n">queueid</span><span class="p">,</span> <span class="n">nb_rxd</span><span class="p">,</span> <span class="n">socketid</span><span class="p">,</span>
+                                         <span class="o">&amp;</span><span class="n">rxq_conf</span><span class="p">,</span> <span class="n">pktmbuf_pool</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">socketid</span><span class="p">]);</span>
+        <span class="k">else</span>
+          <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_eth_rx_queue_setup</span><span class="p">(</span><span class="n">portid</span><span class="p">,</span> <span class="n">queueid</span><span class="p">,</span> <span class="n">nb_rxd</span><span class="p">,</span> <span class="n">socketid</span><span class="p">,</span>
+                                       <span class="o">&amp;</span><span class="n">rxq_conf</span><span class="p">,</span> <span class="n">pktmbuf_pool</span><span class="p">[</span><span class="n">portid</span><span class="p">][</span><span class="n">socketid</span><span class="p">]);</span>
+        <span class="cm">/* ... */</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/* Ethdev node config, skip rx queue mapping */</span>
+<span class="n">ret</span> <span class="o">=</span> <span class="n">rte_node_eth_config</span><span class="p">(</span><span class="n">ethdev_conf</span><span class="p">,</span> <span class="n">nb_conf</span><span class="p">,</span> <span class="n">nb_graphs</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="graph-initialization">
+<h3><span class="section-number">22.4.2. </span>Graph Initialization</h3>
+<p>Now a graph needs to be created with a specific set of nodes for every lcore.
+A graph object returned after graph creation is a per lcore object and
+cannot be shared between lcores. Since <code class="docutils literal notranslate"><span class="pre">ethdev_tx-X</span></code> node is per port node,
+it can be associated with all the graphs created as all the lcores should have
+Tx capability for every port. But <code class="docutils literal notranslate"><span class="pre">ethdev_rx-X-Y</span></code> node is created per
+(port, rx_queue_id), so they should be associated with a graph based on
+the application argument <code class="docutils literal notranslate"><span class="pre">--config</span></code> specifying rx queue mapping to lcore.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Graph creation will fail if the passed set of shell node pattern’s
+are not sufficient to meet their inter-dependency or even one node is not
+found with a given regex node pattern.</p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="k">const</span> <span class="n">default_patterns</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;ip4*&quot;</span><span class="p">,</span>
+    <span class="s">&quot;ethdev_tx-*&quot;</span><span class="p">,</span>
+    <span class="s">&quot;pkt_drop&quot;</span><span class="p">,</span>
+<span class="p">};</span>
+<span class="k">const</span> <span class="kt">char</span> <span class="o">**</span><span class="n">node_patterns</span><span class="p">;</span>
+<span class="kt">uint16_t</span> <span class="n">nb_pattern</span><span class="p">;</span>
+
+<span class="cm">/* ... */</span>
+
+<span class="cm">/* Create a graph object per lcore with common nodes and</span>
+<span class="cm"> * lcore specific nodes based on application arguments</span>
+<span class="cm"> */</span>
+<span class="n">nb_patterns</span> <span class="o">=</span> <span class="n">RTE_DIM</span><span class="p">(</span><span class="n">default_patterns</span><span class="p">);</span>
+<span class="n">node_patterns</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">((</span><span class="n">MAX_RX_QUEUE_PER_LCORE</span> <span class="o">+</span> <span class="n">nb_patterns</span><span class="p">)</span> <span class="o">*</span>
+                       <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">node_patterns</span><span class="p">));</span>
+<span class="n">memcpy</span><span class="p">(</span><span class="n">node_patterns</span><span class="p">,</span> <span class="n">default_patterns</span><span class="p">,</span>
+       <span class="n">nb_patterns</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">node_patterns</span><span class="p">));</span>
+
+<span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">graph_conf</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">graph_conf</span><span class="p">));</span>
+
+<span class="cm">/* Common set of nodes in every lcore&#39;s graph object */</span>
+<span class="n">graph_conf</span><span class="p">.</span><span class="n">node_patterns</span> <span class="o">=</span> <span class="n">node_patterns</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">lcore_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">lcore_id</span> <span class="o">&lt;</span> <span class="n">RTE_MAX_LCORE</span><span class="p">;</span> <span class="n">lcore_id</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* ... */</span>
+
+    <span class="cm">/* Skip graph creation if no source exists */</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_queue</span><span class="p">)</span>
+        <span class="k">continue</span><span class="p">;</span>
+
+    <span class="cm">/* Add rx node patterns of this lcore based on --config */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">n_rx_queue</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">graph_conf</span><span class="p">.</span><span class="n">node_patterns</span><span class="p">[</span><span class="n">nb_patterns</span> <span class="o">+</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span>
+                            <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">rx_queue_list</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">node_name</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">graph_conf</span><span class="p">.</span><span class="n">nb_node_patterns</span> <span class="o">=</span> <span class="n">nb_patterns</span> <span class="o">+</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">graph_conf</span><span class="p">.</span><span class="n">socket_id</span> <span class="o">=</span> <span class="n">rte_lcore_to_socket_id</span><span class="p">(</span><span class="n">lcore_id</span><span class="p">);</span>
+
+    <span class="n">snprintf</span><span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">),</span> <span class="s">&quot;worker_%u&quot;</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">);</span>
+
+    <span class="n">graph_id</span> <span class="o">=</span> <span class="n">rte_graph_create</span><span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">graph_conf</span><span class="p">);</span>
+
+    <span class="cm">/* ... */</span>
+
+    <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">graph</span> <span class="o">=</span> <span class="n">rte_graph_lookup</span><span class="p">(</span><span class="n">qconf</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">);</span>
+
+    <span class="cm">/* ... */</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="forwarding-data-route-next-hop-addition">
+<h3><span class="section-number">22.4.3. </span>Forwarding data(Route, Next-Hop) addition</h3>
+<p>Once graph objects are created, node specific info like routes and rewrite
+headers will be provided run-time using <code class="docutils literal notranslate"><span class="pre">rte_node_ip4_route_add()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rte_node_ip4_rewrite_add()</span></code> API.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since currently <code class="docutils literal notranslate"><span class="pre">ip4_lookup</span></code> and <code class="docutils literal notranslate"><span class="pre">ip4_rewrite</span></code> nodes don’t support
+lock-less mechanisms(RCU, etc) to add run-time forwarding data like route and
+rewrite data, forwarding data is added before packet processing loop is
+launched on worker lcore.</p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Add route to ip4 graph infra */</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">IPV4_L3FWD_LPM_NUM_ROUTES</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="cm">/* ... */</span>
+
+    <span class="n">dst_port</span> <span class="o">=</span> <span class="n">ipv4_l3fwd_lpm_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">if_out</span><span class="p">;</span>
+    <span class="n">next_hop</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="cm">/* ... */</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_node_ip4_route_add</span><span class="p">(</span><span class="n">ipv4_l3fwd_lpm_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ip</span><span class="p">,</span>
+                                 <span class="n">ipv4_l3fwd_lpm_route_array</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">depth</span><span class="p">,</span> <span class="n">next_hop</span><span class="p">,</span>
+                                 <span class="n">RTE_NODE_IP4_LOOKUP_NEXT_REWRITE</span><span class="p">);</span>
+
+    <span class="cm">/* ... */</span>
+
+    <span class="n">memcpy</span><span class="p">(</span><span class="n">rewrite_data</span><span class="p">,</span> <span class="n">val_eth</span> <span class="o">+</span> <span class="n">dst_port</span><span class="p">,</span> <span class="n">rewrite_len</span><span class="p">);</span>
+
+    <span class="cm">/* Add next hop for a given destination */</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_node_ip4_rewrite_add</span><span class="p">(</span><span class="n">next_hop</span><span class="p">,</span> <span class="n">rewrite_data</span><span class="p">,</span>
+                                   <span class="n">rewrite_len</span><span class="p">,</span> <span class="n">dst_port</span><span class="p">);</span>
+
+    <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">,</span> <span class="n">L3FWD_GRAPH</span><span class="p">,</span> <span class="s">&quot;Added route %s, next_hop %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+            <span class="n">route_str</span><span class="p">,</span> <span class="n">next_hop</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="packet-forwarding-using-graph-walk">
+<h3><span class="section-number">22.4.4. </span>Packet Forwarding using Graph Walk</h3>
+<p>Now that all the device configurations are done, graph creations are done and
+forwarding data is updated with nodes, worker lcores will be launched with graph
+main loop. Graph main loop is very simple in the sense that it needs to
+continuously call a non-blocking API <code class="docutils literal notranslate"><span class="pre">rte_graph_walk()</span></code> with it’s lcore
+specific graph object that was already created.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>rte_graph_walk() will walk over all the sources nodes i.e <code class="docutils literal notranslate"><span class="pre">ethdev_rx-X-Y</span></code>
+associated with a given graph and Rx the available packets and enqueue them
+to the following node <code class="docutils literal notranslate"><span class="pre">ip4_lookup</span></code> which then will enqueue them to <code class="docutils literal notranslate"><span class="pre">ip4_rewrite</span></code>
+node if LPM lookup succeeds. <code class="docutils literal notranslate"><span class="pre">ip4_rewrite</span></code> node then will update Ethernet header
+as per next-hop data and transmit the packet via port ‘Z’ by enqueuing
+to <code class="docutils literal notranslate"><span class="pre">ethdev_tx-Z</span></code> node instance in its graph object.</p>
+</div>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Main processing loop */</span>
+<span class="k">static</span> <span class="kt">int</span>
+<span class="nf">graph_main_loop</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">conf</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+
+    <span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+    <span class="n">qconf</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lcore_conf</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">];</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">graph</span><span class="p">;</span>
+
+    <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">INFO</span><span class="p">,</span> <span class="n">L3FWD_GRAPH</span><span class="p">,</span>
+            <span class="s">&quot;Entering main loop on lcore %u, graph %s(%p)</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">lcore_id</span><span class="p">,</span>
+            <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">name</span><span class="p">,</span> <span class="n">graph</span><span class="p">);</span>
+
+    <span class="cm">/* Walk over graph until signal to quit */</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">likely</span><span class="p">(</span><span class="o">!</span><span class="n">force_quit</span><span class="p">))</span>
+        <span class="n">rte_graph_walk</span><span class="p">(</span><span class="n">graph</span><span class="p">);</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="l3_forward_power_man.html" class="btn btn-neutral float-right" title="23. L3 Forwarding with Power Management Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="l3_forward.html" class="btn btn-neutral float-left" title="21. L3 Forwarding Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

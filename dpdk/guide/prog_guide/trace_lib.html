@@ -1,0 +1,649 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>5. Trace Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="6. RCU Library" href="rcu_lib.html" />
+    <link rel="prev" title="4. Service Cores" href="service_cores.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. Trace Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">5.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dpdk-tracing-library-features">5.2. DPDK tracing library features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-add-a-tracepoint">5.3. How to add a tracepoint?</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#create-the-tracepoint-header-file">5.3.1. Create the tracepoint header file</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#register-the-tracepoint">5.3.2. Register the tracepoint</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fast-path-tracepoint">5.4. Fast path tracepoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#event-record-mode">5.5. Event record mode</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#trace-file-location">5.6. Trace file location</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#view-and-analyze-the-recorded-events">5.7. View and analyze the recorded events</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#use-the-babeltrace-command-line-tool">5.7.1. Use the babeltrace command-line tool</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-the-tracecompass-gui-tool">5.7.2. Use the tracecompass GUI tool</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-start">5.8. Quick start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation-details">5.9. Implementation details</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#trace-metadata-creation">5.9.1. Trace metadata creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trace-memory">5.9.2. Trace memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#trace-memory-layout">5.9.3. Trace memory layout</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">5. </span>Trace Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/trace_lib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="trace-library">
+<h1><span class="section-number">5. </span>Trace Library</h1>
+<div class="section" id="overview">
+<h2><span class="section-number">5.1. </span>Overview</h2>
+<p><em>Tracing</em> is a technique used to understand what goes on in a running software
+system. The software used for tracing is called a <em>tracer</em>, which is
+conceptually similar to a tape recorder.
+When recording, specific instrumentation points placed in the software source
+code generate events that are saved on a giant tape: a trace file.
+The trace file then later can be opened in <em>trace viewers</em> to visualize and
+analyze the trace events with timestamps and multi-core views.
+Such a mechanism will be useful for resolving a wide range of problems such as
+multi-core synchronization issues, latency measurements, finding out the
+post analysis information like CPU idle time, etc that would otherwise be
+extremely challenging to get.</p>
+<p>Tracing is often compared to <em>logging</em>. However, tracers and loggers are two
+different tools, serving two different purposes.
+Tracers are designed to record much lower-level events that occur much more
+frequently than log messages, often in the range of thousands per second, with
+very little execution overhead.
+Logging is more appropriate for a very high-level analysis of less frequent
+events: user accesses, exceptional conditions (errors and warnings, for
+example), database transactions, instant messaging communications, and such.
+Simply put, logging is one of the many use cases that can be satisfied with
+tracing.</p>
+</div>
+<div class="section" id="dpdk-tracing-library-features">
+<h2><span class="section-number">5.2. </span>DPDK tracing library features</h2>
+<ul class="simple">
+<li><p>A framework to add tracepoints in control and fast path APIs with minimum
+impact on performance.
+Typical trace overhead is ~20 cycles and instrumentation overhead is 1 cycle.</p></li>
+<li><p>Enable and disable the tracepoints at runtime.</p></li>
+<li><p>Save the trace buffer to the filesystem at any point in time.</p></li>
+<li><p>Support <code class="docutils literal notranslate"><span class="pre">overwrite</span></code> and <code class="docutils literal notranslate"><span class="pre">discard</span></code> trace mode operations.</p></li>
+<li><p>String-based tracepoint object lookup.</p></li>
+<li><p>Enable and disable a set of tracepoints based on regular expression and/or
+globbing.</p></li>
+<li><p>Generate trace in <code class="docutils literal notranslate"><span class="pre">Common</span> <span class="pre">Trace</span> <span class="pre">Format</span> <span class="pre">(CTF)</span></code>. <code class="docutils literal notranslate"><span class="pre">CTF</span></code> is an open-source
+trace format and is compatible with <code class="docutils literal notranslate"><span class="pre">LTTng</span></code>.
+For detailed information, refer to
+<a class="reference external" href="https://diamon.org/ctf/">Common Trace Format</a>.</p></li>
+</ul>
+</div>
+<div class="section" id="how-to-add-a-tracepoint">
+<h2><span class="section-number">5.3. </span>How to add a tracepoint?</h2>
+<p>This section steps you through the details of adding a simple tracepoint.</p>
+<div class="section" id="create-the-tracepoint-header-file">
+<span id="create-tracepoint-header-file"></span><h3><span class="section-number">5.3.1. </span>Create the tracepoint header file</h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rte_trace_point.h&gt;</span><span class="cp"></span>
+
+<span class="n">RTE_TRACE_POINT</span><span class="p">(</span>
+       <span class="n">app_trace_string</span><span class="p">,</span>
+       <span class="n">RTE_TRACE_POINT_ARGS</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">),</span>
+       <span class="n">rte_trace_point_emit_string</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The above macro creates <code class="docutils literal notranslate"><span class="pre">app_trace_string</span></code> tracepoint.
+The user can choose any name for the tracepoint.
+However, when adding a tracepoint in the DPDK library, the
+<code class="docutils literal notranslate"><span class="pre">rte_&lt;library_name&gt;_trace_[&lt;domain&gt;_]&lt;name&gt;</span></code> naming convention must be
+followed.
+The examples are <code class="docutils literal notranslate"><span class="pre">rte_eal_trace_generic_str</span></code>, <code class="docutils literal notranslate"><span class="pre">rte_mempool_trace_create</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">RTE_TRACE_POINT</span></code> macro expands from above definition as the following
+function template:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="n">__rte_always_inline</span> <span class="kt">void</span>
+<span class="nf">app_trace_string</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="cm">/* Trace subsystem hooks */</span>
+        <span class="p">...</span>
+        <span class="n">rte_trace_point_emit_string</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The consumer of this tracepoint can invoke
+<code class="docutils literal notranslate"><span class="pre">app_trace_string(const</span> <span class="pre">char</span> <span class="pre">*str)</span></code> to emit the trace event to the trace
+buffer.</p>
+</div>
+<div class="section" id="register-the-tracepoint">
+<h3><span class="section-number">5.3.2. </span>Register the tracepoint</h3>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;rte_trace_point_register.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;my_tracepoint.h&gt;</span><span class="cp"></span>
+
+<span class="n">RTE_TRACE_POINT_REGISTER</span><span class="p">(</span><span class="n">app_trace_string</span><span class="p">,</span> <span class="n">app</span><span class="p">.</span><span class="n">trace</span><span class="p">.</span><span class="n">string</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The above code snippet registers the <code class="docutils literal notranslate"><span class="pre">app_trace_string</span></code> tracepoint to
+trace library. Here, the <code class="docutils literal notranslate"><span class="pre">my_tracepoint.h</span></code> is the header file
+that the user created in the first step <a class="reference internal" href="#create-tracepoint-header-file"><span class="std std-ref">Create the tracepoint header file</span></a>.</p>
+<p>The second argument for the <code class="docutils literal notranslate"><span class="pre">RTE_TRACE_POINT_REGISTER</span></code> is the name for the
+tracepoint. This string will be used for tracepoint lookup or regular
+expression and/or glob based tracepoint operations.
+There is no requirement for the tracepoint function and its name to be similar.
+However, it is recommended to have a similar name for a better naming
+convention.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_trace_point_register.h</span></code> header must be included before any
+inclusion of the <code class="docutils literal notranslate"><span class="pre">rte_trace_point.h</span></code> header.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">RTE_TRACE_POINT_REGISTER</span></code> defines the placeholder for the
+<code class="docutils literal notranslate"><span class="pre">rte_trace_point_t</span></code> tracepoint object. The user must export a
+<code class="docutils literal notranslate"><span class="pre">__&lt;trace_function_name&gt;</span></code> symbol in the library <code class="docutils literal notranslate"><span class="pre">.map</span></code> file for this
+tracepoint to be used out of the library, in shared builds.
+For example, <code class="docutils literal notranslate"><span class="pre">__app_trace_string</span></code> will be the exported symbol in the
+above example.</p>
+</div>
+</div>
+</div>
+<div class="section" id="fast-path-tracepoint">
+<h2><span class="section-number">5.4. </span>Fast path tracepoint</h2>
+<p>In order to avoid performance impact in fast path code, the library introduced
+<code class="docutils literal notranslate"><span class="pre">RTE_TRACE_POINT_FP</span></code>. When adding the tracepoint in fast path code,
+the user must use <code class="docutils literal notranslate"><span class="pre">RTE_TRACE_POINT_FP</span></code> instead of <code class="docutils literal notranslate"><span class="pre">RTE_TRACE_POINT</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RTE_TRACE_POINT_FP</span></code> is compiled out by default and it can be enabled using
+the <code class="docutils literal notranslate"><span class="pre">enable_trace_fp</span></code> option for meson build.</p>
+</div>
+<div class="section" id="event-record-mode">
+<h2><span class="section-number">5.5. </span>Event record mode</h2>
+<p>Event record mode is an attribute of trace buffers. Trace library exposes the
+following modes:</p>
+<dl class="simple">
+<dt>Overwrite</dt><dd><p>When the trace buffer is full, new trace events overwrites the existing
+captured events in the trace buffer.</p>
+</dd>
+<dt>Discard</dt><dd><p>When the trace buffer is full, new trace events will be discarded.</p>
+</dd>
+</dl>
+<p>The mode can be configured either using EAL command line parameter
+<code class="docutils literal notranslate"><span class="pre">--trace-mode</span></code> on application boot up or use <code class="docutils literal notranslate"><span class="pre">rte_trace_mode_set()</span></code> API to
+configure at runtime.</p>
+</div>
+<div class="section" id="trace-file-location">
+<h2><span class="section-number">5.6. </span>Trace file location</h2>
+<p>On <code class="docutils literal notranslate"><span class="pre">rte_trace_save()</span></code> or <code class="docutils literal notranslate"><span class="pre">rte_eal_cleanup()</span></code> invocation, the library saves
+the trace buffers to the filesystem. By default, the trace files are stored in
+<code class="docutils literal notranslate"><span class="pre">$HOME/dpdk-traces/rte-yyyy-mm-dd-[AP]M-hh-mm-ss/</span></code>.
+It can be overridden by the <code class="docutils literal notranslate"><span class="pre">--trace-dir=&lt;directory</span> <span class="pre">path&gt;</span></code> EAL command line
+option.</p>
+<p>For more information, refer to <a class="reference internal" href="../linux_gsg/linux_eal_parameters.html"><span class="doc">EAL parameters</span></a> for
+trace EAL command line options.</p>
+</div>
+<div class="section" id="view-and-analyze-the-recorded-events">
+<h2><span class="section-number">5.7. </span>View and analyze the recorded events</h2>
+<p>Once the trace directory is available, the user can view/inspect the recorded
+events.</p>
+<p>There are many tools you can use to read DPDK traces:</p>
+<p>1. <code class="docutils literal notranslate"><span class="pre">babeltrace</span></code> is a command-line utility that converts trace formats; it
+supports the format that DPDK trace library produces, CTF, as well as a
+basic text output that can be grep’ed.
+The babeltrace command is part of the Open Source Babeltrace project.</p>
+<p>2. <code class="docutils literal notranslate"><span class="pre">Trace</span> <span class="pre">Compass</span></code> is a graphical user interface for viewing and analyzing
+any type of logs or traces, including DPDK traces.</p>
+<div class="section" id="use-the-babeltrace-command-line-tool">
+<h3><span class="section-number">5.7.1. </span>Use the babeltrace command-line tool</h3>
+<p>The simplest way to list all the recorded events of a trace is to pass its path
+to babeltrace with no options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>babeltrace &lt;/path-to-trace-events/rte-yyyy-mm-dd-[AP]M-hh-mm-ss/&gt;
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">babeltrace</span></code> finds all traces recursively within the given path and prints
+all their events, merging them in chronological order.</p>
+<p>You can pipe the output of the babeltrace into a tool like grep(1) for further
+filtering. Below example grep the events for <code class="docutils literal notranslate"><span class="pre">ethdev</span></code> only:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>babeltrace /tmp/my-dpdk-trace | grep ethdev
+</pre></div>
+</div>
+<p>You can pipe the output of babeltrace into a tool like wc(1) to count the
+recorded events. Below example count the number of <code class="docutils literal notranslate"><span class="pre">ethdev</span></code> events:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>babeltrace /tmp/my-dpdk-trace | grep ethdev | wc --lines
+</pre></div>
+</div>
+</div>
+<div class="section" id="use-the-tracecompass-gui-tool">
+<h3><span class="section-number">5.7.2. </span>Use the tracecompass GUI tool</h3>
+<p><code class="docutils literal notranslate"><span class="pre">Tracecompass</span></code> is another tool to view/analyze the DPDK traces which gives
+a graphical view of events. Like <code class="docutils literal notranslate"><span class="pre">babeltrace</span></code>, tracecompass also provides
+an interface to search for a particular event.
+To use <code class="docutils literal notranslate"><span class="pre">tracecompass</span></code>, following are the minimum required steps:</p>
+<ul class="simple">
+<li><p>Install <code class="docutils literal notranslate"><span class="pre">tracecompass</span></code> to the localhost. Variants are available for Linux,
+Windows, and OS-X.</p></li>
+<li><p>Launch <code class="docutils literal notranslate"><span class="pre">tracecompass</span></code> which will open a graphical window with trace
+management interfaces.</p></li>
+<li><p>Open a trace using <code class="docutils literal notranslate"><span class="pre">File-&gt;Open</span> <span class="pre">Trace</span></code> option and select metadata file which
+is to be viewed/analyzed.</p></li>
+</ul>
+<p>For more details, refer
+<a class="reference external" href="https://www.eclipse.org/tracecompass/">Trace Compass</a>.</p>
+</div>
+</div>
+<div class="section" id="quick-start">
+<h2><span class="section-number">5.8. </span>Quick start</h2>
+<p>This section steps you through the details of generating trace and viewing it.</p>
+<ul>
+<li><p>Start the dpdk-test:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>echo &quot;quit&quot; | ./build/app/test/dpdk-test --no-huge --trace=.*
+</pre></div>
+</div>
+</li>
+<li><p>View the traces with babeltrace viewer:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>babeltrace $HOME/dpdk-traces/rte-yyyy-mm-dd-[AP]M-hh-mm-ss/
+</pre></div>
+</div>
+</li>
+</ul>
+</div>
+<div class="section" id="implementation-details">
+<h2><span class="section-number">5.9. </span>Implementation details</h2>
+<p>As DPDK trace library is designed to generate traces that uses <code class="docutils literal notranslate"><span class="pre">Common</span> <span class="pre">Trace</span>
+<span class="pre">Format</span> <span class="pre">(CTF)</span></code>. <code class="docutils literal notranslate"><span class="pre">CTF</span></code> specification consists of the following units to create
+a trace.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Stream</span></code> Sequence of packets.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Packet</span></code> Header and one or more events.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Event</span></code> Header and payload.</p></li>
+</ul>
+<p>For detailed information, refer to
+<a class="reference external" href="https://diamon.org/ctf/">Common Trace Format</a>.</p>
+<p>The implementation details broadly divided into the following areas:</p>
+<div class="section" id="trace-metadata-creation">
+<h3><span class="section-number">5.9.1. </span>Trace metadata creation</h3>
+<p>Based on the <code class="docutils literal notranslate"><span class="pre">CTF</span></code> specification, one of a CTF trace’s streams is mandatory:
+the metadata stream. It contains exactly what you would expect: data about the
+trace itself. The metadata stream contains a textual description of the binary
+layouts of all the other streams.</p>
+<p>This description is written using the Trace Stream Description Language (TSDL),
+a declarative language that exists only in the realm of CTF.
+The purpose of the metadata stream is to make CTF readers know how to parse a
+trace’s binary streams of events without CTF specifying any fixed layout.
+The only stream layout known in advance is, in fact, the metadata stream’s one.</p>
+<p>The internal <code class="docutils literal notranslate"><span class="pre">trace_metadata_create()</span></code> function generates the metadata.</p>
+</div>
+<div class="section" id="trace-memory">
+<h3><span class="section-number">5.9.2. </span>Trace memory</h3>
+<p>The trace memory will be allocated through an internal function
+<code class="docutils literal notranslate"><span class="pre">__rte_trace_mem_per_thread_alloc()</span></code>. The trace memory will be allocated
+per thread to enable lock less trace-emit function.
+The memory for the trace memory for DPDK lcores will be allocated on
+<code class="docutils literal notranslate"><span class="pre">rte_eal_init()</span></code> if the trace is enabled through a EAL option.
+For non DPDK threads, on the first trace emission, the memory will be
+allocated.</p>
+</div>
+<div class="section" id="trace-memory-layout">
+<h3><span class="section-number">5.9.3. </span>Trace memory layout</h3>
+<span id="table-trace-mem-layout"></span><table class="docutils align-default" id="id2">
+<caption><span class="caption-number">Table 5.1 </span><span class="caption-text">Trace memory layout.</span></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>packet.header</p></td>
+</tr>
+<tr class="row-even"><td><p>packet.context</p></td>
+</tr>
+<tr class="row-odd"><td><p>trace 0 header</p></td>
+</tr>
+<tr class="row-even"><td><p>trace 0 payload</p></td>
+</tr>
+<tr class="row-odd"><td><p>trace 1 header</p></td>
+</tr>
+<tr class="row-even"><td><p>trace 1 payload</p></td>
+</tr>
+<tr class="row-odd"><td><p>trace N header</p></td>
+</tr>
+<tr class="row-even"><td><p>trace N payload</p></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="packet-header">
+<h4><span class="section-number">5.9.3.1. </span>packet.header</h4>
+<span id="table-packet-header"></span><table class="docutils align-default" id="id3">
+<caption><span class="caption-number">Table 5.2 </span><span class="caption-text">Packet header layout.</span></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>uint32_t magic</p></td>
+</tr>
+<tr class="row-even"><td><p>rte_uuid_t uuid</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="packet-context">
+<h4><span class="section-number">5.9.3.2. </span>packet.context</h4>
+<span id="table-packet-context"></span><table class="docutils align-default" id="id4">
+<caption><span class="caption-number">Table 5.3 </span><span class="caption-text">Packet context layout.</span></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>uint32_t thread_id</p></td>
+</tr>
+<tr class="row-even"><td><p>char thread_name[32]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="trace-header">
+<h4><span class="section-number">5.9.3.3. </span>trace.header</h4>
+<span id="table-trace-header"></span><table class="docutils align-default" id="id5">
+<caption><span class="caption-number">Table 5.4 </span><span class="caption-text">Trace header layout.</span></caption>
+<colgroup>
+<col style="width: 100%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>event_id  [63:48]</p></td>
+</tr>
+<tr class="row-even"><td><p>timestamp [47:0]</p></td>
+</tr>
+</tbody>
+</table>
+<p>The trace header is 64 bits, it consists of 48 bits of timestamp and 16 bits
+event ID.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">packet.header</span></code> and <code class="docutils literal notranslate"><span class="pre">packet.context</span></code> will be written in the slow path
+at the time of trace memory creation. The <code class="docutils literal notranslate"><span class="pre">trace.header</span></code> and trace payload
+will be emitted when the tracepoint function is invoked.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="rcu_lib.html" class="btn btn-neutral float-right" title="6. RCU Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="service_cores.html" class="btn btn-neutral float-left" title="4. Service Cores" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

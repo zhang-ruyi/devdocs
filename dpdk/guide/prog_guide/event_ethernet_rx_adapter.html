@@ -1,0 +1,479 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>40. Event Ethernet Rx Adapter Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="41. Event Ethernet Tx Adapter Library" href="event_ethernet_tx_adapter.html" />
+    <link rel="prev" title="39. Event Device Library" href="eventdev.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">40. Event Ethernet Rx Adapter Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api-walk-through">40.1. API Walk-through</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creating-an-adapter-instance">40.1.1. Creating an Adapter Instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#adding-rx-queues-to-the-adapter-instance">40.1.2. Adding Rx Queues to the Adapter Instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#querying-adapter-capabilities">40.1.3. Querying Adapter Capabilities</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configuring-the-service-function">40.1.4. Configuring the Service Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#starting-the-adapter-instance">40.1.5. Starting the Adapter Instance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#getting-adapter-statistics">40.1.6. Getting Adapter Statistics</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-based-rx-queues">40.1.7. Interrupt Based Rx Queues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-callback-for-sw-rx-adapter">40.1.8. Rx Callback for SW Rx Adapter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">40. </span>Event Ethernet Rx Adapter Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/event_ethernet_rx_adapter.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="event-ethernet-rx-adapter-library">
+<h1><span class="section-number">40. </span>Event Ethernet Rx Adapter Library</h1>
+<p>The DPDK Eventdev API allows the application to use an event driven programming
+model for packet processing. In this model, the application polls an event
+device port for receiving events that reference packets instead of polling Rx
+queues of ethdev ports. Packet transfer between ethdev and the event device can
+be supported in hardware or require a software thread to receive packets from
+the ethdev port using ethdev poll mode APIs and enqueue these as events to the
+event device using the eventdev API. Both transfer mechanisms may be present on
+the same platform depending on the particular combination of the ethdev and
+the event device.</p>
+<p>The Event Ethernet Rx Adapter library is intended for the application code to
+configure both transfer mechanisms using a common API. A capability API allows
+the eventdev PMD to advertise features supported for a given ethdev and allows
+the application to perform configuration as per supported features.</p>
+<div class="section" id="api-walk-through">
+<h2><span class="section-number">40.1. </span>API Walk-through</h2>
+<p>This section will introduce the reader to the adapter API. The
+application has to first instantiate an adapter which is associated with
+a single eventdev, next the adapter instance is configured with Rx queues
+that are either polled by a SW thread or linked using hardware support. Finally
+the adapter is started.</p>
+<p>For SW based packet transfers from ethdev to eventdev, the adapter uses a
+DPDK service function and the application is also required to assign a core to
+the service function.</p>
+<div class="section" id="creating-an-adapter-instance">
+<h3><span class="section-number">40.1.1. </span>Creating an Adapter Instance</h3>
+<p>An adapter instance is created using <code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_create()</span></code>. This
+function is passed the event device to be associated with the adapter and port
+configuration for the adapter to setup an event port if the adapter needs to use
+a service function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">err</span><span class="p">;</span>
+<span class="kt">uint8_t</span> <span class="n">dev_id</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">rte_event_dev_info</span> <span class="n">dev_info</span><span class="p">;</span>
+<span class="k">struct</span> <span class="n">rte_event_port_conf</span> <span class="n">rx_p_conf</span><span class="p">;</span>
+
+<span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_dev_info_get</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev_info</span><span class="p">);</span>
+
+<span class="n">rx_p_conf</span><span class="p">.</span><span class="n">new_event_threshold</span> <span class="o">=</span> <span class="n">dev_info</span><span class="p">.</span><span class="n">max_num_events</span><span class="p">;</span>
+<span class="n">rx_p_conf</span><span class="p">.</span><span class="n">dequeue_depth</span> <span class="o">=</span> <span class="n">dev_info</span><span class="p">.</span><span class="n">max_event_port_dequeue_depth</span><span class="p">;</span>
+<span class="n">rx_p_conf</span><span class="p">.</span><span class="n">enqueue_depth</span> <span class="o">=</span> <span class="n">dev_info</span><span class="p">.</span><span class="n">max_event_port_enqueue_depth</span><span class="p">;</span>
+<span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_eth_rx_adapter_create</span><span class="p">(</span><span class="n">id</span><span class="p">,</span> <span class="n">dev_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">rx_p_conf</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>If the application desires to have finer control of eventdev port allocation
+and setup, it can use the <code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_create_ext()</span></code> function.
+The <code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_create_ext()</span></code> function is passed a callback
+function. The callback function is invoked if the adapter needs to use a
+service function and needs to create an event port for it. The callback is
+expected to fill the <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_event_eth_rx_adapter_conf</span> <span class="pre">structure</span></code>
+passed to it.</p>
+</div>
+<div class="section" id="adding-rx-queues-to-the-adapter-instance">
+<h3><span class="section-number">40.1.2. </span>Adding Rx Queues to the Adapter Instance</h3>
+<p>Ethdev Rx queues are added to the instance using the
+<code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_queue_add()</span></code> function. Configuration for the Rx
+queue is passed in using a <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_event_eth_rx_adapter_queue_conf</span></code>
+parameter. Event information for packets from this Rx queue is encoded in the
+<code class="docutils literal notranslate"><span class="pre">ev</span></code> field of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_event_eth_rx_adapter_queue_conf</span></code>. The
+servicing_weight member of the struct  rte_event_eth_rx_adapter_queue_conf
+is the relative polling frequency of the Rx queue and is applicable when the
+adapter uses a service core function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">ev</span><span class="p">.</span><span class="n">queue_id</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">ev</span><span class="p">.</span><span class="n">sched_type</span> <span class="o">=</span> <span class="n">RTE_SCHED_TYPE_ATOMIC</span><span class="p">;</span>
+<span class="n">ev</span><span class="p">.</span><span class="n">priority</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+<span class="n">queue_config</span><span class="p">.</span><span class="n">rx_queue_flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">queue_config</span><span class="p">.</span><span class="n">ev</span> <span class="o">=</span> <span class="n">ev</span><span class="p">;</span>
+<span class="n">queue_config</span><span class="p">.</span><span class="n">servicing_weight</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_eth_rx_adapter_queue_add</span><span class="p">(</span><span class="n">id</span><span class="p">,</span>
+                                        <span class="n">eth_dev_id</span><span class="p">,</span>
+                                        <span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">queue_config</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="querying-adapter-capabilities">
+<h3><span class="section-number">40.1.3. </span>Querying Adapter Capabilities</h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_caps_get()</span></code> function allows
+the application to query the adapter capabilities for an eventdev and ethdev
+combination. For e.g, if the <code class="docutils literal notranslate"><span class="pre">RTE_EVENT_ETH_RX_ADAPTER_CAP_OVERRIDE_FLOW_ID</span></code>
+is set, the application can override the adapter generated flow ID in the event
+using <code class="docutils literal notranslate"><span class="pre">rx_queue_flags</span></code> field in <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_event_eth_rx_adapter_queue_conf</span></code>
+which is passed as a parameter to the <code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_queue_add()</span></code>
+function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">err</span> <span class="o">=</span> <span class="n">rte_event_eth_rx_adapter_caps_get</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">eth_dev_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cap</span><span class="p">);</span>
+
+<span class="n">queue_config</span><span class="p">.</span><span class="n">rx_queue_flags</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">cap</span> <span class="o">&amp;</span> <span class="n">RTE_EVENT_ETH_RX_ADAPTER_CAP_OVERRIDE_FLOW_ID</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">ev</span><span class="p">.</span><span class="n">flow_id</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">queue_config</span><span class="p">.</span><span class="n">rx_queue_flags</span> <span class="o">=</span>
+                <span class="n">RTE_EVENT_ETH_RX_ADAPTER_QUEUE_FLOW_ID_VALID</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configuring-the-service-function">
+<h3><span class="section-number">40.1.4. </span>Configuring the Service Function</h3>
+<p>If the adapter uses a service function, the application is required to assign
+a service core to the service function as show below.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="kt">uint32_t</span> <span class="n">service_id</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">rte_event_eth_rx_adapter_service_id_get</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">service_id</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">rte_service_map_lcore_set</span><span class="p">(</span><span class="n">service_id</span><span class="p">,</span> <span class="n">RX_CORE_ID</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="starting-the-adapter-instance">
+<h3><span class="section-number">40.1.5. </span>Starting the Adapter Instance</h3>
+<p>The application calls <code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_start()</span></code> to start the adapter.
+This function calls the start callbacks of the eventdev PMDs for hardware based
+eventdev-ethdev connections and <code class="docutils literal notranslate"><span class="pre">rte_service_run_state_set()</span></code> to enable the
+service function if one exists.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The eventdev to which the event_eth_rx_adapter is connected needs to
+be started before calling rte_event_eth_rx_adapter_start().</p>
+</div>
+</div>
+<div class="section" id="getting-adapter-statistics">
+<h3><span class="section-number">40.1.6. </span>Getting Adapter Statistics</h3>
+<p>The  <code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_stats_get()</span></code> function reports counters defined
+in struct <code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_stats</span></code>. The received packet and
+enqueued event counts are a sum of the counts from the eventdev PMD callbacks
+if the callback is supported, and the counts maintained by the service function,
+if one exists. The service function also maintains a count of cycles for which
+it was not able to enqueue to the event device.</p>
+</div>
+<div class="section" id="interrupt-based-rx-queues">
+<h3><span class="section-number">40.1.7. </span>Interrupt Based Rx Queues</h3>
+<p>The service core function is typically set up to poll ethernet Rx queues for
+packets. Certain queues may have low packet rates and it would be more
+efficient to enable the Rx queue interrupt and read packets after receiving
+the interrupt.</p>
+<p>The servicing_weight member of struct rte_event_eth_rx_adapter_queue_conf
+is applicable when the adapter uses a service core function. The application
+has to enable Rx queue interrupts when configuring the ethernet device
+using the <code class="docutils literal notranslate"><span class="pre">rte_eth_dev_configure()</span></code> function and then use a servicing_weight
+of zero when adding the Rx queue to the adapter.</p>
+<p>The adapter creates a thread blocked on the interrupt, on an interrupt this
+thread enqueues the port id and the queue id to a ring buffer. The adapter
+service function dequeues the port id and queue id from the ring buffer,
+invokes the <code class="docutils literal notranslate"><span class="pre">rte_eth_rx_burst()</span></code> to receive packets on the queue and
+converts the received packets to events in the same manner as packets
+received on a polled Rx queue. The interrupt thread is affinitized to the same
+CPUs as the lcores of the Rx adapter service function, if the Rx adapter
+service function has not been mapped to any lcores, the interrupt thread
+is mapped to the main lcore.</p>
+</div>
+<div class="section" id="rx-callback-for-sw-rx-adapter">
+<h3><span class="section-number">40.1.8. </span>Rx Callback for SW Rx Adapter</h3>
+<p>For SW based packet transfers, i.e., when the
+<code class="docutils literal notranslate"><span class="pre">RTE_EVENT_ETH_RX_ADAPTER_CAP_INTERNAL_PORT</span></code> is not set in the adapter’s
+capabilities flags for a particular ethernet device, the service function
+temporarily enqueues mbufs to an event buffer before batch enqueuing these
+to the event device. If the buffer fills up, the service function stops
+dequeuing packets from the ethernet device. The application may want to
+monitor the buffer fill level and instruct the service function to selectively
+enqueue packets to the event device. The application may also use some other
+criteria to decide which packets should enter the event device even when
+the event buffer fill level is low. The
+<code class="docutils literal notranslate"><span class="pre">rte_event_eth_rx_adapter_cb_register()</span></code> function allow the application
+to register a callback that selects which packets to enqueue to the event
+device.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="event_ethernet_tx_adapter.html" class="btn btn-neutral float-right" title="41. Event Ethernet Tx Adapter Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="eventdev.html" class="btn btn-neutral float-left" title="39. Event Device Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

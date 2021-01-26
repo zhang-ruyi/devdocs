@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>21. ZUC Crypto Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Compression Device Drivers" href="../compressdevs/index.html" />
+    <link rel="prev" title="20. Virtio Crypto Poll Mode Driver" href="virtio.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Crypto Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Crypto Device Supported Functionality Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html">2. AESN-NI Multi Buffer Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html">3. AES-NI GCM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html">4. ARMv8 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html">5. Broadcom FlexSparc Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html">6. NXP CAAM JOB RING (caam_jr)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html">7. AMD CCP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html">8. NXP DPAA2 CAAM (DPAA2_SEC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html">9. NXP DPAA CAAM (DPAA_SEC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html">10. KASUMI Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">11. Cavium OCTEON TX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">12. Marvell OCTEON TX2 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html">13. OpenSSL Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvsam.html">14. MVSAM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nitrox.html">15. Marvell NITROX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">16. Null Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html">17. Cryptodev Scheduler Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html">18. SNOW 3G Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat.html">19. Intel(R) QuickAssist (QAT) Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">20. Virtio Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">21. ZUC Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">21.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">21.2. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">21.3. Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">21.4. Initialization</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Crypto Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">21. </span>ZUC Crypto Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/cryptodevs/zuc.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="zuc-crypto-poll-mode-driver">
+<h1><span class="section-number">21. </span>ZUC Crypto Poll Mode Driver</h1>
+<p>The ZUC PMD (<strong>librte_crypto_zuc</strong>) provides poll mode crypto driver support for
+utilizing <a class="reference external" href="https://github.com/01org/intel-ipsec-mb">Intel IPSec Multi-buffer library</a>
+which implements F8 and F9 functions for ZUC EEA3 cipher and EIA3 hash algorithms.</p>
+<div class="section" id="features">
+<h2><span class="section-number">21.1. </span>Features</h2>
+<p>ZUC PMD has support for:</p>
+<p>Cipher algorithm:</p>
+<ul class="simple">
+<li><p>RTE_CRYPTO_CIPHER_ZUC_EEA3</p></li>
+</ul>
+<p>Authentication algorithm:</p>
+<ul class="simple">
+<li><p>RTE_CRYPTO_AUTH_ZUC_EIA3</p></li>
+</ul>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">21.2. </span>Limitations</h2>
+<ul class="simple">
+<li><p>Chained mbufs are not supported.</p></li>
+<li><p>ZUC (EIA3) supported only if hash offset field is byte-aligned.</p></li>
+<li><p>ZUC (EEA3) supported only if cipher length, cipher offset fields are byte-aligned.</p></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2><span class="section-number">21.3. </span>Installation</h2>
+<p>To build DPDK with the ZUC_PMD the user is required to download the multi-buffer
+library from <a class="reference external" href="https://github.com/01org/intel-ipsec-mb">here</a>
+and compile it on their user system before building DPDK.
+The latest version of the library supported by this PMD is v0.54, which
+can be downloaded from <a class="reference external" href="https://github.com/01org/intel-ipsec-mb/archive/v0.54.zip">https://github.com/01org/intel-ipsec-mb/archive/v0.54.zip</a>.</p>
+<p>After downloading the library, the user needs to unpack and compile it
+on their system before building DPDK:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">make</span>
+<span class="go">make install</span>
+</pre></div>
+</div>
+<p>The library requires NASM to be built. Depending on the library version, it might
+require a minimum NASM version (e.g. v0.54 requires at least NASM 2.14).</p>
+<p>NASM is packaged for different OS. However, on some OS the version is too old,
+so a manual installation is required. In that case, NASM can be downloaded from
+<a class="reference external" href="https://www.nasm.us/pub/nasm/releasebuilds/?C=M;O=D">NASM website</a>.
+Once it is downloaded, extract it and follow these steps:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./configure</span>
+<span class="go">make</span>
+<span class="go">make install</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Compilation of the Multi-Buffer library is broken when GCC &lt; 5.0, if library &lt;= v0.53.
+If a lower GCC version than 5.0, the workaround proposed by the following link
+should be used: <a class="reference external" href="https://github.com/intel/intel-ipsec-mb/issues/40">https://github.com/intel/intel-ipsec-mb/issues/40</a>.</p>
+</div>
+<p>As a reference, the following table shows a mapping between the past DPDK versions
+and the external crypto libraries supported by them:</p>
+<span id="table-zuc-versions"></span><table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 21.1 </span><span class="caption-text">DPDK and external crypto library version compatibility</span></caption>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>DPDK version</p></th>
+<th class="head"><p>Crypto library version</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>16.11 - 19.11</p></td>
+<td><p>LibSSO ZUC</p></td>
+</tr>
+<tr class="row-odd"><td><p>20.02+</p></td>
+<td><p>Multi-buffer library 0.53 - 0.54</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="initialization">
+<h2><span class="section-number">21.4. </span>Initialization</h2>
+<p>In order to enable this virtual crypto PMD, user must:</p>
+<ul class="simple">
+<li><p>Build the multi buffer library (explained in Installation section).</p></li>
+</ul>
+<p>To use the PMD in an application, user must:</p>
+<ul class="simple">
+<li><p>Call rte_vdev_init(“crypto_zuc”) within the application.</p></li>
+<li><p>Use –vdev=”crypto_zuc” in the EAL options, which will call rte_vdev_init() internally.</p></li>
+</ul>
+<p>The following parameters (all optional) can be provided in the previous two calls:</p>
+<ul class="simple">
+<li><p>socket_id: Specify the socket where the memory for the device is going to be allocated
+(by default, socket_id will be the socket where the core that is creating the PMD is running on).</p></li>
+<li><p>max_nb_queue_pairs: Specify the maximum number of queue pairs in the device (8 by default).</p></li>
+<li><p>max_nb_sessions: Specify the maximum number of sessions that can be created (2048 by default).</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./dpdk-l2fwd-crypto -l 1 -n 4 --vdev=&quot;crypto_zuc,socket_id=0,max_nb_sessions=128&quot; \</span>
+<span class="go">-- -p 1 --cdev SW --chain CIPHER_ONLY --cipher_algo &quot;zuc-eea3&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../compressdevs/index.html" class="btn btn-neutral float-right" title="Compression Device Drivers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="virtio.html" class="btn btn-neutral float-left" title="20. Virtio Crypto Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

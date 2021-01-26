@@ -1,0 +1,353 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>2. OCTEON TX2 NPA Mempool Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Ring Mempool Driver" href="ring.html" />
+    <link rel="prev" title="1. OCTEON TX FPAVF Mempool Driver" href="octeontx.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Mempool Device Driver</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">1. OCTEON TX FPAVF Mempool Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. OCTEON TX2 NPA Mempool Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">2.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites-and-compilation-procedure">2.2. Prerequisites and Compilation procedure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pre-installation-configuration">2.3. Pre-Installation Configuration</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#runtime-config-options">2.3.1. Runtime Config Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#debugging-options">2.3.2. Debugging Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#standalone-mempool-device">2.3.3. Standalone mempool device</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ring.html">3. Ring Mempool Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack.html">4. Stack Mempool Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Mempool Device Driver</a> &raquo;</li>
+        
+      <li><span class="section-number">2. </span>OCTEON TX2 NPA Mempool Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/mempool/octeontx2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="octeon-tx2-npa-mempool-driver">
+<h1><span class="section-number">2. </span>OCTEON TX2 NPA Mempool Driver</h1>
+<p>The OCTEON TX2 NPA PMD (<strong>librte_mempool_octeontx2</strong>) provides mempool
+driver support for the integrated mempool device found in <strong>Marvell OCTEON TX2</strong> SoC family.</p>
+<p>More information about OCTEON TX2 SoC can be found at <a class="reference external" href="https://www.marvell.com/embedded-processors/infrastructure-processors/">Marvell Official Website</a>.</p>
+<div class="section" id="features">
+<h2><span class="section-number">2.1. </span>Features</h2>
+<p>OCTEON TX2 NPA PMD supports:</p>
+<ul class="simple">
+<li><p>Up to 128 NPA LFs</p></li>
+<li><p>1M Pools per LF</p></li>
+<li><p>HW mempool manager</p></li>
+<li><p>Ethdev Rx buffer allocation in HW to save CPU cycles in the Rx path.</p></li>
+<li><p>Ethdev Tx buffer recycling in HW to save CPU cycles in the Tx path.</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites-and-compilation-procedure">
+<h2><span class="section-number">2.2. </span>Prerequisites and Compilation procedure</h2>
+<blockquote>
+<div><p>See <a class="reference internal" href="../platform/octeontx2.html"><span class="doc">Marvell OCTEON TX2 Platform Guide</span></a> for setup information.</p>
+</div></blockquote>
+</div>
+<div class="section" id="pre-installation-configuration">
+<h2><span class="section-number">2.3. </span>Pre-Installation Configuration</h2>
+<div class="section" id="runtime-config-options">
+<h3><span class="section-number">2.3.1. </span>Runtime Config Options</h3>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Maximum</span> <span class="pre">number</span> <span class="pre">of</span> <span class="pre">mempools</span> <span class="pre">per</span> <span class="pre">application</span></code> (default <code class="docutils literal notranslate"><span class="pre">128</span></code>)</p>
+<p>The maximum number of mempools per application needs to be configured on
+HW during mempool driver initialization. HW can support up to 1M mempools,
+Since each mempool costs set of HW resources, the <code class="docutils literal notranslate"><span class="pre">max_pools</span></code> <code class="docutils literal notranslate"><span class="pre">devargs</span></code>
+parameter is being introduced to configure the number of mempools required
+for the application.
+For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,max_pools=512
+</pre></div>
+</div>
+<p>With the above configuration, the driver will set up only 512 mempools for
+the given application to save HW resources.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since this configuration is per application, the end user needs to
+provide <code class="docutils literal notranslate"><span class="pre">max_pools</span></code> parameter to the first PCIe device probed by the given
+application.</p>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Lock</span> <span class="pre">NPA</span> <span class="pre">contexts</span> <span class="pre">in</span> <span class="pre">NDC</span></code></p>
+<blockquote>
+<div><p>Lock NPA aura and pool contexts in NDC cache.
+The device args take hexadecimal bitmask where each bit represent the
+corresponding aura/pool id.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,npa_lock_mask=0xf
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="debugging-options">
+<h3><span class="section-number">2.3.2. </span>Debugging Options</h3>
+<span id="table-octeontx2-mempool-debug-options"></span><table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 2.3 </span><span class="caption-text">OCTEON TX2 mempool debug options</span></caption>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Component</p></th>
+<th class="head"><p>EAL log command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>NPA</p></td>
+<td><p>–log-level=’pmd.mempool.octeontx2,8’</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="standalone-mempool-device">
+<h3><span class="section-number">2.3.3. </span>Standalone mempool device</h3>
+<blockquote>
+<div><p>The <code class="docutils literal notranslate"><span class="pre">usertools/dpdk-devbind.py</span></code> script shall enumerate all the mempool devices
+available in the system. In order to avoid, the end user to bind the mempool
+device prior to use ethdev and/or eventdev device, the respective driver
+configures an NPA LF and attach to the first probed ethdev or eventdev device.
+In case, if end user need to run mempool as a standalone device
+(without ethdev or eventdev), end user needs to bind a mempool device using
+<code class="docutils literal notranslate"><span class="pre">usertools/dpdk-devbind.py</span></code></p>
+<p>Example command to run <code class="docutils literal notranslate"><span class="pre">mempool_autotest</span></code> test with standalone OCTEONTX2 NPA device:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>echo &quot;mempool_autotest&quot; | &lt;build_dir&gt;/app/test/dpdk-test -c 0xf0 --mbuf-pool-ops-name=&quot;octeontx2_npa&quot;
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="ring.html" class="btn btn-neutral float-right" title="3. Ring Mempool Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="octeontx.html" class="btn btn-neutral float-left" title="1. OCTEON TX FPAVF Mempool Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

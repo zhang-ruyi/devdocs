@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>4. Running DPDK Applications &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Sample Applications User Guides" href="../sample_app_ug/index.html" />
+    <link rel="prev" title="3. Compiling the DPDK Target from Source" href="build_dpdk.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Getting Started Guide for Windows</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intro.html#limitations">2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_dpdk.html">3. Compiling the DPDK Target from Source</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Running DPDK Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#grant-lock-pages-in-memory-privilege">4.1. Grant <em>Lock pages in memory</em> Privilege</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-virt2phys-driver">4.2. Load virt2phys Driver</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-the-helloworld-example">4.3. Run the <code class="docutils literal notranslate"><span class="pre">helloworld</span></code> Example</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Getting Started Guide for Windows</a> &raquo;</li>
+        
+      <li><span class="section-number">4. </span>Running DPDK Applications</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/windows_gsg/run_apps.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="running-dpdk-applications">
+<h1><span class="section-number">4. </span>Running DPDK Applications</h1>
+<div class="section" id="grant-lock-pages-in-memory-privilege">
+<h2><span class="section-number">4.1. </span>Grant <em>Lock pages in memory</em> Privilege</h2>
+<p>Use of hugepages (“large pages” in Windows terminology) requires
+<code class="docutils literal notranslate"><span class="pre">SeLockMemoryPrivilege</span></code> for the user running an application.</p>
+<ol class="arabic simple">
+<li><p>Open <em>Local Security Policy</em> snap-in, either:</p>
+<ul class="simple">
+<li><p>Control Panel / Computer Management / Local Security Policy;</p></li>
+<li><p>or Win+R, type <code class="docutils literal notranslate"><span class="pre">secpol</span></code>, press Enter.</p></li>
+</ul>
+</li>
+<li><p>Open <em>Local Policies / User Rights Assignment / Lock pages in memory.</em></p></li>
+<li><p>Add desired users or groups to the list of grantees.</p></li>
+<li><p>Privilege is applied upon next logon. In particular, if privilege has been
+granted to current user, a logoff is required before it is available.</p></li>
+</ol>
+<p>See <a class="reference external" href="https://docs.microsoft.com/en-us/windows/win32/memory/large-page-support">Large-Page Support</a> in MSDN for details.</p>
+</div>
+<div class="section" id="load-virt2phys-driver">
+<h2><span class="section-number">4.2. </span>Load virt2phys Driver</h2>
+<p>Access to physical addresses is provided by a kernel-mode driver, virt2phys.
+It is mandatory at least for using hardware PMDs, but may also be required
+for mempools.</p>
+<p>Refer to documentation in <code class="docutils literal notranslate"><span class="pre">dpdk-kmods</span></code> repository for details on system
+setup, driver build and installation. This driver is not signed, so signature
+checking must be disabled to load it.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Disabling driver signature enforcement weakens OS security.
+It is discouraged in production environments.</p>
+</div>
+<p>Compiled package consists of <code class="docutils literal notranslate"><span class="pre">virt2phys.inf</span></code>, <code class="docutils literal notranslate"><span class="pre">virt2phys.cat</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">virt2phys.sys</span></code>. It can be installed as follows
+from Elevated Command Prompt:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">pnputil /add-driver Z:\path\to\virt2phys.inf /install</span>
+</pre></div>
+</div>
+<p>On Windows Server additional steps are required:</p>
+<ol class="arabic simple">
+<li><p>From Device Manager, Action menu, select “Add legacy hardware”.</p></li>
+<li><p>It will launch the “Add Hardware Wizard”. Click “Next”.</p></li>
+<li><p>Select second option “Install the hardware that I manually select
+from a list (Advanced)”.</p></li>
+<li><p>On the next screen, “Kernel bypass” will be shown as a device class.</p></li>
+<li><p>Select it, and click “Next”.</p></li>
+<li><p>The previously installed drivers will now be installed for the
+“Virtual to physical address translator” device.</p></li>
+</ol>
+<p>When loaded successfully, the driver is shown in <em>Device Manager</em> as <em>Virtual
+to physical address translator</em> device under <em>Kernel bypass</em> category.
+Installed driver persists across reboots.</p>
+<p>If DPDK is unable to communicate with the driver, a warning is printed
+on initialization (debug-level logs provide more details):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>EAL: Cannot open virt2phys driver interface
+</pre></div>
+</div>
+</div>
+<div class="section" id="run-the-helloworld-example">
+<h2><span class="section-number">4.3. </span>Run the <code class="docutils literal notranslate"><span class="pre">helloworld</span></code> Example</h2>
+<p>Navigate to the examples in the build directory and run <cite>dpdk-helloworld.exe</cite>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd C:\Users\me\dpdk\build\examples</span>
+<span class="go">dpdk-helloworld.exe -l 0-3</span>
+<span class="go">hello from core 1</span>
+<span class="go">hello from core 3</span>
+<span class="go">hello from core 0</span>
+<span class="go">hello from core 2</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../sample_app_ug/index.html" class="btn btn-neutral float-right" title="Sample Applications User Guides" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="build_dpdk.html" class="btn btn-neutral float-left" title="3. Compiling the DPDK Target from Source" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

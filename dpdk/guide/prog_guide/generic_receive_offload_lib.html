@@ -1,0 +1,498 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>33. Generic Receive Offload Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="34. Generic Segmentation Offload Library" href="generic_segmentation_offload_lib.html" />
+    <link rel="prev" title="32. IP Fragmentation and Reassembly Library" href="ip_fragment_reassembly_lib.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">33. Generic Receive Offload Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">33.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#two-sets-of-api">33.2. Two Sets of API</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lightweight-mode-api">33.2.1. Lightweight Mode API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#heavyweight-mode-api">33.2.2. Heavyweight Mode API</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#reassembly-algorithm">33.3. Reassembly Algorithm</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#challenges">33.3.1. Challenges</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#key-based-reassembly-algorithm">33.3.2. Key-based Reassembly Algorithm</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#tcp-ipv4-gro">33.4. TCP/IPv4 GRO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vxlan-gro">33.5. VxLAN GRO</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gro-library-limitations">33.6. GRO Library Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">33. </span>Generic Receive Offload Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/generic_receive_offload_lib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="generic-receive-offload-library">
+<h1><span class="section-number">33. </span>Generic Receive Offload Library</h1>
+<p>Generic Receive Offload (GRO) is a widely used SW-based offloading
+technique to reduce per-packet processing overheads. By reassembling
+small packets into larger ones, GRO enables applications to process
+fewer large packets directly, thus reducing the number of packets to
+be processed. To benefit DPDK-based applications, like Open vSwitch,
+DPDK also provides own GRO implementation. In DPDK, GRO is implemented
+as a standalone library. Applications explicitly use the GRO library to
+reassemble packets.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">33.1. </span>Overview</h2>
+<p>In the GRO library, there are many GRO types which are defined by packet
+types. One GRO type is in charge of process one kind of packets. For
+example, TCP/IPv4 GRO processes TCP/IPv4 packets.</p>
+<p>Each GRO type has a reassembly function, which defines own algorithm and
+table structure to reassemble packets. We assign input packets to the
+corresponding GRO functions by MBUF-&gt;packet_type.</p>
+<p>The GRO library doesn’t check if input packets have correct checksums and
+doesn’t re-calculate checksums for merged packets. The GRO library
+assumes the packets are complete (i.e., MF==0 &amp;&amp; frag_off==0), when IP
+fragmentation is possible (i.e., DF==0). Additionally, it complies RFC
+6864 to process the IPv4 ID field.</p>
+<p>Currently, the GRO library provides GRO supports for TCP/IPv4 and UDP/IPv4
+packets as well as VxLAN packets which contain an outer IPv4 header and an
+inner TCP/IPv4 or UDP/IPv4 packet.</p>
+</div>
+<div class="section" id="two-sets-of-api">
+<h2><span class="section-number">33.2. </span>Two Sets of API</h2>
+<p>For different usage scenarios, the GRO library provides two sets of API.
+The one is called the lightweight mode API, which enables applications to
+merge a small number of packets rapidly; the other is called the
+heavyweight mode API, which provides fine-grained controls to
+applications and supports to merge a large number of packets.</p>
+<div class="section" id="lightweight-mode-api">
+<h3><span class="section-number">33.2.1. </span>Lightweight Mode API</h3>
+<p>The lightweight mode only has one function <code class="docutils literal notranslate"><span class="pre">rte_gro_reassemble_burst()</span></code>,
+which process N packets at a time. Using the lightweight mode API to
+merge packets is very simple. Calling <code class="docutils literal notranslate"><span class="pre">rte_gro_reassemble_burst()</span></code> is
+enough. The GROed packets are returned to applications as soon as it
+finishes.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">rte_gro_reassemble_burst()</span></code>, table structures of different GRO
+types are allocated in the stack. This design simplifies applications’
+operations. However, limited by the stack size, the maximum number of
+packets that <code class="docutils literal notranslate"><span class="pre">rte_gro_reassemble_burst()</span></code> can process in an invocation
+should be less than or equal to <code class="docutils literal notranslate"><span class="pre">RTE_GRO_MAX_BURST_ITEM_NUM</span></code>.</p>
+</div>
+<div class="section" id="heavyweight-mode-api">
+<h3><span class="section-number">33.2.2. </span>Heavyweight Mode API</h3>
+<p>Compared with the lightweight mode, using the heavyweight mode API is
+relatively complex. Firstly, applications need to create a GRO context
+by <code class="docutils literal notranslate"><span class="pre">rte_gro_ctx_create()</span></code>. <code class="docutils literal notranslate"><span class="pre">rte_gro_ctx_create()</span></code> allocates tables
+structures in the heap and stores their pointers in the GRO context.
+Secondly, applications use <code class="docutils literal notranslate"><span class="pre">rte_gro_reassemble()</span></code> to merge packets.
+If input packets have invalid parameters, <code class="docutils literal notranslate"><span class="pre">rte_gro_reassemble()</span></code>
+returns them to applications. For example, packets of unsupported GRO
+types or TCP SYN packets are returned. Otherwise, the input packets are
+either merged with the existed packets in the tables or inserted into the
+tables. Finally, applications use <code class="docutils literal notranslate"><span class="pre">rte_gro_timeout_flush()</span></code> to flush
+packets from the tables, when they want to get the GROed packets.</p>
+<p>Note that all update/lookup operations on the GRO context are not thread
+safe. So if different processes or threads want to access the same
+context object simultaneously, some external syncing mechanisms must be
+used.</p>
+</div>
+</div>
+<div class="section" id="reassembly-algorithm">
+<h2><span class="section-number">33.3. </span>Reassembly Algorithm</h2>
+<p>The reassembly algorithm is used for reassembling packets. In the GRO
+library, different GRO types can use different algorithms. In this
+section, we will introduce an algorithm, which is used by TCP/IPv4 GRO
+and VxLAN GRO.</p>
+<div class="section" id="challenges">
+<h3><span class="section-number">33.3.1. </span>Challenges</h3>
+<p>The reassembly algorithm determines the efficiency of GRO. There are two
+challenges in the algorithm design:</p>
+<ul class="simple">
+<li><p>a high cost algorithm/implementation would cause packet dropping in a
+high speed network.</p></li>
+<li><p>packet reordering makes it hard to merge packets. For example, Linux
+GRO fails to merge packets when encounters packet reordering.</p></li>
+</ul>
+<p>The above two challenges require our algorithm is:</p>
+<ul class="simple">
+<li><p>lightweight enough to scale fast networking speed</p></li>
+<li><p>capable of handling packet reordering</p></li>
+</ul>
+<p>In DPDK GRO, we use a key-based algorithm to address the two challenges.</p>
+</div>
+<div class="section" id="key-based-reassembly-algorithm">
+<h3><span class="section-number">33.3.2. </span>Key-based Reassembly Algorithm</h3>
+<p><a class="reference internal" href="#figure-gro-key-algorithm"><span class="std std-numref">Fig. 33.2</span></a> illustrates the procedure of the
+key-based algorithm. Packets are classified into “flows” by some header
+fields (we call them as “key”). To process an input packet, the algorithm
+searches for a matched “flow” (i.e., the same value of key) for the
+packet first, then checks all packets in the “flow” and tries to find a
+“neighbor” for it. If find a “neighbor”, merge the two packets together.
+If can’t find a “neighbor”, store the packet into its “flow”. If can’t
+find a matched “flow”, insert a new “flow” and store the packet into the
+“flow”.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Packets in the same “flow” that can’t merge are always caused
+by packet reordering.</p>
+</div>
+<p>The key-based algorithm has two characters:</p>
+<ul class="simple">
+<li><p>classifying packets into “flows” to accelerate packet aggregation is
+simple (address challenge 1).</p></li>
+<li><p>storing out-of-order packets makes it possible to merge later (address
+challenge 2).</p></li>
+</ul>
+<div class="figure align-center" id="id1">
+<span id="figure-gro-key-algorithm"></span><img alt="../_images/gro-key-algorithm.svg" src="../_images/gro-key-algorithm.svg" /><p class="caption"><span class="caption-number">Fig. 33.2 </span><span class="caption-text">Key-based Reassembly Algorithm</span></p>
+</div>
+</div>
+</div>
+<div class="section" id="tcp-ipv4-gro">
+<h2><span class="section-number">33.4. </span>TCP/IPv4 GRO</h2>
+<p>The table structure used by TCP/IPv4 GRO contains two arrays: flow array
+and item array. The flow array keeps flow information, and the item array
+keeps packet information.</p>
+<p>Header fields used to define a TCP/IPv4 flow include:</p>
+<ul class="simple">
+<li><p>source and destination: Ethernet and IP address, TCP port</p></li>
+<li><p>TCP acknowledge number</p></li>
+</ul>
+<p>TCP/IPv4 packets whose FIN, SYN, RST, URG, PSH, ECE or CWR bit is set
+won’t be processed.</p>
+<p>Header fields deciding if two packets are neighbors include:</p>
+<ul class="simple">
+<li><p>TCP sequence number</p></li>
+<li><p>IPv4 ID. The IPv4 ID fields of the packets, whose DF bit is 0, should
+be increased by 1.</p></li>
+</ul>
+</div>
+<div class="section" id="vxlan-gro">
+<h2><span class="section-number">33.5. </span>VxLAN GRO</h2>
+<p>The table structure used by VxLAN GRO, which is in charge of processing
+VxLAN packets with an outer IPv4 header and inner TCP/IPv4 packet, is
+similar with that of TCP/IPv4 GRO. Differently, the header fields used
+to define a VxLAN flow include:</p>
+<ul class="simple">
+<li><p>outer source and destination: Ethernet and IP address, UDP port</p></li>
+<li><p>VxLAN header (VNI and flag)</p></li>
+<li><p>inner source and destination: Ethernet and IP address, TCP port</p></li>
+</ul>
+<p>Header fields deciding if packets are neighbors include:</p>
+<ul class="simple">
+<li><p>outer IPv4 ID. The IPv4 ID fields of the packets, whose DF bit in the
+outer IPv4 header is 0, should be increased by 1.</p></li>
+<li><p>inner TCP sequence number</p></li>
+<li><p>inner IPv4 ID. The IPv4 ID fields of the packets, whose DF bit in the
+inner IPv4 header is 0, should be increased by 1.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We comply RFC 6864 to process the IPv4 ID field. Specifically,
+we check IPv4 ID fields for the packets whose DF bit is 0 and
+ignore IPv4 ID fields for the packets whose DF bit is 1.
+Additionally, packets which have different value of DF bit can’t
+be merged.</p>
+</div>
+</div>
+<div class="section" id="gro-library-limitations">
+<h2><span class="section-number">33.6. </span>GRO Library Limitations</h2>
+<ul class="simple">
+<li><p>GRO library uses MBUF-&gt;l2_len/l3_len/l4_len/outer_l2_len/
+outer_l3_len/packet_type to get protocol headers for the
+input packet, rather than parsing the packet header. Therefore,
+before call GRO APIs to merge packets, user applications
+must set MBUF-&gt;l2_len/l3_len/l4_len/outer_l2_len/outer_l3_len/
+packet_type to the same values as the protocol headers of the
+packet.</p></li>
+<li><p>GRO library doesn’t support to process the packets with IPv4
+Options or VLAN tagged.</p></li>
+<li><p>GRO library just supports to process the packet organized
+in a single MBUF. If the input packet consists of multiple
+MBUFs (i.e. chained MBUFs), GRO reassembly behaviors are
+unknown.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="generic_segmentation_offload_lib.html" class="btn btn-neutral float-right" title="34. Generic Segmentation Offload Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ip_fragment_reassembly_lib.html" class="btn btn-neutral float-left" title="32. IP Fragmentation and Reassembly Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

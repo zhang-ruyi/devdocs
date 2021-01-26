@@ -1,0 +1,569 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>37. Kernel NIC Interface &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="38. Thread Safety of DPDK Functions" href="thread_safety_dpdk_functions.html" />
+    <link rel="prev" title="36. Multi-process Support" href="multi_proc_support.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">37. Kernel NIC Interface</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#the-dpdk-kni-kernel-module">37.1. The DPDK KNI Kernel Module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#loopback-mode">37.1.1. Loopback Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#kernel-thread-mode">37.1.2. Kernel Thread Mode</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#default-carrier-state">37.1.3. Default Carrier State</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#kni-creation-and-deletion">37.2. KNI Creation and Deletion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dpdk-mbuf-flow">37.3. DPDK mbuf Flow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-case-ingress">37.4. Use Case: Ingress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#use-case-egress">37.5. Use Case: Egress</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#iova-va-support">37.6. IOVA = VA: Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ethtool">37.7. Ethtool</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">37. </span>Kernel NIC Interface</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/kernel_nic_interface.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="kernel-nic-interface">
+<span id="kni"></span><h1><span class="section-number">37. </span>Kernel NIC Interface</h1>
+<p>The DPDK Kernel NIC Interface (KNI) allows userspace applications access to the Linux* control plane.</p>
+<p>The benefits of using the DPDK KNI are:</p>
+<ul class="simple">
+<li><p>Faster than existing Linux TUN/TAP interfaces
+(by eliminating system calls and copy_to_user()/copy_from_user() operations.</p></li>
+<li><p>Allows management of DPDK ports using standard Linux net tools such as ethtool, ifconfig and tcpdump.</p></li>
+<li><p>Allows an interface with the kernel network stack.</p></li>
+</ul>
+<p>The components of an application using the DPDK Kernel NIC Interface are shown in <a class="reference internal" href="#figure-kernel-nic-intf"><span class="std std-numref">Fig. 37.1</span></a>.</p>
+<div class="figure align-default" id="id1">
+<span id="figure-kernel-nic-intf"></span><img alt="../_images/kernel_nic_intf.png" src="../_images/kernel_nic_intf.png" />
+<p class="caption"><span class="caption-number">Fig. 37.1 </span><span class="caption-text">Components of a DPDK KNI Application</span></p>
+</div>
+<div class="section" id="the-dpdk-kni-kernel-module">
+<h2><span class="section-number">37.1. </span>The DPDK KNI Kernel Module</h2>
+<p>The KNI kernel loadable module <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> provides the kernel interface
+for DPDK applications.</p>
+<p>When the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> module is loaded, it will create a device <code class="docutils literal notranslate"><span class="pre">/dev/kni</span></code>
+that is used by the DPDK KNI API functions to control and communicate with
+the kernel module.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module contains several optional parameters which
+can be specified when the module is loaded to control its behavior:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> modinfo rte_kni.ko
+<span class="go">&lt;snip&gt;</span>
+<span class="go">parm:           lo_mode: KNI loopback mode (default=lo_mode_none):</span>
+<span class="go">                lo_mode_none        Kernel loopback disabled</span>
+<span class="go">                lo_mode_fifo        Enable kernel loopback with fifo</span>
+<span class="go">                lo_mode_fifo_skb    Enable kernel loopback with fifo and skb buffer</span>
+<span class="go">                 (charp)</span>
+<span class="go">parm:           kthread_mode: Kernel thread mode (default=single):</span>
+<span class="go">                single    Single kernel thread mode enabled.</span>
+<span class="go">                multiple  Multiple kernel thread mode enabled.</span>
+<span class="go">                 (charp)</span>
+<span class="go">parm:           carrier: Default carrier state for KNI interface (default=off):</span>
+<span class="go">                off   Interfaces will be created with carrier state set to off.</span>
+<span class="go">                on    Interfaces will be created with carrier state set to on.</span>
+<span class="go">                 (charp)</span>
+</pre></div>
+</div>
+<p>Loading the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module without any optional parameters is
+the typical way a DPDK application gets packets into and out of the kernel
+network stack.  Without any parameters, only one kernel thread is created
+for all KNI devices for packet receiving in kernel side, loopback mode is
+disabled, and the default carrier state of KNI interfaces is set to <em>off</em>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko
+</pre></div>
+</div>
+<div class="section" id="loopback-mode">
+<span id="kni-loopback-mode"></span><h3><span class="section-number">37.1.1. </span>Loopback Mode</h3>
+<p>For testing, the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module can be loaded in loopback mode
+by specifying the <code class="docutils literal notranslate"><span class="pre">lo_mode</span></code> parameter:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">lo_mode</span><span class="o">=</span>lo_mode_fifo
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">lo_mode_fifo</span></code> loopback option will loop back ring enqueue/dequeue
+operations in kernel space.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">lo_mode</span><span class="o">=</span>lo_mode_fifo_skb
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">lo_mode_fifo_skb</span></code> loopback option will loop back ring enqueue/dequeue
+operations and sk buffer copies in kernel space.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">lo_mode</span></code> parameter is not specified, loopback mode is disabled.</p>
+</div>
+<div class="section" id="kernel-thread-mode">
+<span id="kni-kernel-thread-mode"></span><h3><span class="section-number">37.1.2. </span>Kernel Thread Mode</h3>
+<p>To provide flexibility of performance, the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> KNI kernel module
+can be loaded with the <code class="docutils literal notranslate"><span class="pre">kthread_mode</span></code> parameter.  The <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel
+module supports two options: “single kernel thread” mode and “multiple
+kernel thread” mode.</p>
+<p>Single kernel thread mode is enabled as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">kthread_mode</span><span class="o">=</span>single
+</pre></div>
+</div>
+<p>This mode will create only one kernel thread for all KNI interfaces to
+receive data on the kernel side.  By default, this kernel thread is not
+bound to any particular core, but the user can set the core affinity for
+this kernel thread by setting the <code class="docutils literal notranslate"><span class="pre">core_id</span></code> and <code class="docutils literal notranslate"><span class="pre">force_bind</span></code> parameters
+in <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_kni_conf</span></code> when the first KNI interface is created:</p>
+<p>For optimum performance, the kernel thread should be bound to a core in
+on the same socket as the DPDK lcores used in the application.</p>
+<p>The KNI kernel module can also be configured to start a separate kernel
+thread for each KNI interface created by the DPDK application.  Multiple
+kernel thread mode is enabled as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">kthread_mode</span><span class="o">=</span>multiple
+</pre></div>
+</div>
+<p>This mode will create a separate kernel thread for each KNI interface to
+receive data on the kernel side.  The core affinity of each <code class="docutils literal notranslate"><span class="pre">kni_thread</span></code>
+kernel thread can be specified by setting the <code class="docutils literal notranslate"><span class="pre">core_id</span></code> and <code class="docutils literal notranslate"><span class="pre">force_bind</span></code>
+parameters in <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_kni_conf</span></code> when each KNI interface is created.</p>
+<p>Multiple kernel thread mode can provide scalable higher performance if
+sufficient unused cores are available on the host system.</p>
+<p>If the <code class="docutils literal notranslate"><span class="pre">kthread_mode</span></code> parameter is not specified, the “single kernel
+thread” mode is used.</p>
+</div>
+<div class="section" id="default-carrier-state">
+<span id="kni-default-carrier-state"></span><h3><span class="section-number">37.1.3. </span>Default Carrier State</h3>
+<p>The default carrier state of KNI interfaces created by the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code>
+kernel module is controlled via the <code class="docutils literal notranslate"><span class="pre">carrier</span></code> option when the module
+is loaded.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">carrier=off</span></code> is specified, the kernel module will leave the carrier
+state of the interface <em>down</em> when the interface is management enabled.
+The DPDK application can set the carrier state of the KNI interface using the
+<code class="docutils literal notranslate"><span class="pre">rte_kni_update_link()</span></code> function.  This is useful for DPDK applications
+which require that the carrier state of the KNI interface reflect the
+actual link state of the corresponding physical NIC port.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">carrier=on</span></code> is specified, the kernel module will automatically set
+the carrier state of the interface to <em>up</em> when the interface is management
+enabled.  This is useful for DPDK applications which use the KNI interface as
+a purely virtual interface that does not correspond to any physical hardware
+and do not wish to explicitly set the carrier state of the interface with
+<code class="docutils literal notranslate"><span class="pre">rte_kni_update_link()</span></code>.  It is also useful for testing in loopback mode
+where the NIC port may not be physically connected to anything.</p>
+<p>To set the default carrier state to <em>on</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">carrier</span><span class="o">=</span>on
+</pre></div>
+</div>
+<p>To set the default carrier state to <em>off</em>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> insmod &lt;build_dir&gt;/kernel/linux/kni/rte_kni.ko <span class="nv">carrier</span><span class="o">=</span>off
+</pre></div>
+</div>
+<p>If the <code class="docutils literal notranslate"><span class="pre">carrier</span></code> parameter is not specified, the default carrier state
+of KNI interfaces will be set to <em>off</em>.</p>
+</div>
+</div>
+<div class="section" id="kni-creation-and-deletion">
+<h2><span class="section-number">37.2. </span>KNI Creation and Deletion</h2>
+<p>Before any KNI interfaces can be created, the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module must
+be loaded into the kernel and configured with the <code class="docutils literal notranslate"><span class="pre">rte_kni_init()</span></code> function.</p>
+<p>The KNI interfaces are created by a DPDK application dynamically via the
+<code class="docutils literal notranslate"><span class="pre">rte_kni_alloc()</span></code> function.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_kni_conf</span></code> structure contains fields which allow the
+user to specify the interface name, set the MTU size, set an explicit or
+random MAC address and control the affinity of the kernel Rx thread(s)
+(both single and multi-threaded modes).
+By default the KNI sample example gets the MTU from the matching device,
+and in case of KNI PMD it is derived from mbuf buffer length.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_kni_ops</span></code> structure contains pointers to functions to
+handle requests from the <code class="docutils literal notranslate"><span class="pre">rte_kni</span></code> kernel module.  These functions
+allow DPDK applications to perform actions when the KNI interfaces are
+manipulated by control commands or functions external to the application.</p>
+<p>For example, the DPDK application may wish to enabled/disable a physical
+NIC port when a user enabled/disables a KNI interface with <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">link</span> <span class="pre">set</span>
+<span class="pre">[up|down]</span> <span class="pre">dev</span> <span class="pre">&lt;ifaceX&gt;</span></code>.  The DPDK application can register a callback for
+<code class="docutils literal notranslate"><span class="pre">config_network_if</span></code> which will be called when the interface management
+state changes.</p>
+<p>There are currently four callbacks for which the user can register
+application functions:</p>
+<p><code class="docutils literal notranslate"><span class="pre">config_network_if</span></code>:</p>
+<blockquote>
+<div><p>Called when the management state of the KNI interface changes.
+For example, when the user runs <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">link</span> <span class="pre">set</span> <span class="pre">[up|down]</span> <span class="pre">dev</span> <span class="pre">&lt;ifaceX&gt;</span></code>.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">change_mtu</span></code>:</p>
+<blockquote>
+<div><p>Called when the user changes the MTU size of the KNI
+interface.  For example, when the user runs <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">link</span> <span class="pre">set</span> <span class="pre">mtu</span> <span class="pre">&lt;size&gt;</span>
+<span class="pre">dev</span> <span class="pre">&lt;ifaceX&gt;</span></code>.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">config_mac_address</span></code>:</p>
+<blockquote>
+<div><p>Called when the user changes the MAC address of the KNI interface.
+For example, when the user runs <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">link</span> <span class="pre">set</span> <span class="pre">address</span> <span class="pre">&lt;MAC&gt;</span>
+<span class="pre">dev</span> <span class="pre">&lt;ifaceX&gt;</span></code>.  If the user sets this callback function to NULL,
+but sets the <code class="docutils literal notranslate"><span class="pre">port_id</span></code> field to a value other than -1, a default
+callback handler in the rte_kni library <code class="docutils literal notranslate"><span class="pre">kni_config_mac_address()</span></code>
+will be called which calls <code class="docutils literal notranslate"><span class="pre">rte_eth_dev_default_mac_addr_set()</span></code>
+on the specified <code class="docutils literal notranslate"><span class="pre">port_id</span></code>.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">config_promiscusity</span></code>:</p>
+<blockquote>
+<div><p>Called when the user changes the promiscuity state of the KNI
+interface.  For example, when the user runs <code class="docutils literal notranslate"><span class="pre">ip</span> <span class="pre">link</span> <span class="pre">set</span> <span class="pre">promisc</span>
+<span class="pre">[on|off]</span> <span class="pre">dev</span> <span class="pre">&lt;ifaceX&gt;</span></code>. If the user sets this callback function to
+NULL, but sets the <code class="docutils literal notranslate"><span class="pre">port_id</span></code> field to a value other than -1, a default
+callback handler in the rte_kni library <code class="docutils literal notranslate"><span class="pre">kni_config_promiscusity()</span></code>
+will be called which calls <code class="docutils literal notranslate"><span class="pre">rte_eth_promiscuous_&lt;enable|disable&gt;()</span></code>
+on the specified <code class="docutils literal notranslate"><span class="pre">port_id</span></code>.</p>
+</div></blockquote>
+<p><code class="docutils literal notranslate"><span class="pre">config_allmulticast</span></code>:</p>
+<blockquote>
+<div><p>Called when the user changes the allmulticast state of the KNI interface.
+For example, when the user runs <code class="docutils literal notranslate"><span class="pre">ifconfig</span> <span class="pre">&lt;ifaceX&gt;</span> <span class="pre">[-]allmulti</span></code>. If the
+user sets this callback function to NULL, but sets the <code class="docutils literal notranslate"><span class="pre">port_id</span></code> field to
+a value other than -1, a default callback handler in the rte_kni library
+<code class="docutils literal notranslate"><span class="pre">kni_config_allmulticast()</span></code> will be called which calls
+<code class="docutils literal notranslate"><span class="pre">rte_eth_allmulticast_&lt;enable|disable&gt;()</span></code> on the specified <code class="docutils literal notranslate"><span class="pre">port_id</span></code>.</p>
+</div></blockquote>
+<p>In order to run these callbacks, the application must periodically call
+the <code class="docutils literal notranslate"><span class="pre">rte_kni_handle_request()</span></code> function.  Any user callback function
+registered will be called directly from <code class="docutils literal notranslate"><span class="pre">rte_kni_handle_request()</span></code> so
+care must be taken to prevent deadlock and to not block any DPDK fastpath
+tasks.  Typically DPDK applications which use these callbacks will need
+to create a separate thread or secondary process to periodically call
+<code class="docutils literal notranslate"><span class="pre">rte_kni_handle_request()</span></code>.</p>
+<p>The KNI interfaces can be deleted by a DPDK application with
+<code class="docutils literal notranslate"><span class="pre">rte_kni_release()</span></code>.  All KNI interfaces not explicitly deleted will be
+deleted when the <code class="docutils literal notranslate"><span class="pre">/dev/kni</span></code> device is closed, either explicitly with
+<code class="docutils literal notranslate"><span class="pre">rte_kni_close()</span></code> or when the DPDK application is closed.</p>
+</div>
+<div class="section" id="dpdk-mbuf-flow">
+<h2><span class="section-number">37.3. </span>DPDK mbuf Flow</h2>
+<p>To minimize the amount of DPDK code running in kernel space, the mbuf mempool is managed in userspace only.
+The kernel module will be aware of mbufs,
+but all mbuf allocation and free operations will be handled by the DPDK application only.</p>
+<p><a class="reference internal" href="#figure-pkt-flow-kni"><span class="std std-numref">Fig. 37.2</span></a> shows a typical scenario with packets sent in both directions.</p>
+<div class="figure align-default" id="id2">
+<span id="figure-pkt-flow-kni"></span><img alt="../_images/pkt_flow_kni.png" src="../_images/pkt_flow_kni.png" />
+<p class="caption"><span class="caption-number">Fig. 37.2 </span><span class="caption-text">Packet Flow via mbufs in the DPDK KNI</span></p>
+</div>
+</div>
+<div class="section" id="use-case-ingress">
+<h2><span class="section-number">37.4. </span>Use Case: Ingress</h2>
+<p>On the DPDK RX side, the mbuf is allocated by the PMD in the RX thread context.
+This thread will enqueue the mbuf in the rx_q FIFO,
+and the next pointers in mbuf-chain will convert to physical address.
+The KNI thread will poll all KNI active devices for the rx_q.
+If an mbuf is dequeued, it will be converted to a sk_buff and sent to the net stack via netif_rx().
+The dequeued mbuf must be freed, so the same pointer is sent back in the free_q FIFO,
+and next pointers must convert back to virtual address if exists before put in the free_q FIFO.</p>
+<p>The RX thread, in the same main loop, polls this FIFO and frees the mbuf after dequeuing it.
+The address conversion of the next pointer is to prevent the chained mbuf
+in different hugepage segments from causing kernel crash.</p>
+</div>
+<div class="section" id="use-case-egress">
+<h2><span class="section-number">37.5. </span>Use Case: Egress</h2>
+<p>For packet egress the DPDK application must first enqueue several mbufs to create an mbuf cache on the kernel side.</p>
+<p>The packet is received from the Linux net stack, by calling the kni_net_tx() callback.
+The mbuf is dequeued (without waiting due the cache) and filled with data from sk_buff.
+The sk_buff is then freed and the mbuf sent in the tx_q FIFO.</p>
+<p>The DPDK TX thread dequeues the mbuf and sends it to the PMD via <code class="docutils literal notranslate"><span class="pre">rte_eth_tx_burst()</span></code>.
+It then puts the mbuf back in the cache.</p>
+</div>
+<div class="section" id="iova-va-support">
+<h2><span class="section-number">37.6. </span>IOVA = VA: Support</h2>
+<p>KNI operates in IOVA_VA scheme when</p>
+<ul class="simple">
+<li><p>LINUX_VERSION_CODE &gt;= KERNEL_VERSION(4, 10, 0) and</p></li>
+<li><p>EAL option <cite>iova-mode=va</cite> is passed or bus IOVA scheme in the DPDK is selected
+as RTE_IOVA_VA.</p></li>
+</ul>
+<p>Due to IOVA to KVA address translations, based on the KNI use case there
+can be a performance impact. For mitigation, forcing IOVA to PA via EAL
+“–iova-mode=pa” option can be used, IOVA_DC bus iommu scheme can also
+result in IOVA as PA.</p>
+</div>
+<div class="section" id="ethtool">
+<h2><span class="section-number">37.7. </span>Ethtool</h2>
+<p>Ethtool is a Linux-specific tool with corresponding support in the kernel.
+The current version of kni provides minimal ethtool functionality
+including querying version and link state. It does not support link
+control, statistics, or dumping device registers.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="thread_safety_dpdk_functions.html" class="btn btn-neutral float-right" title="38. Thread Safety of DPDK Functions" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="multi_proc_support.html" class="btn btn-neutral float-left" title="36. Multi-process Support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

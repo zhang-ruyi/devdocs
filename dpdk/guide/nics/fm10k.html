@@ -1,0 +1,446 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>19. FM10K Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="20. HINIC Poll Mode Driver" href="hinic.html" />
+    <link rel="prev" title="18. ENIC Poll Mode Driver" href="enic.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">2. Features Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_and_test.html">3. Compiling and testing a PMD for a NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_packet.html">4. AF_PACKET Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_xdp.html">5. AF_XDP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ark.html">6. ARK Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atlantic.html">7. Aquantia Atlantic DPDK Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avp.html">8. AVP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="axgbe.html">9. AXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">10. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnxt.html">11. BNXT Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">12. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">13. DPAA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">14. DPAA2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">15. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">16. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enetc.html">17. ENETC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">18. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">19. FM10K Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ftag-based-forwarding-of-fm10k">19.1. FTAG Based Forwarding of FM10K</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#vector-pmd-for-fm10k">19.2. Vector PMD for FM10K</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#rx-constraints">19.2.1. RX Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tx-constraint">19.2.2. TX Constraint</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">19.3. Limitations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#switch-manager">19.3.1. Switch manager</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#support-for-switch-restart">19.3.2. Support for Switch Restart</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crc-stripping">19.3.3. CRC stripping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#maximum-packet-length">19.3.4. Maximum packet length</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#statistic-polling-frequency">19.3.5. Statistic Polling Frequency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#interrupt-mode">19.3.6. Interrupt mode</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="hinic.html">20. HINIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hns3.html">21. HNS3 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">22. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ice.html">23. ICE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igb.html">24. IGB Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igc.html">25. IGC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ionic.html">26. IONIC Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipn3ke.html">27. IPN3KE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">28. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">29. Intel Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kni.html">30. KNI Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="liquidio.html">31. LiquidIO VF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memif.html">32. Memif Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">33. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">34. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvneta.html">35. MVNETA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvpp2.html">36. MVPP2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netvsc.html">37. Netvsc poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfb.html">38. NFB poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">39. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">40. NULL Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">41. OCTEON TX Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">42. OCTEON TX2 Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfe.html">43. PFE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qede.html">44. QEDE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sfc_efx.html">45. Solarflare libefx-based Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="softnic.html">46. Soft NIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">47. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tap.html">48. Tun|Tap Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thunderx.html">49. ThunderX NICVF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txgbe.html">50. TXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdev_netvsc.html">51. VDEV_NETVSC driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">52. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">53. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">54. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">55. Libpcap and Ring Based Poll Mode Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fail_safe.html">56. Fail-safe poll mode driver library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">19. </span>FM10K Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/fm10k.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="fm10k-poll-mode-driver">
+<h1><span class="section-number">19. </span>FM10K Poll Mode Driver</h1>
+<p>The FM10K poll mode driver library provides support for the Intel FM10000
+(FM10K) family of 40GbE/100GbE adapters.</p>
+<div class="section" id="ftag-based-forwarding-of-fm10k">
+<h2><span class="section-number">19.1. </span>FTAG Based Forwarding of FM10K</h2>
+<p>FTAG Based Forwarding is a unique feature of FM10K. The FM10K family of NICs
+support the addition of a Fabric Tag (FTAG) to carry special information.
+The FTAG is placed at the beginning of the frame, it contains information
+such as where the packet comes from and goes, and the vlan tag. In FTAG based
+forwarding mode, the switch logic forwards packets according to glort (global
+resource tag) information, rather than the mac and vlan table. Currently this
+feature works only on PF.</p>
+<p>To enable this feature, the user should pass a devargs parameter to the eal
+like “-a 84:00.0,enable_ftag=1”, and the application should make sure an
+appropriate FTAG is inserted for every frame on TX side.</p>
+</div>
+<div class="section" id="vector-pmd-for-fm10k">
+<h2><span class="section-number">19.2. </span>Vector PMD for FM10K</h2>
+<p>Vector PMD (vPMD) uses Intel® SIMD instructions to optimize packet I/O.
+It improves load/store bandwidth efficiency of L1 data cache by using a wider
+SSE/AVX ‘’register (1)’’.
+The wider register gives space to hold multiple packet buffers so as to save
+on the number of instructions when bulk processing packets.</p>
+<p>There is no change to the PMD API. The RX/TX handlers are the only two entries for
+vPMD packet I/O. They are transparently registered at runtime RX/TX execution
+if all required conditions are met.</p>
+<p>Some constraints apply as pre-conditions for specific optimizations on bulk
+packet transfers. The following sections explain RX and TX constraints in the
+vPMD.</p>
+<div class="section" id="rx-constraints">
+<h3><span class="section-number">19.2.1. </span>RX Constraints</h3>
+<div class="section" id="prerequisites-and-pre-conditions">
+<h4><span class="section-number">19.2.1.1. </span>Prerequisites and Pre-conditions</h4>
+<p>For Vector RX it is assumed that the number of descriptor rings will be a power
+of 2. With this pre-condition, the ring pointer can easily scroll back to the
+head after hitting the tail without a conditional check. In addition Vector RX
+can use this assumption to do a bit mask using <code class="docutils literal notranslate"><span class="pre">ring_size</span> <span class="pre">-</span> <span class="pre">1</span></code>.</p>
+</div>
+<div class="section" id="features-not-supported-by-vector-rx-pmd">
+<h4><span class="section-number">19.2.1.2. </span>Features not Supported by Vector RX PMD</h4>
+<p>Some features are not supported when trying to increase the throughput in
+vPMD. They are:</p>
+<ul class="simple">
+<li><p>IEEE1588</p></li>
+<li><p>Flow director</p></li>
+<li><p>Header split</p></li>
+<li><p>RX checksum offload</p></li>
+</ul>
+<p>Other features are supported using optional MACRO configuration. They include:</p>
+<ul class="simple">
+<li><p>HW VLAN strip</p></li>
+<li><p>L3/L4 packet type</p></li>
+</ul>
+<p>To enable via <code class="docutils literal notranslate"><span class="pre">RX_OLFLAGS</span></code> use <code class="docutils literal notranslate"><span class="pre">RTE_LIBRTE_FM10K_RX_OLFLAGS_ENABLE=y</span></code>.</p>
+<p>To guarantee the constraint, the following capabilities in <code class="docutils literal notranslate"><span class="pre">dev_conf.rxmode.offloads</span></code>
+will be checked:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DEV_RX_OFFLOAD_VLAN_EXTEND</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DEV_RX_OFFLOAD_CHECKSUM</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DEV_RX_OFFLOAD_HEADER_SPLIT</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fdir_conf-&gt;mode</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="rx-burst-size">
+<h4><span class="section-number">19.2.1.3. </span>RX Burst Size</h4>
+<p>As vPMD is focused on high throughput, it processes 4 packets at a time. So it assumes
+that the RX burst should be greater than 4 packets per burst. It returns zero if using
+<code class="docutils literal notranslate"><span class="pre">nb_pkt</span></code> &lt; 4 in the receive handler. If <code class="docutils literal notranslate"><span class="pre">nb_pkt</span></code> is not a multiple of 4, a
+floor alignment will be applied.</p>
+</div>
+</div>
+<div class="section" id="tx-constraint">
+<h3><span class="section-number">19.2.2. </span>TX Constraint</h3>
+<div class="section" id="features-not-supported-by-tx-vector-pmd">
+<h4><span class="section-number">19.2.2.1. </span>Features not Supported by TX Vector PMD</h4>
+<p>TX vPMD only works when offloads is set to 0</p>
+<p>This means that it does not support any TX offload.</p>
+</div>
+</div>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">19.3. </span>Limitations</h2>
+<div class="section" id="switch-manager">
+<h3><span class="section-number">19.3.1. </span>Switch manager</h3>
+<p>The Intel FM10000 family of NICs integrate a hardware switch and multiple host
+interfaces. The FM10000 PMD driver only manages host interfaces. For the
+switch component another switch driver has to be loaded prior to the
+FM10000 PMD driver. The switch driver can be acquired from Intel support.
+Only Testpoint is validated with DPDK, the latest version that has been
+validated with DPDK is 4.1.6.</p>
+</div>
+<div class="section" id="support-for-switch-restart">
+<h3><span class="section-number">19.3.2. </span>Support for Switch Restart</h3>
+<p>For FM10000 multi host based design a DPDK app running in the VM or host needs
+to be aware of the switch’s state since it may undergo a quit-restart. When
+the switch goes down the DPDK app will receive a LSC event indicating link
+status down, and the app should stop the worker threads that are polling on
+the Rx/Tx queues. When switch comes up, a LSC event indicating <code class="docutils literal notranslate"><span class="pre">LINK_UP</span></code> is
+sent to the app, which can then restart the FM10000 port to resume network
+processing.</p>
+</div>
+<div class="section" id="crc-stripping">
+<h3><span class="section-number">19.3.3. </span>CRC stripping</h3>
+<p>The FM10000 family of NICs strip the CRC for every packets coming into the
+host interface. So, keeping CRC is not supported.</p>
+</div>
+<div class="section" id="maximum-packet-length">
+<h3><span class="section-number">19.3.4. </span>Maximum packet length</h3>
+<p>The FM10000 family of NICS support a maximum of a 15K jumbo frame. The value
+is fixed and cannot be changed. So, even when the <code class="docutils literal notranslate"><span class="pre">rxmode.max_rx_pkt_len</span></code>
+member of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_eth_conf</span></code> is set to a value lower than 15364, frames
+up to 15364 bytes can still reach the host interface.</p>
+</div>
+<div class="section" id="statistic-polling-frequency">
+<h3><span class="section-number">19.3.5. </span>Statistic Polling Frequency</h3>
+<p>The FM10000 NICs expose a set of statistics via the PCI BARs. These statistics
+are read from the hardware registers when <code class="docutils literal notranslate"><span class="pre">rte_eth_stats_get()</span></code> or
+<code class="docutils literal notranslate"><span class="pre">rte_eth_xstats_get()</span></code> is called. The packet counting registers are 32 bits
+while the byte counting registers are 48 bits. As a result, the statistics must
+be polled regularly in order to ensure the consistency of the returned reads.</p>
+<p>Given the PCIe Gen3 x8, about 50Gbps of traffic can occur. With 64 byte packets
+this gives almost 100 million packets/second, causing 32 bit integer overflow
+after approx 40 seconds. To ensure these overflows are detected and accounted
+for in the statistics, it is necessary to read statistic regularly. It is
+suggested to read stats every 20 seconds, which will ensure the statistics
+are accurate.</p>
+</div>
+<div class="section" id="interrupt-mode">
+<h3><span class="section-number">19.3.6. </span>Interrupt mode</h3>
+<p>The FM10000 family of NICS need one separate interrupt for mailbox. So only
+drivers which support multiple interrupt vectors e.g. vfio-pci can work
+for fm10k interrupt mode.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="hinic.html" class="btn btn-neutral float-right" title="20. HINIC Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="enic.html" class="btn btn-neutral float-left" title="18. ENIC Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

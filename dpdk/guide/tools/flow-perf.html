@@ -1,0 +1,538 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>6. Flow Performance Tool &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. dpdk-test-bbdev Application" href="testbbdev.html" />
+    <link rel="prev" title="5. dpdk-devbind Application" href="devbind.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">DPDK Tools User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="proc_info.html">1. dpdk-procinfo Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump.html">2. dpdk-pdump Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pmdinfo.html">3. dpdk-pmdinfo Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hugepages.html">4. dpdk-hugepages Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="devbind.html">5. dpdk-devbind Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. Flow Performance Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#known-limitations">6.1. Known Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">6.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">6.3. Running the Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#eal-command-line-options">6.3.1. EAL Command-line Options</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-performance-options">6.3.2. Flow Performance Options</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="testbbdev.html">7. dpdk-test-bbdev Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptoperf.html">8. dpdk-test-crypto-perf Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="comp_perf.html">9. dpdk-test-compress-perf Tool</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testeventdev.html">10. dpdk-test-eventdev Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testregex.html">11. dpdk-test-regex Tool</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">DPDK Tools User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">6. </span>Flow Performance Tool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/tools/flow-perf.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="flow-performance-tool">
+<h1><span class="section-number">6. </span>Flow Performance Tool</h1>
+<p>Application for rte_flow performance testing.
+The application provides the ability to test insertion rate of specific
+rte_flow rule, by stressing it to the NIC, and calculates the insertion
+and deletion rates.</p>
+<p>The application allows to configure which rule to apply through several
+options of the command line.</p>
+<p>After that the application will start producing rules with same pattern
+but increasing the outer IP source address by 1 each time, thus it will
+give different flow each time, and all other items will have open masks.</p>
+<p>To assess the rule insertion rate, the flow performance tool breaks
+down the entire number of flow rule operations into windows of fixed size
+(defaults to 100000 flow rule operations per window, but can be configured).
+Then, the flow performance tool measures the total time per window and
+computes an average time across all windows.</p>
+<p>The application also provides the ability to measure rte flow deletion rate,
+in addition to memory consumption before and after the flow rules’ creation.</p>
+<p>The app supports single and multi core performance measurements.</p>
+<div class="section" id="known-limitations">
+<h2><span class="section-number">6.1. </span>Known Limitations</h2>
+<p>The current version has limitations which can be removed in future:</p>
+<ul class="simple">
+<li><p>Single core insertion only.</p></li>
+</ul>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">6.2. </span>Compiling the Application</h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">test-flow-perf</span></code> application is compiled as part of the main compilation
+of the DPDK libraries and tools.</p>
+<p>Refer to the DPDK Getting Started Guides for details.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">6.3. </span>Running the Application</h2>
+<div class="section" id="eal-command-line-options">
+<h3><span class="section-number">6.3.1. </span>EAL Command-line Options</h3>
+<p>Please refer to <a class="reference internal" href="../linux_gsg/linux_eal_parameters.html"><span class="doc">EAL parameters (Linux)</span></a>
+or <a class="reference internal" href="../freebsd_gsg/freebsd_eal_parameters.html"><span class="doc">EAL parameters (FreeBSD)</span></a> for
+a list of available EAL command-line options.</p>
+</div>
+<div class="section" id="flow-performance-options">
+<h3><span class="section-number">6.3.2. </span>Flow Performance Options</h3>
+<p>The following are the command-line options for the flow performance application.
+They must be separated from the EAL options, shown in the previous section,
+with a <code class="docutils literal notranslate"><span class="pre">--</span></code> separator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo ./dpdk-test-flow_perf -n 4 -a 08:00.0 -- --ingress --ether --ipv4 --queue --rules-count=1000000</span>
+</pre></div>
+</div>
+<p>The command line options are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--help</span></code>
+Display a help message and quit.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--rules-count=N</span></code>
+Set the total number of flow rules to insert,
+where 1 &lt;= N &lt;= “number of flow rules”.
+The default value is 4,000,000.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--rules-batch=N</span></code>
+Set the number of flow rules to insert per iteration window,
+where 1 &lt;= N &lt;= “number of flow rules per iteration window”.
+The default value is 100,000 flow rules per iteration window.
+For a total of –rules-count=1000000 flow rules to be inserted
+and an iteration window size of –rules-batch=100000 flow rules,
+the application will measure the insertion rate 10 times
+(i.e., once every 100000 flow rules) and then report an average
+insertion rate across the 10 measurements.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dump-iterations</span></code>
+Print rates for each iteration window.
+Default iteration window equals to the rules-batch size (i.e., 100,000).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--deletion-rate</span></code>
+Enable deletion rate calculations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dump-socket-mem</span></code>
+Dump the memory stats for each socket before the insertion and after.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--enable-fwd</span></code>
+Enable packets forwarding after insertion/deletion operations.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--portmask=N</span></code>
+hexadecimal bitmask of ports to be used.</p></li>
+</ul>
+<p>Attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--ingress</span></code>
+Set Ingress attribute to all flows attributes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--egress</span></code>
+Set Egress attribute to all flows attributes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--transfer</span></code>
+Set Transfer attribute to all flows attributes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--group=N</span></code>
+Set group for all flows, where N &gt;= 0.
+Default group is 0.</p></li>
+</ul>
+<p>Items:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ether</span></code>
+Add Ether item to all flows items, This item have open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--vlan</span></code>
+Add VLAN item to all flows items,
+This item have VLAN value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">VNI_VALUE</span></code> with full mask, default value = 1.
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ipv4</span></code>
+Add IPv4 item to all flows items,
+This item have incremental source IP, with full mask.
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--ipv6</span></code>
+Add IPv6 item to all flows item,
+This item have incremental source IP, with full mask.
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tcp</span></code>
+Add TCP item to all flows items, This item have open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--udp</span></code>
+Add UDP item to all flows items, This item have open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--vxlan</span></code>
+Add VXLAN item to all flows items,
+This item have VNI value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">VNI_VALUE</span></code> with full mask, default value = 1.
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--vxlan-gpe</span></code>
+Add VXLAN-GPE item to all flows items,
+This item have VNI value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">VNI_VALUE</span></code> with full mask, default value = 1.
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--gre</span></code>
+Add GRE item to all flows items,
+This item have protocol value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">GRE_PROTO</span></code> with full mask, default protocol = 0x6558 “Ether”
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--geneve</span></code>
+Add GENEVE item to all flows items,
+This item have VNI value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">VNI_VALUE</span></code> with full mask, default value = 1.
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--gtp</span></code>
+Add GTP item to all flows items,
+This item have TEID value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">TEID_VALUE</span></code> with full mask, default value = 1.
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--meta</span></code>
+Add Meta item to all flows items,
+This item have data value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">META_DATA</span></code> with full mask, default value = 1.
+Other fields are open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--tag</span></code>
+Add Tag item to all flows items,
+This item have data value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">META_DATA</span></code> with full mask, default value = 1.</p>
+<p>Also it have tag value defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">TAG_INDEX</span></code> with full mask, default value = 0.
+Other fields are open mask.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--icmpv4</span></code>
+Add icmpv4 item to all flows items, This item have open mask.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--icmpv6</span></code>
+Add icmpv6 item to all flows items, This item have open mask.</p></li>
+</ul>
+<p>Actions:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">--port-id</span></code>
+Add port redirection action to all flows actions.
+Port redirection destination is defined in user_parameters.h
+under PORT_ID_DST, default value = 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--rss</span></code>
+Add RSS action to all flows actions,
+The queues in RSS action will be all queues configured
+in the app.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--queue</span></code>
+Add queue action to all flows items,
+The queue will change in round robin state for each flow.</p>
+<dl class="simple">
+<dt>For example:</dt><dd><p>The app running with 4 RX queues
+Flow #0: queue index 0
+Flow #1: queue index 1
+Flow #2: queue index 2
+Flow #3: queue index 3
+Flow #4: queue index 0
+…</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--jump</span></code>
+Add jump action to all flows actions.
+Jump action destination is defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">JUMP_ACTION_TABLE</span></code>, default value = 2.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--mark</span></code>
+Add mark action to all flows actions.
+Mark action id is defined in user_parameters.h
+under <code class="docutils literal notranslate"><span class="pre">MARK_ID</span></code>, default value = 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--count</span></code>
+Add count action to all flows actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-meta</span></code>
+Add set-meta action to all flows actions.
+Meta data is defined in user_parameters.h under <code class="docutils literal notranslate"><span class="pre">META_DATA</span></code>
+with full mask, default value = 1.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-tag</span></code>
+Add set-tag action to all flows actions.
+Meta data is defined in user_parameters.h under <code class="docutils literal notranslate"><span class="pre">META_DATA</span></code>
+with full mask, default value = 1.</p>
+<p>Tag index is defined in user_parameters.h under <code class="docutils literal notranslate"><span class="pre">TAG_INDEX</span></code>
+with full mask, default value = 0.</p>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--drop</span></code>
+Add drop action to all flows actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--hairpin-queue=N</span></code>
+Add hairpin queue action to all flows actions.
+The queue will change in round robin state for each flow.</p>
+<dl class="simple">
+<dt>For example:</dt><dd><p>The app running with 4 RX hairpin queues and 4 normal RX queues
+Flow #0: queue index 4
+Flow #1: queue index 5
+Flow #2: queue index 6
+Flow #3: queue index 7
+Flow #4: queue index 4
+…</p>
+</dd>
+</dl>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--hairpin-rss=N</span></code>
+Add hairpin RSS action to all flows actions.
+The queues in RSS action will be all hairpin queues configured
+in the app.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-src-mac</span></code>
+Add set source mac action to all flows actions.
+The mac to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-dst-mac</span></code>
+Add set destination mac action to all flows actions.
+The mac to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-set-src-ipv4</span></code>
+Add set source ipv4 action to all flows actions.
+The ipv4 header to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-dst-ipv4</span></code>
+Add set destination ipv4 action to all flows actions.
+The ipv4 header to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-src-ipv6</span></code>
+Add set source ipv6 action to all flows actions.
+The ipv6 header to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-dst-ipv6</span></code>
+Add set destination ipv6 action to all flows actions.
+The ipv6 header to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-src-tp</span></code>
+Add set source tp action to all flows actions.
+The tp sport header to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-dst-tp</span></code>
+Add set destination tp action to all flows actions.
+The tp dport header to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--inc-tcp-ack</span></code>
+Add increment TCP acknowledgment by one to all flows actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dec-tcp-ack</span></code>
+Add decrement TCP acknowledgment by one to all flows actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--inc-tcp-seq</span></code>
+Add increment TCP sequence by one to all flows actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dec-tcp-seq</span></code>
+Add decrement TCP sequence by one to all flows actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-ttl</span></code>
+Add set IP ttl action to all flows actions.
+The ttl value to be set is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--dec-ttl</span></code>
+Add decrement IP ttl by one to all flows actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-ipv4-dscp</span></code>
+Add set IPv4 dscp action to all flows actions.
+The dscp value to be is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--set-ipv6-dscp</span></code>
+Add set IPv6 dscp action to all flows actions.
+The dscp value to be is random each flow.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--flag</span></code>
+Add flag action to all flows actions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--raw-encap=&lt;DATA&gt;</span></code>
+Add raw encap action to all flows actions.
+Data is the data needed to be encaped, with fixed values.
+Example: raw-encap=ether,ipv4,udp,vxlan</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--raw-decap=&lt;DATA&gt;</span></code>
+Add raw decap action to all flows actions.
+Data is the data needed to be decaped, with fixed values.
+Example: raw-decap=ether,ipv4,gre</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--vxlan-encap</span></code>
+Add vxlan encap action to all flows actions.
+Data to encap is fixed with pattern: ether,ipv4,udp,vxlan,
+all encapped items have fixed values.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--vxlan-decap</span></code>
+Add vxlan decap action to all flows actions.</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="testbbdev.html" class="btn btn-neutral float-right" title="7. dpdk-test-bbdev Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="devbind.html" class="btn btn-neutral float-left" title="5. dpdk-devbind Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

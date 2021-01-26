@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>6. RCU Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. Ring Library" href="ring_lib.html" />
+    <link rel="prev" title="5. Trace Library" href="trace_lib.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. RCU Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#what-is-quiescent-state">6.1. What is Quiescent State</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#factors-affecting-the-rcu-mechanism">6.2. Factors affecting the RCU mechanism</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rcu-in-dpdk">6.3. RCU in DPDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#how-to-use-this-library">6.4. How to use this library</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#resource-reclamation-framework-for-dpdk">6.5. Resource reclamation framework for DPDK</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">6. </span>RCU Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/rcu_lib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rcu-library">
+<span id="id1"></span><h1><span class="section-number">6. </span>RCU Library</h1>
+<p>Lockless data structures provide scalability and determinism.
+They enable use cases where locking may not be allowed
+(for example real-time applications).</p>
+<p>In the following sections, the term “memory” refers to memory allocated
+by typical APIs like malloc() or anything that is representative of
+memory, for example an index of a free element array.</p>
+<p>Since these data structures are lockless, the writers and readers
+are accessing the data structures concurrently. Hence, while removing
+an element from a data structure, the writers cannot return the memory
+to the allocator, without knowing that the readers are not
+referencing that element/memory anymore. Hence, it is required to
+separate the operation of removing an element into two steps:</p>
+<ol class="arabic simple">
+<li><p>Delete: in this step, the writer removes the reference to the element from
+the data structure but does not return the associated memory to the
+allocator. This will ensure that new readers will not get a reference to
+the removed element. Removing the reference is an atomic operation.</p></li>
+<li><p>Free (Reclaim): in this step, the writer returns the memory to the
+memory allocator only after knowing that all the readers have stopped
+referencing the deleted element.</p></li>
+</ol>
+<p>This library helps the writer determine when it is safe to free the
+memory by making use of thread Quiescent State (QS).</p>
+<div class="section" id="what-is-quiescent-state">
+<h2><span class="section-number">6.1. </span>What is Quiescent State</h2>
+<p>Quiescent State can be defined as “any point in the thread execution where the
+thread does not hold a reference to shared memory”. It is the responsibility of
+the application to determine its quiescent state.</p>
+<p>Let us consider the following diagram:</p>
+<div class="figure align-default" id="id2">
+<span id="figure-quiescent-state"></span><img alt="../_images/rcu_general_info.svg" src="../_images/rcu_general_info.svg" /><p class="caption"><span class="caption-number">Fig. 6.1 </span><span class="caption-text">Phases in the Quiescent State model.</span></p>
+</div>
+<p>As shown in <a class="reference internal" href="#figure-quiescent-state"><span class="std std-numref">Fig. 6.1</span></a>, reader thread 1 accesses data
+structures D1 and D2. When it is accessing D1, if the writer has to remove an
+element from D1, the writer cannot free the memory associated with that
+element immediately. The writer can return the memory to the allocator only
+after the reader stops referencing D1. In other words, reader thread RT1 has
+to enter a quiescent state.</p>
+<p>Similarly, since reader thread 2 is also accessing D1, the writer has to
+wait till thread 2 enters quiescent state as well.</p>
+<p>However, the writer does not need to wait for reader thread 3 to enter
+quiescent state. Reader thread 3 was not accessing D1 when the delete
+operation happened. So, reader thread 3 will not have a reference to the
+deleted entry.</p>
+<p>It can be noted that, the critical sections for D2 is a quiescent state
+for D1. i.e. for a given data structure Dx, any point in the thread execution
+that does not reference Dx is a quiescent state.</p>
+<p>Since memory is not freed immediately, there might be a need for
+provisioning of additional memory, depending on the application requirements.</p>
+</div>
+<div class="section" id="factors-affecting-the-rcu-mechanism">
+<h2><span class="section-number">6.2. </span>Factors affecting the RCU mechanism</h2>
+<p>It is important to make sure that this library keeps the overhead of
+identifying the end of grace period and subsequent freeing of memory,
+to a minimum. The following paras explain how grace period and critical
+section affect this overhead.</p>
+<p>The writer has to poll the readers to identify the end of grace period.
+Polling introduces memory accesses and wastes CPU cycles. The memory
+is not available for reuse during the grace period. Longer grace periods
+exasperate these conditions.</p>
+<p>The length of the critical section and the number of reader threads
+is proportional to the duration of the grace period. Keeping the critical
+sections smaller will keep the grace period smaller. However, keeping the
+critical sections smaller requires additional CPU cycles (due to additional
+reporting) in the readers.</p>
+<p>Hence, we need the characteristics of a small grace period and large critical
+section. This library addresses these characteristics by allowing the writer
+to do other work without having to block until the readers report their
+quiescent state.</p>
+</div>
+<div class="section" id="rcu-in-dpdk">
+<h2><span class="section-number">6.3. </span>RCU in DPDK</h2>
+<p>For DPDK applications, the beginning and end of a <code class="docutils literal notranslate"><span class="pre">while(1)</span></code> loop (where no
+references to shared data structures are kept) act as perfect quiescent
+states. This will combine all the shared data structure accesses into a
+single, large critical section which helps keep the overhead on the
+reader side to a minimum.</p>
+<p>DPDK supports a pipeline model of packet processing and service cores.
+In these use cases, a given data structure may not be used by all the
+workers in the application. The writer has to wait only for the workers that
+use the data structure to report their quiescent state. To provide the required
+flexibility, this library has a concept of a QS variable. If required, the
+application can create one QS variable per data structure to help it track the
+end of grace period for each data structure. This helps keep the length of grace
+period to a minimum.</p>
+</div>
+<div class="section" id="how-to-use-this-library">
+<h2><span class="section-number">6.4. </span>How to use this library</h2>
+<p>The application must allocate memory and initialize a QS variable.</p>
+<p>Applications can call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_get_memsize()</span></code> to calculate the size
+of memory to allocate. This API takes a maximum number of reader threads,
+using this variable, as a parameter.</p>
+<p>Further, the application can initialize a QS variable using the API
+<code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_init()</span></code>.</p>
+<p>Each reader thread is assumed to have a unique thread ID. Currently, the
+management of the thread ID (for example allocation/free) is left to the
+application. The thread ID should be in the range of 0 to
+maximum number of threads provided while creating the QS variable.
+The application could also use <code class="docutils literal notranslate"><span class="pre">lcore_id</span></code> as the thread ID where applicable.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_thread_register()</span></code> API will register a reader thread
+to report its quiescent state. This can be called from a reader thread.
+A control plane thread can also call this on behalf of a reader thread.
+The reader thread must call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_thread_online()</span></code> API to start
+reporting its quiescent state.</p>
+<p>Some of the use cases might require the reader threads to make blocking API
+calls (for example while using eventdev APIs). The writer thread should not
+wait for such reader threads to enter quiescent state.  The reader thread must
+call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_thread_offline()</span></code> API, before calling blocking APIs. It
+can call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_thread_online()</span></code> API once the blocking API call
+returns.</p>
+<p>The writer thread can trigger the reader threads to report their quiescent
+state by calling the API <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_start()</span></code>. It is possible for multiple
+writer threads to query the quiescent state status simultaneously. Hence,
+<code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_start()</span></code> returns a token to each caller.</p>
+<p>The writer thread must call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_check()</span></code> API with the token to
+get the current quiescent state status. Option to block till all the reader
+threads enter the quiescent state is provided. If this API indicates that
+all the reader threads have entered the quiescent state, the application
+can free the deleted entry.</p>
+<p>The APIs <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_start()</span></code> and <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_check()</span></code> are lock free.
+Hence, they can be called concurrently from multiple writers even while
+running as worker threads.</p>
+<p>The separation of triggering the reporting from querying the status provides
+the writer threads flexibility to do useful work instead of blocking for the
+reader threads to enter the quiescent state or go offline. This reduces the
+memory accesses due to continuous polling for the status. But, since the
+resource is freed at a later time, the token and the reference to the deleted
+resource need to be stored for later queries.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_synchronize()</span></code> API combines the functionality of
+<code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_start()</span></code> and blocking <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_check()</span></code> into a single
+API. This API triggers the reader threads to report their quiescent state and
+polls till all the readers enter the quiescent state or go offline. This API
+does not allow the writer to do useful work while waiting and introduces
+additional memory accesses due to continuous polling. However, the application
+does not have to store the token or the reference to the deleted resource. The
+resource can be freed immediately after <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_synchronize()</span></code> API
+returns.</p>
+<p>The reader thread must call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_thread_offline()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_thread_unregister()</span></code> APIs to remove itself from reporting its
+quiescent state. The <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_check()</span></code> API will not wait for this reader
+thread to report the quiescent state status anymore.</p>
+<p>The reader threads should call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_quiescent()</span></code> API to indicate that
+they entered a quiescent state. This API checks if a writer has triggered a
+quiescent state query and update the state accordingly.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_lock()</span></code> and <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_unlock()</span></code> are empty functions.
+However, these APIs can aid in debugging issues. One can mark the access to
+shared data structures on the reader side using these APIs. The
+<code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_quiescent()</span></code> will check if all the locks are unlocked.</p>
+</div>
+<div class="section" id="resource-reclamation-framework-for-dpdk">
+<h2><span class="section-number">6.5. </span>Resource reclamation framework for DPDK</h2>
+<p>Lock-free algorithms place additional burden of resource reclamation on
+the application. When a writer deletes an entry from a data structure, the writer:</p>
+<ol class="arabic simple">
+<li><p>Has to start the grace period</p></li>
+<li><p>Has to store a reference to the deleted resources in a FIFO</p></li>
+<li><p>Should check if the readers have completed a grace period and free the resources.</p></li>
+</ol>
+<p>There are several APIs provided to help with this process. The writer
+can create a FIFO to store the references to deleted resources using <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_create()</span></code>.
+The resources can be enqueued to this FIFO using <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_enqueue()</span></code>.
+If the FIFO is full, <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_enqueue</span></code> will reclaim the resources before enqueuing. It will also reclaim resources on regular basis to keep the FIFO from growing too large. If the writer runs out of resources, the writer can call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_reclaim</span></code> API to reclaim resources. <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_delete</span></code> is provided to reclaim any remaining resources and free the FIFO while shutting down.</p>
+<p>However, if this resource reclamation process were to be integrated in lock-free data structure libraries, it
+hides this complexity from the application and makes it easier for the application to adopt lock-free algorithms. The following paragraphs discuss how the reclamation process can be integrated in DPDK libraries.</p>
+<p>In any DPDK application, the resource reclamation process using QSBR can be split into 4 parts:</p>
+<ol class="arabic simple">
+<li><p>Initialization</p></li>
+<li><p>Quiescent State Reporting</p></li>
+<li><p>Reclaiming Resources</p></li>
+<li><p>Shutdown</p></li>
+</ol>
+<p>The design proposed here assigns different parts of this process to client libraries and applications. The term ‘client library’ refers to lock-free data structure libraries such at rte_hash, rte_lpm etc. in DPDK or similar libraries outside of DPDK. The term ‘application’ refers to the packet processing application that makes use of DPDK such as L3 Forwarding example application, OVS, VPP etc..</p>
+<p>The application has to handle ‘Initialization’ and ‘Quiescent State Reporting’. So,</p>
+<ul class="simple">
+<li><p>the application has to create the RCU variable and register the reader threads to report their quiescent state.</p></li>
+<li><p>the application has to register the same RCU variable with the client library.</p></li>
+<li><p>reader threads in the application have to report the quiescent state. This allows for the application to control the length of the critical section/how frequently the application wants to report the quiescent state.</p></li>
+</ul>
+<p>The client library will handle ‘Reclaiming Resources’ part of the process. The
+client libraries will make use of the writer thread context to execute the memory
+reclamation algorithm. So,</p>
+<ul class="simple">
+<li><p>client library should provide an API to register a RCU variable that it will use. It should call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_create()</span></code> to create the FIFO to store the references to deleted entries.</p></li>
+<li><p>client library should use <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_enqueue</span></code> to enqueue the deleted resources on the FIFO and start the grace period.</p></li>
+<li><p>if the library runs out of resources while adding entries, it should call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_reclaim</span></code> to reclaim the resources and try the resource allocation again.</p></li>
+</ul>
+<p>The ‘Shutdown’ process needs to be shared between the application and the
+client library.</p>
+<ul class="simple">
+<li><p>the application should make sure that the reader threads are not using the shared data structure, unregister the reader threads from the QSBR variable before calling the client library’s shutdown function.</p></li>
+<li><p>client library should call <code class="docutils literal notranslate"><span class="pre">rte_rcu_qsbr_dq_delete</span></code> to reclaim any remaining resources and free the FIFO.</p></li>
+</ul>
+<p>Integrating the resource reclamation with client libraries removes the burden from
+the application and makes it easy to use lock-free algorithms.</p>
+<p>This design has several advantages over currently known methods.</p>
+<ol class="arabic simple">
+<li><p>Application does not need a dedicated thread to reclaim resources. Memory
+reclamation happens as part of the writer thread with little impact on
+performance.</p></li>
+<li><p>The client library has better control over the resources. For example: the client
+library can attempt to reclaim when it has run out of resources.</p></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="ring_lib.html" class="btn btn-neutral float-right" title="7. Ring Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="trace_lib.html" class="btn btn-neutral float-left" title="5. Trace Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1205 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>3. Environment Abstraction Layer &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="4. Service Cores" href="service_cores.html" />
+    <link rel="prev" title="2. Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">3. Environment Abstraction Layer</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#eal-in-a-linux-userland-execution-environment">3.1. EAL in a Linux-userland Execution Environment</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialization-and-core-launching">3.1.1. Initialization and Core Launching</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shutdown-and-cleanup">3.1.2. Shutdown and Cleanup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multi-process-support">3.1.3. Multi-process Support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memory-mapping-discovery-and-memory-reservation">3.1.4. Memory Mapping Discovery and Memory Reservation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#support-for-externally-allocated-memory">3.1.5. Support for Externally Allocated Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#per-lcore-and-shared-variables">3.1.6. Per-lcore and Shared Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#logs">3.1.7. Logs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cpu-feature-identification">3.1.8. CPU Feature Identification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#user-space-interrupt-event">3.1.9. User Space Interrupt Event</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#block-list">3.1.10. Block list</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#misc-functions">3.1.11. Misc Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iova-mode-detection">3.1.12. IOVA Mode Detection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#iova-mode-configuration">3.1.13. IOVA Mode Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#max-simd-bitwidth">3.1.14. Max SIMD bitwidth</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#memory-segments-and-memory-zones-memzone">3.2. Memory Segments and Memory Zones (memzone)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multiple-pthread">3.3. Multiple pthread</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#eal-pthread-and-lcore-affinity">3.3.1. EAL pthread and lcore Affinity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#non-eal-pthread-support">3.3.2. non-EAL pthread support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#public-thread-api">3.3.3. Public Thread API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#control-thread-api">3.3.4. Control Thread API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#known-issues">3.3.5. Known Issues</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#cgroup-control">3.3.6. cgroup control</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#malloc">3.4. Malloc</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#alignment-and-numa-constraints">3.4.1. Alignment and NUMA Constraints</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#use-cases">3.4.2. Use Cases</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#internal-implementation">3.4.3. Internal Implementation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">3. </span>Environment Abstraction Layer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/env_abstraction_layer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="environment-abstraction-layer">
+<span id="id1"></span><h1><span class="section-number">3. </span>Environment Abstraction Layer</h1>
+<p>The Environment Abstraction Layer (EAL) is responsible for gaining access to low-level resources such as hardware and memory space.
+It provides a generic interface that hides the environment specifics from the applications and libraries.
+It is the responsibility of the initialization routine to decide how to allocate these resources
+(that is, memory space, devices, timers, consoles, and so on).</p>
+<p>Typical services expected from the EAL are:</p>
+<ul class="simple">
+<li><p>DPDK Loading and Launching:
+The DPDK and its application are linked as a single application and must be loaded by some means.</p></li>
+<li><p>Core Affinity/Assignment Procedures:
+The EAL provides mechanisms for assigning execution units to specific cores as well as creating execution instances.</p></li>
+<li><p>System Memory Reservation:
+The EAL facilitates the reservation of different memory zones, for example, physical memory areas for device interactions.</p></li>
+<li><p>Trace and Debug Functions: Logs, dump_stack, panic and so on.</p></li>
+<li><p>Utility Functions: Spinlocks and atomic counters that are not provided in libc.</p></li>
+<li><p>CPU Feature Identification: Determine at runtime if a particular feature, for example, Intel® AVX is supported.
+Determine if the current CPU supports the feature set that the binary was compiled for.</p></li>
+<li><p>Interrupt Handling: Interfaces to register/unregister callbacks to specific interrupt sources.</p></li>
+<li><p>Alarm Functions: Interfaces to set/remove callbacks to be run at a specific time.</p></li>
+</ul>
+<div class="section" id="eal-in-a-linux-userland-execution-environment">
+<h2><span class="section-number">3.1. </span>EAL in a Linux-userland Execution Environment</h2>
+<p>In a Linux user space environment, the DPDK application runs as a user-space application using the pthread library.</p>
+<p>The EAL performs physical memory allocation using mmap() in hugetlbfs (using huge page sizes to increase performance).
+This memory is exposed to DPDK service layers such as the <a class="reference internal" href="mempool_lib.html#mempool-library"><span class="std std-ref">Mempool Library</span></a>.</p>
+<p>At this point, the DPDK services layer will be initialized, then through pthread setaffinity calls,
+each execution unit will be assigned to a specific logical core to run as a user-level thread.</p>
+<p>The time reference is provided by the CPU Time-Stamp Counter (TSC) or by the HPET kernel API through a mmap() call.</p>
+<div class="section" id="initialization-and-core-launching">
+<h3><span class="section-number">3.1.1. </span>Initialization and Core Launching</h3>
+<p>Part of the initialization is done by the start function of glibc.
+A check is also performed at initialization time to ensure that the micro architecture type chosen in the config file is supported by the CPU.
+Then, the main() function is called. The core initialization and launch is done in rte_eal_init() (see the API documentation).
+It consist of calls to the pthread library (more specifically, pthread_self(), pthread_create(), and pthread_setaffinity_np()).</p>
+<div class="figure align-default" id="id3">
+<span id="figure-linux-launch"></span><img alt="../_images/linuxapp_launch.svg" src="../_images/linuxapp_launch.svg" /><p class="caption"><span class="caption-number">Fig. 3.1 </span><span class="caption-text">EAL Initialization in a Linux Application Environment</span></p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Initialization of objects, such as memory zones, rings, memory pools, lpm tables and hash tables,
+should be done as part of the overall application initialization on the main lcore.
+The creation and initialization functions for these objects are not multi-thread safe.
+However, once initialized, the objects themselves can safely be used in multiple threads simultaneously.</p>
+</div>
+</div>
+<div class="section" id="shutdown-and-cleanup">
+<h3><span class="section-number">3.1.2. </span>Shutdown and Cleanup</h3>
+<p>During the initialization of EAL resources such as hugepage backed memory can be
+allocated by core components.  The memory allocated during <code class="docutils literal notranslate"><span class="pre">rte_eal_init()</span></code>
+can be released by calling the <code class="docutils literal notranslate"><span class="pre">rte_eal_cleanup()</span></code> function. Refer to the
+API documentation for details.</p>
+</div>
+<div class="section" id="multi-process-support">
+<h3><span class="section-number">3.1.3. </span>Multi-process Support</h3>
+<p>The Linux EAL allows a multi-process as well as a multi-threaded (pthread) deployment model.
+See chapter
+<a class="reference internal" href="multi_proc_support.html#multi-process-support"><span class="std std-ref">Multi-process Support</span></a> for more details.</p>
+</div>
+<div class="section" id="memory-mapping-discovery-and-memory-reservation">
+<h3><span class="section-number">3.1.4. </span>Memory Mapping Discovery and Memory Reservation</h3>
+<p>The allocation of large contiguous physical memory is done using the hugetlbfs kernel filesystem.
+The EAL provides an API to reserve named memory zones in this contiguous memory.
+The physical address of the reserved memory for that memory zone is also returned to the user by the memory zone reservation API.</p>
+<p>There are two modes in which DPDK memory subsystem can operate: dynamic mode,
+and legacy mode. Both modes are explained below.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Memory reservations done using the APIs provided by rte_malloc are also backed by pages from the hugetlbfs filesystem.</p>
+</div>
+<ul class="simple">
+<li><p>Dynamic memory mode</p></li>
+</ul>
+<p>Currently, this mode is only supported on Linux.</p>
+<p>In this mode, usage of hugepages by DPDK application will grow and shrink based
+on application’s requests. Any memory allocation through <code class="docutils literal notranslate"><span class="pre">rte_malloc()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">rte_memzone_reserve()</span></code> or other methods, can potentially result in more
+hugepages being reserved from the system. Similarly, any memory deallocation can
+potentially result in hugepages being released back to the system.</p>
+<p>Memory allocated in this mode is not guaranteed to be IOVA-contiguous. If large
+chunks of IOVA-contiguous are required (with “large” defined as “more than one
+page”), it is recommended to either use VFIO driver for all physical devices (so
+that IOVA and VA addresses can be the same, thereby bypassing physical addresses
+entirely), or use legacy memory mode.</p>
+<p>For chunks of memory which must be IOVA-contiguous, it is recommended to use
+<code class="docutils literal notranslate"><span class="pre">rte_memzone_reserve()</span></code> function with <code class="docutils literal notranslate"><span class="pre">RTE_MEMZONE_IOVA_CONTIG</span></code> flag
+specified. This way, memory allocator will ensure that, whatever memory mode is
+in use, either reserved memory will satisfy the requirements, or the allocation
+will fail.</p>
+<p>There is no need to preallocate any memory at startup using <code class="docutils literal notranslate"><span class="pre">-m</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--socket-mem</span></code> command-line parameters, however it is still possible to do so,
+in which case preallocate memory will be “pinned” (i.e. will never be released
+by the application back to the system). It will be possible to allocate more
+hugepages, and deallocate those, but any preallocated pages will not be freed.
+If neither <code class="docutils literal notranslate"><span class="pre">-m</span></code> nor <code class="docutils literal notranslate"><span class="pre">--socket-mem</span></code> were specified, no memory will be
+preallocated, and all memory will be allocated at runtime, as needed.</p>
+<p>Another available option to use in dynamic memory mode is
+<code class="docutils literal notranslate"><span class="pre">--single-file-segments</span></code> command-line option. This option will put pages in
+single files (per memseg list), as opposed to creating a file per page. This is
+normally not needed, but can be useful for use cases like userspace vhost, where
+there is limited number of page file descriptors that can be passed to VirtIO.</p>
+<p>If the application (or DPDK-internal code, such as device drivers) wishes to
+receive notifications about newly allocated memory, it is possible to register
+for memory event callbacks via <code class="docutils literal notranslate"><span class="pre">rte_mem_event_callback_register()</span></code> function.
+This will call a callback function any time DPDK’s memory map has changed.</p>
+<p>If the application (or DPDK-internal code, such as device drivers) wishes to be
+notified about memory allocations above specified threshold (and have a chance
+to deny them), allocation validator callbacks are also available via
+<code class="docutils literal notranslate"><span class="pre">rte_mem_alloc_validator_callback_register()</span></code> function.</p>
+<p>A default validator callback is provided by EAL, which can be enabled with a
+<code class="docutils literal notranslate"><span class="pre">--socket-limit</span></code> command-line option, for a simple way to limit maximum amount
+of memory that can be used by DPDK application.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Memory subsystem uses DPDK IPC internally, so memory allocations/callbacks
+and IPC must not be mixed: it is not safe to allocate/free memory inside
+memory-related or IPC callbacks, and it is not safe to use IPC inside
+memory-related callbacks. See chapter
+<a class="reference internal" href="multi_proc_support.html#multi-process-support"><span class="std std-ref">Multi-process Support</span></a> for more details about
+DPDK IPC.</p>
+</div>
+<ul class="simple">
+<li><p>Legacy memory mode</p></li>
+</ul>
+<p>This mode is enabled by specifying <code class="docutils literal notranslate"><span class="pre">--legacy-mem</span></code> command-line switch to the
+EAL. This switch will have no effect on FreeBSD as FreeBSD only supports
+legacy mode anyway.</p>
+<p>This mode mimics historical behavior of EAL. That is, EAL will reserve all
+memory at startup, sort all memory into large IOVA-contiguous chunks, and will
+not allow acquiring or releasing hugepages from the system at runtime.</p>
+<p>If neither <code class="docutils literal notranslate"><span class="pre">-m</span></code> nor <code class="docutils literal notranslate"><span class="pre">--socket-mem</span></code> were specified, the entire available
+hugepage memory will be preallocated.</p>
+<ul class="simple">
+<li><p>Hugepage allocation matching</p></li>
+</ul>
+<p>This behavior is enabled by specifying the <code class="docutils literal notranslate"><span class="pre">--match-allocations</span></code> command-line
+switch to the EAL. This switch is Linux-only and not supported with
+<code class="docutils literal notranslate"><span class="pre">--legacy-mem</span></code> nor <code class="docutils literal notranslate"><span class="pre">--no-huge</span></code>.</p>
+<p>Some applications using memory event callbacks may require that hugepages be
+freed exactly as they were allocated. These applications may also require
+that any allocation from the malloc heap not span across allocations
+associated with two different memory event callbacks. Hugepage allocation
+matching can be used by these types of applications to satisfy both of these
+requirements. This can result in some increased memory usage which is
+very dependent on the memory allocation patterns of the application.</p>
+<ul class="simple">
+<li><p>32-bit support</p></li>
+</ul>
+<p>Additional restrictions are present when running in 32-bit mode. In dynamic
+memory mode, by default maximum of 2 gigabytes of VA space will be preallocated,
+and all of it will be on main lcore NUMA node unless <code class="docutils literal notranslate"><span class="pre">--socket-mem</span></code> flag is
+used.</p>
+<p>In legacy mode, VA space will only be preallocated for segments that were
+requested (plus padding, to keep IOVA-contiguousness).</p>
+<ul class="simple">
+<li><p>Maximum amount of memory</p></li>
+</ul>
+<p>All possible virtual memory space that can ever be used for hugepage mapping in
+a DPDK process is preallocated at startup, thereby placing an upper limit on how
+much memory a DPDK application can have. DPDK memory is stored in segment lists,
+each segment is strictly one physical page. It is possible to change the amount
+of virtual memory being preallocated at startup by editing the following config
+variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_MAX_MEMSEG_LISTS</span></code> controls how many segment lists can DPDK have</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_MAX_MEM_MB_PER_LIST</span></code> controls how much megabytes of memory each
+segment list can address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_MAX_MEMSEG_PER_LIST</span></code> controls how many segments each segment can
+have</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_MAX_MEMSEG_PER_TYPE</span></code> controls how many segments each memory type
+can have (where “type” is defined as “page size + NUMA node” combination)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_MAX_MEM_MB_PER_TYPE</span></code> controls how much megabytes of memory each
+memory type can address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_MAX_MEM_MB</span></code> places a global maximum on the amount of memory
+DPDK can reserve</p></li>
+</ul>
+<p>Normally, these options do not need to be changed.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Preallocated virtual memory is not to be confused with preallocated hugepage
+memory! All DPDK processes preallocate virtual memory at startup. Hugepages
+can later be mapped into that preallocated VA space (if dynamic memory mode
+is enabled), and can optionally be mapped into it at startup.</p>
+</div>
+<ul class="simple">
+<li><p>Segment file descriptors</p></li>
+</ul>
+<p>On Linux, in most cases, EAL will store segment file descriptors in EAL. This
+can become a problem when using smaller page sizes due to underlying limitations
+of <code class="docutils literal notranslate"><span class="pre">glibc</span></code> library. For example, Linux API calls such as <code class="docutils literal notranslate"><span class="pre">select()</span></code> may not
+work correctly because <code class="docutils literal notranslate"><span class="pre">glibc</span></code> does not support more than certain number of
+file descriptors.</p>
+<p>There are two possible solutions for this problem. The recommended solution is
+to use <code class="docutils literal notranslate"><span class="pre">--single-file-segments</span></code> mode, as that mode will not use a file
+descriptor per each page, and it will keep compatibility with Virtio with
+vhost-user backend. This option is not available when using <code class="docutils literal notranslate"><span class="pre">--legacy-mem</span></code>
+mode.</p>
+<p>Another option is to use bigger page sizes. Since fewer pages are required to
+cover the same memory area, fewer file descriptors will be stored internally
+by EAL.</p>
+</div>
+<div class="section" id="support-for-externally-allocated-memory">
+<h3><span class="section-number">3.1.5. </span>Support for Externally Allocated Memory</h3>
+<p>It is possible to use externally allocated memory in DPDK. There are two ways in
+which using externally allocated memory can work: the malloc heap API’s, and
+manual memory management.</p>
+<ul class="simple">
+<li><p>Using heap API’s for externally allocated memory</p></li>
+</ul>
+<p>Using a set of malloc heap API’s is the recommended way to use externally
+allocated memory in DPDK. In this way, support for externally allocated memory
+is implemented through overloading the socket ID - externally allocated heaps
+will have socket ID’s that would be considered invalid under normal
+circumstances. Requesting an allocation to take place from a specified
+externally allocated memory is a matter of supplying the correct socket ID to
+DPDK allocator, either directly (e.g. through a call to <code class="docutils literal notranslate"><span class="pre">rte_malloc</span></code>) or
+indirectly (through data structure-specific allocation API’s such as
+<code class="docutils literal notranslate"><span class="pre">rte_ring_create</span></code>). Using these API’s also ensures that mapping of externally
+allocated memory for DMA is also performed on any memory segment that is added
+to a DPDK malloc heap.</p>
+<p>Since there is no way DPDK can verify whether memory is available or valid, this
+responsibility falls on the shoulders of the user. All multiprocess
+synchronization is also user’s responsibility, as well as ensuring  that all
+calls to add/attach/detach/remove memory are done in the correct order. It is
+not required to attach to a memory area in all processes - only attach to memory
+areas as needed.</p>
+<p>The expected workflow is as follows:</p>
+<ul class="simple">
+<li><p>Get a pointer to memory area</p></li>
+<li><p>Create a named heap</p></li>
+<li><dl class="simple">
+<dt>Add memory area(s) to the heap</dt><dd><ul>
+<li><p>If IOVA table is not specified, IOVA addresses will be assumed to be
+unavailable, and DMA mappings will not be performed</p></li>
+<li><p>Other processes must attach to the memory area before they can use it</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Get socket ID used for the heap</p></li>
+<li><p>Use normal DPDK allocation procedures, using supplied socket ID</p></li>
+<li><dl class="simple">
+<dt>If memory area is no longer needed, it can be removed from the heap</dt><dd><ul>
+<li><p>Other processes must detach from this memory area before it can be removed</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>If heap is no longer needed, remove it</dt><dd><ul>
+<li><p>Socket ID will become invalid and will not be reused</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>For more information, please refer to <code class="docutils literal notranslate"><span class="pre">rte_malloc</span></code> API documentation,
+specifically the <code class="docutils literal notranslate"><span class="pre">rte_malloc_heap_*</span></code> family of function calls.</p>
+<ul class="simple">
+<li><p>Using externally allocated memory without DPDK API’s</p></li>
+</ul>
+<p>While using heap API’s is the recommended method of using externally allocated
+memory in DPDK, there are certain use cases where the overhead of DPDK heap API
+is undesirable - for example, when manual memory management is performed on an
+externally allocated area. To support use cases where externally allocated
+memory will not be used as part of normal DPDK workflow, there is also another
+set of API’s under the <code class="docutils literal notranslate"><span class="pre">rte_extmem_*</span></code> namespace.</p>
+<p>These API’s are (as their name implies) intended to allow registering or
+unregistering externally allocated memory to/from DPDK’s internal page table, to
+allow API’s like <code class="docutils literal notranslate"><span class="pre">rte_mem_virt2memseg</span></code> etc. to work with externally allocated
+memory. Memory added this way will not be available for any regular DPDK
+allocators; DPDK will leave this memory for the user application to manage.</p>
+<p>The expected workflow is as follows:</p>
+<ul class="simple">
+<li><p>Get a pointer to memory area</p></li>
+<li><dl class="simple">
+<dt>Register memory within DPDK</dt><dd><ul>
+<li><p>If IOVA table is not specified, IOVA addresses will be assumed to be
+unavailable</p></li>
+<li><p>Other processes must attach to the memory area before they can use it</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Perform DMA mapping with <code class="docutils literal notranslate"><span class="pre">rte_dev_dma_map</span></code> if needed</p></li>
+<li><p>Use the memory area in your application</p></li>
+<li><dl class="simple">
+<dt>If memory area is no longer needed, it can be unregistered</dt><dd><ul>
+<li><p>If the area was mapped for DMA, unmapping must be performed before
+unregistering memory</p></li>
+<li><p>Other processes must detach from the memory area before it can be
+unregistered</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Since these externally allocated memory areas will not be managed by DPDK, it is
+therefore up to the user application to decide how to use them and what to do
+with them once they’re registered.</p>
+</div>
+<div class="section" id="per-lcore-and-shared-variables">
+<h3><span class="section-number">3.1.6. </span>Per-lcore and Shared Variables</h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>lcore refers to a logical execution unit of the processor, sometimes called a hardware <em>thread</em>.</p>
+</div>
+<p>Shared variables are the default behavior.
+Per-lcore variables are implemented using <em>Thread Local Storage</em> (TLS) to provide per-thread local storage.</p>
+</div>
+<div class="section" id="logs">
+<h3><span class="section-number">3.1.7. </span>Logs</h3>
+<p>A logging API is provided by EAL.
+By default, in a Linux application, logs are sent to syslog and also to the console.
+However, the log function can be overridden by the user to use a different logging mechanism.</p>
+<div class="section" id="trace-and-debug-functions">
+<h4><span class="section-number">3.1.7.1. </span>Trace and Debug Functions</h4>
+<p>There are some debug functions to dump the stack in glibc.
+The rte_panic() function can voluntarily provoke a SIG_ABORT,
+which can trigger the generation of a core file, readable by gdb.</p>
+</div>
+</div>
+<div class="section" id="cpu-feature-identification">
+<h3><span class="section-number">3.1.8. </span>CPU Feature Identification</h3>
+<p>The EAL can query the CPU at runtime (using the rte_cpu_get_features() function) to determine which CPU features are available.</p>
+</div>
+<div class="section" id="user-space-interrupt-event">
+<h3><span class="section-number">3.1.9. </span>User Space Interrupt Event</h3>
+<ul class="simple">
+<li><p>User Space Interrupt and Alarm Handling in Host Thread</p></li>
+</ul>
+<p>The EAL creates a host thread to poll the UIO device file descriptors to detect the interrupts.
+Callbacks can be registered or unregistered by the EAL functions for a specific interrupt event
+and are called in the host thread asynchronously.
+The EAL also allows timed callbacks to be used in the same way as for NIC interrupts.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In DPDK PMD, the only interrupts handled by the dedicated host thread are those for link status change
+(link up and link down notification) and for sudden device removal.</p>
+</div>
+<ul class="simple">
+<li><p>RX Interrupt Event</p></li>
+</ul>
+<p>The receive and transmit routines provided by each PMD don’t limit themselves to execute in polling thread mode.
+To ease the idle polling with tiny throughput, it’s useful to pause the polling and wait until the wake-up event happens.
+The RX interrupt is the first choice to be such kind of wake-up event, but probably won’t be the only one.</p>
+<p>EAL provides the event APIs for this event-driven thread mode.
+Taking Linux as an example, the implementation relies on epoll. Each thread can monitor an epoll instance
+in which all the wake-up events’ file descriptors are added. The event file descriptors are created and mapped to
+the interrupt vectors according to the UIO/VFIO spec.
+From FreeBSD’s perspective, kqueue is the alternative way, but not implemented yet.</p>
+<p>EAL initializes the mapping between event file descriptors and interrupt vectors, while each device initializes the mapping
+between interrupt vectors and queues. In this way, EAL actually is unaware of the interrupt cause on the specific vector.
+The eth_dev driver takes responsibility to program the latter mapping.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Per queue RX interrupt event is only allowed in VFIO which supports multiple MSI-X vector. In UIO, the RX interrupt
+together with other interrupt causes shares the same vector. In this case, when RX interrupt and LSC(link status change)
+interrupt are both enabled(intr_conf.lsc == 1 &amp;&amp; intr_conf.rxq == 1), only the former is capable.</p>
+</div>
+<p>The RX interrupt are controlled/enabled/disabled by ethdev APIs - ‘rte_eth_dev_rx_intr_*’. They return failure if the PMD
+hasn’t support them yet. The intr_conf.rxq flag is used to turn on the capability of RX interrupt per device.</p>
+<ul class="simple">
+<li><p>Device Removal Event</p></li>
+</ul>
+<p>This event is triggered by a device being removed at a bus level. Its
+underlying resources may have been made unavailable (i.e. PCI mappings
+unmapped). The PMD must make sure that on such occurrence, the application can
+still safely use its callbacks.</p>
+<p>This event can be subscribed to in the same way one would subscribe to a link
+status change event. The execution context is thus the same, i.e. it is the
+dedicated interrupt host thread.</p>
+<p>Considering this, it is likely that an application would want to close a
+device having emitted a Device Removal Event. In such case, calling
+<code class="docutils literal notranslate"><span class="pre">rte_eth_dev_close()</span></code> can trigger it to unregister its own Device Removal Event
+callback. Care must be taken not to close the device from the interrupt handler
+context. It is necessary to reschedule such closing operation.</p>
+</div>
+<div class="section" id="block-list">
+<h3><span class="section-number">3.1.10. </span>Block list</h3>
+<p>The EAL PCI device block list functionality can be used to mark certain NIC ports as unavailable,
+so they are ignored by the DPDK.
+The ports to be blocked are identified using the PCIe* description (Domain:Bus:Device.Function).</p>
+</div>
+<div class="section" id="misc-functions">
+<h3><span class="section-number">3.1.11. </span>Misc Functions</h3>
+<p>Locks and atomic operations are per-architecture (i686 and x86_64).</p>
+</div>
+<div class="section" id="iova-mode-detection">
+<h3><span class="section-number">3.1.12. </span>IOVA Mode Detection</h3>
+<p>IOVA Mode is selected by considering what the current usable Devices on the
+system require and/or support.</p>
+<p>On FreeBSD, RTE_IOVA_PA is always the default. On Linux, the IOVA mode is
+detected based on a 2-step heuristic detailed below.</p>
+<p>For the first step, EAL asks each bus its requirement in terms of IOVA mode
+and decides on a preferred IOVA mode.</p>
+<ul class="simple">
+<li><p>if all buses report RTE_IOVA_PA, then the preferred IOVA mode is RTE_IOVA_PA,</p></li>
+<li><p>if all buses report RTE_IOVA_VA, then the preferred IOVA mode is RTE_IOVA_VA,</p></li>
+<li><p>if all buses report RTE_IOVA_DC, no bus expressed a preferrence, then the
+preferred mode is RTE_IOVA_DC,</p></li>
+<li><p>if the buses disagree (at least one wants RTE_IOVA_PA and at least one wants
+RTE_IOVA_VA), then the preferred IOVA mode is RTE_IOVA_DC (see below with the
+check on Physical Addresses availability),</p></li>
+</ul>
+<p>If the buses have expressed no preference on which IOVA mode to pick, then a
+default is selected using the following logic:</p>
+<ul class="simple">
+<li><p>if physical addresses are not available, RTE_IOVA_VA mode is used</p></li>
+<li><p>if /sys/kernel/iommu_groups is not empty, RTE_IOVA_VA mode is used</p></li>
+<li><p>otherwise, RTE_IOVA_PA mode is used</p></li>
+</ul>
+<p>In the case when the buses had disagreed on their preferred IOVA mode, part of
+the buses won’t work because of this decision.</p>
+<p>The second step checks if the preferred mode complies with the Physical
+Addresses availability since those are only available to root user in recent
+kernels. Namely, if the preferred mode is RTE_IOVA_PA but there is no access to
+Physical Addresses, then EAL init fails early, since later probing of the
+devices would fail anyway.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The RTE_IOVA_VA mode is preferred as the default in most cases for the
+following reasons:</p>
+<ul class="simple">
+<li><p>All drivers are expected to work in RTE_IOVA_VA mode, irrespective of
+physical address availability.</p></li>
+<li><p>By default, the mempool, first asks for IOVA-contiguous memory using
+<code class="docutils literal notranslate"><span class="pre">RTE_MEMZONE_IOVA_CONTIG</span></code>. This is slow in RTE_IOVA_PA mode and it may
+affect the application boot time.</p></li>
+<li><p>It is easy to enable large amount of IOVA-contiguous memory use-cases
+with IOVA in VA mode.</p></li>
+</ul>
+<p>It is expected that all PCI drivers work in both RTE_IOVA_PA and
+RTE_IOVA_VA modes.</p>
+<p>If a PCI driver does not support RTE_IOVA_PA mode, the
+<code class="docutils literal notranslate"><span class="pre">RTE_PCI_DRV_NEED_IOVA_AS_VA</span></code> flag is used to dictate that this PCI
+driver can only work in RTE_IOVA_VA mode.</p>
+<p>When the KNI kernel module is detected, RTE_IOVA_PA mode is preferred as a
+performance penalty is expected in RTE_IOVA_VA mode.</p>
+</div>
+</div>
+<div class="section" id="iova-mode-configuration">
+<h3><span class="section-number">3.1.13. </span>IOVA Mode Configuration</h3>
+<p>Auto detection of the IOVA mode, based on probing the bus and IOMMU configuration, may not report
+the desired addressing mode when virtual devices that are not directly attached to the bus are present.
+To facilitate forcing the IOVA mode to a specific value the EAL command line option <code class="docutils literal notranslate"><span class="pre">--iova-mode</span></code> can
+be used to select either physical addressing(‘pa’) or virtual addressing(‘va’).</p>
+</div>
+<div class="section" id="max-simd-bitwidth">
+<span id="id2"></span><h3><span class="section-number">3.1.14. </span>Max SIMD bitwidth</h3>
+<p>The EAL provides a single setting to limit the max SIMD bitwidth used by DPDK,
+which is used in determining the vector path, if any, chosen by a component.
+The value can be set at runtime by an application using the
+‘rte_vect_set_max_simd_bitwidth(uint16_t bitwidth)’ function,
+which should only be called once at initialization, before EAL init.
+The value can be overridden by the user using the EAL command-line option ‘–force-max-simd-bitwidth’.</p>
+<p>When choosing a vector path, along with checking the CPU feature support,
+the value of the max SIMD bitwidth must also be checked, and can be retrieved using the
+‘rte_vect_get_max_simd_bitwidth()’ function.
+The value should be compared against the enum values for accepted max SIMD bitwidths:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">rte_vect_max_simd</span> <span class="p">{</span>
+    <span class="n">RTE_VECT_SIMD_DISABLED</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+    <span class="n">RTE_VECT_SIMD_128</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+    <span class="n">RTE_VECT_SIMD_256</span> <span class="o">=</span> <span class="mi">256</span><span class="p">,</span>
+    <span class="n">RTE_VECT_SIMD_512</span> <span class="o">=</span> <span class="mi">512</span><span class="p">,</span>
+    <span class="n">RTE_VECT_SIMD_MAX</span> <span class="o">=</span> <span class="n">INT16_MAX</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">};</span>
+
+ <span class="k">if</span> <span class="p">(</span><span class="n">rte_vect_get_max_simd_bitwidth</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">RTE_VECT_SIMD_512</span><span class="p">)</span>
+     <span class="cm">/* Take AVX-512 vector path */</span>
+ <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">rte_vect_get_max_simd_bitwidth</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">RTE_VECT_SIMD_256</span><span class="p">)</span>
+     <span class="cm">/* Take AVX2 vector path */</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="memory-segments-and-memory-zones-memzone">
+<h2><span class="section-number">3.2. </span>Memory Segments and Memory Zones (memzone)</h2>
+<p>The mapping of physical memory is provided by this feature in the EAL.
+As physical memory can have gaps, the memory is described in a table of descriptors,
+and each descriptor (called rte_memseg ) describes a physical page.</p>
+<p>On top of this, the memzone allocator’s role is to reserve contiguous portions of physical memory.
+These zones are identified by a unique name when the memory is reserved.</p>
+<p>The rte_memzone descriptors are also located in the configuration structure.
+This structure is accessed using rte_eal_get_configuration().
+The lookup (by name) of a memory zone returns a descriptor containing the physical address of the memory zone.</p>
+<p>Memory zones can be reserved with specific start address alignment by supplying the align parameter
+(by default, they are aligned to cache line size).
+The alignment value should be a power of two and not less than the cache line size (64 bytes).
+Memory zones can also be reserved from either 2 MB or 1 GB hugepages, provided that both are available on the system.</p>
+<p>Both memsegs and memzones are stored using <code class="docutils literal notranslate"><span class="pre">rte_fbarray</span></code> structures. Please
+refer to <em>DPDK API Reference</em> for more information.</p>
+</div>
+<div class="section" id="multiple-pthread">
+<h2><span class="section-number">3.3. </span>Multiple pthread</h2>
+<p>DPDK usually pins one pthread per core to avoid the overhead of task switching.
+This allows for significant performance gains, but lacks flexibility and is not always efficient.</p>
+<p>Power management helps to improve the CPU efficiency by limiting the CPU runtime frequency.
+However, alternately it is possible to utilize the idle cycles available to take advantage of
+the full capability of the CPU.</p>
+<p>By taking advantage of cgroup, the CPU utilization quota can be simply assigned.
+This gives another way to improve the CPU efficiency, however, there is a prerequisite;
+DPDK must handle the context switching between multiple pthreads per core.</p>
+<p>For further flexibility, it is useful to set pthread affinity not only to a CPU but to a CPU set.</p>
+<div class="section" id="eal-pthread-and-lcore-affinity">
+<h3><span class="section-number">3.3.1. </span>EAL pthread and lcore Affinity</h3>
+<p>The term “lcore” refers to an EAL thread, which is really a Linux/FreeBSD pthread.
+“EAL pthreads”  are created and managed by EAL and execute the tasks issued by <em>remote_launch</em>.
+In each EAL pthread, there is a TLS (Thread Local Storage) called <em>_lcore_id</em> for unique identification.
+As EAL pthreads usually bind 1:1 to the physical CPU, the <em>_lcore_id</em> is typically equal to the CPU ID.</p>
+<p>When using multiple pthreads, however, the binding is no longer always 1:1 between an EAL pthread and a specified physical CPU.
+The EAL pthread may have affinity to a CPU set, and as such the <em>_lcore_id</em> will not be the same as the CPU ID.
+For this reason, there is an EAL long option ‘–lcores’ defined to assign the CPU affinity of lcores.
+For a specified lcore ID or ID group, the option allows setting the CPU set for that EAL pthread.</p>
+<dl class="simple">
+<dt>The format pattern:</dt><dd><p>–lcores=’&lt;lcore_set&gt;[&#64;cpu_set][,&lt;lcore_set&gt;[&#64;cpu_set],…]’</p>
+</dd>
+</dl>
+<p>‘lcore_set’ and ‘cpu_set’ can be a single number, range or a group.</p>
+<p>A number is a “digit([0-9]+)”; a range is “&lt;number&gt;-&lt;number&gt;”; a group is “(&lt;number|range&gt;[,&lt;number|range&gt;,…])”.</p>
+<p>If a ‘&#64;cpu_set’ value is not supplied, the value of ‘cpu_set’ will default to the value of ‘lcore_set’.</p>
+<blockquote>
+<div><div class="highlight-none notranslate"><div class="highlight"><pre><span></span>For example, &quot;--lcores=&#39;1,2@(5-7),(3-5)@(0,2),(0,6),7-8&#39;&quot; which means start 9 EAL thread;
+    lcore 0 runs on cpuset 0x41 (cpu 0,6);
+    lcore 1 runs on cpuset 0x2 (cpu 1);
+    lcore 2 runs on cpuset 0xe0 (cpu 5,6,7);
+    lcore 3,4,5 runs on cpuset 0x5 (cpu 0,2);
+    lcore 6 runs on cpuset 0x41 (cpu 0,6);
+    lcore 7 runs on cpuset 0x80 (cpu 7);
+    lcore 8 runs on cpuset 0x100 (cpu 8).
+</pre></div>
+</div>
+</div></blockquote>
+<p>Using this option, for each given lcore ID, the associated CPUs can be assigned.
+It’s also compatible with the pattern of corelist(‘-l’) option.</p>
+</div>
+<div class="section" id="non-eal-pthread-support">
+<h3><span class="section-number">3.3.2. </span>non-EAL pthread support</h3>
+<p>It is possible to use the DPDK execution context with any user pthread (aka. non-EAL pthreads).
+There are two kinds of non-EAL pthreads:</p>
+<ul class="simple">
+<li><p>a registered non-EAL pthread with a valid <em>_lcore_id</em> that was successfully assigned by calling <code class="docutils literal notranslate"><span class="pre">rte_thread_register()</span></code>,</p></li>
+<li><p>a non registered non-EAL pthread with a LCORE_ID_ANY,</p></li>
+</ul>
+<p>For non registered non-EAL pthread (with a LCORE_ID_ANY <em>_lcore_id</em>), some libraries will use an alternative unique ID (e.g. TID), some will not be impacted at all, and some will work but with limitations (e.g. timer and mempool libraries).</p>
+<p>All these impacts are mentioned in <a class="reference internal" href="#known-issue-label"><span class="std std-ref">Known Issues</span></a> section.</p>
+</div>
+<div class="section" id="public-thread-api">
+<h3><span class="section-number">3.3.3. </span>Public Thread API</h3>
+<p>There are two public APIs <code class="docutils literal notranslate"><span class="pre">rte_thread_set_affinity()</span></code> and <code class="docutils literal notranslate"><span class="pre">rte_thread_get_affinity()</span></code> introduced for threads.
+When they’re used in any pthread context, the Thread Local Storage(TLS) will be set/get.</p>
+<p>Those TLS include <em>_cpuset</em> and <em>_socket_id</em>:</p>
+<ul class="simple">
+<li><p><em>_cpuset</em> stores the CPUs bitmap to which the pthread is affinitized.</p></li>
+<li><p><em>_socket_id</em> stores the NUMA node of the CPU set. If the CPUs in CPU set belong to different NUMA node, the <em>_socket_id</em> will be set to SOCKET_ID_ANY.</p></li>
+</ul>
+</div>
+<div class="section" id="control-thread-api">
+<h3><span class="section-number">3.3.4. </span>Control Thread API</h3>
+<p>It is possible to create Control Threads using the public API
+<code class="docutils literal notranslate"><span class="pre">rte_ctrl_thread_create()</span></code>.
+Those threads can be used for management/infrastructure tasks and are used
+internally by DPDK for multi process support and interrupt handling.</p>
+<p>Those threads will be scheduled on CPUs part of the original process CPU
+affinity from which the dataplane and service lcores are excluded.</p>
+<p>For example, on a 8 CPUs system, starting a dpdk application with -l 2,3
+(dataplane cores), then depending on the affinity configuration which can be
+controlled with tools like taskset (Linux) or cpuset (FreeBSD),</p>
+<ul class="simple">
+<li><p>with no affinity configuration, the Control Threads will end up on
+0-1,4-7 CPUs.</p></li>
+<li><p>with affinity restricted to 2-4, the Control Threads will end up on
+CPU 4.</p></li>
+<li><p>with affinity restricted to 2-3, the Control Threads will end up on
+CPU 2 (main lcore, which is the default when no CPU is available).</p></li>
+</ul>
+</div>
+<div class="section" id="known-issues">
+<span id="known-issue-label"></span><h3><span class="section-number">3.3.5. </span>Known Issues</h3>
+<ul>
+<li><p>rte_mempool</p>
+<p>The rte_mempool uses a per-lcore cache inside the mempool.
+For unregistered non-EAL pthreads, <code class="docutils literal notranslate"><span class="pre">rte_lcore_id()</span></code> will not return a valid number.
+So for now, when rte_mempool is used with unregistered non-EAL pthreads, the put/get operations will bypass the default mempool cache and there is a performance penalty because of this bypass.
+Only user-owned external caches can be used in an unregistered non-EAL context in conjunction with <code class="docutils literal notranslate"><span class="pre">rte_mempool_generic_put()</span></code> and <code class="docutils literal notranslate"><span class="pre">rte_mempool_generic_get()</span></code> that accept an explicit cache parameter.</p>
+</li>
+<li><p>rte_ring</p>
+<p>rte_ring supports multi-producer enqueue and multi-consumer dequeue.
+However, it is non-preemptive, this has a knock on effect of making rte_mempool non-preemptable.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The “non-preemptive” constraint means:</p>
+<ul class="simple">
+<li><p>a pthread doing multi-producers enqueues on a given ring must not
+be preempted by another pthread doing a multi-producer enqueue on
+the same ring.</p></li>
+<li><p>a pthread doing multi-consumers dequeues on a given ring must not
+be preempted by another pthread doing a multi-consumer dequeue on
+the same ring.</p></li>
+</ul>
+<p>Bypassing this constraint may cause the 2nd pthread to spin until the 1st one is scheduled again.
+Moreover, if the 1st pthread is preempted by a context that has an higher priority, it may even cause a dead lock.</p>
+</div>
+<p>This means, use cases involving preemptible pthreads should consider using rte_ring carefully.</p>
+<ol class="arabic simple">
+<li><p>It CAN be used for preemptible single-producer and single-consumer use case.</p></li>
+<li><p>It CAN be used for non-preemptible multi-producer and preemptible single-consumer use case.</p></li>
+<li><p>It CAN be used for preemptible single-producer and non-preemptible multi-consumer use case.</p></li>
+<li><p>It MAY be used by preemptible multi-producer and/or preemptible multi-consumer pthreads whose scheduling policy are all SCHED_OTHER(cfs), SCHED_IDLE or SCHED_BATCH. User SHOULD be aware of the performance penalty before using it.</p></li>
+<li><p>It MUST not be used by multi-producer/consumer pthreads, whose scheduling policies are SCHED_FIFO or SCHED_RR.</p></li>
+</ol>
+<p>Alternatively, applications can use the lock-free stack mempool handler. When
+considering this handler, note that:</p>
+<ul class="simple">
+<li><p>It is currently limited to the aarch64 and x86_64 platforms, because it uses
+an instruction (16-byte compare-and-swap) that is not yet available on other
+platforms.</p></li>
+<li><p>It has worse average-case performance than the non-preemptive rte_ring, but
+software caching (e.g. the mempool cache) can mitigate this by reducing the
+number of stack accesses.</p></li>
+</ul>
+</li>
+<li><p>rte_timer</p>
+<p>Running  <code class="docutils literal notranslate"><span class="pre">rte_timer_manage()</span></code> on an unregistered non-EAL pthread is not allowed. However, resetting/stopping the timer from a non-EAL pthread is allowed.</p>
+</li>
+<li><p>rte_log</p>
+<p>In unregistered non-EAL pthreads, there is no per thread loglevel and logtype, global loglevels are used.</p>
+</li>
+<li><p>misc</p>
+<p>The debug statistics of rte_ring, rte_mempool and rte_timer are not supported in an unregistered non-EAL pthread.</p>
+</li>
+</ul>
+</div>
+<div class="section" id="cgroup-control">
+<h3><span class="section-number">3.3.6. </span>cgroup control</h3>
+<p>The following is a simple example of cgroup control usage, there are two pthreads(t0 and t1) doing packet I/O on the same core ($CPU).
+We expect only 50% of CPU spend on packet IO.</p>
+<blockquote>
+<div><div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">mkdir /sys/fs/cgroup/cpu/pkt_io</span>
+<span class="go">mkdir /sys/fs/cgroup/cpuset/pkt_io</span>
+
+<span class="go">echo $cpu &gt; /sys/fs/cgroup/cpuset/cpuset.cpus</span>
+
+<span class="go">echo $t0 &gt; /sys/fs/cgroup/cpu/pkt_io/tasks</span>
+<span class="go">echo $t0 &gt; /sys/fs/cgroup/cpuset/pkt_io/tasks</span>
+
+<span class="go">echo $t1 &gt; /sys/fs/cgroup/cpu/pkt_io/tasks</span>
+<span class="go">echo $t1 &gt; /sys/fs/cgroup/cpuset/pkt_io/tasks</span>
+
+<span class="go">cd /sys/fs/cgroup/cpu/pkt_io</span>
+<span class="go">echo 100000 &gt; pkt_io/cpu.cfs_period_us</span>
+<span class="go">echo  50000 &gt; pkt_io/cpu.cfs_quota_us</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="malloc">
+<h2><span class="section-number">3.4. </span>Malloc</h2>
+<p>The EAL provides a malloc API to allocate any-sized memory.</p>
+<p>The objective of this API is to provide malloc-like functions to allow
+allocation from hugepage memory and to facilitate application porting.
+The <em>DPDK API Reference</em> manual describes the available functions.</p>
+<p>Typically, these kinds of allocations should not be done in data plane
+processing because they are slower than pool-based allocation and make
+use of locks within the allocation and free paths.
+However, they can be used in configuration code.</p>
+<p>Refer to the rte_malloc() function description in the <em>DPDK API Reference</em>
+manual for more information.</p>
+<div class="section" id="alignment-and-numa-constraints">
+<h3><span class="section-number">3.4.1. </span>Alignment and NUMA Constraints</h3>
+<p>The rte_malloc() takes an align argument that can be used to request a memory
+area that is aligned on a multiple of this value (which must be a power of two).</p>
+<p>On systems with NUMA support, a call to the rte_malloc() function will return
+memory that has been allocated on the NUMA socket of the core which made the call.
+A set of APIs is also provided, to allow memory to be explicitly allocated on a
+NUMA socket directly, or by allocated on the NUMA socket where another core is
+located, in the case where the memory is to be used by a logical core other than
+on the one doing the memory allocation.</p>
+</div>
+<div class="section" id="use-cases">
+<h3><span class="section-number">3.4.2. </span>Use Cases</h3>
+<p>This API is meant to be used by an application that requires malloc-like
+functions at initialization time.</p>
+<p>For allocating/freeing data at runtime, in the fast-path of an application,
+the memory pool library should be used instead.</p>
+</div>
+<div class="section" id="internal-implementation">
+<h3><span class="section-number">3.4.3. </span>Internal Implementation</h3>
+<div class="section" id="data-structures">
+<h4><span class="section-number">3.4.3.1. </span>Data Structures</h4>
+<p>There are two data structure types used internally in the malloc library:</p>
+<ul class="simple">
+<li><p>struct malloc_heap - used to track free space on a per-socket basis</p></li>
+<li><p>struct malloc_elem - the basic element of allocation and free-space
+tracking inside the library.</p></li>
+</ul>
+<div class="section" id="structure-malloc-heap">
+<h5><span class="section-number">3.4.3.1.1. </span>Structure: malloc_heap</h5>
+<p>The malloc_heap structure is used to manage free space on a per-socket basis.
+Internally, there is one heap structure per NUMA node, which allows us to
+allocate memory to a thread based on the NUMA node on which this thread runs.
+While this does not guarantee that the memory will be used on that NUMA node,
+it is no worse than a scheme where the memory is always allocated on a fixed
+or random node.</p>
+<p>The key fields of the heap structure and their function are described below
+(see also diagram above):</p>
+<ul class="simple">
+<li><p>lock - the lock field is needed to synchronize access to the heap.
+Given that the free space in the heap is tracked using a linked list,
+we need a lock to prevent two threads manipulating the list at the same time.</p></li>
+<li><p>free_head - this points to the first element in the list of free nodes for
+this malloc heap.</p></li>
+<li><p>first - this points to the first element in the heap.</p></li>
+<li><p>last - this points to the last element in the heap.</p></li>
+</ul>
+<div class="figure align-default" id="id4">
+<span id="figure-malloc-heap"></span><img alt="../_images/malloc_heap.svg" src="../_images/malloc_heap.svg" /><p class="caption"><span class="caption-number">Fig. 3.2 </span><span class="caption-text">Example of a malloc heap and malloc elements within the malloc library</span></p>
+</div>
+</div>
+<div class="section" id="structure-malloc-elem">
+<span id="malloc-elem"></span><h5><span class="section-number">3.4.3.1.2. </span>Structure: malloc_elem</h5>
+<p>The malloc_elem structure is used as a generic header structure for various
+blocks of memory.
+It is used in two different ways - all shown in the diagram above:</p>
+<ol class="arabic simple">
+<li><p>As a header on a block of free or allocated memory - normal case</p></li>
+<li><p>As a padding header inside a block of memory</p></li>
+</ol>
+<p>The most important fields in the structure and how they are used are described below.</p>
+<p>Malloc heap is a doubly-linked list, where each element keeps track of its
+previous and next elements. Due to the fact that hugepage memory can come and
+go, neighboring malloc elements may not necessarily be adjacent in memory.
+Also, since a malloc element may span multiple pages, its contents may not
+necessarily be IOVA-contiguous either - each malloc element is only guaranteed
+to be virtually contiguous.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the usage of a particular field in one of the above three usages is not
+described, the field can be assumed to have an undefined value in that
+situation, for example, for padding headers only the “state” and “pad”
+fields have valid values.</p>
+</div>
+<ul class="simple">
+<li><p>heap - this pointer is a reference back to the heap structure from which
+this block was allocated.
+It is used for normal memory blocks when they are being freed, to add the
+newly-freed block to the heap’s free-list.</p></li>
+<li><p>prev - this pointer points to previous header element/block in memory. When
+freeing a block, this pointer is used to reference the previous block to
+check if that block is also free. If so, and the two blocks are immediately
+adjacent to each other, then the two free blocks are merged to form a single
+larger block.</p></li>
+<li><p>next - this pointer points to next header element/block in memory. When
+freeing a block, this pointer is used to reference the next block to check
+if that block is also free. If so, and the two blocks are immediately
+adjacent to each other, then the two free blocks are merged to form a single
+larger block.</p></li>
+<li><p>free_list - this is a structure pointing to previous and next elements in
+this heap’s free list.
+It is only used in normal memory blocks; on <code class="docutils literal notranslate"><span class="pre">malloc()</span></code> to find a suitable
+free block to allocate and on <code class="docutils literal notranslate"><span class="pre">free()</span></code> to add the newly freed element to
+the free-list.</p></li>
+<li><p>state - This field can have one of three values: <code class="docutils literal notranslate"><span class="pre">FREE</span></code>, <code class="docutils literal notranslate"><span class="pre">BUSY</span></code> or
+<code class="docutils literal notranslate"><span class="pre">PAD</span></code>.
+The former two are to indicate the allocation state of a normal memory block
+and the latter is to indicate that the element structure is a dummy structure
+at the end of the start-of-block padding, i.e. where the start of the data
+within a block is not at the start of the block itself, due to alignment
+constraints.
+In that case, the pad header is used to locate the actual malloc element
+header for the block.</p></li>
+<li><p>pad - this holds the length of the padding present at the start of the block.
+In the case of a normal block header, it is added to the address of the end
+of the header to give the address of the start of the data area, i.e. the
+value passed back to the application on a malloc.
+Within a dummy header inside the padding, this same value is stored, and is
+subtracted from the address of the dummy header to yield the address of the
+actual block header.</p></li>
+<li><p>size - the size of the data block, including the header itself.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="memory-allocation">
+<h4><span class="section-number">3.4.3.2. </span>Memory Allocation</h4>
+<p>On EAL initialization, all preallocated memory segments are setup as part of the
+malloc heap. This setup involves placing an <a class="reference internal" href="#malloc-elem"><span class="std std-ref">element header</span></a>
+with <code class="docutils literal notranslate"><span class="pre">FREE</span></code> at the start of each virtually contiguous segment of memory.
+The <code class="docutils literal notranslate"><span class="pre">FREE</span></code> element is then added to the <code class="docutils literal notranslate"><span class="pre">free_list</span></code> for the malloc heap.</p>
+<p>This setup also happens whenever memory is allocated at runtime (if supported),
+in which case newly allocated pages are also added to the heap, merging with any
+adjacent free segments if there are any.</p>
+<p>When an application makes a call to a malloc-like function, the malloc function
+will first index the <code class="docutils literal notranslate"><span class="pre">lcore_config</span></code> structure for the calling thread, and
+determine the NUMA node of that thread.
+The NUMA node is used to index the array of <code class="docutils literal notranslate"><span class="pre">malloc_heap</span></code> structures which is
+passed as a parameter to the <code class="docutils literal notranslate"><span class="pre">heap_alloc()</span></code> function, along with the
+requested size, type, alignment and boundary parameters.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">heap_alloc()</span></code> function will scan the free_list of the heap, and attempt
+to find a free block suitable for storing data of the requested size, with the
+requested alignment and boundary constraints.</p>
+<p>When a suitable free element has been identified, the pointer to be returned
+to the user is calculated.
+The cache-line of memory immediately preceding this pointer is filled with a
+struct malloc_elem header.
+Because of alignment and boundary constraints, there could be free space at
+the start and/or end of the element, resulting in the following behavior:</p>
+<ol class="arabic simple">
+<li><p>Check for trailing space.
+If the trailing space is big enough, i.e. &gt; 128 bytes, then the free element
+is split.
+If it is not, then we just ignore it (wasted space).</p></li>
+<li><p>Check for space at the start of the element.
+If the space at the start is small, i.e. &lt;=128 bytes, then a pad header is
+used, and the remaining space is wasted.
+If, however, the remaining space is greater, then the free element is split.</p></li>
+</ol>
+<p>The advantage of allocating the memory from the end of the existing element is
+that no adjustment of the free list needs to take place - the existing element
+on the free list just has its size value adjusted, and the next/previous elements
+have their “prev”/”next” pointers redirected to the newly created element.</p>
+<p>In case when there is not enough memory in the heap to satisfy allocation
+request, EAL will attempt to allocate more memory from the system (if supported)
+and, following successful allocation, will retry reserving the memory again. In
+a multiprocessing scenario, all primary and secondary processes will synchronize
+their memory maps to ensure that any valid pointer to DPDK memory is guaranteed
+to be valid at all times in all currently running processes.</p>
+<p>Failure to synchronize memory maps in one of the processes will cause allocation
+to fail, even though some of the processes may have allocated the memory
+successfully. The memory is not added to the malloc heap unless primary process
+has ensured that all other processes have mapped this memory successfully.</p>
+<p>Any successful allocation event will trigger a callback, for which user
+applications and other DPDK subsystems can register. Additionally, validation
+callbacks will be triggered before allocation if the newly allocated memory will
+exceed threshold set by the user, giving a chance to allow or deny allocation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Any allocation of new pages has to go through primary process. If the
+primary process is not active, no memory will be allocated even if it was
+theoretically possible to do so. This is because primary’s process map acts
+as an authority on what should or should not be mapped, while each secondary
+process has its own, local memory map. Secondary processes do not update the
+shared memory map, they only copy its contents to their local memory map.</p>
+</div>
+</div>
+<div class="section" id="freeing-memory">
+<h4><span class="section-number">3.4.3.3. </span>Freeing Memory</h4>
+<p>To free an area of memory, the pointer to the start of the data area is passed
+to the free function.
+The size of the <code class="docutils literal notranslate"><span class="pre">malloc_elem</span></code> structure is subtracted from this pointer to get
+the element header for the block.
+If this header is of type <code class="docutils literal notranslate"><span class="pre">PAD</span></code> then the pad length is further subtracted from
+the pointer to get the proper element header for the entire block.</p>
+<p>From this element header, we get pointers to the heap from which the block was
+allocated and to where it must be freed, as well as the pointer to the previous
+and next elements. These next and previous elements are then checked to see if
+they are also <code class="docutils literal notranslate"><span class="pre">FREE</span></code> and are immediately adjacent to the current one, and if
+so, they are merged with the current element. This means that we can never have
+two <code class="docutils literal notranslate"><span class="pre">FREE</span></code> memory blocks adjacent to one another, as they are always merged
+into a single block.</p>
+<p>If deallocating pages at runtime is supported, and the free element encloses
+one or more pages, those pages can be deallocated and be removed from the heap.
+If DPDK was started with command-line parameters for preallocating memory
+(<code class="docutils literal notranslate"><span class="pre">-m</span></code> or <code class="docutils literal notranslate"><span class="pre">--socket-mem</span></code>), then those pages that were allocated at startup
+will not be deallocated.</p>
+<p>Any successful deallocation event will trigger a callback, for which user
+applications and other DPDK subsystems can register.</p>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="service_cores.html" class="btn btn-neutral float-right" title="4. Service Cores" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="2. Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

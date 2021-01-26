@@ -1,0 +1,477 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>34. VMDq Forwarding Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="35. Vhost Sample Application" href="vhost.html" />
+    <link rel="prev" title="33. VMDQ and DCB Forwarding Sample Application" href="vmdq_dcb_forwarding.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">34. VMDq Forwarding Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">34.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">34.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">34.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">34.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#initialization">34.4.1. Initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#statistics-display">34.4.2. Statistics Display</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">34. </span>VMDq Forwarding Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/vmdq_forwarding.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="vmdq-forwarding-sample-application">
+<h1><span class="section-number">34. </span>VMDq Forwarding Sample Application</h1>
+<p>The VMDq Forwarding sample application is a simple example of packet processing using the DPDK.
+The application performs L2 forwarding using VMDq to divide the incoming traffic into queues.
+The traffic splitting is performed in hardware by the VMDq feature of the Intel® 82599 and X710/XL710 Ethernet Controllers.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">34.1. </span>Overview</h2>
+<p>This sample application can be used as a starting point for developing a new application that is based on the DPDK and
+uses VMDq for traffic partitioning.</p>
+<p>VMDq filters split the incoming packets up into different “pools” - each with its own set of RX queues - based upon
+the MAC address and VLAN ID within the VLAN tag of the packet.</p>
+<p>All traffic is read from a single incoming port and output on another port, without any processing being performed.
+With Intel® 82599 NIC, for example, the traffic is split into 128 queues on input, where each thread of the application reads from
+multiple queues. When run with 8 threads, that is, with the -c FF option, each thread receives and forwards packets from 16 queues.</p>
+<p>As supplied, the sample application configures the VMDq feature to have 32 pools with 4 queues each.
+The Intel® 82599 10 Gigabit Ethernet Controller NIC also supports the splitting of traffic into 16 pools of 2 queues.
+While the Intel® X710 or XL710 Ethernet Controller NICs support many configurations of VMDq pools of 4 or 8 queues each.
+And queues numbers for each VMDq pool can be changed by setting RTE_LIBRTE_I40E_QUEUE_NUM_PER_VM
+in config/rte_config.h file.
+The nb-pools and enable-rss parameters can be passed on the command line, after the EAL parameters:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-vmdq [EAL options] -- -p PORTMASK --nb-pools NP --enable-rss</span>
+</pre></div>
+</div>
+<p>where, NP can be 8, 16 or 32, rss is disabled by default.</p>
+<p>In Linux* user space, the application can display statistics with the number of packets received on each queue.
+To have the application display the statistics, send a SIGHUP signal to the running application process.</p>
+<p>The VMDq Forwarding sample application is in many ways simpler than the L2 Forwarding application
+(see <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>)
+as it performs unidirectional L2 forwarding of packets from one port to a second port.
+No command-line options are taken by this application apart from the standard EAL command-line options.</p>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">34.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">vmdq</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">34.3. </span>Running the Application</h2>
+<p>To run the example in a Linux environment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@target:~$</span> ./&lt;build_dir&gt;/examples/dpdk-vmdq -l <span class="m">0</span>-3 -n <span class="m">4</span> -- -p 0x3 --nb-pools <span class="m">16</span>
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications and
+the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">34.4. </span>Explanation</h2>
+<p>The following sections provide some explanation of the code.</p>
+<div class="section" id="initialization">
+<h3><span class="section-number">34.4.1. </span>Initialization</h3>
+<p>The EAL, driver and PCI configuration is performed largely as in the L2 Forwarding sample application,
+as is the creation of the mbuf pool.
+See <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a>.
+Where this example application differs is in the configuration of the NIC port for RX.</p>
+<p>The VMDq hardware feature is configured at port initialization time by setting the appropriate values in the
+rte_eth_conf structure passed to the rte_eth_dev_configure() API.
+Initially in the application,
+a default structure is provided for VMDq configuration to be filled in later by the application.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* empty vmdq configuration structure. Filled in programmatically */</span>
+<span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_eth_conf</span> <span class="n">vmdq_conf_default</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">rxmode</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">mq_mode</span>        <span class="o">=</span> <span class="n">ETH_MQ_RX_VMDQ_ONLY</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">split_hdr_size</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">},</span>
+
+    <span class="p">.</span><span class="n">txmode</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">mq_mode</span> <span class="o">=</span> <span class="n">ETH_MQ_TX_NONE</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">.</span><span class="n">rx_adv_conf</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="cm">/*</span>
+<span class="cm">        * should be overridden separately in code with</span>
+<span class="cm">        * appropriate values</span>
+<span class="cm">        */</span>
+        <span class="p">.</span><span class="n">vmdq_rx_conf</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="p">.</span><span class="n">nb_queue_pools</span> <span class="o">=</span> <span class="n">ETH_8_POOLS</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">enable_default_pool</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">default_pool</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">nb_pool_maps</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">pool_map</span> <span class="o">=</span> <span class="p">{{</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">},},</span>
+        <span class="p">},</span>
+    <span class="p">},</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The get_eth_conf() function fills in an rte_eth_conf structure with the appropriate values,
+based on the global vlan_tags array.
+For the VLAN IDs, each one can be allocated to possibly multiple pools of queues.
+For destination MAC, each VMDq pool will be assigned with a MAC address. In this sample, each VMDq pool
+is assigned to the MAC like 52:54:00:12:&lt;port_id&gt;:&lt;pool_id&gt;, that is,
+the MAC of VMDq pool 2 on port 1 is 52:54:00:12:01:02.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="kt">uint16_t</span> <span class="n">vlan_tags</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="p">,</span>  <span class="mi">2</span><span class="p">,</span>  <span class="mi">3</span><span class="p">,</span>  <span class="mi">4</span><span class="p">,</span>  <span class="mi">5</span><span class="p">,</span>  <span class="mi">6</span><span class="p">,</span>  <span class="mi">7</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">,</span>  <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span>  <span class="mi">12</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span>
+    <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span>
+    <span class="mi">24</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span>
+    <span class="mi">32</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span>
+    <span class="mi">40</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">47</span><span class="p">,</span>
+    <span class="mi">48</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">53</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span>
+    <span class="mi">56</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">62</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span>
+<span class="p">};</span>
+
+<span class="cm">/* pool mac addr template, pool mac addr is like: 52 54 00 12 port# pool# */</span>
+<span class="k">static</span> <span class="k">struct</span> <span class="n">rte_ether_addr</span> <span class="n">pool_addr_template</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">.</span><span class="n">addr_bytes</span> <span class="o">=</span> <span class="p">{</span><span class="mh">0x52</span><span class="p">,</span> <span class="mh">0x54</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x12</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">}</span>
+<span class="p">};</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Builds up the correct configuration for vmdq based on the vlan tags array</span>
+<span class="cm"> * given above, and determine the queue number and pool map number according to</span>
+<span class="cm"> * valid pool number</span>
+<span class="cm"> */</span>
+<span class="k">static</span> <span class="kr">inline</span> <span class="kt">int</span>
+<span class="nf">get_eth_conf</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_eth_conf</span> <span class="o">*</span><span class="n">eth_conf</span><span class="p">,</span> <span class="kt">uint32_t</span> <span class="n">num_pools</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_eth_vmdq_rx_conf</span> <span class="n">conf</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="n">conf</span><span class="p">.</span><span class="n">nb_queue_pools</span> <span class="o">=</span> <span class="p">(</span><span class="k">enum</span> <span class="n">rte_eth_nb_pools</span><span class="p">)</span><span class="n">num_pools</span><span class="p">;</span>
+    <span class="n">conf</span><span class="p">.</span><span class="n">nb_pool_maps</span> <span class="o">=</span> <span class="n">num_pools</span><span class="p">;</span>
+    <span class="n">conf</span><span class="p">.</span><span class="n">enable_default_pool</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">conf</span><span class="p">.</span><span class="n">default_pool</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="cm">/* set explicit value, even if not used */</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">conf</span><span class="p">.</span><span class="n">nb_pool_maps</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">conf</span><span class="p">.</span><span class="n">pool_map</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">vlan_id</span> <span class="o">=</span> <span class="n">vlan_tags</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">conf</span><span class="p">.</span><span class="n">pool_map</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">pools</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1UL</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="n">num_pools</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="p">(</span><span class="kt">void</span><span class="p">)(</span><span class="n">rte_memcpy</span><span class="p">(</span><span class="n">eth_conf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">vmdq_conf_default</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="o">*</span><span class="n">eth_conf</span><span class="p">)));</span>
+    <span class="p">(</span><span class="kt">void</span><span class="p">)(</span><span class="n">rte_memcpy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">eth_conf</span><span class="o">-&gt;</span><span class="n">rx_adv_conf</span><span class="p">.</span><span class="n">vmdq_rx_conf</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">conf</span><span class="p">,</span>
+        <span class="k">sizeof</span><span class="p">(</span><span class="n">eth_conf</span><span class="o">-&gt;</span><span class="n">rx_adv_conf</span><span class="p">.</span><span class="n">vmdq_rx_conf</span><span class="p">)));</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">......</span>
+
+<span class="cm">/*</span>
+<span class="cm"> * Set mac for each pool.</span>
+<span class="cm"> * There is no default mac for the pools in i40.</span>
+<span class="cm"> * Removes this after i40e fixes this issue.</span>
+<span class="cm"> */</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">q</span> <span class="o">&lt;</span> <span class="n">num_pools</span><span class="p">;</span> <span class="n">q</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_ether_addr</span> <span class="n">mac</span><span class="p">;</span>
+    <span class="n">mac</span> <span class="o">=</span> <span class="n">pool_addr_template</span><span class="p">;</span>
+    <span class="n">mac</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">port</span><span class="p">;</span>
+    <span class="n">mac</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Port %u vmdq pool %u set mac %02x:%02x:%02x:%02x:%02x:%02x</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+            <span class="n">port</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span>
+            <span class="n">mac</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">mac</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="n">mac</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">mac</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+            <span class="n">mac</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">mac</span><span class="p">.</span><span class="n">addr_bytes</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+    <span class="n">retval</span> <span class="o">=</span> <span class="n">rte_eth_dev_mac_addr_add</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mac</span><span class="p">,</span>
+                    <span class="n">q</span> <span class="o">+</span> <span class="n">vmdq_pool_base</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">retval</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">&quot;mac addr add failed at pool %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">q</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Once the network port has been initialized using the correct VMDq values,
+the initialization of the port’s RX and TX hardware rings is performed similarly to that
+in the L2 Forwarding sample application.
+See <a class="reference internal" href="l2_forward_real_virtual.html"><span class="doc">L2 Forwarding Sample Application (in Real and Virtualized Environments)</span></a> for more information.</p>
+</div>
+<div class="section" id="statistics-display">
+<h3><span class="section-number">34.4.2. </span>Statistics Display</h3>
+<p>When run in a Linux environment,
+the VMDq Forwarding sample application can display statistics showing the number of packets read from each RX queue.
+This is provided by way of a signal handler for the SIGHUP signal,
+which simply prints to standard output the packet counts in grid form.
+Each row of the output is a single pool with the columns being the queue number within that pool.</p>
+<p>To generate the statistics output, use the following command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">user@host$</span> sudo killall -HUP vmdq_app
+</pre></div>
+</div>
+<p>Please note that the statistics output will appear on the terminal where the vmdq_app is running,
+rather than the terminal from which the HUP signal was sent.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="vhost.html" class="btn btn-neutral float-right" title="35. Vhost Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="vmdq_dcb_forwarding.html" class="btn btn-neutral float-left" title="33. VMDQ and DCB Forwarding Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

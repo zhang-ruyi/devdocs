@@ -1,0 +1,339 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>9. DPDK pdump Library and pdump Tool &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="10. DPDK Telemetry User Guide" href="telemetry.html" />
+    <link rel="prev" title="8. Virtio_user as Exceptional Path" href="virtio_user_as_exceptional_path.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTo Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lm_bond_virtio_sriov.html">1. Live Migration of VM with SR-IOV VF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lm_virtio_vhost_user.html">2. Live Migration of VM with Virtio on host running vhost_user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_bifurcation.html">3. Flow Bifurcation How-to Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">4. Generic flow API - examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pvp_reference_benchmark.html">5. PVP reference benchmark setup using testpmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vfd.html">6. VF daemon (VFd)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio_user_for_container_networking.html">7. Virtio_user for Container Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio_user_as_exceptional_path.html">8. Virtio_user as Exceptional Path</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. DPDK pdump Library and pdump Tool</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#introduction">9.1. Introduction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#test-environment">9.2. Test Environment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">9.3. Running the Application</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry.html">10. DPDK Telemetry User Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="debug_troubleshoot.html">11. Debug &amp; Troubleshoot guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openwrt.html">12. Enable DPDK on OpenWrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avx512.html">13. Using AVX-512 with DPDK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">HowTo Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">9. </span>DPDK pdump Library and pdump Tool</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/howto/packet_capture_framework.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-pdump-library-and-pdump-tool">
+<h1><span class="section-number">9. </span>DPDK pdump Library and pdump Tool</h1>
+<p>This document describes how the Data Plane Development Kit (DPDK) Packet
+Capture Framework is used for capturing packets on DPDK ports. It is intended
+for users of DPDK who want to know more about the Packet Capture feature and
+for those who want to monitor traffic on DPDK-controlled devices.</p>
+<p>The DPDK packet capture framework was introduced in DPDK v16.07. The DPDK
+packet capture framework consists of the DPDK pdump library and DPDK pdump
+tool.</p>
+<div class="section" id="introduction">
+<h2><span class="section-number">9.1. </span>Introduction</h2>
+<p>The <a class="reference internal" href="../prog_guide/pdump_lib.html#pdump-library"><span class="std std-ref">librte_pdump</span></a> library provides the APIs required to
+allow users to initialize the packet capture framework and to enable or
+disable packet capture. The library works on a multi process communication model and its
+usage is recommended for debugging purposes.</p>
+<p>The <a class="reference internal" href="../tools/pdump.html#pdump-tool"><span class="std std-ref">dpdk-pdump</span></a> tool is developed based on the
+<code class="docutils literal notranslate"><span class="pre">librte_pdump</span></code> library.  It runs as a DPDK secondary process and is capable
+of enabling or disabling packet capture on DPDK ports. The <code class="docutils literal notranslate"><span class="pre">dpdk-pdump</span></code> tool
+provides command-line options with which users can request enabling or
+disabling of the packet capture on DPDK ports.</p>
+<p>The application which initializes the packet capture framework will be a primary process
+and the application that enables or disables the packet capture will
+be a secondary process. The primary process sends the Rx and Tx packets from the DPDK ports
+to the secondary process.</p>
+<p>In DPDK the <code class="docutils literal notranslate"><span class="pre">testpmd</span></code> application can be used to initialize the packet
+capture framework and acts as a server, and the <code class="docutils literal notranslate"><span class="pre">dpdk-pdump</span></code> tool acts as a
+client. To view Rx or Tx packets of <code class="docutils literal notranslate"><span class="pre">testpmd</span></code>, the application should be
+launched first, and then the <code class="docutils literal notranslate"><span class="pre">dpdk-pdump</span></code> tool. Packets from <code class="docutils literal notranslate"><span class="pre">testpmd</span></code>
+will be sent to the tool, which then sends them on to the Pcap PMD device and
+that device writes them to the Pcap file or to an external interface depending
+on the command-line option used.</p>
+<p>Some things to note:</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dpdk-pdump</span></code> tool can only be used in conjunction with a primary
+application which has the packet capture framework initialized already. In
+dpdk, only <code class="docutils literal notranslate"><span class="pre">testpmd</span></code> is modified to initialize packet capture framework,
+other applications remain untouched. So, if the <code class="docutils literal notranslate"><span class="pre">dpdk-pdump</span></code> tool has to
+be used with any application other than the testpmd, the user needs to
+explicitly modify that application to call the packet capture framework
+initialization code. Refer to the <code class="docutils literal notranslate"><span class="pre">app/test-pmd/testpmd.c</span></code> code and look
+for <code class="docutils literal notranslate"><span class="pre">pdump</span></code> keyword to see how this is done.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">dpdk-pdump</span></code> tool depends on the libpcap based PMD.</p></li>
+</ul>
+</div>
+<div class="section" id="test-environment">
+<h2><span class="section-number">9.2. </span>Test Environment</h2>
+<p>The overview of using the Packet Capture Framework and the <code class="docutils literal notranslate"><span class="pre">dpdk-pdump</span></code> tool
+for packet capturing on the DPDK port in
+<a class="reference internal" href="#figure-packet-capture-framework"><span class="std std-numref">Fig. 9.4</span></a>.</p>
+<div class="figure align-default" id="id1">
+<span id="figure-packet-capture-framework"></span><img alt="../_images/packet_capture_framework.svg" src="../_images/packet_capture_framework.svg" /><p class="caption"><span class="caption-number">Fig. 9.4 </span><span class="caption-text">Packet capturing on a DPDK port using the dpdk-pdump tool.</span></p>
+</div>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">9.3. </span>Running the Application</h2>
+<p>The following steps demonstrate how to run the <code class="docutils literal notranslate"><span class="pre">dpdk-pdump</span></code> tool to capture
+Rx side packets on dpdk_port0 in <a class="reference internal" href="#figure-packet-capture-framework"><span class="std std-numref">Fig. 9.4</span></a> and
+inspect them using <code class="docutils literal notranslate"><span class="pre">tcpdump</span></code>.</p>
+<ol class="arabic">
+<li><p>Launch testpmd as the primary application:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo &lt;build_dir&gt;/app/dpdk-testpmd -c 0xf0 -n 4 -- -i --port-topology=chained
+</pre></div>
+</div>
+</li>
+<li><p>Launch the pdump tool as follows:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>sudo &lt;build_dir&gt;/app/dpdk-pdump -- \
+     --pdump &#39;port=0,queue=*,rx-dev=/tmp/capture.pcap&#39;
+</pre></div>
+</div>
+</li>
+<li><p>Send traffic to dpdk_port0 from traffic generator.
+Inspect packets captured in the file capture.pcap using a tool
+that can interpret Pcap files, for example tcpdump:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$tcpdump -nr /tmp/capture.pcap
+reading from file /tmp/capture.pcap, link-type EN10MB (Ethernet)
+11:11:36.891404 IP 4.4.4.4.whois++ &gt; 3.3.3.3.whois++: UDP, length 18
+11:11:36.891442 IP 4.4.4.4.whois++ &gt; 3.3.3.3.whois++: UDP, length 18
+11:11:36.891445 IP 4.4.4.4.whois++ &gt; 3.3.3.3.whois++: UDP, length 18
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="telemetry.html" class="btn btn-neutral float-right" title="10. DPDK Telemetry User Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="virtio_user_as_exceptional_path.html" class="btn btn-neutral float-left" title="8. Virtio_user as Exceptional Path" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

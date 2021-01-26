@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>6. Intel(R) ACC100 5G/4G FEC Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Crypto Device Drivers" href="../cryptodevs/index.html" />
+    <link rel="prev" title="5. Intel(R) FPGA 5GNR FEC Poll Mode Driver" href="fpga_5gnr_fec.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Baseband Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Baseband Device Supported Functionality Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">2. BBDEV null Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="turbo_sw.html">3. SW Turbo Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fpga_lte_fec.html">4. Intel(R) FPGA LTE FEC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fpga_5gnr_fec.html">5. Intel(R) FPGA 5GNR FEC Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. Intel(R) ACC100 5G/4G FEC Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">6.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">6.2. Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">6.3. Initialization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#bind-pf-uio-driver-s">6.3.1. Bind PF UIO driver(s)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#enable-virtual-functions">6.3.2. Enable Virtual Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#configure-the-vfs-through-pf">6.3.3. Configure the VFs through PF</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#test-application">6.4. Test Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#test-vectors">6.4.1. Test Vectors</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#alternate-baseband-device-configuration-tool">6.4.2. Alternate Baseband Device configuration tool</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Baseband Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">6. </span>Intel(R) ACC100 5G/4G FEC Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/bbdevs/acc100.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="intel-r-acc100-5g-4g-fec-poll-mode-driver">
+<h1><span class="section-number">6. </span>Intel(R) ACC100 5G/4G FEC Poll Mode Driver</h1>
+<p>The BBDEV ACC100 5G/4G FEC poll mode driver (PMD) supports an
+implementation of a VRAN FEC wireless acceleration function.
+This device is also known as Mount Bryce.</p>
+<div class="section" id="features">
+<h2><span class="section-number">6.1. </span>Features</h2>
+<p>ACC100 5G/4G FEC PMD supports the following features:</p>
+<ul class="simple">
+<li><p>LDPC Encode in the DL (5GNR)</p></li>
+<li><p>LDPC Decode in the UL (5GNR)</p></li>
+<li><p>Turbo Encode in the DL (4G)</p></li>
+<li><p>Turbo Decode in the UL (4G)</p></li>
+<li><p>16 VFs per PF (physical device)</p></li>
+<li><p>Maximum of 128 queues per VF</p></li>
+<li><p>PCIe Gen-3 x16 Interface</p></li>
+<li><p>MSI</p></li>
+<li><p>SR-IOV</p></li>
+</ul>
+<p>ACC100 5G/4G FEC PMD supports the following BBDEV capabilities:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>For the LDPC encode operation:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_CRC_24B_ATTACH</span></code> :  set to attach CRC24B to CB(s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_RATE_MATCH</span></code> :  if set then do not do Rate Match bypass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_INTERLEAVER_BYPASS</span></code> : if set then bypass interleaver</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>For the LDPC decode operation:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_CRC_TYPE_24B_CHECK</span></code> :  check CRC24B from CB(s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_ITERATION_STOP_ENABLE</span></code> :  disable early termination</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_CRC_TYPE_24B_DROP</span></code> :  drops CRC24B bits appended while decoding</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_HQ_COMBINE_IN_ENABLE</span></code> :  provides an input for HARQ combining</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_HQ_COMBINE_OUT_ENABLE</span></code> :  provides an input for HARQ combining</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_INTERNAL_HARQ_MEMORY_IN_ENABLE</span></code> :  HARQ memory input is internal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_INTERNAL_HARQ_MEMORY_OUT_ENABLE</span></code> :  HARQ memory output is internal</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_INTERNAL_HARQ_MEMORY_LOOPBACK</span></code> :  loopback data to/from HARQ memory</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_INTERNAL_HARQ_MEMORY_FILLERS</span></code> :  HARQ memory includes the fillers bits</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_DEC_SCATTER_GATHER</span></code> :  supports scatter-gather for input/output data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_HARQ_6BIT_COMPRESSION</span></code> :  supports compression of the HARQ input/output</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_LDPC_LLR_COMPRESSION</span></code> :  supports LLR input compression</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>For the turbo encode operation:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_CRC_24B_ATTACH</span></code> :  set to attach CRC24B to CB(s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_RATE_MATCH</span></code> :  if set then do not do Rate Match bypass</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_ENC_INTERRUPTS</span></code> :  set for encoder dequeue interrupts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_RV_INDEX_BYPASS</span></code> :  set to bypass RV index</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_ENC_SCATTER_GATHER</span></code> :  supports scatter-gather for input/output data</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>For the turbo decode operation:</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_CRC_TYPE_24B</span></code> :  check CRC24B from CB(s)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_SUBBLOCK_DEINTERLEAVE</span></code> :  perform subblock de-interleave</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_DEC_INTERRUPTS</span></code> :  set for decoder dequeue interrupts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_NEG_LLR_1_BIT_IN</span></code> :  set if negative LLR encoder i/p is supported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_POS_LLR_1_BIT_IN</span></code> :  set if positive LLR encoder i/p is supported</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_DEC_TB_CRC_24B_KEEP</span></code> :  keep CRC24B bits appended while decoding</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_EARLY_TERMINATION</span></code> :  set early termination feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_DEC_SCATTER_GATHER</span></code> :  supports scatter-gather for input/output data</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_BBDEV_TURBO_HALF_ITERATION_EVEN</span></code> :  set half iteration granularity</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2><span class="section-number">6.2. </span>Installation</h2>
+<p>Section 3 of the DPDK manual provides instructions on installing and compiling DPDK.</p>
+<p>DPDK requires hugepages to be configured as detailed in section 2 of the DPDK manual.
+The bbdev test application has been tested with a configuration 40 x 1GB hugepages. The
+hugepage configuration of a server may be examined using:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">grep Huge* /proc/meminfo</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initialization">
+<h2><span class="section-number">6.3. </span>Initialization</h2>
+<p>When the device first powers up, its PCI Physical Functions (PF) can be listed through this command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">sudo lspci -vd8086:0d5c</span>
+</pre></div>
+</div>
+<p>The physical and virtual functions are compatible with Linux UIO drivers:
+<code class="docutils literal notranslate"><span class="pre">vfio</span></code> and <code class="docutils literal notranslate"><span class="pre">igb_uio</span></code>. However, in order to work the ACC100 5G/4G
+FEC device first needs to be bound to one of these linux drivers through DPDK.</p>
+<div class="section" id="bind-pf-uio-driver-s">
+<h3><span class="section-number">6.3.1. </span>Bind PF UIO driver(s)</h3>
+<p>Install the DPDK igb_uio driver, bind it with the PF PCI device ID and use
+<code class="docutils literal notranslate"><span class="pre">lspci</span></code> to confirm the PF device is under use by <code class="docutils literal notranslate"><span class="pre">igb_uio</span></code> DPDK UIO driver.</p>
+<p>The igb_uio driver may be bound to the PF PCI device using one of two methods:</p>
+<p>1. PCI functions (physical or virtual, depending on the use case) can be bound to
+the UIO driver by repeating this command for every function.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd &lt;dpdk-top-level-directory&gt;</span>
+<span class="go">insmod ./build/kmod/igb_uio.ko</span>
+<span class="go">echo &quot;8086 0d5c&quot; &gt; /sys/bus/pci/drivers/igb_uio/new_id</span>
+<span class="go">lspci -vd8086:0d5c</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Another way to bind PF with DPDK UIO driver is by using the <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> tool</p></li>
+</ol>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd &lt;dpdk-top-level-directory&gt;</span>
+<span class="go">./usertools/dpdk-devbind.py -b igb_uio 0000:06:00.0</span>
+</pre></div>
+</div>
+<p>where the PCI device ID (example: 0000:06:00.0) is obtained using lspci -vd8086:0d5c</p>
+<p>In a similar way the ACC100 5G/4G FEC PF may be bound with vfio-pci as any PCIe device.</p>
+</div>
+<div class="section" id="enable-virtual-functions">
+<h3><span class="section-number">6.3.2. </span>Enable Virtual Functions</h3>
+<p>Now, it should be visible in the printouts that PCI PF is under igb_uio control
+“<code class="docutils literal notranslate"><span class="pre">Kernel</span> <span class="pre">driver</span> <span class="pre">in</span> <span class="pre">use:</span> <span class="pre">igb_uio</span></code>”</p>
+<p>To show the number of available VFs on the device, read <code class="docutils literal notranslate"><span class="pre">sriov_totalvfs</span></code> file..</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cat /sys/bus/pci/devices/0000\:&lt;b&gt;\:&lt;d&gt;.&lt;f&gt;/sriov_totalvfs</span>
+
+<span class="go">where 0000\:&lt;b&gt;\:&lt;d&gt;.&lt;f&gt; is the PCI device ID</span>
+</pre></div>
+</div>
+<p>To enable VFs via igb_uio, echo the number of virtual functions intended to
+enable to <code class="docutils literal notranslate"><span class="pre">max_vfs</span></code> file..</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo &lt;num-of-vfs&gt; &gt; /sys/bus/pci/devices/0000\:&lt;b&gt;\:&lt;d&gt;.&lt;f&gt;/max_vfs</span>
+</pre></div>
+</div>
+<p>Afterwards, all VFs must be bound to appropriate UIO drivers as required, same
+way it was done with the physical function previously.</p>
+<p>Enabling SR-IOV via vfio driver is pretty much the same, except that the file
+name is different:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo &lt;num-of-vfs&gt; &gt; /sys/bus/pci/devices/0000\:&lt;b&gt;\:&lt;d&gt;.&lt;f&gt;/sriov_numvfs</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="configure-the-vfs-through-pf">
+<h3><span class="section-number">6.3.3. </span>Configure the VFs through PF</h3>
+<p>The PCI virtual functions must be configured before working or getting assigned
+to VMs/Containers. The configuration involves allocating the number of hardware
+queues, priorities, load balance, bandwidth and other settings necessary for the
+device to perform FEC functions.</p>
+<p>This configuration needs to be executed at least once after reboot or PCI FLR and can
+be achieved by using the function <code class="docutils literal notranslate"><span class="pre">acc100_configure()</span></code>, which sets up the
+parameters defined in <code class="docutils literal notranslate"><span class="pre">acc100_conf</span></code> structure.</p>
+</div>
+</div>
+<div class="section" id="test-application">
+<h2><span class="section-number">6.4. </span>Test Application</h2>
+<p>BBDEV provides a test application, <code class="docutils literal notranslate"><span class="pre">test-bbdev.py</span></code> and range of test data for testing
+the functionality of ACC100 5G/4G FEC encode and decode, depending on the device’s
+capabilities. The test application is located under app-&gt;test-bbdev folder and has the
+following options:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">&quot;-p&quot;, &quot;--testapp-path&quot;: specifies path to the bbdev test app.</span>
+<span class="go">&quot;-e&quot;, &quot;--eal-params&quot;  : EAL arguments which are passed to the test app.</span>
+<span class="go">&quot;-t&quot;, &quot;--timeout&quot;     : Timeout in seconds (default=300).</span>
+<span class="go">&quot;-c&quot;, &quot;--test-cases&quot;  : Defines test cases to run. Run all if not specified.</span>
+<span class="go">&quot;-v&quot;, &quot;--test-vector&quot; : Test vector path (default=dpdk_path+/app/test-bbdev/test_vectors/bbdev_null.data).</span>
+<span class="go">&quot;-n&quot;, &quot;--num-ops&quot;     : Number of operations to process on device (default=32).</span>
+<span class="go">&quot;-b&quot;, &quot;--burst-size&quot;  : Operations enqueue/dequeue burst size (default=32).</span>
+<span class="go">&quot;-s&quot;, &quot;--snr&quot;         : SNR in dB used when generating LLRs for bler tests.</span>
+<span class="go">&quot;-s&quot;, &quot;--iter_max&quot;    : Number of iterations for LDPC decoder.</span>
+<span class="go">&quot;-l&quot;, &quot;--num-lcores&quot;  : Number of lcores to run (default=16).</span>
+<span class="go">&quot;-i&quot;, &quot;--init-device&quot; : Initialise PF device with default values.</span>
+</pre></div>
+</div>
+<p>To execute the test application tool using simple decode or encode data,
+type one of the following:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./test-bbdev.py -c validation -n 64 -b 1 -v ./ldpc_dec_default.data</span>
+<span class="go">./test-bbdev.py -c validation -n 64 -b 1 -v ./ldpc_enc_default.data</span>
+</pre></div>
+</div>
+<p>The test application <code class="docutils literal notranslate"><span class="pre">test-bbdev.py</span></code>, supports the ability to configure the PF device with
+a default set of values, if the “-i” or “- -init-device” option is included. The default values
+are defined in test_bbdev_perf.c.</p>
+<div class="section" id="test-vectors">
+<h3><span class="section-number">6.4.1. </span>Test Vectors</h3>
+<p>In addition to the simple LDPC decoder and LDPC encoder tests, bbdev also provides
+a range of additional tests under the test_vectors folder, which may be useful. The results
+of these tests will depend on the ACC100 5G/4G FEC capabilities which may cause some
+testcases to be skipped, but no failure should be reported.</p>
+</div>
+<div class="section" id="alternate-baseband-device-configuration-tool">
+<h3><span class="section-number">6.4.2. </span>Alternate Baseband Device configuration tool</h3>
+<p>On top of the embedded configuration feature supported in test-bbdev using “- -init-device”
+option mentioned above, there is also a tool available to perform that device configuration
+using a companion application.
+The <code class="docutils literal notranslate"><span class="pre">pf_bb_config</span></code> application notably enables then to run bbdev-test from the VF
+and not only limited to the PF as captured above.</p>
+<p>See for more details: <a class="reference external" href="https://github.com/intel/pf-bb-config">https://github.com/intel/pf-bb-config</a></p>
+<p>Specifically for the BBDEV ACC100 PMD, the command below can be used:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./pf_bb_config ACC100 -c acc100/acc100_config_vf_5g.cfg</span>
+<span class="go">./test-bbdev.py -e=&quot;-c 0xff0 -a${VF_PCI_ADDR}&quot; -c validation -n 64 -b 32 -l 1 -v ./ldpc_dec_default.data</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../cryptodevs/index.html" class="btn btn-neutral float-right" title="Crypto Device Drivers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="fpga_5gnr_fec.html" class="btn btn-neutral float-left" title="5. Intel(R) FPGA 5GNR FEC Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

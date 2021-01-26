@@ -1,0 +1,703 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>26. Server-Node EFD Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="27. Service Cores Sample Application" href="service_cores.html" />
+    <link rel="prev" title="25. Link Status Interrupt Sample Application" href="link_status_intr.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">26. Server-Node EFD Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">26.1. Overview</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#front-end-server">26.1.1. Front-end Server</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#backend-worker-nodes">26.1.2. Backend Worker Nodes</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">26.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">26.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">26.4. Explanation</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">26. </span>Server-Node EFD Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/server_node_efd.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="server-node-efd-sample-application">
+<h1><span class="section-number">26. </span>Server-Node EFD Sample Application</h1>
+<p>This sample application demonstrates the use of EFD library as a flow-level
+load balancer, for more information about the EFD Library please refer to the
+DPDK programmer’s guide.</p>
+<p>This sample application is a variant of the
+<a class="reference internal" href="multi_process.html#multi-process-app"><span class="std std-ref">client-server sample application</span></a>
+where a specific target node is specified for every and each flow
+(not in a round-robin fashion as the original load balancing sample application).</p>
+<div class="section" id="overview">
+<h2><span class="section-number">26.1. </span>Overview</h2>
+<p>The architecture of the EFD flow-based load balancer sample application is
+presented in the following figure.</p>
+<div class="figure align-default" id="id1">
+<span id="figure-efd-sample-app-overview"></span><img alt="../_images/server_node_efd.svg" src="../_images/server_node_efd.svg" /><p class="caption"><span class="caption-number">Fig. 26.1 </span><span class="caption-text">Using EFD as a Flow-Level Load Balancer</span></p>
+</div>
+<p>As shown in <a class="reference internal" href="#figure-efd-sample-app-overview"><span class="std std-numref">Fig. 26.1</span></a>,
+the sample application consists of a front-end node (server)
+using the EFD library to create a load-balancing table for flows,
+for each flow a target backend worker node is specified. The EFD table does not
+store the flow key (unlike a regular hash table), and hence, it can
+individually load-balance millions of flows (number of targets * maximum number
+of flows fit in a flow table per target) while still fitting in CPU cache.</p>
+<p>It should be noted that although they are referred to as nodes, the frontend
+server and worker nodes are processes running on the same platform.</p>
+<div class="section" id="front-end-server">
+<h3><span class="section-number">26.1.1. </span>Front-end Server</h3>
+<p>Upon initializing, the frontend server node (process) creates a flow
+distributor table (based on the EFD library) which is populated with flow
+information and its intended target node.</p>
+<p>The sample application assigns a specific target node_id (process) for each of
+the IP destination addresses as follows:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">node_id</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">num_nodes</span><span class="p">;</span> <span class="cm">/* Target node id is generated */</span>
+<span class="n">ip_dst</span> <span class="o">=</span> <span class="n">rte_cpu_to_be_32</span><span class="p">(</span><span class="n">i</span><span class="p">);</span> <span class="cm">/* Specific ip destination address is</span>
+<span class="cm">                                 assigned to this target node */</span>
+</pre></div>
+</div>
+<p>then the pair of &lt;key,target&gt; is inserted into the flow distribution table.</p>
+<p>The main loop of the server process receives a burst of packets, then for
+each packet, a flow key (IP destination address) is extracted. The flow
+distributor table is looked up and the target node id is returned.  Packets are
+then enqueued to the specified target node id.</p>
+<p>It should be noted that flow distributor table is not a membership test table.
+I.e. if the key has already been inserted the target node id will be correct,
+but for new keys the flow distributor table will return a value (which can be
+valid).</p>
+</div>
+<div class="section" id="backend-worker-nodes">
+<h3><span class="section-number">26.1.2. </span>Backend Worker Nodes</h3>
+<p>Upon initializing, the worker node (process) creates a flow table (a regular
+hash table that stores the key default size 1M flows) which is populated with
+only the flow information that is serviced at this node. This flow key is
+essential to point out new keys that have not been inserted before.</p>
+<p>The worker node’s main loop is simply receiving packets then doing a hash table
+lookup. If a match occurs then statistics are updated for flows serviced by
+this node. If no match is found in the local hash table then this indicates
+that this is a new flow, which is dropped.</p>
+</div>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">26.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">server_node_efd</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">26.3. </span>Running the Application</h2>
+<p>The application has two binaries to be run: the front-end server
+and the back-end node.</p>
+<p>The frontend server (server) has the following command line options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./&lt;build_dir&gt;/examples/dpdk-server [EAL options] -- -p PORTMASK -n NUM_NODES -f NUM_FLOWS
+</pre></div>
+</div>
+<p>Where,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-p</span> <span class="pre">PORTMASK:</span></code> Hexadecimal bitmask of ports to configure</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">NUM_NODES:</span></code> Number of back-end nodes that will be used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-f</span> <span class="pre">NUM_FLOWS:</span></code> Number of flows to be added in the EFD table (1 million, by default)</p></li>
+</ul>
+<p>The back-end node (node) has the following command line options:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./node [EAL options] -- -n NODE_ID
+</pre></div>
+</div>
+<p>Where,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-n</span> <span class="pre">NODE_ID:</span></code> Node ID, which cannot be equal or higher than NUM_MODES</p></li>
+</ul>
+<p>First, the server app must be launched, with the number of nodes that will be run.
+Once it has been started, the node instances can be run, with different NODE_ID.
+These instances have to be run as secondary processes, with <code class="docutils literal notranslate"><span class="pre">--proc-type=secondary</span></code>
+in the EAL options, which will attach to the primary process memory, and therefore,
+they can access the queues created by the primary process to distribute packets.</p>
+<p>To successfully run the application, the command line used to start the
+application has to be in sync with the traffic flows configured on the traffic
+generator side.</p>
+<p>For examples of application command lines and traffic generator flows, please
+refer to the DPDK Test Report. For more details on how to set up and run the
+sample applications provided with DPDK package, please refer to the
+<a class="reference internal" href="../linux_gsg/index.html#linux-gsg"><span class="std std-ref">DPDK Getting Started Guide for Linux</span></a> and
+<a class="reference internal" href="../freebsd_gsg/index.html#freebsd-gsg"><span class="std std-ref">DPDK Getting Started Guide for FreeBSD</span></a>.</p>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">26.4. </span>Explanation</h2>
+<p>As described in previous sections, there are two processes in this example.</p>
+<p>The first process, the front-end server, creates and populates the EFD table,
+which is used to distribute packets to nodes, which the number of flows
+specified in the command line (1 million, by default).</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">create_efd_table</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint8_t</span> <span class="n">socket_id</span> <span class="o">=</span> <span class="n">rte_socket_id</span><span class="p">();</span>
+
+    <span class="cm">/* create table */</span>
+    <span class="n">efd_table</span> <span class="o">=</span> <span class="n">rte_efd_create</span><span class="p">(</span><span class="s">&quot;flow table&quot;</span><span class="p">,</span> <span class="n">num_flows</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">),</span>
+                    <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">socket_id</span><span class="p">,</span> <span class="n">socket_id</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">efd_table</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Problem creating the flow table</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+<span class="nf">populate_efd_table</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">int32_t</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">ip_dst</span><span class="p">;</span>
+    <span class="kt">uint8_t</span> <span class="n">socket_id</span> <span class="o">=</span> <span class="n">rte_socket_id</span><span class="p">();</span>
+    <span class="kt">uint64_t</span> <span class="n">node_id</span><span class="p">;</span>
+
+    <span class="cm">/* Add flows in table */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_flows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">node_id</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">num_nodes</span><span class="p">;</span>
+
+        <span class="n">ip_dst</span> <span class="o">=</span> <span class="n">rte_cpu_to_be_32</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_efd_update</span><span class="p">(</span><span class="n">efd_table</span><span class="p">,</span> <span class="n">socket_id</span><span class="p">,</span>
+                        <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">ip_dst</span><span class="p">,</span> <span class="p">(</span><span class="n">efd_value_t</span><span class="p">)</span><span class="n">node_id</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Unable to add entry %u in &quot;</span>
+                                <span class="s">&quot;EFD table</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;EFD table: Adding 0x%x keys</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">num_flows</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After initialization, packets are received from the enabled ports, and the IPv4
+address from the packets is used as a key to look up in the EFD table,
+which tells the node where the packet has to be distributed.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">process_packets</span><span class="p">(</span><span class="kt">uint32_t</span> <span class="n">port_num</span> <span class="n">__rte_unused</span><span class="p">,</span> <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">pkts</span><span class="p">[],</span>
+        <span class="kt">uint16_t</span> <span class="n">rx_count</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">socket_id</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint16_t</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">uint8_t</span> <span class="n">node</span><span class="p">;</span>
+    <span class="n">efd_value_t</span> <span class="n">data</span><span class="p">[</span><span class="n">EFD_BURST_MAX</span><span class="p">];</span>
+    <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key_ptrs</span><span class="p">[</span><span class="n">EFD_BURST_MAX</span><span class="p">];</span>
+
+    <span class="k">struct</span> <span class="n">rte_ipv4_hdr</span> <span class="o">*</span><span class="n">ipv4_hdr</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">ipv4_dst_ip</span><span class="p">[</span><span class="n">EFD_BURST_MAX</span><span class="p">];</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rx_count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Handle IPv4 header.*/</span>
+        <span class="n">ipv4_hdr</span> <span class="o">=</span> <span class="n">rte_pktmbuf_mtod_offset</span><span class="p">(</span><span class="n">pkts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="k">struct</span> <span class="n">rte_ipv4_hdr</span> <span class="o">*</span><span class="p">,</span>
+                <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_ether_hdr</span><span class="p">));</span>
+        <span class="n">ipv4_dst_ip</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ipv4_hdr</span><span class="o">-&gt;</span><span class="n">dst_addr</span><span class="p">;</span>
+        <span class="n">key_ptrs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">ipv4_dst_ip</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="n">rte_efd_lookup_bulk</span><span class="p">(</span><span class="n">efd_table</span><span class="p">,</span> <span class="n">socket_id</span><span class="p">,</span> <span class="n">rx_count</span><span class="p">,</span>
+                <span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">**</span><span class="p">)</span> <span class="n">key_ptrs</span><span class="p">,</span> <span class="n">data</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">rx_count</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uint8_t</span><span class="p">)</span> <span class="p">((</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">node</span> <span class="o">&gt;=</span> <span class="n">num_nodes</span><span class="p">)</span> <span class="p">{</span>
+            <span class="cm">/*</span>
+<span class="cm">             * Node is out of range, which means that</span>
+<span class="cm">             * flow has not been inserted</span>
+<span class="cm">             */</span>
+            <span class="n">flow_dist_stats</span><span class="p">.</span><span class="n">drop</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">pkts</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">flow_dist_stats</span><span class="p">.</span><span class="n">distributed</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">enqueue_rx_packet</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">pkts</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_nodes</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">flush_rx_queue</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The burst of packets received is enqueued in temporary buffers (per node),
+and enqueued in the shared ring between the server and the node.
+After this, a new burst of packets is received and this process is
+repeated infinitely.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">flush_rx_queue</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">node</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint16_t</span> <span class="n">j</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">node</span> <span class="o">*</span><span class="n">cl</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+
+    <span class="n">cl</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">nodes</span><span class="p">[</span><span class="n">node</span><span class="p">];</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">rte_ring_enqueue_bulk</span><span class="p">(</span><span class="n">cl</span><span class="o">-&gt;</span><span class="n">rx_q</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">**</span><span class="p">)</span><span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">buffer</span><span class="p">,</span>
+            <span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">count</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">)</span> <span class="o">!=</span> <span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">count</span><span class="p">){</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">count</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+            <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">buffer</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+        <span class="n">cl</span><span class="o">-&gt;</span><span class="n">stats</span><span class="p">.</span><span class="n">rx_drop</span> <span class="o">+=</span> <span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">count</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span>
+        <span class="n">cl</span><span class="o">-&gt;</span><span class="n">stats</span><span class="p">.</span><span class="n">rx</span> <span class="o">+=</span> <span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">count</span><span class="p">;</span>
+
+    <span class="n">cl_rx_buf</span><span class="p">[</span><span class="n">node</span><span class="p">].</span><span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The second process, the back-end node, receives the packets from the shared
+ring with the server and send them out, if they belong to the node.</p>
+<p>At initialization, it attaches to the server process memory, to have
+access to the shared ring, parameters and statistics.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rx_ring</span> <span class="o">=</span> <span class="n">rte_ring_lookup</span><span class="p">(</span><span class="n">get_rx_queue_name</span><span class="p">(</span><span class="n">node_id</span><span class="p">));</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">rx_ring</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Cannot get RX ring - &quot;</span>
+            <span class="s">&quot;is server process running?</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="n">mp</span> <span class="o">=</span> <span class="n">rte_mempool_lookup</span><span class="p">(</span><span class="n">PKTMBUF_POOL_NAME</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">mp</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Cannot get mempool for mbufs</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+
+<span class="n">mz</span> <span class="o">=</span> <span class="n">rte_memzone_lookup</span><span class="p">(</span><span class="n">MZ_SHARED_INFO</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">mz</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+    <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Cannot get port info structure</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="n">info</span> <span class="o">=</span> <span class="n">mz</span><span class="o">-&gt;</span><span class="n">addr</span><span class="p">;</span>
+<span class="n">tx_stats</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">tx_stats</span><span class="p">[</span><span class="n">node_id</span><span class="p">]);</span>
+<span class="n">filter_stats</span> <span class="o">=</span> <span class="o">&amp;</span><span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">filter_stats</span><span class="p">[</span><span class="n">node_id</span><span class="p">]);</span>
+</pre></div>
+</div>
+<p>Then, the hash table that contains the flows that will be handled
+by the node is created and populated.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">rte_hash</span> <span class="o">*</span>
+<span class="nf">create_hash_table</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="n">shared_info</span> <span class="o">*</span><span class="n">info</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint32_t</span> <span class="n">num_flows_node</span> <span class="o">=</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">num_flows</span> <span class="o">/</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">num_nodes</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">name</span><span class="p">[</span><span class="n">RTE_HASH_NAMESIZE</span><span class="p">];</span>
+    <span class="k">struct</span> <span class="n">rte_hash</span> <span class="o">*</span><span class="n">h</span><span class="p">;</span>
+
+    <span class="cm">/* create table */</span>
+    <span class="k">struct</span> <span class="n">rte_hash_parameters</span> <span class="n">hash_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">.</span><span class="n">entries</span> <span class="o">=</span> <span class="n">num_flows_node</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="cm">/* table load = 50% */</span>
+        <span class="p">.</span><span class="n">key_len</span> <span class="o">=</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">uint32_t</span><span class="p">),</span> <span class="cm">/* Store IPv4 dest IP address */</span>
+        <span class="p">.</span><span class="n">socket_id</span> <span class="o">=</span> <span class="n">rte_socket_id</span><span class="p">(),</span>
+        <span class="p">.</span><span class="n">hash_func_init_val</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="p">};</span>
+
+    <span class="n">snprintf</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="s">&quot;hash_table_%d&quot;</span><span class="p">,</span> <span class="n">node_id</span><span class="p">);</span>
+    <span class="n">hash_params</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">rte_hash_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">hash_params</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">h</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span>
+                <span class="s">&quot;Problem creating the hash table for node %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+                <span class="n">node_id</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">h</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">void</span>
+<span class="nf">populate_hash_table</span><span class="p">(</span><span class="k">const</span> <span class="k">struct</span> <span class="n">rte_hash</span> <span class="o">*</span><span class="n">h</span><span class="p">,</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">shared_info</span> <span class="o">*</span><span class="n">info</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">int32_t</span> <span class="n">ret</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">ip_dst</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">num_flows_node</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">uint64_t</span> <span class="n">target_node</span><span class="p">;</span>
+
+    <span class="cm">/* Add flows in table */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">num_flows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">target_node</span> <span class="o">=</span> <span class="n">i</span> <span class="o">%</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">num_nodes</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">target_node</span> <span class="o">!=</span> <span class="n">node_id</span><span class="p">)</span>
+            <span class="k">continue</span><span class="p">;</span>
+
+        <span class="n">ip_dst</span> <span class="o">=</span> <span class="n">rte_cpu_to_be_32</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_hash_add_key</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span> <span class="o">&amp;</span><span class="n">ip_dst</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">rte_exit</span><span class="p">(</span><span class="n">EXIT_FAILURE</span><span class="p">,</span> <span class="s">&quot;Unable to add entry %u &quot;</span>
+                    <span class="s">&quot;in hash table</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+        <span class="k">else</span>
+            <span class="n">num_flows_node</span><span class="o">++</span><span class="p">;</span>
+
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hash table: Adding 0x%x keys</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">num_flows_node</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After initialization, packets are dequeued from the shared ring
+(from the server) and, like in the server process,
+the IPv4 address from the packets is used as a key to look up in the hash table.
+If there is a hit, packet is stored in a buffer, to be eventually transmitted
+in one of the enabled ports. If key is not there, packet is dropped, since the
+flow is not handled by the node.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kr">inline</span> <span class="kt">void</span>
+<span class="nf">handle_packets</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_hash</span> <span class="o">*</span><span class="n">h</span><span class="p">,</span> <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">**</span><span class="n">bufs</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">num_packets</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_ipv4_hdr</span> <span class="o">*</span><span class="n">ipv4_hdr</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="n">ipv4_dst_ip</span><span class="p">[</span><span class="n">PKT_READ_SIZE</span><span class="p">];</span>
+    <span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key_ptrs</span><span class="p">[</span><span class="n">PKT_READ_SIZE</span><span class="p">];</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">int32_t</span> <span class="n">positions</span><span class="p">[</span><span class="n">PKT_READ_SIZE</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_packets</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="cm">/* Handle IPv4 header.*/</span>
+        <span class="n">ipv4_hdr</span> <span class="o">=</span> <span class="n">rte_pktmbuf_mtod_offset</span><span class="p">(</span><span class="n">bufs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="k">struct</span> <span class="n">rte_ipv4_hdr</span> <span class="o">*</span><span class="p">,</span>
+                <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_ether_hdr</span><span class="p">));</span>
+        <span class="n">ipv4_dst_ip</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ipv4_hdr</span><span class="o">-&gt;</span><span class="n">dst_addr</span><span class="p">;</span>
+        <span class="n">key_ptrs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">ipv4_dst_ip</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+    <span class="p">}</span>
+    <span class="cm">/* Check if packets belongs to any flows handled by this node */</span>
+    <span class="n">rte_hash_lookup_bulk</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">key_ptrs</span><span class="p">,</span> <span class="n">num_packets</span><span class="p">,</span> <span class="n">positions</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_packets</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">likely</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">filter_stats</span><span class="o">-&gt;</span><span class="n">passed</span><span class="o">++</span><span class="p">;</span>
+            <span class="n">transmit_packet</span><span class="p">(</span><span class="n">bufs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="n">filter_stats</span><span class="o">-&gt;</span><span class="n">drop</span><span class="o">++</span><span class="p">;</span>
+            <span class="cm">/* Drop packet, as flow is not handled by this node */</span>
+            <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">bufs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Finally, note that both processes updates statistics, such as transmitted, received
+and dropped packets, which are shown and refreshed by the server app.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">void</span>
+<span class="nf">do_stats_display</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="n">clr</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">27</span><span class="p">,</span> <span class="sc">&#39;[&#39;</span><span class="p">,</span> <span class="sc">&#39;2&#39;</span><span class="p">,</span> <span class="sc">&#39;J&#39;</span><span class="p">,</span> <span class="sc">&#39;\0&#39;</span><span class="p">};</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="n">topLeft</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">27</span><span class="p">,</span> <span class="sc">&#39;[&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">,</span> <span class="sc">&#39;;&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">,</span> <span class="sc">&#39;H&#39;</span><span class="p">,</span> <span class="sc">&#39;\0&#39;</span><span class="p">};</span>
+    <span class="kt">uint64_t</span> <span class="n">port_tx</span><span class="p">[</span><span class="n">RTE_MAX_ETHPORTS</span><span class="p">],</span> <span class="n">port_tx_drop</span><span class="p">[</span><span class="n">RTE_MAX_ETHPORTS</span><span class="p">];</span>
+    <span class="kt">uint64_t</span> <span class="n">node_tx</span><span class="p">[</span><span class="n">MAX_NODES</span><span class="p">],</span> <span class="n">node_tx_drop</span><span class="p">[</span><span class="n">MAX_NODES</span><span class="p">];</span>
+
+    <span class="cm">/* to get TX stats, we need to do some summing calculations */</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">port_tx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">port_tx</span><span class="p">));</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">port_tx_drop</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">port_tx_drop</span><span class="p">));</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">node_tx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">node_tx</span><span class="p">));</span>
+    <span class="n">memset</span><span class="p">(</span><span class="n">node_tx_drop</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">node_tx_drop</span><span class="p">));</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_nodes</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">const</span> <span class="k">struct</span> <span class="n">tx_stats</span> <span class="o">*</span><span class="n">tx</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">tx_stats</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">num_ports</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">tx_val</span> <span class="o">=</span> <span class="n">tx</span><span class="o">-&gt;</span><span class="n">tx</span><span class="p">[</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">[</span><span class="n">j</span><span class="p">]];</span>
+            <span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">drop_val</span> <span class="o">=</span> <span class="n">tx</span><span class="o">-&gt;</span><span class="n">tx_drop</span><span class="p">[</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">[</span><span class="n">j</span><span class="p">]];</span>
+
+            <span class="n">port_tx</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">tx_val</span><span class="p">;</span>
+            <span class="n">port_tx_drop</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">drop_val</span><span class="p">;</span>
+            <span class="n">node_tx</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">tx_val</span><span class="p">;</span>
+            <span class="n">node_tx_drop</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+=</span> <span class="n">drop_val</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Clear screen and move to top left */</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s%s&quot;</span><span class="p">,</span> <span class="n">clr</span><span class="p">,</span> <span class="n">topLeft</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;PORTS</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;-----</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">num_ports</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Port %u: &#39;%s&#39;</span><span class="se">\t</span><span class="s">&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">)</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">get_printable_mac_addr</span><span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">[</span><span class="n">i</span><span class="p">]));</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">num_ports</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Port %u - rx: %9&quot;</span><span class="n">PRIu64</span><span class="s">&quot;</span><span class="se">\t</span><span class="s">&quot;</span>
+                <span class="s">&quot;tx: %9&quot;</span><span class="n">PRIu64</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+                <span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">)</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">id</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">rx_stats</span><span class="p">.</span><span class="n">rx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">port_tx</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">SERVER</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;-----</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;distributed: %9&quot;</span><span class="n">PRIu64</span><span class="s">&quot;, drop: %9&quot;</span><span class="n">PRIu64</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+            <span class="n">flow_dist_stats</span><span class="p">.</span><span class="n">distributed</span><span class="p">,</span> <span class="n">flow_dist_stats</span><span class="p">.</span><span class="n">drop</span><span class="p">);</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">NODES</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;-------</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_nodes</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">rx</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">stats</span><span class="p">.</span><span class="n">rx</span><span class="p">;</span>
+        <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">long</span> <span class="n">rx_drop</span> <span class="o">=</span> <span class="n">nodes</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">stats</span><span class="p">.</span><span class="n">rx_drop</span><span class="p">;</span>
+        <span class="k">const</span> <span class="k">struct</span> <span class="n">filter_stats</span> <span class="o">*</span><span class="n">filter</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">filter_stats</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Node %2u - rx: %9llu, rx_drop: %9llu</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;            tx: %9&quot;</span><span class="n">PRIu64</span><span class="s">&quot;, tx_drop: %9&quot;</span><span class="n">PRIu64</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span>
+                <span class="s">&quot;            filter_passed: %9&quot;</span><span class="n">PRIu64</span><span class="s">&quot;, &quot;</span>
+                <span class="s">&quot;filter_drop: %9&quot;</span><span class="n">PRIu64</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+                <span class="n">i</span><span class="p">,</span> <span class="n">rx</span><span class="p">,</span> <span class="n">rx_drop</span><span class="p">,</span> <span class="n">node_tx</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">node_tx_drop</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                <span class="n">filter</span><span class="o">-&gt;</span><span class="n">passed</span><span class="p">,</span> <span class="n">filter</span><span class="o">-&gt;</span><span class="n">drop</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="service_cores.html" class="btn btn-neutral float-right" title="27. Service Cores Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="link_status_intr.html" class="btn btn-neutral float-left" title="25. Link Status Interrupt Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

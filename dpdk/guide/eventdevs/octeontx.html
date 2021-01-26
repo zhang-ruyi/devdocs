@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>7. OCTEON TX SSOVF Eventdev Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. OCTEON TX2 SSO Eventdev Driver" href="octeontx2.html" />
+    <link rel="prev" title="6. Software Eventdev Poll Mode Driver" href="sw.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Event Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dlb.html">1. Driver for the Intel® Dynamic Load Balancer (DLB)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dlb2.html">2. Driver for the Intel® Dynamic Load Balancer (DLB2)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">3. NXP DPAA Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">4. NXP DPAA2 Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dsw.html">5. Distributed Software Eventdev Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sw.html">6. Software Eventdev Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7. OCTEON TX SSOVF Eventdev Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">7.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#supported-octeon-tx-socs">7.2. Supported OCTEON TX SoCs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">7.3. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">7.4. Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#enable-timvf-stats">7.5. Enable TIMvf stats</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">7.6. Limitations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#burst-mode-support">7.6.1. Burst mode support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#rx-adapter-support">7.6.2. Rx adapter support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#event-timer-adapter-support">7.6.3. Event timer adapter support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#max-number-of-events">7.6.4. Max number of events</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">8. OCTEON TX2 SSO Eventdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="opdl.html">9. OPDL Eventdev Poll Mode Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Event Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">7. </span>OCTEON TX SSOVF Eventdev Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/eventdevs/octeontx.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="octeon-tx-ssovf-eventdev-driver">
+<h1><span class="section-number">7. </span>OCTEON TX SSOVF Eventdev Driver</h1>
+<p>The OCTEON TX SSOVF PMD (<strong>librte_event_octeontx</strong>) provides poll mode
+eventdev driver support for the inbuilt event device found in the <strong>Cavium OCTEON TX</strong>
+SoC family as well as their virtual functions (VF) in SR-IOV context.</p>
+<p>More information can be found at <a class="reference external" href="http://www.cavium.com/OCTEON-TX_ARM_Processors.html">Cavium, Inc Official Website</a>.</p>
+<div class="section" id="features">
+<h2><span class="section-number">7.1. </span>Features</h2>
+<p>Features of the OCTEON TX SSOVF PMD are:</p>
+<ul class="simple">
+<li><p>64 Event queues</p></li>
+<li><p>32 Event ports</p></li>
+<li><p>HW event scheduler</p></li>
+<li><p>Supports 1M flows per event queue</p></li>
+<li><p>Flow based event pipelining</p></li>
+<li><p>Flow pinning support in flow based event pipelining</p></li>
+<li><p>Queue based event pipelining</p></li>
+<li><p>Supports ATOMIC, ORDERED, PARALLEL schedule types per flow</p></li>
+<li><p>Event scheduling QoS based on event queue priority</p></li>
+<li><p>Open system with configurable amount of outstanding events</p></li>
+<li><p>HW accelerated dequeue timeout support to enable power management</p></li>
+<li><p>SR-IOV VF</p></li>
+<li><p>HW managed event timers support through TIMVF, with high precision and
+time granularity of 1us.</p></li>
+<li><p>Up to 64 event timer adapters.</p></li>
+</ul>
+</div>
+<div class="section" id="supported-octeon-tx-socs">
+<h2><span class="section-number">7.2. </span>Supported OCTEON TX SoCs</h2>
+<ul class="simple">
+<li><p>CN83xx</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">7.3. </span>Prerequisites</h2>
+<p>See <a class="reference internal" href="../platform/octeontx.html"><span class="doc">OCTEON TX Board Support Package</span></a> for setup information.</p>
+</div>
+<div class="section" id="initialization">
+<h2><span class="section-number">7.4. </span>Initialization</h2>
+<p>The OCTEON TX eventdev is exposed as a vdev device which consists of a set
+of SSO group and work-slot PCIe VF devices. On EAL initialization,
+SSO PCIe VF devices will be probed and then the vdev device can be created
+from the application code, or from the EAL command line based on
+the number of probed/bound SSO PCIe VF device to DPDK by</p>
+<ul class="simple">
+<li><p>Invoking <code class="docutils literal notranslate"><span class="pre">rte_vdev_init(&quot;event_octeontx&quot;)</span></code> from the application</p></li>
+<li><p>Using <code class="docutils literal notranslate"><span class="pre">--vdev=&quot;event_octeontx&quot;</span></code> in the EAL options, which will call
+rte_vdev_init() internally</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./your_eventdev_application --vdev=&quot;event_octeontx&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="enable-timvf-stats">
+<h2><span class="section-number">7.5. </span>Enable TIMvf stats</h2>
+<p>TIMvf stats can be enabled by using this option, by default the stats are
+disabled.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--vdev=&quot;event_octeontx,timvf_stats=1&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">7.6. </span>Limitations</h2>
+<div class="section" id="burst-mode-support">
+<h3><span class="section-number">7.6.1. </span>Burst mode support</h3>
+<p>Burst mode is not supported. Dequeue and Enqueue functions accepts only single
+event at a time.</p>
+</div>
+<div class="section" id="rx-adapter-support">
+<h3><span class="section-number">7.6.2. </span>Rx adapter support</h3>
+<p>When eth_octeontx is used as Rx adapter event schedule type
+<code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_PARALLEL</span></code> is not supported.</p>
+</div>
+<div class="section" id="event-timer-adapter-support">
+<h3><span class="section-number">7.6.3. </span>Event timer adapter support</h3>
+<p>When timvf is used as Event timer adapter the clock source mapping is as
+follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">RTE_EVENT_TIMER_ADAPTER_CPU_CLK  = TIM_CLK_SRC_SCLK</span>
+<span class="go">RTE_EVENT_TIMER_ADAPTER_EXT_CLK0 = TIM_CLK_SRC_GPIO</span>
+<span class="go">RTE_EVENT_TIMER_ADAPTER_EXT_CLK1 = TIM_CLK_SRC_GTI</span>
+<span class="go">RTE_EVENT_TIMER_ADAPTER_EXT_CLK2 = TIM_CLK_SRC_PTP</span>
+</pre></div>
+</div>
+<p>When timvf is used as Event timer adapter event schedule type
+<code class="docutils literal notranslate"><span class="pre">RTE_SCHED_TYPE_PARALLEL</span></code> is not supported.</p>
+</div>
+<div class="section" id="max-number-of-events">
+<h3><span class="section-number">7.6.4. </span>Max number of events</h3>
+<p>Max number of events in OCTEON TX Eventdev (SSO) are only limited by DRAM size
+and they can be configured by passing limits to kernel bootargs as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ssopf.max_events=4194304</span>
+</pre></div>
+</div>
+<p>The same can be verified by looking at the following sysfs entry:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> cat /sys/module/ssopf/parameters/max_events
+<span class="go">4194304</span>
+</pre></div>
+</div>
+<p>The maximum number of events that can be added to SSO by the event adapters such
+as (Rx/Timer) should be limited to the above configured value.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="octeontx2.html" class="btn btn-neutral float-right" title="8. OCTEON TX2 SSO Eventdev Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="sw.html" class="btn btn-neutral float-left" title="6. Software Eventdev Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

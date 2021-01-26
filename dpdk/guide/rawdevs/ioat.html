@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>4. IOAT Rawdev Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. NTB Rawdev Driver" href="ntb.html" />
+    <link rel="prev" title="3. IFPGA Rawdev Driver" href="ifpga.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Rawdev Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_cmdif.html">1. NXP DPAA2 CMDIF Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_qdma.html">2. NXP DPAA2 QDMA Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ifpga.html">3. IFPGA Rawdev Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. IOAT Rawdev Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#hardware-requirements">4.1. Hardware Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compilation">4.2. Compilation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-setup">4.3. Device Setup</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#intelreg-dsa-devices-using-idxd-kernel-driver">4.3.1. Intel® DSA devices using idxd kernel driver</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#devices-using-vfio-uio-drivers">4.3.2. Devices using VFIO/UIO drivers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-probing-and-initialization">4.3.3. Device Probing and Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#using-ioat-rawdev-devices">4.4. Using IOAT Rawdev Devices</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#getting-device-information">4.4.1. Getting Device Information</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#device-configuration">4.4.2. Device Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#performing-data-copies">4.4.3. Performing Data Copies</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#filling-an-area-of-memory">4.4.4. Filling an Area of Memory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#querying-device-statistics">4.4.5. Querying Device Statistics</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">5. NTB Rawdev Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_dma.html">6. OCTEON TX2 DMA Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2_ep.html">7. Marvell OCTEON TX2 End Point Rawdev Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Rawdev Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">4. </span>IOAT Rawdev Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/rawdevs/ioat.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ioat-rawdev-driver">
+<h1><span class="section-number">4. </span>IOAT Rawdev Driver</h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">ioat</span></code> rawdev driver provides a poll-mode driver (PMD) for Intel®
+Data Streaming Accelerator <a class="reference external" href="https://01.org/blogs/2019/introducing-intel-data-streaming-accelerator">(Intel DSA)</a> and for Intel®
+QuickData Technology, part of Intel® I/O Acceleration Technology
+<a class="reference external" href="https://www.intel.com/content/www/us/en/wireless-network/accel-technology.html">(Intel I/OAT)</a>.
+This PMD, when used on supported hardware, allows data copies, for example,
+cloning packet data, to be accelerated by that hardware rather than having to
+be done by software, freeing up CPU cycles for other tasks.</p>
+<div class="section" id="hardware-requirements">
+<h2><span class="section-number">4.1. </span>Hardware Requirements</h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> script, included with DPDK,
+can be used to show the presence of supported hardware.
+Running <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span> <span class="pre">--status-dev</span> <span class="pre">misc</span></code> will show all the miscellaneous,
+or rawdev-based devices on the system.
+For Intel® QuickData Technology devices, the hardware will be often listed as “Crystal Beach DMA”,
+or “CBDMA”.
+For Intel® DSA devices, they are currently (at time of writing) appearing as devices with type “0b25”,
+due to the absence of pci-id database entries for them at this point.</p>
+</div>
+<div class="section" id="compilation">
+<h2><span class="section-number">4.2. </span>Compilation</h2>
+<p>For builds using <code class="docutils literal notranslate"><span class="pre">meson</span></code> and <code class="docutils literal notranslate"><span class="pre">ninja</span></code>, the driver will be built when the target platform is x86-based.
+No additional compilation steps are necessary.</p>
+</div>
+<div class="section" id="device-setup">
+<h2><span class="section-number">4.3. </span>Device Setup</h2>
+<p>Depending on support provided by the PMD, HW devices can either use the kernel configured driver
+or be bound to a user-space IO driver for use.
+For example, Intel® DSA devices can use the IDXD kernel driver or DPDK-supported drivers,
+such as <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>.</p>
+<div class="section" id="intelreg-dsa-devices-using-idxd-kernel-driver">
+<h3><span class="section-number">4.3.1. </span>Intel® DSA devices using idxd kernel driver</h3>
+<p>To use a Intel® DSA device bound to the IDXD kernel driver, the device must first be configured.
+The <a class="reference external" href="https://github.com/intel/idxd-config">accel-config</a> utility library can be used for configuration.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The device configuration can also be done by directly interacting with the sysfs nodes.
+An example of how this may be done can be seen in the script <code class="docutils literal notranslate"><span class="pre">dpdk_idxd_cfg.py</span></code>
+included in the driver source directory.</p>
+</div>
+<p>There are some mandatory configuration steps before being able to use a device with an application.
+The internal engines, which do the copies or other operations,
+and the work-queues, which are used by applications to assign work to the device,
+need to be assigned to groups, and the various other configuration options,
+such as priority or queue depth, need to be set for each queue.</p>
+<p>To assign an engine to a group:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ accel-config config-engine dsa0/engine0.0 --group-id=0
+$ accel-config config-engine dsa0/engine0.1 --group-id=1
+</pre></div>
+</div>
+<p>To assign work queues to groups for passing descriptors to the engines a similar accel-config command can be used.
+However, the work queues also need to be configured depending on the use-case.
+Some configuration options include:</p>
+<ul class="simple">
+<li><p>mode (Dedicated/Shared): Indicates whether a WQ may accept jobs from multiple queues simultaneously.</p></li>
+<li><p>priority: WQ priority between 1 and 15. Larger value means higher priority.</p></li>
+<li><p>wq-size: the size of the WQ. Sum of all WQ sizes must be less that the total-size defined by the device.</p></li>
+<li><p>type: WQ type (kernel/mdev/user). Determines how the device is presented.</p></li>
+<li><p>name: identifier given to the WQ.</p></li>
+</ul>
+<p>Example configuration for a work queue:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ accel-config config-wq dsa0/wq0.0 --group-id=0 \
+   --mode=dedicated --priority=10 --wq-size=8 \
+   --type=user --name=app1
+</pre></div>
+</div>
+<p>Once the devices have been configured, they need to be enabled:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ accel-config enable-device dsa0
+$ accel-config enable-wq dsa0/wq0.0
+</pre></div>
+</div>
+<p>Check the device configuration:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ accel-config list
+</pre></div>
+</div>
+</div>
+<div class="section" id="devices-using-vfio-uio-drivers">
+<h3><span class="section-number">4.3.2. </span>Devices using VFIO/UIO drivers</h3>
+<p>The HW devices to be used will need to be bound to a user-space IO driver for use.
+The <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> script can be used to view the state of the devices
+and to bind them to a suitable DPDK-supported driver, such as <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>.
+For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dpdk-devbind.py -b vfio-pci 00:04.0 00:04.1
+</pre></div>
+</div>
+</div>
+<div class="section" id="device-probing-and-initialization">
+<h3><span class="section-number">4.3.3. </span>Device Probing and Initialization</h3>
+<p>For devices bound to a suitable DPDK-supported VFIO/UIO driver, the HW devices will
+be found as part of the device scan done at application initialization time without
+the need to pass parameters to the application.</p>
+<p>If the device is bound to the IDXD kernel driver (and previously configured with sysfs),
+then a specific work queue needs to be passed to the application via a vdev parameter.
+This vdev parameter take the driver name and work queue name as parameters.
+For example, to use work queue 0 on Intel® DSA instance 0:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>$ dpdk-test --no-pci --vdev=rawdev_idxd,wq=0.0
+</pre></div>
+</div>
+<p>Once probed successfully, the device will appear as a <code class="docutils literal notranslate"><span class="pre">rawdev</span></code>, that is a
+“raw device type” inside DPDK, and can be accessed using APIs from the
+<code class="docutils literal notranslate"><span class="pre">rte_rawdev</span></code> library.</p>
+</div>
+</div>
+<div class="section" id="using-ioat-rawdev-devices">
+<h2><span class="section-number">4.4. </span>Using IOAT Rawdev Devices</h2>
+<p>To use the devices from an application, the rawdev API can be used, along
+with definitions taken from the device-specific header file
+<code class="docutils literal notranslate"><span class="pre">rte_ioat_rawdev.h</span></code>. This header is needed to get the definition of
+structure parameters used by some of the rawdev APIs for IOAT rawdev
+devices, as well as providing key functions for using the device for memory
+copies.</p>
+<div class="section" id="getting-device-information">
+<h3><span class="section-number">4.4.1. </span>Getting Device Information</h3>
+<p>Basic information about each rawdev device can be queried using the
+<code class="docutils literal notranslate"><span class="pre">rte_rawdev_info_get()</span></code> API. For most applications, this API will be
+needed to verify that the rawdev in question is of the expected type. For
+example, the following code snippet can be used to identify an IOAT
+rawdev device for use by an application:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">count</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">found</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">struct</span> <span class="n">rte_rawdev_info</span> <span class="n">info</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">dev_private</span> <span class="o">=</span> <span class="nb">NULL</span> <span class="p">};</span>
+        <span class="n">found</span> <span class="o">=</span> <span class="p">(</span><span class="n">rte_rawdev_info_get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span>
+                        <span class="n">strcmp</span><span class="p">(</span><span class="n">info</span><span class="p">.</span><span class="n">driver_name</span><span class="p">,</span>
+                                        <span class="n">IOAT_PMD_RAWDEV_NAME_STR</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>When calling the <code class="docutils literal notranslate"><span class="pre">rte_rawdev_info_get()</span></code> API for an IOAT rawdev device,
+the <code class="docutils literal notranslate"><span class="pre">dev_private</span></code> field in the <code class="docutils literal notranslate"><span class="pre">rte_rawdev_info</span></code> struct should either
+be NULL, or else be set to point to a structure of type
+<code class="docutils literal notranslate"><span class="pre">rte_ioat_rawdev_config</span></code>, in which case the size of the configured device
+input ring will be returned in that structure.</p>
+</div>
+<div class="section" id="device-configuration">
+<h3><span class="section-number">4.4.2. </span>Device Configuration</h3>
+<p>Configuring an IOAT rawdev device is done using the
+<code class="docutils literal notranslate"><span class="pre">rte_rawdev_configure()</span></code> API, which takes the same structure parameters
+as the, previously referenced, <code class="docutils literal notranslate"><span class="pre">rte_rawdev_info_get()</span></code> API. The main
+difference is that, because the parameter is used as input rather than
+output, the <code class="docutils literal notranslate"><span class="pre">dev_private</span></code> structure element cannot be NULL, and must
+point to a valid <code class="docutils literal notranslate"><span class="pre">rte_ioat_rawdev_config</span></code> structure, containing the ring
+size to be used by the device. The ring size must be a power of two,
+between 64 and 4096.
+If it is not needed, the tracking by the driver of user-provided completion
+handles may be disabled by setting the <code class="docutils literal notranslate"><span class="pre">hdls_disable</span></code> flag in
+the configuration structure also.</p>
+<p>The following code shows how the device is configured in
+<code class="docutils literal notranslate"><span class="pre">test_ioat_rawdev.c</span></code>:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="cp">#define IOAT_TEST_RINGSIZE 512</span>
+     <span class="k">struct</span> <span class="n">rte_ioat_rawdev_config</span> <span class="n">p</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">ring_size</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="p">};</span>
+     <span class="k">struct</span> <span class="n">rte_rawdev_info</span> <span class="n">info</span> <span class="o">=</span> <span class="p">{</span> <span class="p">.</span><span class="n">dev_private</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">p</span> <span class="p">};</span>
+
+     <span class="cm">/* ... */</span>
+
+     <span class="n">p</span><span class="p">.</span><span class="n">ring_size</span> <span class="o">=</span> <span class="n">IOAT_TEST_RINGSIZE</span><span class="p">;</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">rte_rawdev_configure</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">info</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">p</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+             <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error with rte_rawdev_configure()</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+     <span class="p">}</span>
+</pre></div>
+</div>
+<p>Once configured, the device can then be made ready for use by calling the
+<code class="docutils literal notranslate"><span class="pre">rte_rawdev_start()</span></code> API.</p>
+</div>
+<div class="section" id="performing-data-copies">
+<h3><span class="section-number">4.4.3. </span>Performing Data Copies</h3>
+<p>To perform data copies using IOAT rawdev devices, the functions
+<code class="docutils literal notranslate"><span class="pre">rte_ioat_enqueue_copy()</span></code> and <code class="docutils literal notranslate"><span class="pre">rte_ioat_perform_ops()</span></code> should be used.
+Once copies have been completed, the completion will be reported back when
+the application calls <code class="docutils literal notranslate"><span class="pre">rte_ioat_completed_ops()</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_ioat_enqueue_copy()</span></code> function enqueues a single copy to the
+device ring for copying at a later point. The parameters to that function
+include the IOVA addresses of both the source and destination buffers,
+as well as two “handles” to be returned to the user when the copy is
+completed. These handles can be arbitrary values, but two are provided so
+that the library can track handles for both source and destination on
+behalf of the user, e.g. virtual addresses for the buffers, or mbuf
+pointers if packet data is being copied.</p>
+<p>While the <code class="docutils literal notranslate"><span class="pre">rte_ioat_enqueue_copy()</span></code> function enqueues a copy operation on
+the device ring, the copy will not actually be performed until after the
+application calls the <code class="docutils literal notranslate"><span class="pre">rte_ioat_perform_ops()</span></code> function. This function
+informs the device hardware of the elements enqueued on the ring, and the
+device will begin to process them. It is expected that, for efficiency
+reasons, a burst of operations will be enqueued to the device via multiple
+enqueue calls between calls to the <code class="docutils literal notranslate"><span class="pre">rte_ioat_perform_ops()</span></code> function.</p>
+<p>The following code from <code class="docutils literal notranslate"><span class="pre">test_ioat_rawdev.c</span></code> demonstrates how to enqueue
+a burst of copies to the device and start the hardware processing of them:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">*</span><span class="n">srcs</span><span class="p">[</span><span class="mi">32</span><span class="p">],</span> <span class="o">*</span><span class="n">dsts</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">j</span><span class="p">;</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">RTE_DIM</span><span class="p">(</span><span class="n">srcs</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">src_data</span><span class="p">;</span>
+
+        <span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rte_pktmbuf_alloc</span><span class="p">(</span><span class="n">pool</span><span class="p">);</span>
+        <span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">rte_pktmbuf_alloc</span><span class="p">(</span><span class="n">pool</span><span class="p">);</span>
+        <span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">data_len</span> <span class="o">=</span> <span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">pkt_len</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span>
+        <span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">data_len</span> <span class="o">=</span> <span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">pkt_len</span> <span class="o">=</span> <span class="n">length</span><span class="p">;</span>
+        <span class="n">src_data</span> <span class="o">=</span> <span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+                <span class="n">src_data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">rte_ioat_enqueue_copy</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span>
+                        <span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">buf_iova</span> <span class="o">+</span> <span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">data_off</span><span class="p">,</span>
+                        <span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">buf_iova</span> <span class="o">+</span> <span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">data_off</span><span class="p">,</span>
+                        <span class="n">length</span><span class="p">,</span>
+                        <span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                        <span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error with rte_ioat_enqueue_copy for buffer %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+                                <span class="n">i</span><span class="p">);</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="p">}</span>
+<span class="n">rte_ioat_perform_ops</span><span class="p">(</span><span class="n">dev_id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>To retrieve information about completed copies, the API
+<code class="docutils literal notranslate"><span class="pre">rte_ioat_completed_ops()</span></code> should be used. This API will return to the
+application a set of completion handles passed in when the relevant copies
+were enqueued.</p>
+<p>The following code from <code class="docutils literal notranslate"><span class="pre">test_ioat_rawdev.c</span></code> shows the test code
+retrieving information about the completed copies and validating the data
+is correct before freeing the data buffers using the returned handles:</p>
+<div class="highlight-C notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">rte_ioat_completed_ops</span><span class="p">(</span><span class="n">dev_id</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">completed_src</span><span class="p">,</span>
+                <span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">completed_dst</span><span class="p">)</span> <span class="o">!=</span> <span class="n">RTE_DIM</span><span class="p">(</span><span class="n">srcs</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error with rte_ioat_completed_ops</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">RTE_DIM</span><span class="p">(</span><span class="n">srcs</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kt">char</span> <span class="o">*</span><span class="n">src_data</span><span class="p">,</span> <span class="o">*</span><span class="n">dst_data</span><span class="p">;</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">completed_src</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error with source pointer %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">completed_dst</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error with dest pointer %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">src_data</span> <span class="o">=</span> <span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
+        <span class="n">dst_data</span> <span class="o">=</span> <span class="n">rte_pktmbuf_mtod</span><span class="p">(</span><span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="kt">char</span> <span class="o">*</span><span class="p">);</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">length</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">src_data</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="n">dst_data</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="p">{</span>
+                        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Error with copy of packet %u, byte %u</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+                                        <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span>
+                        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">srcs</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+        <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">dsts</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="filling-an-area-of-memory">
+<h3><span class="section-number">4.4.4. </span>Filling an Area of Memory</h3>
+<p>The IOAT driver also has support for the <code class="docutils literal notranslate"><span class="pre">fill</span></code> operation, where an area
+of memory is overwritten, or filled, with a short pattern of data.
+Fill operations can be performed in much the same was as copy operations
+described above, just using the <code class="docutils literal notranslate"><span class="pre">rte_ioat_enqueue_fill()</span></code> function rather
+than the <code class="docutils literal notranslate"><span class="pre">rte_ioat_enqueue_copy()</span></code> function.</p>
+</div>
+<div class="section" id="querying-device-statistics">
+<h3><span class="section-number">4.4.5. </span>Querying Device Statistics</h3>
+<p>The statistics from the IOAT rawdev device can be got via the xstats
+functions in the <code class="docutils literal notranslate"><span class="pre">rte_rawdev</span></code> library, i.e.
+<code class="docutils literal notranslate"><span class="pre">rte_rawdev_xstats_names_get()</span></code>, <code class="docutils literal notranslate"><span class="pre">rte_rawdev_xstats_get()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">rte_rawdev_xstats_by_name_get</span></code>. The statistics returned for each device
+instance are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">failed_enqueues</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">successful_enqueues</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copies_started</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">copies_completed</span></code></p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="ntb.html" class="btn btn-neutral float-right" title="5. NTB Rawdev Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ifpga.html" class="btn btn-neutral float-left" title="3. IFPGA Rawdev Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

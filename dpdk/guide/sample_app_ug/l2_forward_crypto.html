@@ -1,0 +1,712 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>16. L2 Forwarding with Crypto Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics." href="l2_forward_job_stats.html" />
+    <link rel="prev" title="15. Packet copying using Intel® QuickData Technology" href="ioat.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">16. L2 Forwarding with Crypto Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">16.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">16.2. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">16.3. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">16.4. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#crypto-operation-specification">16.4.1. Crypto operation specification</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crypto-device-initialization">16.4.2. Crypto device initialization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#session-creation">16.4.3. Session creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crypto-operation-creation">16.4.4. Crypto operation creation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crypto-operation-enqueuing-dequeuing">16.4.5. Crypto operation enqueuing/dequeuing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">16. </span>L2 Forwarding with Crypto Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/l2_forward_crypto.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="l2-forwarding-with-crypto-sample-application">
+<span id="l2-fwd-crypto-app"></span><h1><span class="section-number">16. </span>L2 Forwarding with Crypto Sample Application</h1>
+<p>The L2 Forwarding with Crypto (l2fwd-crypto) sample application is a simple example of packet processing using
+the Data Plane Development Kit (DPDK), in conjunction with the Cryptodev library.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">16.1. </span>Overview</h2>
+<p>The L2 Forwarding with Crypto sample application performs a crypto operation (cipher/hash)
+specified by the user from command line (or using the default values),
+with a crypto device capable of doing that operation,
+for each packet that is received on a RX_PORT and performs L2 forwarding.
+The destination port is the adjacent port from the enabled portmask, that is,
+if the first four ports are enabled (portmask 0xf),
+ports 0 and 1 forward into each other, and ports 2 and 3 forward into each other.
+Also, if MAC addresses updating is enabled, the MAC addresses are affected as follows:</p>
+<ul class="simple">
+<li><p>The source MAC address is replaced by the TX_PORT MAC address</p></li>
+<li><p>The destination MAC address is replaced by  02:00:00:00:00:TX_PORT_ID</p></li>
+</ul>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">16.2. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">l2fwd-crypt</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">16.3. </span>Running the Application</h2>
+<p>The application requires a number of command line options:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-l2fwd-crypto [EAL options] -- [-p PORTMASK] [-q NQ] [-s] [-T PERIOD] /</span>
+<span class="go">[--cdev_type HW/SW/ANY] [--chain HASH_CIPHER/CIPHER_HASH/CIPHER_ONLY/HASH_ONLY/AEAD] /</span>
+<span class="go">[--cipher_algo ALGO] [--cipher_op ENCRYPT/DECRYPT] [--cipher_key KEY] /</span>
+<span class="go">[--cipher_key_random_size SIZE] [--cipher_iv IV] [--cipher_iv_random_size SIZE] /</span>
+<span class="go">[--auth_algo ALGO] [--auth_op GENERATE/VERIFY] [--auth_key KEY] /</span>
+<span class="go">[--auth_key_random_size SIZE] [--auth_iv IV] [--auth_iv_random_size SIZE] /</span>
+<span class="go">[--aead_algo ALGO] [--aead_op ENCRYPT/DECRYPT] [--aead_key KEY] /</span>
+<span class="go">[--aead_key_random_size SIZE] [--aead_iv] [--aead_iv_random_size SIZE] /</span>
+<span class="go">[--aad AAD] [--aad_random_size SIZE] /</span>
+<span class="go">[--digest size SIZE] [--sessionless] [--cryptodev_mask MASK] /</span>
+<span class="go">[--mac-updating] [--no-mac-updating]</span>
+</pre></div>
+</div>
+<p>where,</p>
+<ul>
+<li><p>p PORTMASK: A hexadecimal bitmask of the ports to configure (default is all the ports)</p></li>
+<li><p>q NQ: A number of queues (=ports) per lcore (default is 1)</p></li>
+<li><p>s: manage all ports from single core</p></li>
+<li><p>T PERIOD: statistics will be refreshed each PERIOD seconds</p>
+<p>(0 to disable, 10 default, 86400 maximum)</p>
+</li>
+<li><p>cdev_type: select preferred crypto device type: HW, SW or anything (ANY)</p>
+<p>(default is ANY)</p>
+</li>
+<li><p>chain: select the operation chaining to perform: Cipher-&gt;Hash (CIPHER_HASH),</p>
+<p>Hash-&gt;Cipher (HASH_CIPHER), Cipher (CIPHER_ONLY), Hash (HASH_ONLY)</p>
+<p>or AEAD (AEAD)</p>
+<p>(default is Cipher-&gt;Hash)</p>
+</li>
+<li><p>cipher_algo: select the ciphering algorithm (default is aes-cbc)</p></li>
+<li><p>cipher_op: select the ciphering operation to perform: ENCRYPT or DECRYPT</p>
+<p>(default is ENCRYPT)</p>
+</li>
+<li><p>cipher_key: set the ciphering key to be used. Bytes has to be separated with “:”</p></li>
+<li><p>cipher_key_random_size: set the size of the ciphering key,</p>
+<p>which will be generated randomly.</p>
+<p>Note that if –cipher_key is used, this will be ignored.</p>
+</li>
+<li><p>cipher_iv: set the cipher IV to be used. Bytes has to be separated with “:”</p></li>
+<li><p>cipher_iv_random_size: set the size of the cipher IV, which will be generated randomly.</p>
+<p>Note that if –cipher_iv is used, this will be ignored.</p>
+</li>
+<li><p>auth_algo: select the authentication algorithm (default is sha1-hmac)</p></li>
+<li><p>auth_op: select the authentication operation to perform: GENERATE or VERIFY</p>
+<p>(default is GENERATE)</p>
+</li>
+<li><p>auth_key: set the authentication key to be used. Bytes has to be separated with “:”</p></li>
+<li><p>auth_key_random_size: set the size of the authentication key,</p>
+<p>which will be generated randomly.</p>
+<p>Note that if –auth_key is used, this will be ignored.</p>
+</li>
+<li><p>auth_iv: set the auth IV to be used. Bytes has to be separated with “:”</p></li>
+<li><p>auth_iv_random_size: set the size of the auth IV, which will be generated randomly.</p>
+<p>Note that if –auth_iv is used, this will be ignored.</p>
+</li>
+<li><p>aead_algo: select the AEAD algorithm (default is aes-gcm)</p></li>
+<li><p>aead_op: select the AEAD operation to perform: ENCRYPT or DECRYPT</p>
+<p>(default is ENCRYPT)</p>
+</li>
+<li><p>aead_key: set the AEAD key to be used. Bytes has to be separated with “:”</p></li>
+<li><p>aead_key_random_size: set the size of the AEAD key,</p>
+<p>which will be generated randomly.</p>
+<p>Note that if –aead_key is used, this will be ignored.</p>
+</li>
+<li><p>aead_iv: set the AEAD IV to be used. Bytes has to be separated with “:”</p></li>
+<li><p>aead_iv_random_size: set the size of the AEAD IV, which will be generated randomly.</p>
+<p>Note that if –aead_iv is used, this will be ignored.</p>
+</li>
+<li><p>aad: set the AAD to be used. Bytes has to be separated with “:”</p></li>
+<li><p>aad_random_size: set the size of the AAD, which will be generated randomly.</p>
+<p>Note that if –aad is used, this will be ignored.</p>
+</li>
+<li><p>digest_size: set the size of the digest to be generated/verified.</p></li>
+<li><p>sessionless: no crypto session will be created.</p></li>
+<li><p>cryptodev_mask: A hexadecimal bitmask of the cryptodevs to be used by the
+application.</p>
+<p>(default is all cryptodevs).</p>
+</li>
+<li><p>[no-]mac-updating: Enable or disable MAC addresses updating (enabled by default).</p></li>
+</ul>
+<p>The application requires that crypto devices capable of performing
+the specified crypto operation are available on application initialization.
+This means that HW crypto device/s must be bound to a DPDK driver or
+a SW crypto device/s (virtual crypto PMD) must be created (using –vdev).</p>
+<p>To run the application in linux environment with 2 lcores, 2 ports and 2 crypto devices, issue the command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./&lt;build_dir&gt;/examples/dpdk-l2fwd-crypto -l <span class="m">0</span>-1 -n <span class="m">4</span> --vdev <span class="s2">&quot;crypto_aesni_mb0&quot;</span> <span class="se">\</span>
+--vdev <span class="s2">&quot;crypto_aesni_mb1&quot;</span> -- -p 0x3 --chain CIPHER_HASH <span class="se">\</span>
+--cipher_op ENCRYPT --cipher_algo aes-cbc <span class="se">\</span>
+--cipher_key <span class="m">00</span>:01:02:03:04:05:06:07:08:09:0a:0b:0c:0d:0e:0f <span class="se">\</span>
+--auth_op GENERATE --auth_algo aes-xcbc-mac <span class="se">\</span>
+--auth_key <span class="m">10</span>:11:12:13:14:15:16:17:18:19:1a:1b:1c:1d:1e:1f
+</pre></div>
+</div>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running applications
+and the Environment Abstraction Layer (EAL) options.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">l2fwd-crypto</span></code> sample application requires IPv4 packets for crypto operation.</p></li>
+<li><p>If multiple Ethernet ports is passed, then equal number of crypto devices are to be passed.</p></li>
+<li><p>All crypto devices shall use the same session.</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">16.4. </span>Explanation</h2>
+<p>The L2 forward with Crypto application demonstrates the performance of a crypto operation
+on a packet received on a RX PORT before forwarding it to a TX PORT.</p>
+<p>The following figure illustrates a sample flow of a packet in the application,
+from reception until transmission.</p>
+<div class="figure align-default" id="id1">
+<span id="figure-l2-fwd-encrypt-flow"></span><img alt="../_images/l2_fwd_encrypt_flow.svg" src="../_images/l2_fwd_encrypt_flow.svg" /><p class="caption"><span class="caption-number">Fig. 16.1 </span><span class="caption-text">Encryption flow Through the L2 Forwarding with Crypto Application</span></p>
+</div>
+<p>The following sections provide some explanation of the application.</p>
+<div class="section" id="crypto-operation-specification">
+<h3><span class="section-number">16.4.1. </span>Crypto operation specification</h3>
+<p>All the packets received in all the ports get transformed by the crypto device/s
+(ciphering and/or authentication).
+The crypto operation to be performed on the packet is parsed from the command line
+(go to “Running the Application” section for all the options).</p>
+<p>If no parameter is passed, the default crypto operation is:</p>
+<ul class="simple">
+<li><p>Encryption with AES-CBC with 128 bit key.</p></li>
+<li><p>Authentication with SHA1-HMAC (generation).</p></li>
+<li><p>Keys, IV and AAD are generated randomly.</p></li>
+</ul>
+<p>There are two methods to pass keys, IV and ADD from the command line:</p>
+<ul>
+<li><p>Passing the full key, separated bytes by “:”:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--cipher_key 00:11:22:33:44
+</pre></div>
+</div>
+</li>
+<li><p>Passing the size, so key is generated randomly:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--cipher_key_random_size 16
+</pre></div>
+</div>
+</li>
+</ul>
+<dl class="simple">
+<dt><strong>Note</strong>:</dt><dd><p>If full key is passed (first method) and the size is passed as well (second method),
+the latter will be ignored.</p>
+</dd>
+</dl>
+<p>Size of these keys are checked (regardless the method), before starting the app,
+to make sure that it is supported by the crypto devices.</p>
+</div>
+<div class="section" id="crypto-device-initialization">
+<h3><span class="section-number">16.4.2. </span>Crypto device initialization</h3>
+<p>Once the encryption operation is defined, crypto devices are initialized.
+The crypto devices must be either bound to a DPDK driver (if they are physical devices)
+or created using the EAL option –vdev (if they are virtual devices),
+when running the application.</p>
+<p>The initialize_cryptodevs() function performs the device initialization.
+It iterates through the list of the available crypto devices and
+check which ones are capable of performing the operation.
+Each device has a set of capabilities associated with it,
+which are stored in the device info structure, so the function checks if the operation
+is within the structure of each device.</p>
+<p>The following code checks if the device supports the specified cipher algorithm
+(similar for the authentication algorithm):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Check if device supports cipher algo */</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="n">opt_cipher_algo</span> <span class="o">=</span> <span class="n">options</span><span class="o">-&gt;</span><span class="n">cipher_xform</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">algo</span><span class="p">;</span>
+<span class="n">cap</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dev_info</span><span class="p">.</span><span class="n">capabilities</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">cap</span><span class="o">-&gt;</span><span class="n">op</span> <span class="o">!=</span> <span class="n">RTE_CRYPTO_OP_TYPE_UNDEFINED</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cap_cipher_algo</span> <span class="o">=</span> <span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">algo</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">xform_type</span> <span class="o">==</span>
+                        <span class="n">RTE_CRYPTO_SYM_XFORM_CIPHER</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">cap_cipher_algo</span> <span class="o">==</span> <span class="n">opt_cipher_algo</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">check_type</span><span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">dev_info</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+                                <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">cap</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">dev_info</span><span class="p">.</span><span class="n">capabilities</span><span class="p">[</span><span class="o">++</span><span class="n">i</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If a capable crypto device is found, key sizes are checked to see if they are supported
+(cipher key and IV for the ciphering):</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm"> * Check if length of provided cipher key is supported</span>
+<span class="cm"> * by the algorithm chosen.</span>
+<span class="cm"> */</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">ckey_param</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">check_supported_size</span><span class="p">(</span>
+                        <span class="n">options</span><span class="o">-&gt;</span><span class="n">cipher_xform</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key</span><span class="p">.</span><span class="n">length</span><span class="p">,</span>
+                        <span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key_size</span><span class="p">.</span><span class="n">min</span><span class="p">,</span>
+                        <span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key_size</span><span class="p">.</span><span class="n">max</span><span class="p">,</span>
+                        <span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key_size</span><span class="p">.</span><span class="n">increment</span><span class="p">)</span>
+                                <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Unsupported cipher key length</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="cm">/*</span>
+<span class="cm"> * Check if length of the cipher key to be randomly generated</span>
+<span class="cm"> * is supported by the algorithm chosen.</span>
+<span class="cm"> */</span>
+<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">ckey_random_size</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">check_supported_size</span><span class="p">(</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">ckey_random_size</span><span class="p">,</span>
+                        <span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key_size</span><span class="p">.</span><span class="n">min</span><span class="p">,</span>
+                        <span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key_size</span><span class="p">.</span><span class="n">max</span><span class="p">,</span>
+                        <span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key_size</span><span class="p">.</span><span class="n">increment</span><span class="p">)</span>
+                                <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Unsupported cipher key length</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">options</span><span class="o">-&gt;</span><span class="n">cipher_xform</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span>
+                                <span class="n">options</span><span class="o">-&gt;</span><span class="n">ckey_random_size</span><span class="p">;</span>
+<span class="cm">/* No size provided, use minimum size. */</span>
+<span class="p">}</span> <span class="k">else</span>
+        <span class="n">options</span><span class="o">-&gt;</span><span class="n">cipher_xform</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key</span><span class="p">.</span><span class="n">length</span> <span class="o">=</span>
+                        <span class="n">cap</span><span class="o">-&gt;</span><span class="n">sym</span><span class="p">.</span><span class="n">cipher</span><span class="p">.</span><span class="n">key_size</span><span class="p">.</span><span class="n">min</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>After all the checks, the device is configured and it is added to the
+crypto device list.</p>
+<dl class="simple">
+<dt><strong>Note</strong>:</dt><dd><p>The number of crypto devices that supports the specified crypto operation
+must be at least the number of ports to be used.</p>
+</dd>
+</dl>
+</div>
+<div class="section" id="session-creation">
+<h3><span class="section-number">16.4.3. </span>Session creation</h3>
+<p>The crypto operation has a crypto session associated to it, which contains
+information such as the transform chain to perform (e.g. ciphering then hashing),
+pointers to the keys, lengths… etc.</p>
+<p>This session is created and is later attached to the crypto operation:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">struct</span> <span class="n">rte_cryptodev_sym_session</span> <span class="o">*</span>
+<span class="nf">initialize_crypto_session</span><span class="p">(</span><span class="k">struct</span> <span class="n">l2fwd_crypto_options</span> <span class="o">*</span><span class="n">options</span><span class="p">,</span>
+                <span class="kt">uint8_t</span> <span class="n">cdev_id</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="k">struct</span> <span class="n">rte_crypto_sym_xform</span> <span class="o">*</span><span class="n">first_xform</span><span class="p">;</span>
+        <span class="k">struct</span> <span class="n">rte_cryptodev_sym_session</span> <span class="o">*</span><span class="n">session</span><span class="p">;</span>
+        <span class="kt">uint8_t</span> <span class="n">socket_id</span> <span class="o">=</span> <span class="n">rte_cryptodev_socket_id</span><span class="p">(</span><span class="n">cdev_id</span><span class="p">);</span>
+        <span class="k">struct</span> <span class="n">rte_mempool</span> <span class="o">*</span><span class="n">sess_mp</span> <span class="o">=</span> <span class="n">session_pool_socket</span><span class="p">[</span><span class="n">socket_id</span><span class="p">];</span>
+
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">xform_chain</span> <span class="o">==</span> <span class="n">L2FWD_CRYPTO_AEAD</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">first_xform</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">aead_xform</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">xform_chain</span> <span class="o">==</span> <span class="n">L2FWD_CRYPTO_CIPHER_HASH</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">first_xform</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">cipher_xform</span><span class="p">;</span>
+                <span class="n">first_xform</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">auth_xform</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">xform_chain</span> <span class="o">==</span> <span class="n">L2FWD_CRYPTO_HASH_CIPHER</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">first_xform</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">auth_xform</span><span class="p">;</span>
+                <span class="n">first_xform</span><span class="o">-&gt;</span><span class="n">next</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">cipher_xform</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">xform_chain</span> <span class="o">==</span> <span class="n">L2FWD_CRYPTO_CIPHER_ONLY</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">first_xform</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">cipher_xform</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="n">first_xform</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">options</span><span class="o">-&gt;</span><span class="n">auth_xform</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">session</span> <span class="o">=</span> <span class="n">rte_cryptodev_sym_session_create</span><span class="p">(</span><span class="n">sess_mp</span><span class="p">);</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">session</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+
+       <span class="k">if</span> <span class="p">(</span><span class="n">rte_cryptodev_sym_session_init</span><span class="p">(</span><span class="n">cdev_id</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span>
+                             <span class="n">first_xform</span><span class="p">,</span> <span class="n">sess_mp</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+
+       <span class="k">return</span> <span class="n">session</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="n">port_cparams</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">session</span> <span class="o">=</span> <span class="n">initialize_crypto_session</span><span class="p">(</span><span class="n">options</span><span class="p">,</span>
+                             <span class="n">port_cparams</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">dev_id</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="crypto-operation-creation">
+<h3><span class="section-number">16.4.4. </span>Crypto operation creation</h3>
+<p>Given N packets received from a RX PORT, N crypto operations are allocated
+and filled:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">nb_rx</span><span class="p">)</span> <span class="p">{</span>
+<span class="cm">/*</span>
+<span class="cm"> * If we can&#39;t allocate a crypto_ops, then drop</span>
+<span class="cm"> * the rest of the burst and dequeue and</span>
+<span class="cm"> * process the packets to free offload structs</span>
+<span class="cm"> */</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">rte_crypto_op_bulk_alloc</span><span class="p">(</span>
+                <span class="n">l2fwd_crypto_op_pool</span><span class="p">,</span>
+                <span class="n">RTE_CRYPTO_OP_TYPE_SYMMETRIC</span><span class="p">,</span>
+                <span class="n">ops_burst</span><span class="p">,</span> <span class="n">nb_rx</span><span class="p">)</span> <span class="o">!=</span>
+                                <span class="n">nb_rx</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+                <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">pkts_burst</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+        <span class="n">nb_rx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After filling the crypto operation (including session attachment),
+the mbuf which will be transformed is attached to it:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>op-&gt;sym-&gt;m_src = m;
+</pre></div>
+</div>
+<p>Since no destination mbuf is set, the source mbuf will be overwritten
+after the operation is done (in-place).</p>
+</div>
+<div class="section" id="crypto-operation-enqueuing-dequeuing">
+<h3><span class="section-number">16.4.5. </span>Crypto operation enqueuing/dequeuing</h3>
+<p>Once the operation has been created, it has to be enqueued in one of the crypto devices.
+Before doing so, for performance reasons, the operation stays in a buffer.
+When the buffer has enough operations (MAX_PKT_BURST), they are enqueued in the device,
+which will perform the operation at that moment:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">int</span>
+<span class="nf">l2fwd_crypto_enqueue</span><span class="p">(</span><span class="k">struct</span> <span class="n">rte_crypto_op</span> <span class="o">*</span><span class="n">op</span><span class="p">,</span>
+                <span class="k">struct</span> <span class="n">l2fwd_crypto_params</span> <span class="o">*</span><span class="n">cparams</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="kt">unsigned</span> <span class="n">lcore_id</span><span class="p">,</span> <span class="n">len</span><span class="p">;</span>
+        <span class="k">struct</span> <span class="n">lcore_queue_conf</span> <span class="o">*</span><span class="n">qconf</span><span class="p">;</span>
+
+        <span class="n">lcore_id</span> <span class="o">=</span> <span class="n">rte_lcore_id</span><span class="p">();</span>
+
+        <span class="n">qconf</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">lcore_queue_conf</span><span class="p">[</span><span class="n">lcore_id</span><span class="p">];</span>
+        <span class="n">len</span> <span class="o">=</span> <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">op_buf</span><span class="p">[</span><span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">].</span><span class="n">len</span><span class="p">;</span>
+        <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">op_buf</span><span class="p">[</span><span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">].</span><span class="n">buffer</span><span class="p">[</span><span class="n">len</span><span class="p">]</span> <span class="o">=</span> <span class="n">op</span><span class="p">;</span>
+        <span class="n">len</span><span class="o">++</span><span class="p">;</span>
+
+        <span class="cm">/* enough ops to be sent */</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">len</span> <span class="o">==</span> <span class="n">MAX_PKT_BURST</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">l2fwd_crypto_send_burst</span><span class="p">(</span><span class="n">qconf</span><span class="p">,</span> <span class="n">MAX_PKT_BURST</span><span class="p">,</span> <span class="n">cparams</span><span class="p">);</span>
+                <span class="n">len</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">op_buf</span><span class="p">[</span><span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">].</span><span class="n">len</span> <span class="o">=</span> <span class="n">len</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">...</span>
+
+<span class="k">static</span> <span class="kt">int</span>
+<span class="n">l2fwd_crypto_send_burst</span><span class="p">(</span><span class="k">struct</span> <span class="n">lcore_queue_conf</span> <span class="o">*</span><span class="n">qconf</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="n">n</span><span class="p">,</span>
+                <span class="k">struct</span> <span class="n">l2fwd_crypto_params</span> <span class="o">*</span><span class="n">cparams</span><span class="p">)</span>
+<span class="p">{</span>
+        <span class="k">struct</span> <span class="n">rte_crypto_op</span> <span class="o">**</span><span class="n">op_buffer</span><span class="p">;</span>
+        <span class="kt">unsigned</span> <span class="n">ret</span><span class="p">;</span>
+
+        <span class="n">op_buffer</span> <span class="o">=</span> <span class="p">(</span><span class="k">struct</span> <span class="n">rte_crypto_op</span> <span class="o">**</span><span class="p">)</span>
+                        <span class="n">qconf</span><span class="o">-&gt;</span><span class="n">op_buf</span><span class="p">[</span><span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">].</span><span class="n">buffer</span><span class="p">;</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">rte_cryptodev_enqueue_burst</span><span class="p">(</span><span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">,</span>
+                        <span class="n">cparams</span><span class="o">-&gt;</span><span class="n">qp_id</span><span class="p">,</span> <span class="n">op_buffer</span><span class="p">,</span> <span class="p">(</span><span class="kt">uint16_t</span><span class="p">)</span> <span class="n">n</span><span class="p">);</span>
+
+        <span class="n">crypto_statistics</span><span class="p">[</span><span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">].</span><span class="n">enqueued</span> <span class="o">+=</span> <span class="n">ret</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">crypto_statistics</span><span class="p">[</span><span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">].</span><span class="n">errors</span> <span class="o">+=</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">ret</span><span class="p">);</span>
+                <span class="k">do</span> <span class="p">{</span>
+                        <span class="n">rte_pktmbuf_free</span><span class="p">(</span><span class="n">op_buffer</span><span class="p">[</span><span class="n">ret</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">sym</span><span class="o">-&gt;</span><span class="n">m_src</span><span class="p">);</span>
+                        <span class="n">rte_crypto_op_free</span><span class="p">(</span><span class="n">op_buffer</span><span class="p">[</span><span class="n">ret</span><span class="p">]);</span>
+                <span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="o">++</span><span class="n">ret</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">);</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>After this, the operations are dequeued from the device, and the transformed mbuf
+is extracted from the operation. Then, the operation is freed and the mbuf is
+forwarded as it is done in the L2 forwarding application.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/* Dequeue packets from Crypto device */</span>
+<span class="k">do</span> <span class="p">{</span>
+        <span class="n">nb_rx</span> <span class="o">=</span> <span class="n">rte_cryptodev_dequeue_burst</span><span class="p">(</span>
+                        <span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">,</span> <span class="n">cparams</span><span class="o">-&gt;</span><span class="n">qp_id</span><span class="p">,</span>
+                        <span class="n">ops_burst</span><span class="p">,</span> <span class="n">MAX_PKT_BURST</span><span class="p">);</span>
+
+        <span class="n">crypto_statistics</span><span class="p">[</span><span class="n">cparams</span><span class="o">-&gt;</span><span class="n">dev_id</span><span class="p">].</span><span class="n">dequeued</span> <span class="o">+=</span>
+                        <span class="n">nb_rx</span><span class="p">;</span>
+
+        <span class="cm">/* Forward crypto&#39;d packets */</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nb_rx</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">m</span> <span class="o">=</span> <span class="n">ops_burst</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-&gt;</span><span class="n">sym</span><span class="o">-&gt;</span><span class="n">m_src</span><span class="p">;</span>
+
+                <span class="n">rte_crypto_op_free</span><span class="p">(</span><span class="n">ops_burst</span><span class="p">[</span><span class="n">j</span><span class="p">]);</span>
+                <span class="n">l2fwd_simple_forward</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">portid</span><span class="p">);</span>
+        <span class="p">}</span>
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="n">nb_rx</span> <span class="o">==</span> <span class="n">MAX_PKT_BURST</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="l2_forward_job_stats.html" class="btn btn-neutral float-right" title="17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ioat.html" class="btn btn-neutral float-left" title="15. Packet copying using Intel® QuickData Technology" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

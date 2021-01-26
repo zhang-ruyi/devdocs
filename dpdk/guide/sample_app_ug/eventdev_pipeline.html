@@ -1,0 +1,422 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>42. Eventdev Pipeline Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="43. Distributor Sample Application" href="dist_app.html" />
+    <link rel="prev" title="41. Pipeline Application" href="pipeline.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">42. Eventdev Pipeline Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">42.1. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">42.2. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#observing-the-application">42.3. Observing the Application</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#configuration">42.3.1. Configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#runtime">42.3.2. Runtime</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shutdown">42.3.3. Shutdown</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">42. </span>Eventdev Pipeline Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/eventdev_pipeline.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="eventdev-pipeline-sample-application">
+<h1><span class="section-number">42. </span>Eventdev Pipeline Sample Application</h1>
+<p>The eventdev pipeline sample application is a sample app that demonstrates
+the usage of the eventdev API using the software PMD. It shows how an
+application can configure a pipeline and assign a set of worker cores to
+perform the processing required.</p>
+<p>The application has a range of command line arguments allowing it to be
+configured for various numbers worker cores, stages,queue depths and cycles per
+stage of work. This is useful for performance testing as well as quickly testing
+a particular pipeline configuration.</p>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">42.1. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">42.2. </span>Running the Application</h2>
+<p>The application has a lot of command line options. This allows specification of
+the eventdev PMD to use, and a number of attributes of the processing pipeline
+options.</p>
+<p>An example eventdev pipeline running with the software eventdev PMD using
+these settings is shown below:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-r1</span></code>: core mask 0x1 for RX</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-t1</span></code>: core mask 0x1 for TX</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-e4</span></code>: core mask 0x4 for the software scheduler</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-w</span> <span class="pre">FF00</span></code>: core mask for worker cores, 8 cores from 8th to 16th</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-s4</span></code>: 4 atomic stages</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-n0</span></code>: process infinite packets (run forever)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-c32</span></code>: worker dequeue depth of 32</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-W1000</span></code>: do 1000 cycles of work per packet in each stage</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-D</span></code>: dump statistics on exit</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-eventdev_pipeline --vdev event_sw0 -- -r1 -t1 \</span>
+<span class="go">-e4 -w FF00 -s4 -n0 -c32 -W1000 -D</span>
+</pre></div>
+</div>
+<p>The application has some sanity checking built-in, so if there is a function
+(e.g.; the RX core) which doesn’t have a cpu core mask assigned, the application
+will print an error message:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Core part of pipeline was not assigned any cores. This will stall the</span>
+<span class="go">pipeline, please check core masks (use -h for details on setting core masks):</span>
+<span class="go">        rx: 0</span>
+<span class="go">        tx: 1</span>
+</pre></div>
+</div>
+<p>Configuration of the eventdev is covered in detail in the programmers guide,
+see the Event Device Library section.</p>
+</div>
+<div class="section" id="observing-the-application">
+<h2><span class="section-number">42.3. </span>Observing the Application</h2>
+<p>At runtime the eventdev pipeline application prints out a summary of the
+configuration, and some runtime statistics like packets per second. On exit the
+worker statistics are printed, along with a full dump of the PMD statistics if
+required. The following sections show sample output for each of the output
+types.</p>
+<div class="section" id="configuration">
+<h3><span class="section-number">42.3.1. </span>Configuration</h3>
+<p>This provides an overview of the pipeline,
+scheduling type at each stage, and parameters to options such as how many
+flows to use and what eventdev PMD is in use. See the following sample output
+for details:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Config:</span>
+<span class="go">      ports: 2</span>
+<span class="go">      workers: 8</span>
+<span class="go">      packets: 0</span>
+<span class="go">      priorities: 1</span>
+<span class="go">      Queue-prio: 0</span>
+<span class="go">      qid0 type: atomic</span>
+<span class="go">      Cores available: 44</span>
+<span class="go">      Cores used: 10</span>
+<span class="go">      Eventdev 0: event_sw</span>
+<span class="go">Stages:</span>
+<span class="go">      Stage 0, Type Atomic    Priority = 128</span>
+<span class="go">      Stage 1, Type Atomic    Priority = 128</span>
+<span class="go">      Stage 2, Type Atomic    Priority = 128</span>
+<span class="go">      Stage 3, Type Atomic    Priority = 128</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="runtime">
+<h3><span class="section-number">42.3.2. </span>Runtime</h3>
+<p>At runtime, the statistics of the consumer are printed, stating the number of
+packets received, runtime in milliseconds, average mpps, and current mpps.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">#</span> consumer <span class="nv">RX</span><span class="o">=</span> xxxxxxx, <span class="nb">time</span> yyyy ms, avg z.zzz mpps <span class="o">[</span>current w.www mpps<span class="o">]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="shutdown">
+<h3><span class="section-number">42.3.3. </span>Shutdown</h3>
+<p>At shutdown, the application prints the number of packets received and
+transmitted, and an overview of the distribution of work across worker cores.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Signal 2 received, preparing to exit...</span>
+<span class="go">  worker 12 thread done. RX=4966581 TX=4966581</span>
+<span class="go">  worker 13 thread done. RX=4963329 TX=4963329</span>
+<span class="go">  worker 14 thread done. RX=4953614 TX=4953614</span>
+<span class="go">  worker 0 thread done. RX=0 TX=0</span>
+<span class="go">  worker 11 thread done. RX=4970549 TX=4970549</span>
+<span class="go">  worker 10 thread done. RX=4986391 TX=4986391</span>
+<span class="go">  worker 9 thread done. RX=4970528 TX=4970528</span>
+<span class="go">  worker 15 thread done. RX=4974087 TX=4974087</span>
+<span class="go">  worker 8 thread done. RX=4979908 TX=4979908</span>
+<span class="go">  worker 2 thread done. RX=0 TX=0</span>
+
+<span class="go">Port Workload distribution:</span>
+<span class="go">worker 0 :      12.5 % (4979876 pkts)</span>
+<span class="go">worker 1 :      12.5 % (4970497 pkts)</span>
+<span class="go">worker 2 :      12.5 % (4986359 pkts)</span>
+<span class="go">worker 3 :      12.5 % (4970517 pkts)</span>
+<span class="go">worker 4 :      12.5 % (4966566 pkts)</span>
+<span class="go">worker 5 :      12.5 % (4963297 pkts)</span>
+<span class="go">worker 6 :      12.5 % (4953598 pkts)</span>
+<span class="go">worker 7 :      12.5 % (4974055 pkts)</span>
+</pre></div>
+</div>
+<p>To get a full dump of the state of the eventdev PMD, pass the <code class="docutils literal notranslate"><span class="pre">-D</span></code> flag to
+this application. When the app is terminated using <code class="docutils literal notranslate"><span class="pre">Ctrl+C</span></code>, the
+<code class="docutils literal notranslate"><span class="pre">rte_event_dev_dump()</span></code> function is called, resulting in a dump of the
+statistics that the PMD provides. The statistics provided depend on the PMD
+used, see the Event Device Drivers section for a list of eventdev PMDs.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="dist_app.html" class="btn btn-neutral float-right" title="43. Distributor Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pipeline.html" class="btn btn-neutral float-left" title="41. Pipeline Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

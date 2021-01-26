@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>5. OCTEON TX2 REE Regexdev Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Event Device Drivers" href="../eventdevs/index.html" />
+    <link rel="prev" title="4. MLX5 RegEx driver" href="mlx5.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">REGEX Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="features_overview.html">1. Overview of RegEx Drivers Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features_overview.html#references">2. References</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features_overview.html#features-table">3. Features Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">4. MLX5 RegEx driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">5. OCTEON TX2 REE Regexdev Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">5.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites-and-compilation-procedure">5.2. Prerequisites and Compilation procedure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#device-setup">5.3. Device Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-options">5.4. Debugging Options</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">REGEX Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">5. </span>OCTEON TX2 REE Regexdev Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/regexdevs/octeontx2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="octeon-tx2-ree-regexdev-driver">
+<h1><span class="section-number">5. </span>OCTEON TX2 REE Regexdev Driver</h1>
+<p>The OCTEON TX2 REE PMD (<strong>librte_regex_octeontx2</strong>) provides poll mode
+regexdev driver support for the inbuilt regex device found in the <strong>Marvell OCTEON TX2</strong>
+SoC family.</p>
+<p>More information about OCTEON TX2 SoC can be found at <a class="reference external" href="https://www.marvell.com/embedded-processors/infrastructure-processors/">Marvell Official Website</a>.</p>
+<div class="section" id="features">
+<h2><span class="section-number">5.1. </span>Features</h2>
+<p>Features of the OCTEON TX2 REE PMD are:</p>
+<ul class="simple">
+<li><p>36 queues</p></li>
+<li><p>Up to 254 matches for each regex operation</p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites-and-compilation-procedure">
+<h2><span class="section-number">5.2. </span>Prerequisites and Compilation procedure</h2>
+<blockquote>
+<div><p>See <a class="reference internal" href="../platform/octeontx2.html"><span class="doc">Marvell OCTEON TX2 Platform Guide</span></a> for setup information.</p>
+</div></blockquote>
+</div>
+<div class="section" id="device-setup">
+<h2><span class="section-number">5.3. </span>Device Setup</h2>
+<p>The OCTEON TX2 REE devices will need to be bound to a user-space IO driver
+for use. The script <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> script included with DPDK can be
+used to view the state of the devices and to bind them to a suitable
+DPDK-supported kernel driver. When querying the status of the devices,
+they will appear under the category of “REGEX devices”, i.e. the command
+<code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span> <span class="pre">--status-dev</span> <span class="pre">regex</span></code> can be used to see the state of
+those devices alone.</p>
+</div>
+<div class="section" id="debugging-options">
+<h2><span class="section-number">5.4. </span>Debugging Options</h2>
+<span id="table-octeontx2-regex-debug-options"></span><table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 5.5 </span><span class="caption-text">OCTEON TX2 regex device debug options</span></caption>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Component</p></th>
+<th class="head"><p>EAL log command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>REE</p></td>
+<td><p>–log-level=’pmd.regex.octeontx2,8’</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../eventdevs/index.html" class="btn btn-neutral float-right" title="Event Device Drivers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="mlx5.html" class="btn btn-neutral float-left" title="4. MLX5 RegEx driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

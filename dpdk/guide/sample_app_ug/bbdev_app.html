@@ -1,0 +1,390 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>49. Loop-back Sample Application using Baseband Device (bbdev) &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="50. NTB Sample Application" href="ntb.html" />
+    <link rel="prev" title="48. IPsec Security Gateway Sample Application" href="ipsec_secgw.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">49. Loop-back Sample Application using Baseband Device (bbdev)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview">49.1. Overview</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">49.2. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">49.3. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">49.4. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-packet-generator-with-baseband-device-sample-application">49.5. Using Packet Generator with baseband device sample application</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">49. </span>Loop-back Sample Application using Baseband Device (bbdev)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/bbdev_app.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="loop-back-sample-application-using-baseband-device-bbdev">
+<h1><span class="section-number">49. </span>Loop-back Sample Application using Baseband Device (bbdev)</h1>
+<p>The baseband sample application is a simple example of packet processing using
+the Data Plane Development Kit (DPDK) for baseband workloads using Wireless
+Device abstraction library.</p>
+<div class="section" id="overview">
+<h2><span class="section-number">49.1. </span>Overview</h2>
+<p>The Baseband device sample application performs a loop-back operation using a
+baseband device capable of transceiving data packets.
+A packet is received on an ethernet port -&gt; enqueued for downlink baseband
+operation -&gt; dequeued from the downlink baseband device -&gt; enqueued for uplink
+baseband operation -&gt; dequeued from the baseband device -&gt; then the received
+packet is compared with the baseband operations output. Then it’s looped back to
+the ethernet port.</p>
+<ul class="simple">
+<li><p>The MAC header is preserved in the packet</p></li>
+</ul>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">49.2. </span>Limitations</h2>
+<ul class="simple">
+<li><p>Only one baseband device and one ethernet port can be used.</p></li>
+</ul>
+</div>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">49.3. </span>Compiling the Application</h2>
+<p>DPDK needs to be built with <code class="docutils literal notranslate"><span class="pre">baseband_turbo_sw</span></code> PMD driver enabled along
+with <code class="docutils literal notranslate"><span class="pre">FLEXRAN</span> <span class="pre">SDK</span></code> Libraries. Refer to <em>SW Turbo Poll Mode Driver</em>
+documentation for more details on this.</p>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">49.4. </span>Running the Application</h2>
+<p>The application accepts a number of command line options:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./&lt;build_dir&gt;/examples/dpdk-bbdev <span class="o">[</span>EAL options<span class="o">]</span> -- <span class="o">[</span>-e ENCODING_CORES<span class="o">]</span> /
+<span class="go">[-d DECODING_CORES] [-p ETH_PORT_ID] [-b BBDEV_ID]</span>
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">e</span> <span class="pre">ENCODING_CORES</span></code>: hexmask for encoding lcores (default = 0x2)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">DECODING_CORES</span></code>: hexmask for decoding lcores (default = 0x4)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">ETH_PORT_ID</span></code>: ethernet port ID (default = 0)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">BBDEV_ID</span></code>: BBDev ID (default = 0)</p></li>
+</ul>
+<p>The application requires that baseband devices is capable of performing
+the specified baseband operation are available on application initialization.
+This means that HW baseband device/s must be bound to a DPDK driver or
+a SW baseband device/s (virtual BBdev) must be created (using –vdev).</p>
+<p>To run the application in linux environment with the turbo_sw baseband device
+using the allow option for pci device running on 1 encoding lcore and 1 decoding lcore
+issue the command:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./&lt;build_dir&gt;/examples/dpdk-bbdev --vdev<span class="o">=</span><span class="s1">&#39;baseband_turbo_sw&#39;</span> -a &lt;NIC0PCIADDR&gt; <span class="se">\</span>
+-c 0x38 --socket-mem<span class="o">=</span><span class="m">2</span>,2 --file-prefix<span class="o">=</span>bbdev -- -e 0x10 -d 0x20
+</pre></div>
+</div>
+<p>where, NIC0PCIADDR is the PCI address of the Rx port</p>
+<p>This command creates one virtual bbdev devices <code class="docutils literal notranslate"><span class="pre">baseband_turbo_sw</span></code> where the
+device gets linked to a corresponding ethernet port as allowed by
+the parameter -a.
+3 cores are allocated to the application, and assigned as:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>core 3 is the main and used to print the stats live on screen,</p></li>
+<li><p>core 4 is the encoding lcore performing Rx and Turbo Encode operations</p></li>
+<li><p>core 5 is the downlink lcore performing Turbo Decode, validation and Tx
+operations</p></li>
+</ul>
+</div></blockquote>
+<p>Refer to the <em>DPDK Getting Started Guide</em> for general information on running
+applications and the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="using-packet-generator-with-baseband-device-sample-application">
+<h2><span class="section-number">49.5. </span>Using Packet Generator with baseband device sample application</h2>
+<p>To allow the bbdev sample app to do the loopback, an influx of traffic is required.
+This can be done by using DPDK Pktgen to burst traffic on two ethernet ports, and
+it will print the transmitted along with the looped-back traffic on Rx ports.
+Executing the command below will generate traffic on the two allowed ethernet
+ports.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span> ./pktgen-3.4.0/app/x86_64-native-linux-gcc/pktgen -c 0x3 <span class="se">\</span>
+--socket-mem<span class="o">=</span><span class="m">1</span>,1 --file-prefix<span class="o">=</span>pg -a &lt;NIC1PCIADDR&gt; -- -m <span class="m">1</span>.0 -P
+</pre></div>
+</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">-c</span> <span class="pre">COREMASK</span></code>: A hexadecimal bitmask of cores to run on</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--socket-mem</span></code>: Memory to allocate on specific sockets (use comma separated values)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--file-prefix</span></code>: Prefix for hugepage filenames</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-a</span> <span class="pre">&lt;NIC1PCIADDR&gt;</span></code>: Add a PCI device in allow list. The argument format is &lt;[domain:]bus:devid.func&gt;.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-m</span> <span class="pre">&lt;string&gt;</span></code>: Matrix for mapping ports to logical cores.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">-P</span></code>: PROMISCUOUS mode</p></li>
+</ul>
+<p>Refer to <em>The Pktgen Application</em> documents for general information on running
+Pktgen with DPDK applications.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="ntb.html" class="btn btn-neutral float-right" title="50. NTB Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ipsec_secgw.html" class="btn btn-neutral float-left" title="48. IPsec Security Gateway Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

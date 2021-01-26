@@ -1,0 +1,462 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>7. RX/TX Callbacks Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Flow Classify Sample Application" href="flow_classify.html" />
+    <link rel="prev" title="6. Basic Forwarding Sample Application" href="skeleton.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7. RX/TX Callbacks Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compiling-the-application">7.1. Compiling the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-application">7.2. Running the Application</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#explanation">7.3. Explanation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#the-main-function">7.3.1. The Main Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-port-initialization-function">7.3.2. The Port Initialization  Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-add-timestamps-callback">7.3.3. The add_timestamps() Callback</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#the-calc-latency-callback">7.3.4. The calc_latency() Callback</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">35. Vhost Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">7. </span>RX/TX Callbacks Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/rxtx_callbacks.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rx-tx-callbacks-sample-application">
+<h1><span class="section-number">7. </span>RX/TX Callbacks Sample Application</h1>
+<p>The RX/TX Callbacks sample application is a packet forwarding application that
+demonstrates the use of user defined callbacks on received and transmitted
+packets. The application performs a simple latency check, using callbacks, to
+determine the time packets spend within the application.</p>
+<p>In the sample application a user defined callback is applied to all received
+packets to add a timestamp. A separate callback is applied to all packets
+prior to transmission to calculate the elapsed time, in CPU cycles.</p>
+<p>If hardware timestamping is supported by the NIC, the sample application will
+also display the average latency since the packet was timestamped in hardware,
+on top of the latency since the packet was received and processed by the RX
+callback.</p>
+<div class="section" id="compiling-the-application">
+<h2><span class="section-number">7.1. </span>Compiling the Application</h2>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">rxtx_callbacks</span></code> sub-directory.</p>
+</div>
+<div class="section" id="running-the-application">
+<h2><span class="section-number">7.2. </span>Running the Application</h2>
+<p>To run the example in a <code class="docutils literal notranslate"><span class="pre">linux</span></code> environment:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/examples/dpdk-rxtx_callbacks -l 1 -n 4 -- [-t]</span>
+</pre></div>
+</div>
+<p>Use -t to enable hardware timestamping. If not supported by the NIC, an error
+will be displayed.</p>
+<p>Refer to <em>DPDK Getting Started Guide</em> for general information on running
+applications and the Environment Abstraction Layer (EAL) options.</p>
+</div>
+<div class="section" id="explanation">
+<h2><span class="section-number">7.3. </span>Explanation</h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">rxtx_callbacks</span></code> application is mainly a simple forwarding application
+based on the <a class="reference internal" href="skeleton.html"><span class="doc">Basic Forwarding Sample Application</span></a>. See that section of the documentation for more
+details of the forwarding part of the application.</p>
+<p>The sections below explain the additional RX/TX callback code.</p>
+<div class="section" id="the-main-function">
+<h3><span class="section-number">7.3.1. </span>The Main Function</h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">main()</span></code> function performs the application initialization and calls the
+execution threads for each lcore. This function is effectively identical to
+the <code class="docutils literal notranslate"><span class="pre">main()</span></code> function explained in <a class="reference internal" href="skeleton.html"><span class="doc">Basic Forwarding Sample Application</span></a>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">lcore_main()</span></code> function is also identical.</p>
+<p>The main difference is in the user defined <code class="docutils literal notranslate"><span class="pre">port_init()</span></code> function where the
+callbacks are added. This is explained in the next section:</p>
+</div>
+<div class="section" id="the-port-initialization-function">
+<h3><span class="section-number">7.3.2. </span>The Port Initialization  Function</h3>
+<p>The main functional part of the port initialization is shown below with
+comments:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kr">inline</span> <span class="kt">int</span>
+<span class="nf">port_init</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">port</span><span class="p">,</span> <span class="k">struct</span> <span class="n">rte_mempool</span> <span class="o">*</span><span class="n">mbuf_pool</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">struct</span> <span class="n">rte_eth_conf</span> <span class="n">port_conf</span> <span class="o">=</span> <span class="n">port_conf_default</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">uint16_t</span> <span class="n">rx_rings</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tx_rings</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">rte_ether_addr</span> <span class="n">addr</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">retval</span><span class="p">;</span>
+    <span class="kt">uint16_t</span> <span class="n">q</span><span class="p">;</span>
+
+    <span class="cm">/* Configure the Ethernet device. */</span>
+    <span class="n">retval</span> <span class="o">=</span> <span class="n">rte_eth_dev_configure</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">rx_rings</span><span class="p">,</span> <span class="n">tx_rings</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">port_conf</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">retval</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+
+    <span class="cm">/* Allocate and set up 1 RX queue per Ethernet port. */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">q</span> <span class="o">&lt;</span> <span class="n">rx_rings</span><span class="p">;</span> <span class="n">q</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="n">rte_eth_rx_queue_setup</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">RX_RING_SIZE</span><span class="p">,</span>
+                <span class="n">rte_eth_dev_socket_id</span><span class="p">(</span><span class="n">port</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">mbuf_pool</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">retval</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Allocate and set up 1 TX queue per Ethernet port. */</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">q</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">q</span> <span class="o">&lt;</span> <span class="n">tx_rings</span><span class="p">;</span> <span class="n">q</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">retval</span> <span class="o">=</span> <span class="n">rte_eth_tx_queue_setup</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">TX_RING_SIZE</span><span class="p">,</span>
+                <span class="n">rte_eth_dev_socket_id</span><span class="p">(</span><span class="n">port</span><span class="p">),</span> <span class="nb">NULL</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">retval</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Start the Ethernet port. */</span>
+    <span class="n">retval</span> <span class="o">=</span> <span class="n">rte_eth_dev_start</span><span class="p">(</span><span class="n">port</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">retval</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+
+    <span class="cm">/* Enable RX in promiscuous mode for the Ethernet device. */</span>
+    <span class="n">retval</span> <span class="o">=</span> <span class="n">rte_eth_promiscuous_enable</span><span class="p">(</span><span class="n">port</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">retval</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">retval</span><span class="p">;</span>
+
+    <span class="cm">/* Add the callbacks for RX and TX.*/</span>
+    <span class="n">rte_eth_add_rx_callback</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">add_timestamps</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+    <span class="n">rte_eth_add_tx_callback</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">calc_latency</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The RX and TX callbacks are added to the ports/queues as function pointers:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">rte_eth_add_rx_callback</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">add_timestamps</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="n">rte_eth_add_tx_callback</span><span class="p">(</span><span class="n">port</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">calc_latency</span><span class="p">,</span>   <span class="nb">NULL</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>More than one callback can be added and additional information can be passed
+to callback function pointers as a <code class="docutils literal notranslate"><span class="pre">void*</span></code>. In the examples above <code class="docutils literal notranslate"><span class="pre">NULL</span></code>
+is used.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">add_timestamps()</span></code> and <code class="docutils literal notranslate"><span class="pre">calc_latency()</span></code> functions are explained below.</p>
+</div>
+<div class="section" id="the-add-timestamps-callback">
+<h3><span class="section-number">7.3.3. </span>The add_timestamps() Callback</h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">add_timestamps()</span></code> callback is added to the RX port and is applied to
+all packets received:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">uint16_t</span>
+<span class="nf">add_timestamps</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">port</span> <span class="n">__rte_unused</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">qidx</span> <span class="n">__rte_unused</span><span class="p">,</span>
+        <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">**</span><span class="n">pkts</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">nb_pkts</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">_</span> <span class="n">__rte_unused</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="n">i</span><span class="p">;</span>
+    <span class="kt">uint64_t</span> <span class="n">now</span> <span class="o">=</span> <span class="n">rte_rdtsc</span><span class="p">();</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_pkts</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="o">*</span><span class="n">tsc_field</span><span class="p">(</span><span class="n">pkts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">=</span> <span class="n">now</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">nb_pkts</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The DPDK function <code class="docutils literal notranslate"><span class="pre">rte_rdtsc()</span></code> is used to add a cycle count timestamp to
+each packet (see the <em>cycles</em> section of the <em>DPDK API Documentation</em> for
+details).</p>
+</div>
+<div class="section" id="the-calc-latency-callback">
+<h3><span class="section-number">7.3.4. </span>The calc_latency() Callback</h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">calc_latency()</span></code> callback is added to the TX port and is applied to all
+packets prior to transmission:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="kt">uint16_t</span>
+<span class="nf">calc_latency</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">port</span> <span class="n">__rte_unused</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">qidx</span> <span class="n">__rte_unused</span><span class="p">,</span>
+        <span class="k">struct</span> <span class="n">rte_mbuf</span> <span class="o">**</span><span class="n">pkts</span><span class="p">,</span> <span class="kt">uint16_t</span> <span class="n">nb_pkts</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">_</span> <span class="n">__rte_unused</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">uint64_t</span> <span class="n">cycles</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">uint64_t</span> <span class="n">now</span> <span class="o">=</span> <span class="n">rte_rdtsc</span><span class="p">();</span>
+    <span class="kt">unsigned</span> <span class="n">i</span><span class="p">;</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nb_pkts</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">cycles</span> <span class="o">+=</span> <span class="n">now</span> <span class="o">-</span> <span class="o">*</span><span class="n">tsc_field</span><span class="p">(</span><span class="n">pkts</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+    <span class="n">latency_numbers</span><span class="p">.</span><span class="n">total_cycles</span> <span class="o">+=</span> <span class="n">cycles</span><span class="p">;</span>
+    <span class="n">latency_numbers</span><span class="p">.</span><span class="n">total_pkts</span>   <span class="o">+=</span> <span class="n">nb_pkts</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">latency_numbers</span><span class="p">.</span><span class="n">total_pkts</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">*</span> <span class="mi">1000ULL</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Latency = %&quot;</span><span class="n">PRIu64</span><span class="s">&quot; cycles</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span>
+                <span class="n">latency_numbers</span><span class="p">.</span><span class="n">total_cycles</span> <span class="o">/</span> <span class="n">latency_numbers</span><span class="p">.</span><span class="n">total_pkts</span><span class="p">);</span>
+
+        <span class="n">latency_numbers</span><span class="p">.</span><span class="n">total_cycles</span> <span class="o">=</span> <span class="n">latency_numbers</span><span class="p">.</span><span class="n">total_pkts</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">nb_pkts</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">calc_latency()</span></code> function accumulates the total number of packets and
+the total number of cycles used. Once more than 100 million packets have been
+transmitted the average cycle count per packet is printed out and the counters
+are reset.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="flow_classify.html" class="btn btn-neutral float-right" title="8. Flow Classify Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="skeleton.html" class="btn btn-neutral float-left" title="6. Basic Forwarding Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

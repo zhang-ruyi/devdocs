@@ -1,0 +1,977 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>20. Security Library &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="21. Rawdevice Library" href="rawdev.html" />
+    <link rel="prev" title="19. RegEx Device Library" href="regexdev.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">20. Security Library</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#design-principles">20.1. Design Principles</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inline-crypto">20.1.1. Inline Crypto</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inline-protocol-offload">20.1.2. Inline protocol offload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#lookaside-protocol-offload">20.1.3. Lookaside protocol offload</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pdcp-flow-diagram">20.1.4. PDCP Flow Diagram</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#docsis-protocol">20.1.5. DOCSIS Protocol</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#device-features-and-capabilities">20.2. Device Features and Capabilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#device-capabilities-for-security-operations">20.2.1. Device Capabilities For Security Operations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#capabilities-discovery">20.2.2. Capabilities Discovery</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-session-create-free">20.2.3. Security Session Create/Free</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-session-configuration">20.2.4. Security session configuration</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#security-api">20.2.5. Security API</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#flow-based-security-session">20.2.6. Flow based Security Session</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing_efficient_code.html">59. Writing Efficient Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">20. </span>Security Library</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/rte_security.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="security-library">
+<h1><span class="section-number">20. </span>Security Library</h1>
+<p>The security library provides a framework for management and provisioning
+of security protocol operations offloaded to hardware based devices. The
+library defines generic APIs to create and free security sessions which can
+support full protocol offload as well as inline crypto operation with
+NIC or crypto devices. The framework currently only supports the IPsec, PDCP
+and DOCSIS protocols and associated operations, other protocols will be added
+in the future.</p>
+<div class="section" id="design-principles">
+<h2><span class="section-number">20.1. </span>Design Principles</h2>
+<p>The security library provides an additional offload capability to an existing
+crypto device and/or ethernet device.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">       +---------------+</span>
+<span class="go">       | rte_security  |</span>
+<span class="go">       +---------------+</span>
+<span class="go">         \            /</span>
+<span class="go">+-----------+    +--------------+</span>
+<span class="go">|  NIC PMD  |    |  CRYPTO PMD  |</span>
+<span class="go">+-----------+    +--------------+</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, the security library does not support the case of multi-process.
+It will be updated in the future releases.</p>
+</div>
+<p>The supported offload types are explained in the sections below.</p>
+<div class="section" id="inline-crypto">
+<h3><span class="section-number">20.1.1. </span>Inline Crypto</h3>
+<p>RTE_SECURITY_ACTION_TYPE_INLINE_CRYPTO:
+The crypto processing for security protocol (e.g. IPsec) is processed
+inline during receive and transmission on NIC port. The flow based
+security action should be configured on the port.</p>
+<p>Ingress Data path - The packet is decrypted in RX path and relevant
+crypto status is set in Rx descriptors. After the successful inline
+crypto processing the packet is presented to host as a regular Rx packet
+however all security protocol related headers are still attached to the
+packet. e.g. In case of IPsec, the IPsec tunnel headers (if any),
+ESP/AH headers will remain in the packet but the received packet
+contains the decrypted data where the encrypted data was when the packet
+arrived. The driver Rx path check the descriptors and based on the
+crypto status sets additional flags in the rte_mbuf.ol_flags field.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The underlying device may not support crypto processing for all ingress packet
+matching to a particular flow (e.g. fragmented packets), such packets will
+be passed as encrypted packets. It is the responsibility of application to
+process such encrypted packets using other crypto driver instance.</p>
+</div>
+<p>Egress Data path - The software prepares the egress packet by adding
+relevant security protocol headers. Only the data will not be
+encrypted by the software. The driver will accordingly configure the
+tx descriptors. The hardware device will encrypt the data before sending the
+packet out.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The underlying device may support post encryption TSO.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  Egress Data Path</span>
+<span class="go">         |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">|  egress IPsec   |</span>
+<span class="go">|        |        |</span>
+<span class="go">| +------V------+ |</span>
+<span class="go">| | SADB lookup | |</span>
+<span class="go">| +------|------+ |</span>
+<span class="go">| +------V------+ |</span>
+<span class="go">| |   Tunnel    | |   &lt;------ Add tunnel header to packet</span>
+<span class="go">| +------|------+ |</span>
+<span class="go">| +------V------+ |</span>
+<span class="go">| |     ESP     | |   &lt;------ Add ESP header without trailer to packet</span>
+<span class="go">| |             | |   &lt;------ Mark packet to be offloaded, add trailer</span>
+<span class="go">| +------|------+ |            meta-data to mbuf</span>
+<span class="go">+--------V--------+</span>
+<span class="go">         |</span>
+<span class="go">+--------V--------+</span>
+<span class="go">|    L2 Stack     |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">         |</span>
+<span class="go">+--------V--------+</span>
+<span class="go">|                 |</span>
+<span class="go">|     NIC PMD     |   &lt;------ Set hw context for inline crypto offload</span>
+<span class="go">|                 |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">         |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">|  HW ACCELERATED |   &lt;------ Packet Encryption and</span>
+<span class="go">|        NIC      |           Authentication happens inline</span>
+<span class="go">|                 |</span>
+<span class="go">+-----------------+</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="inline-protocol-offload">
+<h3><span class="section-number">20.1.2. </span>Inline protocol offload</h3>
+<p>RTE_SECURITY_ACTION_TYPE_INLINE_PROTOCOL:
+The crypto and protocol processing for security protocol (e.g. IPsec)
+is processed inline during receive and transmission.  The flow based
+security action should be configured on the port.</p>
+<p>Ingress Data path - The packet is decrypted in the RX path and relevant
+crypto status is set in the Rx descriptors. After the successful inline
+crypto processing the packet is presented to the host as a regular Rx packet
+but all security protocol related headers are optionally removed from the
+packet. e.g. in the case of IPsec, the IPsec tunnel headers (if any),
+ESP/AH headers will be removed from the packet and the received packet
+will contains the decrypted packet only. The driver Rx path checks the
+descriptors and based on the crypto status sets additional flags in
+<code class="docutils literal notranslate"><span class="pre">rte_mbuf.ol_flags</span></code> field. The driver would also set device-specific
+metadata in <code class="docutils literal notranslate"><span class="pre">RTE_SECURITY_DYNFIELD_NAME</span></code> field.
+This will allow the application to identify the security processing
+done on the packet.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The underlying device in this case is stateful. It is expected that
+the device shall support crypto processing for all kind of packets matching
+to a given flow, this includes fragmented packets (post reassembly).
+E.g. in case of IPsec the device may internally manage anti-replay etc.
+It will provide a configuration option for anti-replay behavior i.e. to drop
+the packets or pass them to driver with error flags set in the descriptor.</p>
+</div>
+<p>Egress Data path - The software will send the plain packet without any
+security protocol headers added to the packet. The driver will configure
+the security index and other requirement in tx descriptors.
+The hardware device will do security processing on the packet that includes
+adding the relevant protocol headers and encrypting the data before sending
+the packet out. The software should make sure that the buffer
+has required head room and tail room for any protocol header addition. The
+software may also do early fragmentation if the resultant packet is expected
+to cross the MTU size.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The underlying device will manage state information required for egress
+processing. E.g. in case of IPsec, the seq number will be added to the
+packet, however the device shall provide indication when the sequence number
+is about to overflow. The underlying device may support post encryption TSO.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> Egress Data Path</span>
+<span class="go">         |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">|  egress IPsec   |</span>
+<span class="go">|        |        |</span>
+<span class="go">| +------V------+ |</span>
+<span class="go">| | SADB lookup | |</span>
+<span class="go">| +------|------+ |</span>
+<span class="go">| +------V------+ |</span>
+<span class="go">| |   Desc      | |   &lt;------ Mark packet to be offloaded</span>
+<span class="go">| +------|------+ |</span>
+<span class="go">+--------V--------+</span>
+<span class="go">         |</span>
+<span class="go">+--------V--------+</span>
+<span class="go">|    L2 Stack     |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">         |</span>
+<span class="go">+--------V--------+</span>
+<span class="go">|                 |</span>
+<span class="go">|     NIC PMD     |   &lt;------ Set hw context for inline crypto offload</span>
+<span class="go">|                 |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">         |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">|  HW ACCELERATED |   &lt;------ Add tunnel, ESP header etc header to</span>
+<span class="go">|        NIC      |           packet. Packet Encryption and</span>
+<span class="go">|                 |           Authentication happens inline.</span>
+<span class="go">+-----------------+</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lookaside-protocol-offload">
+<h3><span class="section-number">20.1.3. </span>Lookaside protocol offload</h3>
+<p>RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL:
+This extends librte_cryptodev to support the programming of IPsec
+Security Association (SA) as part of a crypto session creation including
+the definition. In addition to standard crypto processing, as defined by
+the cryptodev, the security protocol processing is also offloaded to the
+crypto device.</p>
+<p>Decryption: The packet is sent to the crypto device for security
+protocol processing. The device will decrypt the packet and it will also
+optionally remove additional security headers from the packet.
+E.g. in case of IPsec, IPsec tunnel headers (if any), ESP/AH headers
+will be removed from the packet and the decrypted packet may contain
+plain data only.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In case of IPsec the device may internally manage anti-replay etc.
+It will provide a configuration option for anti-replay behavior i.e. to drop
+the packets or pass them to driver with error flags set in descriptor.</p>
+</div>
+<p>Encryption: The software will submit the packet to cryptodev as usual
+for encryption, the hardware device in this case will also add the relevant
+security protocol header along with encrypting the packet. The software
+should make sure that the buffer has required head room and tail room
+for any protocol header addition.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In the case of IPsec, the seq number will be added to the packet,
+It shall provide an indication when the sequence number is about to
+overflow.</p>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">  Egress Data Path</span>
+<span class="go">         |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">|  egress IPsec   |</span>
+<span class="go">|        |        |</span>
+<span class="go">| +------V------+ |</span>
+<span class="go">| | SADB lookup | |   &lt;------ SA maps to cryptodev session</span>
+<span class="go">| +------|------+ |</span>
+<span class="go">| +------|------+ |</span>
+<span class="go">| |      \--------------------\</span>
+<span class="go">| |    Crypto   | |           |  &lt;- Crypto processing through</span>
+<span class="go">| |      /----------------\   |     inline crypto PMD</span>
+<span class="go">| +------|------+ |       |   |</span>
+<span class="go">+--------V--------+       |   |</span>
+<span class="go">         |                |   |</span>
+<span class="go">+--------V--------+       |   |  create   &lt;-- SA is added to hw</span>
+<span class="go">|    L2 Stack     |       |   |  inline       using existing create</span>
+<span class="go">+--------|--------+       |   |  session      sym session APIs</span>
+<span class="go">         |                |   |    |</span>
+<span class="go">+--------V--------+   +---|---|----V---+</span>
+<span class="go">|                 |   |   \---/    |   | &lt;--- Add tunnel, ESP header etc</span>
+<span class="go">|     NIC PMD     |   |   INLINE   |   |      header to packet.Packet</span>
+<span class="go">|                 |   | CRYPTO PMD |   |      Encryption/Decryption and</span>
+<span class="go">+--------|--------+   +----------------+      Authentication happens</span>
+<span class="go">         |                                    inline.</span>
+<span class="go">+--------|--------+</span>
+<span class="go">|       NIC       |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">         V</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pdcp-flow-diagram">
+<h3><span class="section-number">20.1.4. </span>PDCP Flow Diagram</h3>
+<p>Based on 3GPP TS 36.323 Evolved Universal Terrestrial Radio Access (E-UTRA);
+Packet Data Convergence Protocol (PDCP) specification</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="n">Transmitting</span> <span class="n">PDCP</span> <span class="n">Entity</span>          <span class="n">Receiving</span> <span class="n">PDCP</span> <span class="n">Entity</span>
+          <span class="o">|</span>                                   <span class="o">^</span>
+          <span class="o">|</span>                       <span class="o">+-----------|-----------+</span>
+          <span class="n">V</span>                       <span class="o">|</span> <span class="n">In</span> <span class="n">order</span> <span class="n">delivery</span> <span class="n">and</span> <span class="o">|</span>
+<span class="o">+---------|----------+</span>            <span class="o">|</span> <span class="n">Duplicate</span> <span class="n">detection</span>   <span class="o">|</span>
+<span class="o">|</span> <span class="n">Sequence</span> <span class="n">Numbering</span> <span class="o">|</span>            <span class="o">|</span>  <span class="p">(</span><span class="n">Data</span> <span class="n">Plane</span> <span class="n">only</span><span class="p">)</span>    <span class="o">|</span>
+<span class="o">+---------|----------+</span>            <span class="o">+-----------|-----------+</span>
+          <span class="o">|</span>                                   <span class="o">|</span>
+<span class="o">+---------|----------+</span>            <span class="o">+-----------|----------+</span>
+<span class="o">|</span> <span class="n">Header</span> <span class="n">Compression</span><span class="o">*|</span>            <span class="o">|</span> <span class="n">Header</span> <span class="n">Decompression</span><span class="o">*|</span>
+<span class="o">|</span> <span class="p">(</span><span class="n">Data</span><span class="o">-</span><span class="n">Plane</span> <span class="n">only</span><span class="p">)</span>  <span class="o">|</span>            <span class="o">|</span>   <span class="p">(</span><span class="n">Data</span> <span class="n">Plane</span> <span class="n">only</span><span class="p">)</span>  <span class="o">|</span>
+<span class="o">+---------|----------+</span>            <span class="o">+-----------|----------+</span>
+          <span class="o">|</span>                                   <span class="o">|</span>
+<span class="o">+---------|-----------+</span>           <span class="o">+-----------|----------+</span>
+<span class="o">|</span> <span class="n">Integrity</span> <span class="n">Protection</span><span class="o">|</span>           <span class="o">|</span><span class="n">Integrity</span> <span class="n">Verification</span><span class="o">|</span>
+<span class="o">|</span> <span class="p">(</span><span class="n">Control</span> <span class="n">Plane</span> <span class="n">only</span><span class="p">)</span><span class="o">|</span>           <span class="o">|</span> <span class="p">(</span><span class="n">Control</span> <span class="n">Plane</span> <span class="n">only</span><span class="p">)</span> <span class="o">|</span>
+<span class="o">+---------|-----------+</span>           <span class="o">+-----------|----------+</span>
+<span class="o">+---------|-----------+</span>            <span class="o">+----------|----------+</span>
+<span class="o">|</span>     <span class="n">Ciphering</span>       <span class="o">|</span>            <span class="o">|</span>     <span class="n">Deciphering</span>     <span class="o">|</span>
+<span class="o">+---------|-----------+</span>            <span class="o">+----------|----------+</span>
+<span class="o">+---------|-----------+</span>            <span class="o">+----------|----------+</span>
+<span class="o">|</span>   <span class="n">Add</span> <span class="n">PDCP</span> <span class="n">header</span>   <span class="o">|</span>            <span class="o">|</span> <span class="n">Remove</span> <span class="n">PDCP</span> <span class="n">Header</span>  <span class="o">|</span>
+<span class="o">+---------|-----------+</span>            <span class="o">+----------|----------+</span>
+          <span class="o">|</span>                                   <span class="o">|</span>
+          <span class="o">+-----------------&gt;&gt;----------------+</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Header Compression and decompression are not supported currently.</p></li>
+</ul>
+</div>
+<p>Just like IPsec, in case of PDCP also header addition/deletion, cipher/
+de-cipher, integrity protection/verification is done based on the action
+type chosen.</p>
+</div>
+<div class="section" id="docsis-protocol">
+<h3><span class="section-number">20.1.5. </span>DOCSIS Protocol</h3>
+<p>The Data Over Cable Service Interface Specification (DOCSIS) support comprises
+the combination of encryption/decryption and CRC generation/verification, for
+use in a DOCSIS-MAC pipeline.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span>       <span class="n">Downlink</span>                       <span class="n">Uplink</span>
+       <span class="o">--------</span>                       <span class="o">------</span>
+
+    <span class="n">Ethernet</span> <span class="n">frame</span>                <span class="n">Ethernet</span> <span class="n">frame</span>
+   <span class="n">from</span> <span class="n">core</span> <span class="n">network</span>              <span class="n">to</span> <span class="n">core</span> <span class="n">network</span>
+          <span class="o">|</span>                              <span class="o">^</span>
+          <span class="o">~</span>                              <span class="o">|</span>
+          <span class="o">|</span>                              <span class="o">~</span>         <span class="o">----+</span>
+          <span class="n">V</span>                              <span class="o">|</span>             <span class="o">|</span>
+<span class="o">+---------|----------+</span>        <span class="o">+----------|---------+</span>   <span class="o">|</span>
+<span class="o">|</span>   <span class="n">CRC</span> <span class="n">generation</span>   <span class="o">|</span>        <span class="o">|</span>  <span class="n">CRC</span> <span class="n">verification</span>  <span class="o">|</span>   <span class="o">|</span>
+<span class="o">+---------|----------+</span>        <span class="o">+----------|---------+</span>   <span class="o">|</span>   <span class="n">combined</span>
+          <span class="o">|</span>                              <span class="o">|</span>             <span class="o">&gt;</span> <span class="n">Crypto</span> <span class="o">+</span> <span class="n">CRC</span>
+<span class="o">+---------|----------+</span>        <span class="o">+----------|---------+</span>   <span class="o">|</span>
+<span class="o">|</span>     <span class="n">Encryption</span>     <span class="o">|</span>        <span class="o">|</span>     <span class="n">Decryption</span>     <span class="o">|</span>   <span class="o">|</span>
+<span class="o">+---------|----------+</span>        <span class="o">+----------|---------+</span>   <span class="o">|</span>
+          <span class="o">|</span>                              <span class="o">^</span>             <span class="o">|</span>
+          <span class="o">~</span>                              <span class="o">|</span>         <span class="o">----+</span>
+          <span class="o">|</span>                              <span class="o">~</span>
+          <span class="n">V</span>                              <span class="o">|</span>
+     <span class="n">DOCSIS</span> <span class="n">frame</span>                  <span class="n">DOCSIS</span> <span class="n">frame</span>
+    <span class="n">to</span> <span class="n">Cable</span> <span class="n">Modem</span>               <span class="n">from</span> <span class="n">Cable</span> <span class="n">Modem</span>
+</pre></div>
+</div>
+<p>The encryption/decryption is a combination of CBC and CFB modes using either AES
+or DES algorithms as specified in the DOCSIS Security Specification (from DPDK
+lib_rtecryptodev perspective, these are RTE_CRYPTO_CIPHER_AES_DOCSISBPI and
+RTE_CRYPTO_CIPHER_DES_DOCSISBPI).</p>
+<p>The CRC is Ethernet CRC-32 as specified in Ethernet/[ISO/IEC 8802-3].</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>The offset and length of data for which CRC needs to be computed are
+specified via the auth offset and length fields of the rte_crypto_sym_op.</p></li>
+<li><p>Other DOCSIS protocol functionality such as Header Checksum (HCS)
+calculation may be added in the future.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="device-features-and-capabilities">
+<h2><span class="section-number">20.2. </span>Device Features and Capabilities</h2>
+<div class="section" id="device-capabilities-for-security-operations">
+<h3><span class="section-number">20.2.1. </span>Device Capabilities For Security Operations</h3>
+<p>The device (crypto or ethernet) capabilities which support security operations,
+are defined by the security action type, security protocol, protocol
+capabilities and corresponding crypto capabilities for security. For the full
+scope of the Security capability see definition of rte_security_capability
+structure in the <em>DPDK API Reference</em>.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_security_capability</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Each driver (crypto or ethernet) defines its own private array of capabilities
+for the operations it supports. Below is an example of the capabilities for a
+PMD which supports the IPsec and PDCP protocol.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_security_capability</span> <span class="n">pmd_security_capabilities</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="cm">/* IPsec Lookaside Protocol offload ESP Tunnel Egress */</span>
+            <span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">RTE_SECURITY_PROTOCOL_IPSEC</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">ipsec</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">proto</span> <span class="o">=</span> <span class="n">RTE_SECURITY_IPSEC_SA_PROTO_ESP</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">RTE_SECURITY_IPSEC_SA_MODE_TUNNEL</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">RTE_SECURITY_IPSEC_SA_DIR_EGRESS</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">.</span><span class="n">crypto_capabilities</span> <span class="o">=</span> <span class="n">pmd_capabilities</span>
+    <span class="p">},</span>
+    <span class="p">{</span> <span class="cm">/* IPsec Lookaside Protocol offload ESP Tunnel Ingress */</span>
+            <span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">RTE_SECURITY_PROTOCOL_IPSEC</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">ipsec</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">proto</span> <span class="o">=</span> <span class="n">RTE_SECURITY_IPSEC_SA_PROTO_ESP</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">RTE_SECURITY_IPSEC_SA_MODE_TUNNEL</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">RTE_SECURITY_IPSEC_SA_DIR_INGRESS</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="p">.</span><span class="n">crypto_capabilities</span> <span class="o">=</span> <span class="n">pmd_capabilities</span>
+    <span class="p">},</span>
+    <span class="p">{</span> <span class="cm">/* PDCP Lookaside Protocol offload Data Plane */</span>
+            <span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">RTE_SECURITY_PROTOCOL_PDCP</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">pdcp</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">RTE_SECURITY_PDCP_MODE_DATA</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">capa_flags</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="p">.</span><span class="n">crypto_capabilities</span> <span class="o">=</span> <span class="n">pmd_capabilities</span>
+    <span class="p">},</span>
+    <span class="p">{</span> <span class="cm">/* PDCP Lookaside Protocol offload Control */</span>
+            <span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">RTE_SECURITY_PROTOCOL_PDCP</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">pdcp</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">domain</span> <span class="o">=</span> <span class="n">RTE_SECURITY_PDCP_MODE_CONTROL</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">capa_flags</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="p">},</span>
+            <span class="p">.</span><span class="n">crypto_capabilities</span> <span class="o">=</span> <span class="n">pmd_capabilities</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+            <span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">RTE_SECURITY_ACTION_TYPE_NONE</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_cryptodev_capabilities</span> <span class="n">pmd_capabilities</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span>    <span class="cm">/* SHA1 HMAC */</span>
+        <span class="p">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_OP_TYPE_SYMMETRIC</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">sym</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="p">.</span><span class="n">xform_type</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_SYM_XFORM_AUTH</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">auth</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="p">.</span><span class="n">algo</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_AUTH_SHA1_HMAC</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">key_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">64</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="p">},</span>
+                <span class="p">.</span><span class="n">digest_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="p">},</span>
+                <span class="p">.</span><span class="n">aad_size</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">},</span>
+                <span class="p">.</span><span class="n">iv_size</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="p">{</span>    <span class="cm">/* AES CBC */</span>
+        <span class="p">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_OP_TYPE_SYMMETRIC</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">sym</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="p">.</span><span class="n">xform_type</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_SYM_XFORM_CIPHER</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">cipher</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="p">.</span><span class="n">algo</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_CIPHER_AES_CBC</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">key_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">8</span>
+                <span class="p">},</span>
+                <span class="p">.</span><span class="n">iv_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Below is an example of the capabilities for a PMD which supports the DOCSIS
+protocol.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_security_capability</span> <span class="n">pmd_security_capabilities</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span> <span class="cm">/* DOCSIS Uplink */</span>
+            <span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">RTE_SECURITY_PROTOCOL_DOCSIS</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">docsis</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">RTE_SECURITY_DOCSIS_UPLINK</span>
+            <span class="p">},</span>
+            <span class="p">.</span><span class="n">crypto_capabilities</span> <span class="o">=</span> <span class="n">pmd_capabilities</span>
+    <span class="p">},</span>
+    <span class="p">{</span> <span class="cm">/* DOCSIS Downlink */</span>
+            <span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">protocol</span> <span class="o">=</span> <span class="n">RTE_SECURITY_PROTOCOL_DOCSIS</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">docsis</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">RTE_SECURITY_DOCSIS_DOWNLINK</span>
+            <span class="p">},</span>
+            <span class="p">.</span><span class="n">crypto_capabilities</span> <span class="o">=</span> <span class="n">pmd_capabilities</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+            <span class="p">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">RTE_SECURITY_ACTION_TYPE_NONE</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+<span class="k">static</span> <span class="k">const</span> <span class="k">struct</span> <span class="n">rte_cryptodev_capabilities</span> <span class="n">pmd_capabilities</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="p">{</span>    <span class="cm">/* AES DOCSIS BPI */</span>
+        <span class="p">.</span><span class="n">op</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_OP_TYPE_SYMMETRIC</span><span class="p">,</span>
+        <span class="p">.</span><span class="n">sym</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="p">.</span><span class="n">xform_type</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_SYM_XFORM_CIPHER</span><span class="p">,</span>
+            <span class="p">.</span><span class="n">cipher</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="p">.</span><span class="n">algo</span> <span class="o">=</span> <span class="n">RTE_CRYPTO_CIPHER_AES_DOCSISBPI</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">block_size</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                <span class="p">.</span><span class="n">key_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">32</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">16</span>
+                <span class="p">},</span>
+                <span class="p">.</span><span class="n">iv_size</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="p">.</span><span class="n">min</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">max</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+                    <span class="p">.</span><span class="n">increment</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+
+    <span class="n">RTE_CRYPTODEV_END_OF_CAPABILITIES_LIST</span><span class="p">()</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="capabilities-discovery">
+<h3><span class="section-number">20.2.2. </span>Capabilities Discovery</h3>
+<p>Discovering the features and capabilities of a driver (crypto/ethernet)
+is achieved through the <code class="docutils literal notranslate"><span class="pre">rte_security_capabilities_get()</span></code> function.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span> <span class="k">struct</span> <span class="n">rte_security_capability</span> <span class="o">*</span><span class="nf">rte_security_capabilities_get</span><span class="p">(</span><span class="kt">uint16_t</span> <span class="n">id</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>This allows the user to query a specific driver and get all device
+security capabilities. It returns an array of <code class="docutils literal notranslate"><span class="pre">rte_security_capability</span></code> structures
+which contains all the capabilities for that device.</p>
+</div>
+<div class="section" id="security-session-create-free">
+<h3><span class="section-number">20.2.3. </span>Security Session Create/Free</h3>
+<p>Security Sessions are created to store the immutable fields of a particular Security
+Association for a particular protocol which is defined by a security session
+configuration structure which is used in the operation processing of a packet flow.
+Sessions are used to manage protocol specific information as well as crypto parameters.
+Security sessions cache this immutable data in a optimal way for the underlying PMD
+and this allows further acceleration of the offload of Crypto workloads.</p>
+<p>The Security framework provides APIs to create and free sessions for crypto/ethernet
+devices, where sessions are mempool objects. It is the application’s responsibility
+to create and manage two session mempools - one for session and other for session
+private data. The private session data mempool object size should be able to
+accommodate the driver’s private data of security session. The application can get
+the size of session private data using API <code class="docutils literal notranslate"><span class="pre">rte_security_session_get_size</span></code>.
+And the session mempool object size should be enough to accommodate
+<code class="docutils literal notranslate"><span class="pre">rte_security_session</span></code>.</p>
+<p>Once the session mempools have been created, <code class="docutils literal notranslate"><span class="pre">rte_security_session_create()</span></code>
+is used to allocate and initialize a session for the required crypto/ethernet device.</p>
+<p>Session APIs need a parameter <code class="docutils literal notranslate"><span class="pre">rte_security_ctx</span></code> to identify the crypto/ethernet
+security ops. This parameter can be retrieved using the APIs
+<code class="docutils literal notranslate"><span class="pre">rte_cryptodev_get_sec_ctx()</span></code> (for crypto device) or <code class="docutils literal notranslate"><span class="pre">rte_eth_dev_get_sec_ctx</span></code>
+(for ethernet port).</p>
+<p>Sessions already created can be updated with <code class="docutils literal notranslate"><span class="pre">rte_security_session_update()</span></code>.</p>
+<p>When a session is no longer used, the user must call <code class="docutils literal notranslate"><span class="pre">rte_security_session_destroy()</span></code>
+to free the driver private session data and return the memory back to the mempool.</p>
+<p>For look aside protocol offload to hardware crypto device, the <code class="docutils literal notranslate"><span class="pre">rte_crypto_op</span></code>
+created by the application is attached to the security session by the API
+<code class="docutils literal notranslate"><span class="pre">rte_security_attach_session()</span></code>.</p>
+<p>For Inline Crypto and Inline protocol offload, device specific defined metadata is
+updated in the mbuf using <code class="docutils literal notranslate"><span class="pre">rte_security_set_pkt_metadata()</span></code> if
+<code class="docutils literal notranslate"><span class="pre">DEV_TX_OFFLOAD_SEC_NEED_MDATA</span></code> is set.</p>
+<p>For inline protocol offloaded ingress traffic, the application can register a
+pointer, <code class="docutils literal notranslate"><span class="pre">userdata</span></code> , in the security session. When the packet is received,
+<code class="docutils literal notranslate"><span class="pre">rte_security_get_userdata()</span></code> would return the userdata registered for the
+security session which processed the packet.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In case of inline processed packets, <code class="docutils literal notranslate"><span class="pre">RTE_SECURITY_DYNFIELD_NAME</span></code> field
+would be used by the driver to relay information on the security processing
+associated with the packet. In ingress, the driver would set this in Rx
+path while in egress, <code class="docutils literal notranslate"><span class="pre">rte_security_set_pkt_metadata()</span></code> would perform a
+similar operation. The application is expected not to modify the field
+when it has relevant info. For ingress, this device-specific 64 bit value
+is required to derive other information (like userdata), required for
+identifying the security processing done on the packet.</p>
+</div>
+</div>
+<div class="section" id="security-session-configuration">
+<h3><span class="section-number">20.2.4. </span>Security session configuration</h3>
+<p>Security Session configuration structure is defined as <code class="docutils literal notranslate"><span class="pre">rte_security_session_conf</span></code></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span> <span class="n">rte_security_session_conf</span> <span class="p">{</span>
+    <span class="k">enum</span> <span class="n">rte_security_session_action_type</span> <span class="n">action_type</span><span class="p">;</span>
+    <span class="cm">/**&lt; Type of action to be performed on the session */</span>
+    <span class="k">enum</span> <span class="n">rte_security_session_protocol</span> <span class="n">protocol</span><span class="p">;</span>
+    <span class="cm">/**&lt; Security protocol to be configured */</span>
+    <span class="k">union</span> <span class="p">{</span>
+            <span class="k">struct</span> <span class="n">rte_security_ipsec_xform</span> <span class="n">ipsec</span><span class="p">;</span>
+            <span class="k">struct</span> <span class="n">rte_security_macsec_xform</span> <span class="n">macsec</span><span class="p">;</span>
+            <span class="k">struct</span> <span class="n">rte_security_pdcp_xform</span> <span class="n">pdcp</span><span class="p">;</span>
+            <span class="k">struct</span> <span class="n">rte_security_docsis_xform</span> <span class="n">docsis</span><span class="p">;</span>
+    <span class="p">};</span>
+    <span class="cm">/**&lt; Configuration parameters for security session */</span>
+    <span class="k">struct</span> <span class="n">rte_crypto_sym_xform</span> <span class="o">*</span><span class="n">crypto_xform</span><span class="p">;</span>
+    <span class="cm">/**&lt; Security Session Crypto Transformations */</span>
+    <span class="kt">void</span> <span class="o">*</span><span class="n">userdata</span><span class="p">;</span>
+    <span class="cm">/**&lt; Application specific userdata to be saved with session */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The configuration structure reuses the <code class="docutils literal notranslate"><span class="pre">rte_crypto_sym_xform</span></code> struct for crypto related
+configuration. The <code class="docutils literal notranslate"><span class="pre">rte_security_session_action_type</span></code> struct is used to specify whether the
+session is configured for Lookaside Protocol offload or Inline Crypto or Inline Protocol
+Offload.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">rte_security_session_action_type</span> <span class="p">{</span>
+    <span class="n">RTE_SECURITY_ACTION_TYPE_NONE</span><span class="p">,</span>
+    <span class="cm">/**&lt; No security actions */</span>
+    <span class="n">RTE_SECURITY_ACTION_TYPE_INLINE_CRYPTO</span><span class="p">,</span>
+    <span class="cm">/**&lt; Crypto processing for security protocol is processed inline</span>
+<span class="cm">     * during transmission</span>
+<span class="cm">     */</span>
+    <span class="n">RTE_SECURITY_ACTION_TYPE_INLINE_PROTOCOL</span><span class="p">,</span>
+    <span class="cm">/**&lt; All security protocol processing is performed inline during</span>
+<span class="cm">     * transmission</span>
+<span class="cm">     */</span>
+    <span class="n">RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</span><span class="p">,</span>
+    <span class="cm">/**&lt; All security protocol processing including crypto is performed</span>
+<span class="cm">     * on a lookaside accelerator</span>
+<span class="cm">     */</span>
+    <span class="n">RTE_SECURITY_ACTION_TYPE_CPU_CRYPTO</span>
+    <span class="cm">/**&lt; Similar to ACTION_TYPE_NONE but crypto processing for security</span>
+<span class="cm">     * protocol is processed synchronously by a CPU.</span>
+<span class="cm">     */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">rte_security_session_protocol</span></code> is defined as</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">enum</span> <span class="n">rte_security_session_protocol</span> <span class="p">{</span>
+    <span class="n">RTE_SECURITY_PROTOCOL_IPSEC</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="cm">/**&lt; IPsec Protocol */</span>
+    <span class="n">RTE_SECURITY_PROTOCOL_MACSEC</span><span class="p">,</span>
+    <span class="cm">/**&lt; MACSec Protocol */</span>
+    <span class="n">RTE_SECURITY_PROTOCOL_PDCP</span><span class="p">,</span>
+    <span class="cm">/**&lt; PDCP Protocol */</span>
+    <span class="n">RTE_SECURITY_PROTOCOL_DOCSIS</span><span class="p">,</span>
+    <span class="cm">/**&lt; DOCSIS Protocol */</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>Currently the library defines configuration parameters for IPsec and PDCP only.
+For other protocols like MACSec, structures and enums are defined as place holders
+which will be updated in the future.</p>
+<p>IPsec related configuration parameters are defined in <code class="docutils literal notranslate"><span class="pre">rte_security_ipsec_xform</span></code></p>
+<p>PDCP related configuration parameters are defined in <code class="docutils literal notranslate"><span class="pre">rte_security_pdcp_xform</span></code></p>
+<p>DOCSIS related configuration parameters are defined in <code class="docutils literal notranslate"><span class="pre">rte_security_docsis_xform</span></code></p>
+</div>
+<div class="section" id="security-api">
+<h3><span class="section-number">20.2.5. </span>Security API</h3>
+<p>The rte_security Library API is described in the <em>DPDK API Reference</em> document.</p>
+</div>
+<div class="section" id="flow-based-security-session">
+<h3><span class="section-number">20.2.6. </span>Flow based Security Session</h3>
+<p>In the case of NIC based offloads, the security session specified in the
+‘rte_flow_action_security’ must be created on the same port as the
+flow action that is being specified.</p>
+<p>The ingress/egress flow attribute should match that specified in the security
+session if the security session supports the definition of the direction.</p>
+<p>Multiple flows can be configured to use the same security session. For
+example if the security session specifies an egress IPsec SA, then multiple
+flows can be specified to that SA. In the case of an ingress IPsec SA then
+it is only valid to have a single flow to map to that security session.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go"> Configuration Path</span>
+<span class="go">         |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">|    Add/Remove   |</span>
+<span class="go">|     IPsec SA    |   &lt;------ Build security flow action of</span>
+<span class="go">|        |        |           ipsec transform</span>
+<span class="go">|--------|--------|</span>
+<span class="go">         |</span>
+<span class="go">+--------V--------+</span>
+<span class="go">|   Flow API      |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">         |</span>
+<span class="go">+--------V--------+</span>
+<span class="go">|                 |</span>
+<span class="go">|     NIC PMD     |   &lt;------ Add/Remove SA to/from hw context</span>
+<span class="go">|                 |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">         |</span>
+<span class="go">+--------|--------+</span>
+<span class="go">|  HW ACCELERATED |</span>
+<span class="go">|        NIC      |</span>
+<span class="go">|                 |</span>
+<span class="go">+--------|--------+</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Add/Delete SA flow:
+To add a new inline SA construct a rte_flow_item for Ethernet + IP + ESP
+using the SA selectors and the <code class="docutils literal notranslate"><span class="pre">rte_crypto_ipsec_xform</span></code> as the <code class="docutils literal notranslate"><span class="pre">rte_flow_action</span></code>.
+Note that any rte_flow_items may be empty, which means it is not checked.</p></li>
+</ul>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">In its most basic form, IPsec flow specification is as follows:</span>
+<span class="go">    +-------+     +----------+    +--------+    +-----+</span>
+<span class="go">    |  Eth  | -&gt;  |   IP4/6  | -&gt; |   ESP  | -&gt; | END |</span>
+<span class="go">    +-------+     +----------+    +--------+    +-----+</span>
+
+<span class="go">However, the API can represent, IPsec crypto offload with any encapsulation:</span>
+<span class="go">    +-------+            +--------+    +-----+</span>
+<span class="go">    |  Eth  | -&gt;  ... -&gt; |   ESP  | -&gt; | END |</span>
+<span class="go">    +-------+            +--------+    +-----+</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="rawdev.html" class="btn btn-neutral float-right" title="21. Rawdevice Library" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="regexdev.html" class="btn btn-neutral float-left" title="19. RegEx Device Library" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

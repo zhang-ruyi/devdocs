@@ -1,0 +1,435 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>12. Marvell OCTEON TX2 Crypto Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="13. OpenSSL Crypto Poll Mode Driver" href="openssl.html" />
+    <link rel="prev" title="11. Cavium OCTEON TX Crypto Poll Mode Driver" href="octeontx.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Crypto Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Crypto Device Supported Functionality Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html">2. AESN-NI Multi Buffer Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html">3. AES-NI GCM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html">4. ARMv8 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html">5. Broadcom FlexSparc Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html">6. NXP CAAM JOB RING (caam_jr)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html">7. AMD CCP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html">8. NXP DPAA2 CAAM (DPAA2_SEC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html">9. NXP DPAA CAAM (DPAA_SEC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html">10. KASUMI Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">11. Cavium OCTEON TX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12. Marvell OCTEON TX2 Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">12.1. Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#symmetric-crypto-algorithms">12.1.1. Symmetric Crypto Algorithms</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#asymmetric-crypto-algorithms">12.1.2. Asymmetric Crypto Algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">12.2. Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">12.3. Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-options">12.4. Debugging Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#testing">12.5. Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#lookaside-ipsec-support">12.6. Lookaside IPsec Support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#features-supported">12.6.1. Features supported</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html">13. OpenSSL Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvsam.html">14. MVSAM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nitrox.html">15. Marvell NITROX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">16. Null Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html">17. Cryptodev Scheduler Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html">18. SNOW 3G Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat.html">19. Intel(R) QuickAssist (QAT) Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">20. Virtio Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zuc.html">21. ZUC Crypto Poll Mode Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Crypto Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">12. </span>Marvell OCTEON TX2 Crypto Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/cryptodevs/octeontx2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="marvell-octeon-tx2-crypto-poll-mode-driver">
+<h1><span class="section-number">12. </span>Marvell OCTEON TX2 Crypto Poll Mode Driver</h1>
+<p>The OCTEON TX2 crypto poll mode driver provides support for offloading
+cryptographic operations to cryptographic accelerator units on the
+<strong>OCTEON TX2</strong> <sup>®</sup> family of processors (CN9XXX).</p>
+<p>More information about OCTEON TX2 SoCs may be obtained from <a class="reference external" href="https://www.marvell.com">https://www.marvell.com</a></p>
+<div class="section" id="features">
+<h2><span class="section-number">12.1. </span>Features</h2>
+<p>The OCTEON TX2 crypto PMD has support for:</p>
+<div class="section" id="symmetric-crypto-algorithms">
+<h3><span class="section-number">12.1.1. </span>Symmetric Crypto Algorithms</h3>
+<p>Cipher algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_NULL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_3DES_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_3DES_ECB</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES_CTR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES_XTS</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_DES_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_KASUMI_F8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_SNOW3G_UEA2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_ZUC_EEA3</span></code></p></li>
+</ul>
+<p>Hash algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_NULL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_AES_GMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_KASUMI_F9</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_MD5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_MD5_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA1_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA224</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA224_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA256</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA256_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA384</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA384_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA512</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA512_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SNOW3G_UIA2</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_ZUC_EIA3</span></code></p></li>
+</ul>
+<p>AEAD algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AEAD_AES_GCM</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AEAD_CHACHA20_POLY1305</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="asymmetric-crypto-algorithms">
+<h3><span class="section-number">12.1.2. </span>Asymmetric Crypto Algorithms</h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_ASYM_XFORM_RSA</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_ASYM_XFORM_MODEX</span></code></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="installation">
+<h2><span class="section-number">12.2. </span>Installation</h2>
+<p>The OCTEON TX2 crypto PMD may be compiled natively on an OCTEON TX2 platform or
+cross-compiled on an x86 platform.</p>
+<p>Refer to <a class="reference internal" href="../platform/octeontx2.html"><span class="doc">Marvell OCTEON TX2 Platform Guide</span></a> for instructions to build your DPDK
+application.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The OCTEON TX2 crypto PMD uses services from the kernel mode OCTEON TX2
+crypto PF driver in linux. This driver is included in the OCTEON TX SDK.</p>
+</div>
+</div>
+<div class="section" id="initialization">
+<h2><span class="section-number">12.3. </span>Initialization</h2>
+<p>List the CPT PF devices available on your OCTEON TX2 platform:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">lspci -d:a0fd</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">a0fd</span></code> is the CPT PF device id. You should see output similar to:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">0002:10:00.0 Class 1080: Device 177d:a0fd</span>
+</pre></div>
+</div>
+<p>Set <code class="docutils literal notranslate"><span class="pre">sriov_numvfs</span></code> on the CPT PF device, to create a VF:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo 1 &gt; /sys/bus/pci/drivers/octeontx2-cpt/0002:10:00.0/sriov_numvfs</span>
+</pre></div>
+</div>
+<p>Bind the CPT VF device to the vfio_pci driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo &#39;177d a0fe&#39; &gt; /sys/bus/pci/drivers/vfio-pci/new_id</span>
+<span class="go">echo 0002:10:00.1 &gt; /sys/bus/pci/devices/0002:10:00.1/driver/unbind</span>
+<span class="go">echo 0002:10:00.1 &gt; /sys/bus/pci/drivers/vfio-pci/bind</span>
+</pre></div>
+</div>
+<p>Another way to bind the VF would be to use the <code class="docutils literal notranslate"><span class="pre">dpdk-devbind.py</span></code> script:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cd &lt;dpdk directory&gt;</span>
+<span class="go">./usertools/dpdk-devbind.py -u 0002:10:00.1</span>
+<span class="go">./usertools/dpdk-devbind.py -b vfio-pci 0002:10.00.1</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Ensure that sufficient huge pages are available for your application:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>echo 8 &gt; /sys/kernel/mm/hugepages/hugepages-524288kB/nr_hugepages
+</pre></div>
+</div>
+<p>Refer to <a class="reference internal" href="../linux_gsg/sys_reqs.html#linux-gsg-hugepages"><span class="std std-ref">Use of Hugepages in the Linux Environment</span></a> for more details.</p>
+</div>
+</div>
+<div class="section" id="debugging-options">
+<h2><span class="section-number">12.4. </span>Debugging Options</h2>
+<span id="table-octeontx2-crypto-debug-options"></span><table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 12.90 </span><span class="caption-text">OCTEON TX2 crypto PMD debug options</span></caption>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Component</p></th>
+<th class="head"><p>EAL log command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>CPT</p></td>
+<td><p>–log-level=’pmd.crypto.octeontx2,8’</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="testing">
+<h2><span class="section-number">12.5. </span>Testing</h2>
+<p>The symmetric crypto operations on OCTEON TX2 crypto PMD may be verified by running the test
+application:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./dpdk-test</span>
+<span class="go">RTE&gt;&gt;cryptodev_octeontx2_autotest</span>
+</pre></div>
+</div>
+<p>The asymmetric crypto operations on OCTEON TX2 crypto PMD may be verified by running the test
+application:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./dpdk-test</span>
+<span class="go">RTE&gt;&gt;cryptodev_octeontx2_asym_autotest</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lookaside-ipsec-support">
+<h2><span class="section-number">12.6. </span>Lookaside IPsec Support</h2>
+<p>The OCTEON TX2 SoC can accelerate IPsec traffic in lookaside protocol mode,
+with its <strong>cryptographic accelerator (CPT)</strong>. <code class="docutils literal notranslate"><span class="pre">OCTEON</span> <span class="pre">TX2</span> <span class="pre">crypto</span> <span class="pre">PMD</span></code> implements
+this as an <code class="docutils literal notranslate"><span class="pre">RTE_SECURITY_ACTION_TYPE_LOOKASIDE_PROTOCOL</span></code> offload.</p>
+<p>Refer to <a class="reference internal" href="../prog_guide/rte_security.html"><span class="doc">Security Library</span></a> for more details on protocol offloads.</p>
+<p>This feature can be tested with ipsec-secgw sample application.</p>
+<div class="section" id="features-supported">
+<h3><span class="section-number">12.6.1. </span>Features supported</h3>
+<ul class="simple">
+<li><p>IPv4</p></li>
+<li><p>IPv6</p></li>
+<li><p>ESP</p></li>
+<li><p>Tunnel mode</p></li>
+<li><p>AES-128/192/256-GCM</p></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="openssl.html" class="btn btn-neutral float-right" title="13. OpenSSL Crypto Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="octeontx.html" class="btn btn-neutral float-left" title="11. Cavium OCTEON TX Crypto Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

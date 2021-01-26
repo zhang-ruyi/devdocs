@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Crypto Device Drivers &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="1. Crypto Device Supported Functionality Matrices" href="overview.html" />
+    <link rel="prev" title="6. Intel(R) ACC100 5G/4G FEC Poll Mode Driver" href="../bbdevs/acc100.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Crypto Device Drivers</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Crypto Device Supported Functionality Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html">2. AESN-NI Multi Buffer Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html">3. AES-NI GCM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html">4. ARMv8 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html">5. Broadcom FlexSparc Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html">6. NXP CAAM JOB RING (caam_jr)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html">7. AMD CCP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html">8. NXP DPAA2 CAAM (DPAA2_SEC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html">9. NXP DPAA CAAM (DPAA_SEC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html">10. KASUMI Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">11. Cavium OCTEON TX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">12. Marvell OCTEON TX2 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html">13. OpenSSL Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvsam.html">14. MVSAM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nitrox.html">15. Marvell NITROX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">16. Null Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html">17. Cryptodev Scheduler Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html">18. SNOW 3G Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat.html">19. Intel(R) QuickAssist (QAT) Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">20. Virtio Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zuc.html">21. ZUC Crypto Poll Mode Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Crypto Device Drivers</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/cryptodevs/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="crypto-device-drivers">
+<h1>Crypto Device Drivers</h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Crypto Device Supported Functionality Matrices</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#supported-feature-flags">1.1. Supported Feature Flags</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#supported-cipher-algorithms">1.2. Supported Cipher Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#supported-authentication-algorithms">1.3. Supported Authentication Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#supported-aead-algorithms">1.4. Supported AEAD Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#supported-asymmetric-algorithms">1.5. Supported Asymmetric Algorithms</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aesni_mb.html">2. AESN-NI Multi Buffer Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html#features">2.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html#limitations">2.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html#installation">2.3. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html#initialization">2.4. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html#extra-notes">2.5. Extra notes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="aesni_gcm.html">3. AES-NI GCM Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html#features">3.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html#limitations">3.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html#installation">3.3. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html#initialization">3.4. Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="armv8.html">4. ARMv8 Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html#features">4.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html#installation">4.2. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html#initialization">4.3. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html#limitations">4.4. Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bcmfs.html">5. Broadcom FlexSparc Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html#supported-broadcom-socs">5.1. Supported Broadcom SoCs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html#features">5.2. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html#installation">5.3. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html#initialization">5.4. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html#limitations">5.5. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html#testing">5.6. Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="caam_jr.html">6. NXP CAAM JOB RING (caam_jr)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html#architecture">6.1. Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html#implementation">6.2. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html#features">6.3. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html#supported-dpaa-socs">6.4. Supported DPAA SoCs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html#limitations">6.5. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html#prerequisites">6.6. Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html#enabling-logs">6.7. Enabling logs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ccp.html">7. AMD CCP Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html#features">7.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html#installation">7.2. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html#initialization">7.3. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html#limitations">7.4. Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dpaa2_sec.html">8. NXP DPAA2 CAAM (DPAA2_SEC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html#architecture">8.1. Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html#implementation">8.2. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html#features">8.3. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html#supported-dpaa2-socs">8.4. Supported DPAA2 SoCs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html#allowing-blocking">8.5. Allowing &amp; Blocking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html#limitations">8.6. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html#prerequisites">8.7. Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html#enabling-logs">8.8. Enabling logs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dpaa_sec.html">9. NXP DPAA CAAM (DPAA_SEC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html#architecture">9.1. Architecture</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html#implementation">9.2. Implementation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html#features">9.3. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html#supported-dpaa-socs">9.4. Supported DPAA SoCs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html#allowing-blocking">9.5. Allowing &amp; Blocking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html#limitations">9.6. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html#prerequisites">9.7. Prerequisites</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html#enabling-logs">9.8. Enabling logs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="kasumi.html">10. KASUMI Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html#features">10.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html#limitations">10.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html#installation">10.3. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html#initialization">10.4. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html#extra-notes-on-kasumi-f9">10.5. Extra notes on KASUMI F9</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="octeontx.html">11. Cavium OCTEON TX Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html#supported-symmetric-crypto-algorithms">11.1. Supported Symmetric Crypto Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html#supported-asymmetric-crypto-algorithms">11.2. Supported Asymmetric Crypto Algorithms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html#compilation">11.3. Compilation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html#execution">11.4. Execution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html#testing">11.5. Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="octeontx2.html">12. Marvell OCTEON TX2 Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html#features">12.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html#installation">12.2. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html#initialization">12.3. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html#debugging-options">12.4. Debugging Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html#testing">12.5. Testing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html#lookaside-ipsec-support">12.6. Lookaside IPsec Support</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="openssl.html">13. OpenSSL Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html#features">13.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html#installation">13.2. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html#initialization">13.3. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html#limitations">13.4. Limitations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="mvsam.html">14. MVSAM Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="mvsam.html#features">14.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvsam.html#limitations">14.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvsam.html#installation">14.3. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvsam.html#initialization">14.4. Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="nitrox.html">15. Marvell NITROX Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="nitrox.html#features">15.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nitrox.html#limitations">15.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nitrox.html#initialization">15.3. Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="null.html">16. Null Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="null.html#features">16.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html#limitations">16.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html#installation">16.3. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html#initialization">16.4. Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="scheduler.html">17. Cryptodev Scheduler Poll Mode Driver Library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html#limitations">17.1. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html#initialization">17.2. Initialization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html#cryptodev-scheduler-modes-overview">17.3. Cryptodev Scheduler Modes Overview</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="snow3g.html">18. SNOW 3G Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html#features">18.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html#limitations">18.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html#installation">18.3. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html#initialization">18.4. Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qat.html">19. Intel(R) QuickAssist (QAT) Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="qat.html#symmetric-crypto-service-on-qat">19.1. Symmetric Crypto Service on QAT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat.html#asymmetric-crypto-service-on-qat">19.2. Asymmetric Crypto Service on QAT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat.html#building-pmds-on-qat">19.3. Building PMDs on QAT</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="virtio.html">20. Virtio Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html#features">20.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html#limitations">20.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html#virtio-crypto-pmd-rx-tx-callbacks">20.3. Virtio crypto PMD Rx/Tx Callbacks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html#installation">20.4. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html#tests">20.5. Tests</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="zuc.html">21. ZUC Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="zuc.html#features">21.1. Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zuc.html#limitations">21.2. Limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zuc.html#installation">21.3. Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zuc.html#initialization">21.4. Initialization</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="overview.html" class="btn btn-neutral float-right" title="1. Crypto Device Supported Functionality Matrices" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../bbdevs/acc100.html" class="btn btn-neutral float-left" title="6. Intel(R) ACC100 5G/4G FEC Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

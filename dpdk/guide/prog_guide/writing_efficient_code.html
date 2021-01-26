@@ -1,0 +1,552 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>59. Writing Efficient Code &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="60. Link Time Optimization" href="lto.html" />
+    <link rel="prev" title="58. Performance Optimization Guidelines" href="perf_opt_guidelines.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Programmer’s Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html">2. Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="env_abstraction_layer.html">3. Environment Abstraction Layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">4. Service Cores</a></li>
+<li class="toctree-l2"><a class="reference internal" href="trace_lib.html">5. Trace Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rcu_lib.html">6. RCU Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ring_lib.html">7. Ring Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="stack_lib.html">8. Stack Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mempool_lib.html">9. Mempool Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mbuf_lib.html">10. Mbuf Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="poll_mode_drv.html">11. Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">12. Generic flow API (rte_flow)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="switch_representation.html">13. Switch Representation within DPDK Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_metering_and_policing.html">14. Traffic Metering and Policing API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="traffic_management.html">15. Traffic Management API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev.html">16. Wireless Baseband Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cryptodev_lib.html">17. Cryptography Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compressdev.html">18. Compression Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="regexdev.html">19. RegEx Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_security.html">20. Security Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rawdev.html">21. Rawdevice Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_bonding_poll_mode_drv_lib.html">22. Link Bonding Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer_lib.html">23. Timer Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hash_lib.html">24. Hash Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="efd_lib.html">25. Elastic Flow Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="member_lib.html">26. Membership Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm_lib.html">27. LPM Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lpm6_lib.html">28. LPM6 Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify_lib.html">29. Flow Classification Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_distrib_lib.html">30. Packet Distributor Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reorder_lib.html">31. Reorder Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_fragment_reassembly_lib.html">32. IP Fragmentation and Reassembly Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_receive_offload_lib.html">33. Generic Receive Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generic_segmentation_offload_lib.html">34. Generic Segmentation Offload Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pdump_lib.html">35. The librte_pdump Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_proc_support.html">36. Multi-process Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">37. Kernel NIC Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thread_safety_dpdk_functions.html">38. Thread Safety of DPDK Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev.html">39. Event Device Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_rx_adapter.html">40. Event Ethernet Rx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_ethernet_tx_adapter.html">41. Event Ethernet Tx Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_timer_adapter.html">42. Event Timer Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="event_crypto_adapter.html">43. Event Crypto Adapter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_framework.html">44. Quality of Service (QoS) Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="power_man.html">45. Power Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_classif_access_ctrl.html">46. Packet Classification and Access Control</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_framework.html">47. Packet Framework</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_lib.html">48. Vhost Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metrics_lib.html">49. Metrics Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="telemetry_lib.html">50. Telemetry Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bpf_lib.html">51. Berkeley Packet Filter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_lib.html">52. IPsec Packet Processing Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graph_lib.html">53. Graph Library and Inbuilt Nodes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source_org.html">54. Source Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-sdk-meson.html">55. Installing DPDK Using the meson build system</a></li>
+<li class="toctree-l2"><a class="reference internal" href="meson_ut.html">56. Running DPDK Unit Tests with Meson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_app.html">57. Building Your Own Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="perf_opt_guidelines.html">58. Performance Optimization Guidelines</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">59. Writing Efficient Code</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#memory">59.1. Memory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#memory-copy-do-not-use-libc-in-the-data-plane">59.1.1. Memory Copy: Do not Use libc in the Data Plane</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#memory-allocation">59.1.2. Memory Allocation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#concurrent-access-to-the-same-memory-area">59.1.3. Concurrent Access to the Same Memory Area</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#numa">59.1.4. NUMA</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#distribution-across-memory-channels">59.1.5. Distribution Across Memory Channels</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#locking-memory-pages">59.1.6. Locking memory pages</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#communication-between-lcores">59.2. Communication Between lcores</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pmd-driver">59.3. PMD Driver</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#lower-packet-latency">59.3.1. Lower Packet Latency</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#locks-and-atomic-operations">59.4. Locks and Atomic Operations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#locks">59.4.1. Locks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#atomic-operations-use-c11-atomic-builtins">59.4.2. Atomic Operations: Use C11 Atomic Builtins</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#coding-considerations">59.5. Coding Considerations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#inline-functions">59.5.1. Inline Functions</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#branch-prediction">59.5.2. Branch Prediction</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#setting-the-target-cpu-type">59.6. Setting the Target CPU Type</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lto.html">60. Link Time Optimization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="profile_app.html">61. Profile Your Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="glossary.html">62. Glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Programmer’s Guide</a> &raquo;</li>
+        
+      <li><span class="section-number">59. </span>Writing Efficient Code</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/prog_guide/writing_efficient_code.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="writing-efficient-code">
+<h1><span class="section-number">59. </span>Writing Efficient Code</h1>
+<p>This chapter provides some tips for developing efficient code using the DPDK.
+For additional and more general information,
+please refer to the <em>Intel® 64 and IA-32 Architectures Optimization Reference Manual</em>
+which is a valuable reference to writing efficient code.</p>
+<div class="section" id="memory">
+<h2><span class="section-number">59.1. </span>Memory</h2>
+<p>This section describes some key memory considerations when developing applications in the DPDK environment.</p>
+<div class="section" id="memory-copy-do-not-use-libc-in-the-data-plane">
+<h3><span class="section-number">59.1.1. </span>Memory Copy: Do not Use libc in the Data Plane</h3>
+<p>Many libc functions are available in the DPDK, via the Linux* application environment.
+This can ease the porting of applications and the development of the configuration plane.
+However, many of these functions are not designed for performance.
+Functions such as memcpy() or strcpy() should not be used in the data plane.
+To copy small structures, the preference is for a simpler technique that can be optimized by the compiler.
+Refer to the <em>VTune™ Performance Analyzer Essentials</em> publication from Intel Press for recommendations.</p>
+<p>For specific functions that are called often,
+it is also a good idea to provide a self-made optimized function, which should be declared as static inline.</p>
+<p>The DPDK API provides an optimized rte_memcpy() function.</p>
+</div>
+<div class="section" id="memory-allocation">
+<h3><span class="section-number">59.1.2. </span>Memory Allocation</h3>
+<p>Other functions of libc, such as malloc(), provide a flexible way to allocate and free memory.
+In some cases, using dynamic allocation is necessary,
+but it is really not advised to use malloc-like functions in the data plane because
+managing a fragmented heap can be costly and the allocator may not be optimized for parallel allocation.</p>
+<p>If you really need dynamic allocation in the data plane, it is better to use a memory pool of fixed-size objects.
+This API is provided by librte_mempool.
+This data structure provides several services that increase performance, such as memory alignment of objects,
+lockless access to objects, NUMA awareness, bulk get/put and per-lcore cache.
+The rte_malloc () function uses a similar concept to mempools.</p>
+</div>
+<div class="section" id="concurrent-access-to-the-same-memory-area">
+<h3><span class="section-number">59.1.3. </span>Concurrent Access to the Same Memory Area</h3>
+<p>Read-Write (RW) access operations by several lcores to the same memory area can generate a lot of data cache misses,
+which are very costly.
+It is often possible to use per-lcore variables, for example, in the case of statistics.
+There are at least two solutions for this:</p>
+<ul class="simple">
+<li><p>Use RTE_PER_LCORE variables. Note that in this case, data on lcore X is not available to lcore Y.</p></li>
+<li><p>Use a table of structures (one per lcore). In this case, each structure must be cache-aligned.</p></li>
+</ul>
+<p>Read-mostly variables can be shared among lcores without performance losses if there are no RW variables in the same cache line.</p>
+</div>
+<div class="section" id="numa">
+<h3><span class="section-number">59.1.4. </span>NUMA</h3>
+<p>On a NUMA system, it is preferable to access local memory since remote memory access is slower.
+In the DPDK, the memzone, ring, rte_malloc and mempool APIs provide a way to create a pool on a specific socket.</p>
+<p>Sometimes, it can be a good idea to duplicate data to optimize speed.
+For read-mostly variables that are often accessed,
+it should not be a problem to keep them in one socket only, since data will be present in cache.</p>
+</div>
+<div class="section" id="distribution-across-memory-channels">
+<h3><span class="section-number">59.1.5. </span>Distribution Across Memory Channels</h3>
+<p>Modern memory controllers have several memory channels that can load or store data in parallel.
+Depending on the memory controller and its configuration,
+the number of channels and the way the memory is distributed across the channels varies.
+Each channel has a bandwidth limit,
+meaning that if all memory access operations are done on the first channel only, there is a potential bottleneck.</p>
+<p>By default, the  <a class="reference internal" href="mempool_lib.html#mempool-library"><span class="std std-ref">Mempool Library</span></a> spreads the addresses of objects among memory channels.</p>
+</div>
+<div class="section" id="locking-memory-pages">
+<h3><span class="section-number">59.1.6. </span>Locking memory pages</h3>
+<p>The underlying operating system is allowed to load/unload memory pages at its own discretion.
+These page loads could impact the performance, as the process is on hold when the kernel fetches them.</p>
+<p>To avoid these you could pre-load, and lock them into memory with the <code class="docutils literal notranslate"><span class="pre">mlockall()</span></code> call.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">mlockall</span><span class="p">(</span><span class="n">MCL_CURRENT</span> <span class="o">|</span> <span class="n">MCL_FUTURE</span><span class="p">))</span> <span class="p">{</span>
+    <span class="n">RTE_LOG</span><span class="p">(</span><span class="n">NOTICE</span><span class="p">,</span> <span class="n">USER1</span><span class="p">,</span> <span class="s">&quot;mlockall() failed with error </span><span class="se">\&quot;</span><span class="s">%s</span><span class="se">\&quot;\n</span><span class="s">&quot;</span><span class="p">,</span>
+            <span class="n">strerror</span><span class="p">(</span><span class="n">errno</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="communication-between-lcores">
+<h2><span class="section-number">59.2. </span>Communication Between lcores</h2>
+<p>To provide a message-based communication between lcores,
+it is advised to use the DPDK ring API, which provides a lockless ring implementation.</p>
+<p>The ring supports bulk and burst access,
+meaning that it is possible to read several elements from the ring with only one costly atomic operation
+(see <a class="reference internal" href="ring_lib.html"><span class="doc">Ring Library</span></a>).
+Performance is greatly improved when using bulk access operations.</p>
+<p>The code algorithm that dequeues messages may be something similar to the following:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span> <span class="cp">#define MAX_BULK 32</span>
+
+ <span class="k">while</span> <span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+     <span class="cm">/* Process as many elements as can be dequeued. */</span>
+     <span class="n">count</span> <span class="o">=</span> <span class="n">rte_ring_dequeue_burst</span><span class="p">(</span><span class="n">ring</span><span class="p">,</span> <span class="n">obj_table</span><span class="p">,</span> <span class="n">MAX_BULK</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">unlikely</span><span class="p">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+         <span class="k">continue</span><span class="p">;</span>
+
+     <span class="n">my_process_bulk</span><span class="p">(</span><span class="n">obj_table</span><span class="p">,</span> <span class="n">count</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pmd-driver">
+<h2><span class="section-number">59.3. </span>PMD Driver</h2>
+<p>The DPDK Poll Mode Driver (PMD) is also able to work in bulk/burst mode,
+allowing the factorization of some code for each call in the send or receive function.</p>
+<p>Avoid partial writes.
+When PCI devices write to system memory through DMA,
+it costs less if the write operation is on a full cache line as opposed to part of it.
+In the PMD code, actions have been taken to avoid partial writes as much as possible.</p>
+<div class="section" id="lower-packet-latency">
+<h3><span class="section-number">59.3.1. </span>Lower Packet Latency</h3>
+<p>Traditionally, there is a trade-off between throughput and latency.
+An application can be tuned to achieve a high throughput,
+but the end-to-end latency of an average packet will typically increase as a result.
+Similarly, the application can be tuned to have, on average,
+a low end-to-end latency, at the cost of lower throughput.</p>
+<p>In order to achieve higher throughput,
+the DPDK attempts to aggregate the cost of processing each packet individually by processing packets in bursts.</p>
+<p>Using the testpmd application as an example,
+the burst size can be set on the command line to a value of 16 (also the default value).
+This allows the application to request 16 packets at a time from the PMD.
+The testpmd application then immediately attempts to transmit all the packets that were received,
+in this case, all 16 packets.</p>
+<p>The packets are not transmitted until the tail pointer is updated on the corresponding TX queue of the network port.
+This behavior is desirable when tuning for high throughput because
+the cost of tail pointer updates to both the RX and TX queues can be spread across 16 packets,
+effectively hiding the relatively slow MMIO cost of writing to the PCIe* device.
+However, this is not very desirable when tuning for low latency because
+the first packet that was received must also wait for another 15 packets to be received.
+It cannot be transmitted until the other 15 packets have also been processed because
+the NIC will not know to transmit the packets until the TX tail pointer has been updated,
+which is not done until all 16 packets have been processed for transmission.</p>
+<p>To consistently achieve low latency, even under heavy system load,
+the application developer should avoid processing packets in bunches.
+The testpmd application can be configured from the command line to use a burst value of 1.
+This will allow a single packet to be processed at a time, providing lower latency,
+but with the added cost of lower throughput.</p>
+</div>
+</div>
+<div class="section" id="locks-and-atomic-operations">
+<h2><span class="section-number">59.4. </span>Locks and Atomic Operations</h2>
+<p>This section describes some key considerations when using locks and atomic
+operations in the DPDK environment.</p>
+<div class="section" id="locks">
+<h3><span class="section-number">59.4.1. </span>Locks</h3>
+<p>On x86, atomic operations imply a lock prefix before the instruction,
+causing the processor’s LOCK# signal to be asserted during execution of the following instruction.
+This has a big impact on performance in a multicore environment.</p>
+<p>Performance can be improved by avoiding lock mechanisms in the data plane.
+It can often be replaced by other solutions like per-lcore variables.
+Also, some locking techniques are more efficient than others.
+For instance, the Read-Copy-Update (RCU) algorithm can frequently replace simple rwlocks.</p>
+</div>
+<div class="section" id="atomic-operations-use-c11-atomic-builtins">
+<h3><span class="section-number">59.4.2. </span>Atomic Operations: Use C11 Atomic Builtins</h3>
+<p>DPDK generic rte_atomic operations are implemented by __sync builtins. These
+__sync builtins result in full barriers on aarch64, which are unnecessary
+in many use cases. They can be replaced by __atomic builtins that conform to
+the C11 memory model and provide finer memory order control.</p>
+<p>So replacing the rte_atomic operations with __atomic builtins might improve
+performance for aarch64 machines.</p>
+<p>Some typical optimization cases are listed below:</p>
+<div class="section" id="atomicity">
+<h4><span class="section-number">59.4.2.1. </span>Atomicity</h4>
+<p>Some use cases require atomicity alone, the ordering of the memory operations
+does not matter. For example, the packet statistics counters need to be
+incremented atomically but do not need any particular memory ordering.
+So, RELAXED memory ordering is sufficient.</p>
+</div>
+<div class="section" id="one-way-barrier">
+<h4><span class="section-number">59.4.2.2. </span>One-way Barrier</h4>
+<p>Some use cases allow for memory reordering in one way while requiring memory
+ordering in the other direction.</p>
+<p>For example, the memory operations before the spinlock lock are allowed to
+move to the critical section, but the memory operations in the critical section
+are not allowed to move above the lock. In this case, the full memory barrier
+in the compare-and-swap operation can be replaced with ACQUIRE memory order.
+On the other hand, the memory operations after the spinlock unlock are allowed
+to move to the critical section, but the memory operations in the critical
+section are not allowed to move below the unlock. So the full barrier in the
+store operation can use RELEASE memory order.</p>
+</div>
+<div class="section" id="reader-writer-concurrency">
+<h4><span class="section-number">59.4.2.3. </span>Reader-Writer Concurrency</h4>
+<p>Lock-free reader-writer concurrency is one of the common use cases in DPDK.</p>
+<p>The payload or the data that the writer wants to communicate to the reader,
+can be written with RELAXED memory order. However, the guard variable should
+be written with RELEASE memory order. This ensures that the store to guard
+variable is observable only after the store to payload is observable.</p>
+<p>Correspondingly, on the reader side, the guard variable should be read
+with ACQUIRE memory order. The payload or the data the writer communicated,
+can be read with RELAXED memory order. This ensures that, if the store to
+guard variable is observable, the store to payload is also observable.</p>
+</div>
+</div>
+</div>
+<div class="section" id="coding-considerations">
+<h2><span class="section-number">59.5. </span>Coding Considerations</h2>
+<div class="section" id="inline-functions">
+<h3><span class="section-number">59.5.1. </span>Inline Functions</h3>
+<p>Small functions can be declared as static inline in the header file.
+This avoids the cost of a call instruction (and the associated context saving).
+However, this technique is not always efficient; it depends on many factors including the compiler.</p>
+</div>
+<div class="section" id="branch-prediction">
+<h3><span class="section-number">59.5.2. </span>Branch Prediction</h3>
+<p>The Intel® C/C++ Compiler (icc)/gcc built-in helper functions likely() and unlikely()
+allow the developer to indicate if a code branch is likely to be taken or not.
+For instance:</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="n">likely</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">do_stuff</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="setting-the-target-cpu-type">
+<h2><span class="section-number">59.6. </span>Setting the Target CPU Type</h2>
+<p>The DPDK supports CPU microarchitecture-specific optimizations by means of RTE_MACHINE option.
+The degree of optimization depends on the compiler’s ability to optimize for a specific microarchitecture,
+therefore it is preferable to use the latest compiler versions whenever possible.</p>
+<p>If the compiler version does not support the specific feature set (for example, the Intel® AVX instruction set),
+the build process gracefully degrades to whatever latest feature set is supported by the compiler.</p>
+<p>Since the build and runtime targets may not be the same,
+the resulting binary also contains a platform check that runs before the
+main() function and checks if the current machine is suitable for running the binary.</p>
+<p>Along with compiler optimizations,
+a set of preprocessor defines are automatically added to the build process (regardless of the compiler version).
+These defines correspond to the instruction sets that the target CPU should be able to support.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="lto.html" class="btn btn-neutral float-right" title="60. Link Time Optimization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="perf_opt_guidelines.html" class="btn btn-neutral float-left" title="58. Performance Optimization Guidelines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

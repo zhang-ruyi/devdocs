@@ -1,0 +1,1237 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>11. BNXT Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12. CXGBE Poll Mode Driver" href="cxgbe.html" />
+    <link rel="prev" title="10. BNX2X Poll Mode Driver" href="bnx2x.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">2. Features Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_and_test.html">3. Compiling and testing a PMD for a NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_packet.html">4. AF_PACKET Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_xdp.html">5. AF_XDP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ark.html">6. ARK Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atlantic.html">7. Aquantia Atlantic DPDK Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avp.html">8. AVP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="axgbe.html">9. AXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">10. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">11. BNXT Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cpu-support">11.1. CPU Support</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#kernel-dependency">11.2. Kernel Dependency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-bnxt-pmd">11.3. Running BNXT PMD</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#running-on-vf">11.3.1. Running on VF</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#running-on-pf">11.3.2. Running on PF</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#features">11.4. Features</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#port-control">11.4.1. Port Control</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#packet-filtering">11.4.2. Packet Filtering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stateless-offloads">11.4.3. Stateless Offloads</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#vlan-insert-strip">11.4.4. VLAN Insert/Strip</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#time-synchronization">11.4.5. Time Synchronization</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#statistics-collection">11.4.6. Statistics Collection</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generic-flow-offload">11.4.7. Generic Flow Offload</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#notes">11.5. Notes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#virtual-function-port-representors">11.6. Virtual Function Port Representors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#representors-on-stingray-soc">11.7. Representors on Stingray SoC</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#number-of-flows-supported">11.8. Number of flows supported</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#selecting-em-vs-eem">11.9. Selecting EM vs EEM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-support">11.10. Application Support</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#firmware">11.10.1. Firmware</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multiple-processes">11.10.2. Multiple Processes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#runtime-queue-setup">11.10.3. Runtime Queue Setup</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#descriptor-status">11.10.4. Descriptor Status</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bonding">11.10.5. Bonding</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#vector-processing">11.11. Vector Processing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#appendix">11.12. Appendix</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#supported-chipsets-and-adapters">11.12.1. Supported Chipsets and Adapters</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">12. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">13. DPAA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">14. DPAA2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">15. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">16. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enetc.html">17. ENETC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">18. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">19. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hinic.html">20. HINIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hns3.html">21. HNS3 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">22. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ice.html">23. ICE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igb.html">24. IGB Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igc.html">25. IGC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ionic.html">26. IONIC Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipn3ke.html">27. IPN3KE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">28. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">29. Intel Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kni.html">30. KNI Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="liquidio.html">31. LiquidIO VF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memif.html">32. Memif Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">33. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">34. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvneta.html">35. MVNETA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvpp2.html">36. MVPP2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netvsc.html">37. Netvsc poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfb.html">38. NFB poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">39. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">40. NULL Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">41. OCTEON TX Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">42. OCTEON TX2 Poll Mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pfe.html">43. PFE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qede.html">44. QEDE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sfc_efx.html">45. Solarflare libefx-based Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="softnic.html">46. Soft NIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">47. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tap.html">48. Tun|Tap Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thunderx.html">49. ThunderX NICVF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txgbe.html">50. TXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdev_netvsc.html">51. VDEV_NETVSC driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">52. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">53. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">54. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">55. Libpcap and Ring Based Poll Mode Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fail_safe.html">56. Fail-safe poll mode driver library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">11. </span>BNXT Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/bnxt.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="bnxt-poll-mode-driver">
+<h1><span class="section-number">11. </span>BNXT Poll Mode Driver</h1>
+<p>The Broadcom BNXT PMD (<strong>librte_net_bnxt</strong>) implements support for adapters
+based on Ethernet controllers and SoCs belonging to the Broadcom
+BCM574XX/BCM575XX NetXtreme-E® Family of Ethernet Network Controllers,
+the Broadcom BCM588XX Stingray Family of Smart NIC Adapters, and the Broadcom
+StrataGX® BCM5873X Series of Communications Processors.</p>
+<p>A complete list with links to reference material is in the Appendix section.</p>
+<div class="section" id="cpu-support">
+<h2><span class="section-number">11.1. </span>CPU Support</h2>
+<p>BNXT PMD supports multiple CPU architectures, including x86-32, x86-64, and ARMv8.</p>
+</div>
+<div class="section" id="kernel-dependency">
+<h2><span class="section-number">11.2. </span>Kernel Dependency</h2>
+<p>BNXT PMD requires a kernel module (VFIO or UIO) for setting up a device, mapping
+device memory to userspace, registering interrupts, etc.
+VFIO is more secure than UIO, relying on IOMMU protection.
+UIO requires the IOMMU disabled or configured to pass-through mode.</p>
+<p>The BNXT PMD supports operating with:</p>
+<ul class="simple">
+<li><p>Linux vfio-pci</p></li>
+<li><p>Linux uio_pci_generic</p></li>
+<li><p>Linux igb_uio</p></li>
+<li><p>BSD nic_uio</p></li>
+</ul>
+</div>
+<div class="section" id="running-bnxt-pmd">
+<h2><span class="section-number">11.3. </span>Running BNXT PMD</h2>
+<p>Bind the device to one of the kernel modules listed above</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./dpdk-devbind.py -b vfio-pci|igb_uio|uio_pci_generic bus_id:device_id.function_id</span>
+</pre></div>
+</div>
+<p>The BNXT PMD can run on PF or VF.</p>
+<p>PCI-SIG Single Root I/O Virtualization (SR-IOV) involves the direct assignment
+of part of the network port resources to guest operating systems using the
+SR-IOV standard.
+NIC is logically distributed among multiple virtual machines (VMs), while still
+having global data in common to share with the PF and other VFs.</p>
+<p>Sysadmin can create and configure VFs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">echo num_vfs &gt; /sys/bus/pci/devices/domain_id:bus_id:device_id:function_id/sriov_numvfs</span>
+<span class="gp gp-VirtualEnv">(ex)</span> <span class="go">echo 4 &gt; /sys/bus/pci/devices/0000:82:00:0/sriov_numvfs</span>
+</pre></div>
+</div>
+<p>Sysadmin also can change the VF property such as MAC address, transparent VLAN,
+TX rate limit, and trusted VF:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">ip link set pf_id vf vf_id mac (mac_address) vlan (vlan_id) txrate (rate_value) trust (enable|disable)</span>
+<span class="gp gp-VirtualEnv">(ex)</span> <span class="go">ip link set 0 vf 0 mac 00:11:22:33:44:55 vlan 0x100 txrate 100 trust disable</span>
+</pre></div>
+</div>
+<div class="section" id="running-on-vf">
+<h3><span class="section-number">11.3.1. </span>Running on VF</h3>
+<div class="section" id="flow-bifurcation">
+<h4><span class="section-number">11.3.1.1. </span>Flow Bifurcation</h4>
+<p>The Flow Bifurcation splits the incoming data traffic to user space applications
+(such as DPDK applications) and/or kernel space programs (such as the Linux
+kernel stack).
+It can direct some traffic, for example data plane traffic, to DPDK.
+Rest of the traffic, for example control plane traffic, would be redirected to
+the traditional Linux networking stack.</p>
+<p>Refer to <a class="reference external" href="https://doc.dpdk.org/guides/howto/flow_bifurcation.html">https://doc.dpdk.org/guides/howto/flow_bifurcation.html</a></p>
+<p>Benefits of the flow bifurcation include:</p>
+<ul class="simple">
+<li><p>Better performance with less CPU overhead, as user application can directly
+access the NIC for data path</p></li>
+<li><p>NIC is still being controlled by the kernel, as control traffic is forwarded
+only to the kernel driver</p></li>
+<li><p>Control commands, e.g. ethtool, will work as usual</p></li>
+</ul>
+<p>Running on a VF, the BXNT PMD supports the flow bifurcation with a combination
+of SR-IOV and packet classification and/or forwarding capability.
+In the simplest case of flow bifurcation, a PF driver configures a NIC to
+forward all user traffic directly to VFs with matching destination MAC address,
+while the rest of the traffic is forwarded to a PF.
+Note that the broadcast packets will be forwarded to both PF and VF.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp gp-VirtualEnv">(ex)</span> <span class="go">ethtool --config-ntuple ens2f0 flow-type ether dst 00:01:02:03:00:01 vlan 10 vlan-mask 0xf000 action 0x100000000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="trusted-vf">
+<h4><span class="section-number">11.3.1.2. </span>Trusted VF</h4>
+<p>By default, VFs are <em>not</em> allowed to perform privileged operations, such as
+modifying the VF’s MAC address in the guest. These security measures are
+designed to prevent possible attacks.
+However, when a DPDK application can be trusted (e.g., OVS-DPDK, here), these
+operations performed by a VF would be legitimate and can be allowed.</p>
+<p>To enable VF to request “trusted mode,” a new trusted VF concept was introduced
+in Linux kernel 4.4 and allowed VFs to become “trusted” and perform some
+privileged operations.</p>
+<p>The BNXT PMD supports the trusted VF mode of operation. Only a PF can enable the
+trusted attribute on the VF. It is preferable to enable the Trusted setting on a
+VF before starting applications.
+However, the BNXT PMD handles dynamic changes in trusted settings as well.</p>
+<p>Note that control commands, e.g., ethtool, will work via the kernel PF driver,
+<em>not</em> via the trusted VF driver.</p>
+<p>Operations supported by trusted VF:</p>
+<ul class="simple">
+<li><p>MAC address configuration</p></li>
+<li><p>Flow rule creation</p></li>
+</ul>
+<p>Operations <em>not</em> supported by trusted VF:</p>
+<ul class="simple">
+<li><p>Firmware upgrade</p></li>
+<li><p>Promiscuous mode setting</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="running-on-pf">
+<h3><span class="section-number">11.3.2. </span>Running on PF</h3>
+<p>Unlike the VF when BNXT PMD runs on a PF there are no restrictions placed on the
+features which the PF can enable or request. In a multiport NIC, each port will
+have a corresponding PF. Also depending on the configuration of the NIC there
+can be more than one PF associated per port.
+A sysadmin can load the kernel driver on one PF, and run BNXT PMD on the other
+PF or run the PMD on both the PFs. In such cases, the firmware picks one of the
+PFs as a master PF.</p>
+<p>Much like in the trusted VF, the DPDK application must be <em>trusted</em> and expected
+to be <em>well-behaved</em>.</p>
+</div>
+</div>
+<div class="section" id="features">
+<h2><span class="section-number">11.4. </span>Features</h2>
+<p>The BNXT PMD supports the following features:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Port Control</dt><dd><ul>
+<li><p>Port MTU</p></li>
+<li><p>LED</p></li>
+<li><p>Flow Control and Autoneg</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Packet Filtering</dt><dd><ul>
+<li><p>Unicast MAC Filter</p></li>
+<li><p>Multicast MAC Filter</p></li>
+<li><p>VLAN Filtering</p></li>
+<li><p>Allmulticast Mode</p></li>
+<li><p>Promiscuous Mode</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Stateless Offloads</dt><dd><ul>
+<li><p>CRC Offload</p></li>
+<li><p>Checksum Offload (IPv4, TCP, and UDP)</p></li>
+<li><p>Multi-Queue (TSS and RSS)</p></li>
+<li><p>Segmentation and Reassembly (TSO and LRO)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>VLAN insert strip</p></li>
+<li><p>Stats Collection</p></li>
+<li><p>Generic Flow Offload</p></li>
+</ul>
+<div class="section" id="port-control">
+<h3><span class="section-number">11.4.1. </span>Port Control</h3>
+<p><strong>Port MTU</strong>: BNXT PMD supports the MTU (Maximum Transmission Unit) up to 9,574
+bytes:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port config mtu (port_id) mtu_value</span>
+<span class="go">testpmd&gt; show port info (port_id)</span>
+</pre></div>
+</div>
+<p><strong>LED</strong>: Application tunes on (or off) a port LED, typically for a port
+identification:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">int rte_eth_led_on (uint16_t port_id)</span>
+<span class="go">int rte_eth_led_off (uint16_t port_id)</span>
+</pre></div>
+</div>
+<p><strong>Flow Control and Autoneg</strong>: Application tunes on (or off) flow control and/or
+auto-negotiation on a port:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; set flow_ctrl rx (on|off) (port_id)</span>
+<span class="go">testpmd&gt; set flow_ctrl tx (on|off) (port_id)</span>
+<span class="go">testpmd&gt; set flow_ctrl autoneg (on|off) (port_id)</span>
+</pre></div>
+</div>
+<p>Note that the BNXT PMD does <em>not</em> support some options and ignores them when
+requested:</p>
+<ul class="simple">
+<li><p>high_water</p></li>
+<li><p>low_water</p></li>
+<li><p>pause_time</p></li>
+<li><p>mac_ctrl_frame_fwd</p></li>
+<li><p>send_xon</p></li>
+</ul>
+</div>
+<div class="section" id="packet-filtering">
+<h3><span class="section-number">11.4.2. </span>Packet Filtering</h3>
+<p>Applications control the packet-forwarding behaviors with packet filters.</p>
+<p>The BNXT PMD supports hardware-based packet filtering:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>UC (Unicast) MAC Filters</dt><dd><ul>
+<li><p>No unicast packets are forwarded to an application except the one with
+DMAC address added to the port</p></li>
+<li><p>At initialization, the station MAC address is added to the port</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>MC (Multicast) MAC Filters</dt><dd><ul>
+<li><p>No multicast packets are forwarded to an application except the one with
+MC address added to the port</p></li>
+<li><p>When the application listens to a multicast group, it adds the MC address
+to the port</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>VLAN Filtering Mode</dt><dd><ul>
+<li><p>When enabled, no packets are forwarded to an application except the ones
+with the VLAN tag assigned to the port</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Allmulticast Mode</dt><dd><ul>
+<li><p>When enabled, every multicast packet received on the port is forwarded to
+the application</p></li>
+<li><p>Typical usage is routing applications</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Promiscuous Mode</dt><dd><ul>
+<li><p>When enabled, every packet received on the port is forwarded to the
+application</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<div class="section" id="unicast-mac-filter">
+<h4><span class="section-number">11.4.2.1. </span>Unicast MAC Filter</h4>
+<p>The application can add (or remove) MAC addresses to enable (or disable)
+filtering on MAC address used to accept packets.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port (port_id) macs</span>
+<span class="go">testpmd&gt; mac_addr (add|remove) (port_id) (XX:XX:XX:XX:XX:XX)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multicast-mac-filter">
+<h4><span class="section-number">11.4.2.2. </span>Multicast MAC Filter</h4>
+<p>The application can add (or remove) Multicast addresses that enable (or disable)
+filtering on multicast MAC address used to accept packets.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port (port_id) mcast_macs</span>
+<span class="go">testpmd&gt; mcast_addr (add|remove) (port_id) (XX:XX:XX:XX:XX:XX)</span>
+</pre></div>
+</div>
+<p>Application adds (or removes) Multicast addresses to enable (or disable)
+allowlist filtering to accept packets.</p>
+<p>Note that the BNXT PMD supports up to 16 MC MAC filters. if the user adds more
+than 16 MC MACs, the BNXT PMD puts the port into the Allmulticast mode.</p>
+</div>
+<div class="section" id="vlan-filtering">
+<h4><span class="section-number">11.4.2.3. </span>VLAN Filtering</h4>
+<p>The application enables (or disables) VLAN filtering mode. When the mode is
+enabled, no packets are forwarded to an application except ones with VLAN tag
+assigned for the application.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; vlan set filter (on|off) (port_id)</span>
+<span class="go">testpmd&gt; rx_vlan (add|rm) (vlan_id) (port_id)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="allmulticast-mode">
+<h4><span class="section-number">11.4.2.4. </span>Allmulticast Mode</h4>
+<p>The application enables (or disables) the allmulticast mode. When the mode is
+enabled, every multicast packet received is forwarded to the application.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port info (port_id)</span>
+<span class="go">testpmd&gt; set allmulti (port_id) (on|off)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="promiscuous-mode">
+<h4><span class="section-number">11.4.2.5. </span>Promiscuous Mode</h4>
+<p>The application enables (or disables) the promiscuous mode. When the mode is
+enabled on a port, every packet received on the port is forwarded to the
+application.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port info (port_id)</span>
+<span class="go">testpmd&gt; set promisc port_id (on|off)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="stateless-offloads">
+<h3><span class="section-number">11.4.3. </span>Stateless Offloads</h3>
+<p>Like Linux, DPDK provides enabling hardware offload of some stateless processing
+(such as checksum calculation) of the stack, alleviating the CPU from having to
+burn cycles on every packet.</p>
+<p>Listed below are the stateless offloads supported by the BNXT PMD:</p>
+<ul class="simple">
+<li><p>CRC offload (for both TX and RX packets)</p></li>
+<li><dl class="simple">
+<dt>Checksum Offload (for both TX and RX packets)</dt><dd><ul>
+<li><p>IPv4 Checksum Offload</p></li>
+<li><p>TCP Checksum Offload</p></li>
+<li><p>UDP Checksum Offload</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Segmentation/Reassembly Offloads</dt><dd><ul>
+<li><p>TCP Segmentation Offload (TSO)</p></li>
+<li><p>Large Receive Offload (LRO)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Multi-Queue</dt><dd><ul>
+<li><p>Transmit Side Scaling (TSS)</p></li>
+<li><p>Receive Side Scaling (RSS)</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Also, the BNXT PMD supports stateless offloads on inner frames for tunneled
+packets. Listed below are the tunneling protocols supported by the BNXT PMD:</p>
+<ul class="simple">
+<li><p>VXLAN</p></li>
+<li><p>GRE</p></li>
+<li><p>NVGRE</p></li>
+</ul>
+<p>Note that enabling (or disabling) stateless offloads requires applications to
+stop DPDK before changing configuration.</p>
+<div class="section" id="crc-offload">
+<h4><span class="section-number">11.4.3.1. </span>CRC Offload</h4>
+<p>The FCS (Frame Check Sequence) in the Ethernet frame is a four-octet CRC (Cyclic
+Redundancy Check) that allows detection of corrupted data within the entire
+frame as received on the receiver side.</p>
+<p>The BNXT PMD supports hardware-based CRC offload:</p>
+<ul class="simple">
+<li><p>TX: calculate and insert CRC</p></li>
+<li><p>RX: check and remove CRC, notify the application on CRC error</p></li>
+</ul>
+<p>Note that the CRC offload is always turned on.</p>
+</div>
+<div class="section" id="checksum-offload">
+<h4><span class="section-number">11.4.3.2. </span>Checksum Offload</h4>
+<p>The application enables hardware checksum calculation for IPv4, TCP, and UDP.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port stop (port_id)</span>
+<span class="go">testpmd&gt; csum set (ip|tcp|udp|outer-ip|outer-udp) (sw|hw) (port_id)</span>
+<span class="go">testpmd&gt; set fwd csum</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="multi-queue">
+<h4><span class="section-number">11.4.3.3. </span>Multi-Queue</h4>
+<p>Multi-Queue, also known as TSS (Transmit Side Scaling) or RSS (Receive Side
+Scaling), is a common networking technique that allows for more efficient load
+balancing across multiple CPU cores.</p>
+<p>The application enables multiple TX and RX queues when it is started.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd -l 1,3,5 --main-lcore 1 --txq=2 –rxq=2 --nb-cores=2</span>
+</pre></div>
+</div>
+<p><strong>TSS</strong></p>
+<p>TSS distributes network transmit processing across several hardware-based
+transmit queues, allowing outbound network traffic to be processed by multiple
+CPU cores.</p>
+<p><strong>RSS</strong></p>
+<p>RSS distributes network receive processing across several hardware-based receive
+queues, allowing inbound network traffic to be processed by multiple CPU cores.</p>
+<p>The application can select the RSS mode, i.e. select the header fields that are
+included for hash calculation. The BNXT PMD supports the RSS mode of
+<code class="docutils literal notranslate"><span class="pre">default|ip|tcp|udp|none</span></code>, where default mode is L3 and L4.</p>
+<p>For tunneled packets, RSS hash is calculated over inner frame header fields.
+Applications may want to select the tunnel header fields for hash calculation,
+and it will be supported in 20.08 using RSS level.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port config (port_id) rss (all|default|ip|tcp|udp|none)</span>
+
+<span class="go">// note that the testpmd defaults the RSS mode to ip</span>
+<span class="go">// ensure to issue the command below to enable L4 header (TCP or UDP) along with IPv4 header</span>
+<span class="go">testpmd&gt; port config (port_id) rss default</span>
+
+<span class="go">// to check the current RSS configuration, such as RSS function and RSS key</span>
+<span class="go">testpmd&gt; show port (port_id) rss-hash key</span>
+
+<span class="go">// RSS is enabled by default. However, application can disable RSS as follows</span>
+<span class="go">testpmd&gt; port config (port_id) rss none</span>
+</pre></div>
+</div>
+<p>Application can change the flow distribution, i.e. remap the received traffic to
+CPU cores, using RSS RETA (Redirection Table).</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// application queries the current RSS RETA configuration</span>
+<span class="go">testpmd&gt; show port (port_id) rss reta size (mask0, mask1)</span>
+
+<span class="go">// application changes the RSS RETA configuration</span>
+<span class="go">testpmd&gt; port config (port_id) rss reta (hash, queue) [, (hash, queue)]</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tso">
+<h4><span class="section-number">11.4.3.4. </span>TSO</h4>
+<p>TSO (TCP Segmentation Offload), also known as LSO (Large Send Offload), enables
+the TCP/IP stack to pass to the NIC a larger datagram than the MTU (Maximum
+Transmit Unit). NIC breaks it into multiple segments before sending it to the
+network.</p>
+<p>The BNXT PMD supports hardware-based TSO.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// display the status of TSO</span>
+<span class="go">testpmd&gt; tso show (port_id)</span>
+
+<span class="go">// enable/disable TSO</span>
+<span class="go">testpmd&gt; port config (port_id) tx_offload tcp_tso (on|off)</span>
+
+<span class="go">// set TSO segment size</span>
+<span class="go">testpmd&gt; tso set segment_size (port_id)</span>
+</pre></div>
+</div>
+<p>The BNXT PMD also supports hardware-based tunneled TSO.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// display the status of tunneled TSO</span>
+<span class="go">testpmd&gt; tunnel_tso show (port_id)</span>
+
+<span class="go">// enable/disable tunneled TSO</span>
+<span class="go">testpmd&gt; port config (port_id) tx_offload vxlan_tnl_tso|gre_tnl_tso (on|off)</span>
+
+<span class="go">// set tunneled TSO segment size</span>
+<span class="go">testpmd&gt; tunnel_tso set segment_size (port_id)</span>
+</pre></div>
+</div>
+<p>Note that the checksum offload is always assumed to be enabled for TSO.</p>
+</div>
+<div class="section" id="lro">
+<h4><span class="section-number">11.4.3.5. </span>LRO</h4>
+<p>LRO (Large Receive Offload) enables NIC to aggregate multiple incoming TCP/IP
+packets from a single stream into a larger buffer, before passing to the
+networking stack.</p>
+<p>The BNXT PMD supports hardware-based LRO.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// display the status of LRO</span>
+<span class="go">testpmd&gt; show port (port_id) rx_offload capabilities</span>
+<span class="go">testpmd&gt; show port (port_id) rx_offload configuration</span>
+
+<span class="go">// enable/disable LRO</span>
+<span class="go">testpmd&gt; port config (port_id) rx_offload tcp_lro (on|off)</span>
+
+<span class="go">// set max LRO packet (datagram) size</span>
+<span class="go">testpmd&gt; port config (port_id) max-lro-pkt-size (max_size)</span>
+</pre></div>
+</div>
+<p>The BNXT PMD also supports tunneled LRO.</p>
+<p>Some applications, such as routing, should <em>not</em> change the packet headers as
+they pass through (i.e. received from and sent back to the network). In such a
+case, GRO (Generic Receive Offload) should be used instead of LRO.</p>
+</div>
+</div>
+<div class="section" id="vlan-insert-strip">
+<h3><span class="section-number">11.4.4. </span>VLAN Insert/Strip</h3>
+<p>DPDK application offloads VLAN insert/strip to improve performance. The BNXT PMD
+supports hardware-based VLAN insert/strip offload for both single and double
+VLAN packets.</p>
+<div class="section" id="vlan-insert">
+<h4><span class="section-number">11.4.4.1. </span>VLAN Insert</h4>
+<p>Application configures the VLAN TPID (Tag Protocol ID). By default, the TPID is
+0x8100.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// configure outer TPID value for a port</span>
+<span class="go">testpmd&gt; vlan set outer tpid (tpid_value) (port_id)</span>
+</pre></div>
+</div>
+<p>The inner TPID set will be rejected as the BNXT PMD supports inserting only an
+outer VLAN. Note that when a packet has a single VLAN, the tag is considered as
+outer, i.e. the inner VLAN is relevant only when a packet is double-tagged.</p>
+<p>The BNXT PMD supports various TPID values shown below. Any other values will be
+rejected.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">0x8100</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x88a8</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x9100</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x9200</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">0x9300</span></code></p></li>
+</ul>
+<p>The BNXT PMD supports the VLAN insert offload per-packet basis. The application
+provides the TCI (Tag Control Info) for a packet via mbuf. In turn, the BNXT PMD
+inserts the VLAN tag (via hardware) using the provided TCI along with the
+configured TPID.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// enable VLAN insert offload</span>
+<span class="go">testpmd&gt; port config (port_id) rx_offload vlan_insert|qinq_insert (on|off)</span>
+
+<span class="go">if (mbuf-&gt;ol_flags &amp;&amp; PKT_TX_QINQ)       // case-1: insert VLAN to single-tagged packet</span>
+<span class="go">    tci_value = mbuf-&gt;vlan_tci_outer</span>
+<span class="go">else if (mbuf-&gt;ol_flags &amp;&amp; PKT_TX_VLAN)  // case-2: insert VLAN to untagged packet</span>
+<span class="go">    tci_value = mbuf-&gt;vlan_tci</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="vlan-strip">
+<h4><span class="section-number">11.4.4.2. </span>VLAN Strip</h4>
+<p>The application configures the per-port VLAN strip offload.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// enable VLAN strip on a port</span>
+<span class="go">testpmd&gt; port config (port_id) tx_offload vlan_strip (on|off)</span>
+
+<span class="go">// notify application VLAN strip via mbuf</span>
+<span class="go">mbuf-&gt;ol_flags |= PKT_RX_VLAN | PKT_RX_STRIPPED // outer VLAN is found and stripped</span>
+<span class="go">mbuf-&gt;vlan_tci = tci_value                      // TCI of the stripped VLAN</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="time-synchronization">
+<h3><span class="section-number">11.4.5. </span>Time Synchronization</h3>
+<p>System operators may run a PTP (Precision Time Protocol) client application to
+synchronize the time on the NIC (and optionally, on the system) to a PTP master.</p>
+<p>The BNXT PMD supports a PTP client application to communicate with a PTP master
+clock using DPDK IEEE1588 APIs. Note that the PTP client application needs to
+run on PF and vector mode needs to be disabled.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; set fwd ieee1588 // enable IEEE 1588 mode</span>
+</pre></div>
+</div>
+<p>When enabled, the BNXT PMD configures hardware to insert IEEE 1588 timestamps to
+the outgoing PTP packets and reports IEEE 1588 timestamps from the incoming PTP
+packets to application via mbuf.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// RX packet completion will indicate whether the packet is PTP</span>
+<span class="go">mbuf-&gt;ol_flags |= PKT_RX_IEEE1588_PTP</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="statistics-collection">
+<h3><span class="section-number">11.4.6. </span>Statistics Collection</h3>
+<p>In Linux, the <em>ethtool -S</em> enables us to query the NIC stats. DPDK provides the
+similar functionalities via rte_eth_stats and rte_eth_xstats.</p>
+<p>The BNXT PMD supports both basic and extended stats collection:</p>
+<ul class="simple">
+<li><p>Basic stats</p></li>
+<li><p>Extended stats</p></li>
+</ul>
+<div class="section" id="basic-stats">
+<h4><span class="section-number">11.4.6.1. </span>Basic Stats</h4>
+<p>The application collects per-port and per-queue stats using rte_eth_stats APIs.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port stats (port_id)</span>
+</pre></div>
+</div>
+<p>Basic stats include:</p>
+<ul class="simple">
+<li><p>ipackets</p></li>
+<li><p>ibytes</p></li>
+<li><p>opackets</p></li>
+<li><p>obytes</p></li>
+<li><p>imissed</p></li>
+<li><p>ierrors</p></li>
+<li><p>oerrors</p></li>
+</ul>
+<p>By default, per-queue stats for 16 queues are supported. For more than 16
+queues, BNXT PMD should be compiled with <code class="docutils literal notranslate"><span class="pre">RTE_ETHDEV_QUEUE_STAT_CNTRS</span></code>
+set to the desired number of queues.</p>
+</div>
+<div class="section" id="extended-stats">
+<h4><span class="section-number">11.4.6.2. </span>Extended Stats</h4>
+<p>Unlike basic stats, the extended stats are vendor-specific, i.e. each vendor
+provides its own set of counters.</p>
+<p>The BNXT PMD provides a rich set of counters, including per-flow counters,
+per-cos counters, per-priority counters, etc.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port xstats (port_id)</span>
+</pre></div>
+</div>
+<p>Shown below is the elaborated sequence to retrieve extended stats:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">// application queries the number of xstats</span>
+<span class="go">len = rte_eth_xstats_get(port_id, NULL, 0);</span>
+<span class="go">// BNXT PMD returns the size of xstats array (i.e. the number of entries)</span>
+<span class="go">// BNXT PMD returns 0, if the feature is compiled out or disabled</span>
+
+<span class="go">// application allocates memory for xstats</span>
+<span class="go">struct rte_eth_xstats_name *names; // name is 64 character or less</span>
+<span class="go">struct rte_eth_xstats *xstats;</span>
+<span class="go">names = calloc(len, sizeof(*names));</span>
+<span class="go">xstats = calloc(len, sizeof(*xstats));</span>
+
+<span class="go">// application retrieves xstats // names and values</span>
+<span class="go">ret = rte_eth_xstats_get_names(port_id, *names, len);</span>
+<span class="go">ret = rte_eth_xstats_get(port_id, *xstats, len);</span>
+
+<span class="go">// application checks the xstats</span>
+<span class="go">// application may repeat the below:</span>
+<span class="go">len = rte_eth_xstats_reset(port_id); // reset the xstats</span>
+
+<span class="go">// reset can be skipped, if application wants to see accumulated stats</span>
+<span class="go">// run traffic</span>
+<span class="go">// probably stop the traffic</span>
+<span class="go">// retrieve xstats // no need to retrieve xstats names again</span>
+<span class="go">// check xstats</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="generic-flow-offload">
+<h3><span class="section-number">11.4.7. </span>Generic Flow Offload</h3>
+<p>Applications can get benefit by offloading all or part of flow processing to
+hardware. For example, applications can offload packet classification only
+(partial offload) or whole match-action (full offload).</p>
+<p>DPDK offers the Generic Flow API (rte_flow API) to configure hardware to
+perform flow processing.</p>
+<p>Listed below are the rte_flow APIs BNXT PMD supports:</p>
+<ul class="simple">
+<li><p>rte_flow_validate</p></li>
+<li><p>rte_flow_create</p></li>
+<li><p>rte_flow_destroy</p></li>
+<li><p>rte_flow_flush</p></li>
+</ul>
+<div class="section" id="host-based-flow-table-management">
+<h4><span class="section-number">11.4.7.1. </span>Host Based Flow Table Management</h4>
+<p>Starting with 20.05 BNXT PMD supports host based flow table management. This is
+a new mechanism that should allow higher flow scalability than what is currently
+supported. This new approach also defines a new rte_flow parser, and mapper
+which currently supports basic packet classification in the receive path.</p>
+<p>The feature uses a newly implemented control-plane firmware interface which
+optimizes flow insertions and deletions.</p>
+<p>This is a tech preview feature, and is disabled by default. It can be enabled
+using bnxt devargs. For ex: “-a 0000:0d:00.0,host-based-truflow=1”.</p>
+<p>This feature is currently supported on Whitney+ and Stingray devices.</p>
+</div>
+</div>
+</div>
+<div class="section" id="notes">
+<h2><span class="section-number">11.5. </span>Notes</h2>
+<ul class="simple">
+<li><p>On stopping a device port, all the flows created on a port by the
+application will be flushed from the hardware and any tables maintained
+by the PMD. After stopping the device port, all flows on the port become
+invalid and are not represented in the system anymore.
+Instead of destroying or flushing such flows an application should discard
+all references to these flows and re-create the flows as required after the
+port is restarted.</p></li>
+<li><p>While an application is free to use the group id attribute to group flows
+together using a specific criteria, the BNXT PMD currently associates this
+group id to a VNIC id. One such case is grouping of flows which are filtered
+on the same source or destination MAC address. This allows packets of such
+flows to be directed to one or more queues associated with the VNIC id.
+This implementation is supported only when TRUFLOW functionality is disabled.</p></li>
+<li><p>An application can issue a VXLAN decap offload request using rte_flow API
+either as a single rte_flow request or a combination of two stages.
+The PMD currently supports the two stage offload design.
+In this approach the offload request may come as two flow offload requests
+Flow1 &amp; Flow2.  The match criteria for Flow1 is O_DMAC, O_SMAC, O_DST_IP,
+O_UDP_DPORT and actions are COUNT, MARK, JUMP. The match criteria for Flow2
+is O_SRC_IP, O_DST_IP, VNI and inner header fields.
+Flow1 and Flow2 flow offload requests can come in any order. If Flow2 flow
+offload request comes first then Flow2 can’t be offloaded as there is
+no O_DMAC information in Flow2. In this case, Flow2 will be deferred until
+Flow1 flow offload request arrives. When Flow1 flow offload request is
+received it will have O_DMAC information. Using Flow1’s O_DMAC, driver
+creates an L2 context entry in the hardware as part of offloading Flow1.
+Flow2 will now use Flow1’s O_DMAC to get the L2 context id associated with
+this O_DMAC and other flow fields that are cached already at the time
+of deferring Flow2 for offloading. Flow2 that arrive after Flow1 is offloaded
+will be directly programmed and not cached.</p></li>
+<li><p>PMD supports thread-safe rte_flow operations.</p></li>
+</ul>
+<p>Note: A VNIC represents a virtual interface in the hardware. It is a resource
+in the RX path of the chip and is used to setup various target actions such as
+RSS, MAC filtering etc. for the physical function in use.</p>
+</div>
+<div class="section" id="virtual-function-port-representors">
+<h2><span class="section-number">11.6. </span>Virtual Function Port Representors</h2>
+<p>The BNXT PMD supports the creation of VF port representors for the control
+and monitoring of BNXT virtual function devices. Each port representor
+corresponds to a single virtual function of that device that is connected to a
+VF. When there is no hardware flow offload, each packet transmitted by the VF
+will be received by the corresponding representor. Similarly each packet that is
+sent to a representor will be received by the VF. Applications can take
+advantage of this feature when SRIOV is enabled. The representor will allow the
+first packet that is transmitted by the VF to be received by the DPDK
+application which can then decide if the flow should be offloaded to the
+hardware. Once the flow is offloaded in the hardware, any packet matching the
+flow will be received by the VF while the DPDK application will not receive it
+any more. The BNXT PMD supports creation and handling of the port representors
+when the PMD is initialized on a PF or trusted-VF. The user can specify the list
+of VF IDs of the VFs for which the representors are needed by using the
+<code class="docutils literal notranslate"><span class="pre">devargs</span></code> option <code class="docutils literal notranslate"><span class="pre">representor</span></code>.:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a DBDF,representor=[0,1,4]
+</pre></div>
+</div>
+<p>Note that currently hot-plugging of representor ports is not supported so all
+the required representors must be specified on the creation of the PF or the
+trusted VF.</p>
+</div>
+<div class="section" id="representors-on-stingray-soc">
+<h2><span class="section-number">11.7. </span>Representors on Stingray SoC</h2>
+<p>A representor created on X86 host typically represents a VF running in the same
+X86 domain. But in case of the SoC, the application can run on the CPU complex
+inside the SoC. The representor can be created on the SoC to represent a PF or a
+VF running in the x86 domain. Since the representator creation requires passing
+the bus:device.function of the PCI device endpoint which is not necessarily in the
+same host domain, additional dev args have been added to the PMD.</p>
+<ul class="simple">
+<li><p>rep_is_vf - false to indicate VF representor</p></li>
+<li><p>rep_is_pf - true to indicate PF representor</p></li>
+<li><p>rep_based_pf - Physical index of the PF</p></li>
+<li><p>rep_q_r2f - Logical COS Queue index for the rep to endpoint direction</p></li>
+<li><p>rep_q_f2r - Logical COS Queue index for the endpoint to rep direction</p></li>
+<li><p>rep_fc_r2f - Flow control for the representor to endpoint direction</p></li>
+<li><p>rep_fc_f2r - Flow control for the endpoint to representor direction</p></li>
+</ul>
+<p>The sample command line with the new <code class="docutils literal notranslate"><span class="pre">devargs</span></code> looks like this:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0000:06:02.0,host-based-truflow=1,representor=[1],rep-based-pf=8,\
+      rep-is-pf=1,rep-q-r2f=1,rep-fc-r2f=0,rep-q-f2r=1,rep-fc-f2r=1
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd -l1-4 -n2 -a 0008:01:00.0,host-based-truflow=1,\</span>
+<span class="go">representor=[0], rep-based-pf=8,rep-is-pf=0,rep-q-r2f=1,rep-fc-r2f=1,\</span>
+<span class="go">rep-q-f2r=0,rep-fc-f2r=1 --log-level=&quot;pmd.*&quot;,8 -- -i --rxq=3 --txq=3</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="number-of-flows-supported">
+<h2><span class="section-number">11.8. </span>Number of flows supported</h2>
+<p>The number of flows that can be support can be changed using the devargs
+parameter <code class="docutils literal notranslate"><span class="pre">max_num_kflows</span></code>. The default number of flows supported is 16K each
+in ingress and egress path.</p>
+</div>
+<div class="section" id="selecting-em-vs-eem">
+<h2><span class="section-number">11.9. </span>Selecting EM vs EEM</h2>
+<p>Broadcom devices can support filter creation in the onchip memory or the
+external memory. This is referred to as EM or EEM mode respectively.
+The decision for internal/external EM support is based on the <code class="docutils literal notranslate"><span class="pre">devargs</span></code>
+parameter <code class="docutils literal notranslate"><span class="pre">max_num_kflows</span></code>.  If this is set by the user, external EM is used.
+Otherwise EM support is enabled with flows created in internal memory.</p>
+</div>
+<div class="section" id="application-support">
+<h2><span class="section-number">11.10. </span>Application Support</h2>
+<div class="section" id="firmware">
+<h3><span class="section-number">11.10.1. </span>Firmware</h3>
+<p>The BNXT PMD supports the application to retrieve the firmware version.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port info (port_id)</span>
+</pre></div>
+</div>
+<p>Note that the applications cannot update the firmware using BNXT PMD.</p>
+</div>
+<div class="section" id="multiple-processes">
+<h3><span class="section-number">11.10.2. </span>Multiple Processes</h3>
+<p>When two or more DPDK applications (e.g., testpmd and dpdk-pdump) share a single
+instance of DPDK, the BNXT PMD supports a single primary application and one or
+more secondary applications. Note that the DPDK-layer (not the PMD) ensures
+there is only one primary application.</p>
+<p>There are two modes:</p>
+<p>Manual mode</p>
+<ul class="simple">
+<li><p>Application notifies whether it is primary or secondary using <em>proc-type</em> flag</p></li>
+<li><p>1st process should be spawned with <code class="docutils literal notranslate"><span class="pre">--proc-type=primary</span></code></p></li>
+<li><p>All subsequent processes should be spawned with <code class="docutils literal notranslate"><span class="pre">--proc-type=secondary</span></code></p></li>
+</ul>
+<p>Auto detection mode</p>
+<ul class="simple">
+<li><p>Application is using <code class="docutils literal notranslate"><span class="pre">proc-type=auto</span></code> flag</p></li>
+<li><p>A process is spawned as a secondary if a primary is already running</p></li>
+</ul>
+<p>The BNXT PMD uses the info to skip a device initialization, i.e. performs a
+device initialization only when being brought up by a primary application.</p>
+</div>
+<div class="section" id="runtime-queue-setup">
+<h3><span class="section-number">11.10.3. </span>Runtime Queue Setup</h3>
+<p>Typically, a DPDK application allocates TX and RX queues statically: i.e. queues
+are allocated at start. However, an application may want to increase (or
+decrease) the number of queues dynamically for various reasons, e.g. power
+savings.</p>
+<p>The BNXT PMD supports applications to increase or decrease queues at runtime.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; port config all (rxq|txq) (num_queues)</span>
+</pre></div>
+</div>
+<p>Note that a DPDK application must allocate default queues (one for TX and one
+for RX at minimum) at initialization.</p>
+</div>
+<div class="section" id="descriptor-status">
+<h3><span class="section-number">11.10.4. </span>Descriptor Status</h3>
+<p>Applications may use the descriptor status for various reasons, e.g. for power
+savings. For example, an application may stop polling and change to interrupt
+mode when the descriptor status shows no packets to service for a while.</p>
+<p>The BNXT PMD supports the application to retrieve both TX and RX descriptor
+status.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd&gt; show port (port_id) (rxq|txq) (queue_id) desc (desc_id) status</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="bonding">
+<h3><span class="section-number">11.10.5. </span>Bonding</h3>
+<p>DPDK implements a light-weight library to allow PMDs to be bonded together and provide a single logical PMD to the application.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">testpmd -l 0-3 -n4 --vdev &#39;net_bonding0,mode=0,slave=&lt;PCI B:D.F device 1&gt;,slave=&lt;PCI B:D.F device 2&gt;,mac=XX:XX:XX:XX:XX:XX’ – --socket_num=1 – -i --port-topology=chained</span>
+<span class="gp gp-VirtualEnv">(ex)</span> <span class="go">testpmd -l 1,3,5,7,9 -n4 --vdev &#39;net_bonding0,mode=0,slave=0000:82:00.0,slave=0000:82:00.1,mac=00:1e:67:1d:fd:1d&#39; – --socket-num=1 – -i --port-topology=chained</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="vector-processing">
+<h2><span class="section-number">11.11. </span>Vector Processing</h2>
+<p>Vector processing provides significantly improved performance over scalar
+processing (see Vector Processor, here).</p>
+<p>The BNXT PMD supports the vector processing using SSE (Streaming SIMD
+Extensions) instructions on x86 platforms. It also supports NEON intrinsics for
+vector processing on ARM CPUs. The BNXT vPMD (vector mode PMD) is available for
+Intel/AMD and ARM CPU architectures.</p>
+<p>This improved performance comes from several optimizations:</p>
+<ul>
+<li><dl class="simple">
+<dt>Batching</dt><dd><ul class="simple">
+<li><p>TX: processing completions in bulk</p></li>
+<li><p>RX: allocating mbufs in bulk</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><p>Chained mbufs are <em>not</em> supported, i.e. a packet should fit a single mbuf</p></li>
+<li><dl>
+<dt>Some stateless offloads are <em>not</em> supported with vector processing</dt><dd><ul>
+<li><p>TX: no offloads will be supported</p></li>
+<li><p>RX: reduced RX offloads (listed below) will be supported:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>DEV_RX_OFFLOAD_VLAN_STRIP
+DEV_RX_OFFLOAD_KEEP_CRC
+DEV_RX_OFFLOAD_JUMBO_FRAME
+DEV_RX_OFFLOAD_IPV4_CKSUM
+DEV_RX_OFFLOAD_UDP_CKSUM
+DEV_RX_OFFLOAD_TCP_CKSUM
+DEV_RX_OFFLOAD_OUTER_IPV4_CKSUM
+DEV_RX_OFFLOAD_RSS_HASH
+DEV_RX_OFFLOAD_VLAN_FILTER
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>The BNXT Vector PMD is enabled in DPDK builds by default.</p>
+<p>However, a decision to enable vector mode will be made when the port transitions
+from stopped to started. Any TX offloads or some RX offloads (other than listed
+above) will disable the vector mode.
+Offload configuration changes that impact vector mode must be made when the port
+is stopped.</p>
+<p>Note that TX (or RX) vector mode can be enabled independently from RX (or TX)
+vector mode.</p>
+<p>Also vector mode is allowed when jumbo is enabled
+as long as the MTU setting does not require scattered Rx.</p>
+</div>
+<div class="section" id="appendix">
+<h2><span class="section-number">11.12. </span>Appendix</h2>
+<div class="section" id="supported-chipsets-and-adapters">
+<h3><span class="section-number">11.12.1. </span>Supported Chipsets and Adapters</h3>
+<div class="section" id="bcm5730x-netxtreme-c-family-of-ethernet-network-controllers">
+<h4><span class="section-number">11.12.1.1. </span>BCM5730x NetXtreme-C® Family of Ethernet Network Controllers</h4>
+<p>Information about Ethernet adapters in the NetXtreme family of adapters can be
+found in the <a class="reference external" href="https://www.broadcom.com/products/ethernet-connectivity/network-adapters/">NetXtreme® Brand section</a> of the <a class="reference external" href="http://www.broadcom.com/">Broadcom website</a>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">M150c</span> <span class="pre">...</span> <span class="pre">Single-port</span> <span class="pre">40/50</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P150c</span> <span class="pre">...</span> <span class="pre">Single-port</span> <span class="pre">40/50</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P225c</span> <span class="pre">...</span> <span class="pre">Dual-port</span> <span class="pre">10/25</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="bcm574xx-575xx-netxtreme-e-family-of-ethernet-network-controllers">
+<h4><span class="section-number">11.12.1.2. </span>BCM574xx/575xx NetXtreme-E® Family of Ethernet Network Controllers</h4>
+<p>Information about Ethernet adapters in the NetXtreme family of adapters can be
+found in the <a class="reference external" href="https://www.broadcom.com/products/ethernet-connectivity/network-adapters/">NetXtreme® Brand section</a> of the <a class="reference external" href="http://www.broadcom.com/">Broadcom website</a>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">M125P</span> <span class="pre">....</span> <span class="pre">Single-port</span> <span class="pre">OCP</span> <span class="pre">2.0</span> <span class="pre">10/25</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M150P</span> <span class="pre">....</span> <span class="pre">Single-port</span> <span class="pre">OCP</span> <span class="pre">2.0</span> <span class="pre">50</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M150PM</span> <span class="pre">... Single-port</span> <span class="pre">OCP</span> <span class="pre">2.0</span> <span class="pre">Multi-Host</span> <span class="pre">50</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M210P</span> <span class="pre">....</span> <span class="pre">Dual-port</span> <span class="pre">OCP</span> <span class="pre">2.0</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M210TP</span> <span class="pre">... Dual-port</span> <span class="pre">OCP</span> <span class="pre">2.0</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M1100G</span> <span class="pre">... Single-port</span> <span class="pre">OCP</span> <span class="pre">2.0</span> <span class="pre">10/25/50/100</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N150G</span> <span class="pre">....</span> <span class="pre">Single-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">50</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">M225P</span> <span class="pre">....</span> <span class="pre">Dual-port</span> <span class="pre">OCP</span> <span class="pre">2.0</span> <span class="pre">10/25</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N210P</span> <span class="pre">....</span> <span class="pre">Dual-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N210TP</span> <span class="pre">... Dual-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N225P</span> <span class="pre">....</span> <span class="pre">Dual-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10/25</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N250G</span> <span class="pre">....</span> <span class="pre">Dual-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">50</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N410SG</span> <span class="pre">... Quad-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N410SGBT</span> <span class="pre">. Quad-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N425G</span> <span class="pre">....</span> <span class="pre">Quad-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10/25</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N1100G</span> <span class="pre">... Single-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10/25/50/100</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N2100G</span> <span class="pre">... Dual-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10/25/50/100</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">N2200G</span> <span class="pre">... Dual-port</span> <span class="pre">OCP</span> <span class="pre">3.0</span> <span class="pre">10/25/50/100/200</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P150P</span> <span class="pre">....</span> <span class="pre">Single-port</span> <span class="pre">50</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P210P</span> <span class="pre">....</span> <span class="pre">Dual-port</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P210TP</span> <span class="pre">... Dual-port</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P225P</span> <span class="pre">....</span> <span class="pre">Dual-port</span> <span class="pre">10/25</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P410SG</span> <span class="pre">... Quad-port</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P410SGBT</span> <span class="pre">. Quad-port</span> <span class="pre">10</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P425G</span> <span class="pre">....</span> <span class="pre">Quad-port</span> <span class="pre">10/25</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P1100G</span> <span class="pre">... Single-port</span> <span class="pre">10/25/50/100</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P2100G</span> <span class="pre">... Dual-port</span> <span class="pre">10/25/50/100</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P2200G</span> <span class="pre">... Dual-port</span> <span class="pre">10/25/50/100/200</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">Adapter</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="bcm588xx-netxtreme-s-family-of-smartnic-network-controllers">
+<h4><span class="section-number">11.12.1.3. </span>BCM588xx NetXtreme-S® Family of SmartNIC Network Controllers</h4>
+<p>Information about the Stingray family of SmartNIC adapters can be found in the
+<a class="reference external" href="https://www.broadcom.com/products/ethernet-connectivity/smartnic/">Stingray® Brand section</a> of the <a class="reference external" href="http://www.broadcom.com/">Broadcom website</a>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PS225</span> <span class="pre">...</span> <span class="pre">Dual-port</span> <span class="pre">25</span> <span class="pre">Gigabit</span> <span class="pre">Ethernet</span> <span class="pre">SmartNIC</span></code></p></li>
+</ul>
+</div>
+<div class="section" id="bcm5873x-stratagx-family-of-communications-processors">
+<h4><span class="section-number">11.12.1.4. </span>BCM5873x StrataGX® Family of Communications Processors</h4>
+<p>These ARM-based processors target a broad range of networking applications,
+including virtual CPE (vCPE) and NFV appliances, 10G service routers and
+gateways, control plane processing for Ethernet switches, and network-attached
+storage (NAS).</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">StrataGX</span> <span class="pre">BCM58732</span> <span class="pre">...</span> <span class="pre">Octal-Core</span> <span class="pre">3.0GHz</span> <span class="pre">64-bit</span> <span class="pre">ARM®v8</span> <span class="pre">Cortex®-A72</span> <span class="pre">based</span> <span class="pre">SoC</span></code></p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="cxgbe.html" class="btn btn-neutral float-right" title="12. CXGBE Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="bnx2x.html" class="btn btn-neutral float-left" title="10. BNX2X Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

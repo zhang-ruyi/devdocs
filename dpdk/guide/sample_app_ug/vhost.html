@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>35. Vhost Sample Application &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="36. Vhost_blk Sample Application" href="vhost_blk.html" />
+    <link rel="prev" title="34. VMDq Forwarding Sample Application" href="vmdq_forwarding.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Sample Applications User Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="intro.html">1. Introduction to the DPDK Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiling.html">2. Compiling the Sample Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cmd_line.html">3. Command Line Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ethtool.html">4. Ethtool Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hello_world.html">5. Hello World Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skeleton.html">6. Basic Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rxtx_callbacks.html">7. RX/TX Callbacks Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_classify.html">8. Flow Classify Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_filtering.html">9. Basic RTE Flow Filtering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_frag.html">10. IP Fragmentation Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipv4_multicast.html">11. IPv4 Multicast Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_reassembly.html">12. IP Reassembly Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kernel_nic_interface.html">13. Kernel NIC Interface Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="keep_alive.html">14. Keep Alive Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ioat.html">15. Packet copying using Intel® QuickData Technology</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_crypto.html">16. L2 Forwarding with Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_job_stats.html">17. L2 Forwarding Sample Application (in Real and Virtualized Environments) with core load statistics.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_real_virtual.html">18. L2 Forwarding Sample Application (in Real and Virtualized Environments)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_event.html">19. L2 Forwarding Eventdev Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l2_forward_cat.html">20. L2 Forwarding Sample Application with Cache Allocation Technology (CAT)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward.html">21. L3 Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_graph.html">22. L3 Forwarding Graph Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_power_man.html">23. L3 Forwarding with Power Management Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="l3_forward_access_ctrl.html">24. L3 Forwarding with Access Control Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="link_status_intr.html">25. Link Status Interrupt Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="server_node_efd.html">26. Server-Node EFD Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="service_cores.html">27. Service Cores Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multi_process.html">28. Multi-process Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_metering.html">29. QoS Metering Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qos_scheduler.html">30. QoS Scheduler Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="timer.html">31. Timer Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_ordering.html">32. Packet Ordering Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_dcb_forwarding.html">33. VMDQ and DCB Forwarding Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmdq_forwarding.html">34. VMDq Forwarding Sample Application</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">35. Vhost Sample Application</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testing-steps">35.1. Testing steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#build">35.1.1. Build</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-the-vswitch-example">35.1.2. Start the vswitch example</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#start-the-vm">35.1.3. Start the VM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#run-testpmd-inside-guest">35.1.4. Run testpmd inside guest</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#inject-packets">35.2. Inject packets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">35.3. Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-issues">35.4. Common Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_blk.html">36. Vhost_blk Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost_crypto.html">37. Vhost_Crypto Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdpa.html">38. Vdpa Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ip_pipeline.html">39. Internet Protocol (IP) Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="test_pipeline.html">40. Test Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pipeline.html">41. Pipeline Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="eventdev_pipeline.html">42. Eventdev Pipeline Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dist_app.html">43. Distributor Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vm_power_management.html">44. Virtual Machine Power Management Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ptpclient.html">45. PTP Client Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="performance_thread.html">46. Performance Thread Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fips_validation.html">47. Federal Information Processing Standards (FIPS) CryptoDev Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipsec_secgw.html">48. IPsec Security Gateway Sample Application</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bbdev_app.html">49. Loop-back Sample Application using Baseband Device (bbdev)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ntb.html">50. NTB Sample Application</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Sample Applications User Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">35. </span>Vhost Sample Application</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/sample_app_ug/vhost.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="vhost-sample-application">
+<h1><span class="section-number">35. </span>Vhost Sample Application</h1>
+<p>The vhost sample application demonstrates integration of the Data Plane
+Development Kit (DPDK) with the Linux* KVM hypervisor by implementing the
+vhost-net offload API. The sample application performs simple packet
+switching between virtual machines based on Media Access Control (MAC)
+address or Virtual Local Area Network (VLAN) tag. The splitting of Ethernet
+traffic from an external switch is performed in hardware by the Virtual
+Machine Device Queues (VMDQ) and Data Center Bridging (DCB) features of
+the Intel® 82599 10 Gigabit Ethernet Controller.</p>
+<div class="section" id="testing-steps">
+<h2><span class="section-number">35.1. </span>Testing steps</h2>
+<p>This section shows the steps how to test a typical PVP case with this
+vhost-switch sample, whereas packets are received from the physical NIC
+port first and enqueued to the VM’s Rx queue. Through the guest testpmd’s
+default forwarding mode (io forward), those packets will be put into
+the Tx queue. The vhost-switch example, in turn, gets the packets and
+puts back to the same physical NIC port.</p>
+<div class="section" id="build">
+<h3><span class="section-number">35.1.1. </span>Build</h3>
+<p>To compile the sample application see <a class="reference internal" href="compiling.html"><span class="doc">Compiling the Sample Applications</span></a>.</p>
+<p>The application is located in the <code class="docutils literal notranslate"><span class="pre">vhost</span></code> sub-directory.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this example, you need build DPDK both on the host and inside guest.</p>
+</div>
+</div>
+<div class="section" id="start-the-vswitch-example">
+<h3><span class="section-number">35.1.2. </span>Start the vswitch example</h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./dpdk-vhost-switch -l 0-3 -n 4 --socket-mem 1024  \</span>
+<span class="go">     -- --socket-file /tmp/sock0 --client \</span>
+<span class="go">     ...</span>
+</pre></div>
+</div>
+<p>Check the <a class="reference internal" href="#parameters">Parameters</a> section for the explanations on what do those
+parameters mean.</p>
+</div>
+<div class="section" id="start-the-vm">
+<span id="vhost-app-run-vm"></span><h3><span class="section-number">35.1.3. </span>Start the VM</h3>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">qemu-system-x86_64 -machine accel=kvm -cpu host \</span>
+<span class="go">    -m $mem -object memory-backend-file,id=mem,size=$mem,mem-path=/dev/hugepages,share=on \</span>
+<span class="go">            -mem-prealloc -numa node,memdev=mem \</span>
+<span class="go">    \</span>
+<span class="go">    -chardev socket,id=char1,path=/tmp/sock0,server \</span>
+<span class="go">    -netdev type=vhost-user,id=hostnet1,chardev=char1  \</span>
+<span class="go">    -device virtio-net-pci,netdev=hostnet1,id=net1,mac=52:54:00:00:00:14 \</span>
+<span class="go">    ...</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For basic vhost-user support, QEMU 2.2 (or above) is required. For
+some specific features, a higher version might be need. Such as
+QEMU 2.7 (or above) for the reconnect feature.</p>
+</div>
+</div>
+<div class="section" id="run-testpmd-inside-guest">
+<span id="vhost-app-run-dpdk-inside-guest"></span><h3><span class="section-number">35.1.4. </span>Run testpmd inside guest</h3>
+<p>Make sure you have DPDK built inside the guest. Also make sure the
+corresponding virtio-net PCI device is bond to a uio driver, which
+could be done by:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">modprobe uio_pci_generic</span>
+<span class="go">dpdk/usertools/dpdk-devbind.py -b uio_pci_generic 0000:00:04.0</span>
+</pre></div>
+</div>
+<p>Then start testpmd for packet forwarding testing.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/app/dpdk-testpmd -l 0-1 -- -i</span>
+<span class="gp">&gt;</span> start tx_first
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="inject-packets">
+<h2><span class="section-number">35.2. </span>Inject packets</h2>
+<p>While a virtio-net is connected to vhost-switch, a VLAN tag starts with
+1000 is assigned to it. So make sure configure your packet generator
+with the right MAC and VLAN tag, you should be able to see following
+log from the vhost-switch console. It means you get it work:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>VHOST_DATA: (0) mac 52:54:00:00:00:14 and vlan 1000 registered
+</pre></div>
+</div>
+</div>
+<div class="section" id="parameters">
+<span id="vhost-app-parameters"></span><h2><span class="section-number">35.3. </span>Parameters</h2>
+<p><strong>–socket-file path</strong>
+Specifies the vhost-user socket file path.</p>
+<p><strong>–client</strong>
+DPDK vhost-user will act as the client mode when such option is given.
+In the client mode, QEMU will create the socket file. Otherwise, DPDK
+will create it. Put simply, it’s the server to create the socket file.</p>
+<p><strong>–vm2vm mode</strong>
+The vm2vm parameter sets the mode of packet switching between guests in
+the host.</p>
+<ul class="simple">
+<li><p>0 disables vm2vm, implying that VM’s packets will always go to the NIC port.</p></li>
+<li><p>1 means a normal mac lookup packet routing.</p></li>
+<li><p>2 means hardware mode packet forwarding between guests, it allows packets
+go to the NIC port, hardware L2 switch will determine which guest the
+packet should forward to or need send to external, which bases on the
+packet destination MAC address and VLAN tag.</p></li>
+</ul>
+<p><strong>–mergeable 0|1</strong>
+Set 0/1 to disable/enable the mergeable Rx feature. It’s disabled by default.</p>
+<p><strong>–stats interval</strong>
+The stats parameter controls the printing of virtio-net device statistics.
+The parameter specifies an interval (in unit of seconds) to print statistics,
+with an interval of 0 seconds disabling statistics.</p>
+<p><strong>–rx-retry 0|1</strong>
+The rx-retry option enables/disables enqueue retries when the guests Rx queue
+is full. This feature resolves a packet loss that is observed at high data
+rates, by allowing it to delay and retry in the receive path. This option is
+enabled by default.</p>
+<p><strong>–rx-retry-num num</strong>
+The rx-retry-num option specifies the number of retries on an Rx burst, it
+takes effect only when rx retry is enabled.  The default value is 4.</p>
+<p><strong>–rx-retry-delay msec</strong>
+The rx-retry-delay option specifies the timeout (in micro seconds) between
+retries on an RX burst, it takes effect only when rx retry is enabled. The
+default value is 15.</p>
+<p><strong>–dequeue-zero-copy</strong>
+Dequeue zero copy will be enabled when this option is given. it is worth to
+note that if NIC is bound to driver with iommu enabled, dequeue zero copy
+cannot work at VM2NIC mode (vm2vm=0) due to currently we don’t setup iommu
+dma mapping for guest memory.</p>
+<p><strong>–vlan-strip 0|1</strong>
+VLAN strip option is removed, because different NICs have different behaviors
+when disabling VLAN strip. Such feature, which heavily depends on hardware,
+should be removed from this example to reduce confusion. Now, VLAN strip is
+enabled and cannot be disabled.</p>
+<p><strong>–builtin-net-driver</strong>
+A very simple vhost-user net driver which demonstrates how to use the generic
+vhost APIs will be used when this option is given. It is disabled by default.</p>
+<p><strong>–dma-type</strong>
+This parameter is used to specify DMA type for async vhost-user net driver which
+demonstrates how to use the async vhost APIs. It’s used in combination with dmas.</p>
+<p><strong>–dmas</strong>
+This parameter is used to specify the assigned DMA device of a vhost device.
+Async vhost-user net driver will be used if –dmas is set. For example
+–dmas [<a class="reference external" href="mailto:txd0&#37;&#52;&#48;00">txd0<span>&#64;</span>00</a>:04.0,txd1&#64;00:04.1] means use DMA channel 00:04.0 for vhost
+device 0 enqueue operation and use DMA channel 00:04.1 for vhost device 1
+enqueue operation.</p>
+</div>
+<div class="section" id="common-issues">
+<h2><span class="section-number">35.4. </span>Common Issues</h2>
+<ul>
+<li><p>QEMU fails to allocate memory on hugetlbfs, with an error like the
+following:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>file_ram_alloc: can&#39;t mmap RAM pages: Cannot allocate memory
+</pre></div>
+</div>
+<p>When running QEMU the above error indicates that it has failed to allocate
+memory for the Virtual Machine on the hugetlbfs. This is typically due to
+insufficient hugepages being free to support the allocation request. The
+number of free hugepages can be checked as follows:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">cat /sys/kernel/mm/hugepages/hugepages-&lt;pagesize&gt;/nr_hugepages</span>
+</pre></div>
+</div>
+<p>The command above indicates how many hugepages are free to support QEMU’s
+allocation request.</p>
+</li>
+<li><p>Failed to build DPDK in VM</p>
+<p>Make sure “-cpu host” QEMU option is given.</p>
+</li>
+<li><p>Device start fails if NIC’s max queues &gt; the default number of 128</p>
+<p>mbuf pool size is dependent on the MAX_QUEUES configuration, if NIC’s
+max queue number is larger than 128, device start will fail due to
+insufficient mbuf.</p>
+</li>
+<li><p>Option “builtin-net-driver” is incompatible with QEMU</p>
+<p>QEMU vhost net device start will fail if protocol feature is not negotiated.
+DPDK virtio-user pmd can be the replacement of QEMU.</p>
+</li>
+<li><p>Device start fails when enabling “builtin-net-driver” without memory
+pre-allocation</p>
+<p>The builtin example doesn’t support dynamic memory allocation. When vhost
+backend enables “builtin-net-driver”, “–socket-mem” option should be
+added at virtio-user pmd side as a startup item.</p>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="vhost_blk.html" class="btn btn-neutral float-right" title="36. Vhost_blk Sample Application" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="vmdq_forwarding.html" class="btn btn-neutral float-left" title="34. VMDq Forwarding Sample Application" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

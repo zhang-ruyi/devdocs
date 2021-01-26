@@ -1,0 +1,786 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>42. OCTEON TX2 Poll Mode driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="43. PFE Poll Mode Driver" href="pfe.html" />
+    <link rel="prev" title="41. OCTEON TX Poll Mode driver" href="octeontx.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Network Interface Controller Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Overview of Networking Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="features.html">2. Features Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build_and_test.html">3. Compiling and testing a PMD for a NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_packet.html">4. AF_PACKET Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="af_xdp.html">5. AF_XDP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ark.html">6. ARK Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="atlantic.html">7. Aquantia Atlantic DPDK Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avp.html">8. AVP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="axgbe.html">9. AXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnx2x.html">10. BNX2X Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bnxt.html">11. BNXT Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cxgbe.html">12. CXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa.html">13. DPAA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2.html">14. DPAA2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="e1000em.html">15. Driver for VM Emulated Devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ena.html">16. ENA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enetc.html">17. ENETC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="enic.html">18. ENIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fm10k.html">19. FM10K Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hinic.html">20. HINIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="hns3.html">21. HNS3 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="i40e.html">22. I40E Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ice.html">23. ICE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igb.html">24. IGB Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="igc.html">25. IGC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ionic.html">26. IONIC Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ipn3ke.html">27. IPN3KE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ixgbe.html">28. IXGBE Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="intel_vf.html">29. Intel Virtual Function Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kni.html">30. KNI Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="liquidio.html">31. LiquidIO VF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memif.html">32. Memif Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx4.html">33. MLX4 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mlx5.html">34. MLX5 poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvneta.html">35. MVNETA Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mvpp2.html">36. MVPP2 Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="netvsc.html">37. Netvsc poll mode driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfb.html">38. NFB poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nfp.html">39. NFP poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">40. NULL Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">41. OCTEON TX Poll Mode driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">42. OCTEON TX2 Poll Mode driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">42.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prerequisites">42.2. Prerequisites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#driver-compilation-and-testing">42.3. Driver compilation and testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#runtime-config-options">42.4. Runtime Config Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#traffic-management-api">42.5. Traffic Management API</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">42.6. Limitations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mempool-octeontx2-external-mempool-handler-dependency">42.6.1. <code class="docutils literal notranslate"><span class="pre">mempool_octeontx2</span></code> external mempool handler dependency</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#crc-stripping">42.6.2. CRC stripping</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multicast-mac-filtering">42.6.3. Multicast MAC filtering</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#sdp-interface-support">42.6.4. SDP interface support</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#inline-protocol-processing">42.6.5. Inline Protocol Processing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#debugging-options">42.7. Debugging Options</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rte-flow-support">42.8. RTE Flow Support</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="pfe.html">43. PFE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qede.html">44. QEDE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sfc_efx.html">45. Solarflare libefx-based Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="softnic.html">46. Soft NIC Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="szedata2.html">47. SZEDATA2 poll mode driver library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tap.html">48. Tun|Tap Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="thunderx.html">49. ThunderX NICVF Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="txgbe.html">50. TXGBE Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vdev_netvsc.html">51. VDEV_NETVSC driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">52. Poll Mode Driver for Emulated Virtio NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vhost.html">53. Poll Mode Driver that wraps vhost library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vmxnet3.html">54. Poll Mode Driver for Paravirtual VMXNET3 NIC</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pcap_ring.html">55. Libpcap and Ring Based Poll Mode Drivers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fail_safe.html">56. Fail-safe poll mode driver library</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Network Interface Controller Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">42. </span>OCTEON TX2 Poll Mode driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/nics/octeontx2.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="octeon-tx2-poll-mode-driver">
+<h1><span class="section-number">42. </span>OCTEON TX2 Poll Mode driver</h1>
+<p>The OCTEON TX2 ETHDEV PMD (<strong>librte_net_octeontx2</strong>) provides poll mode ethdev
+driver support for the inbuilt network device found in <strong>Marvell OCTEON TX2</strong>
+SoC family as well as for their virtual functions (VF) in SR-IOV context.</p>
+<p>More information can be found at <a class="reference external" href="https://www.marvell.com/embedded-processors/infrastructure-processors">Marvell Official Website</a>.</p>
+<div class="section" id="features">
+<h2><span class="section-number">42.1. </span>Features</h2>
+<p>Features of the OCTEON TX2 Ethdev PMD are:</p>
+<ul class="simple">
+<li><p>Packet type information</p></li>
+<li><p>Promiscuous mode</p></li>
+<li><p>Jumbo frames</p></li>
+<li><p>SR-IOV VF</p></li>
+<li><p>Lock-free Tx queue</p></li>
+<li><p>Multiple queues for TX and RX</p></li>
+<li><p>Receiver Side Scaling (RSS)</p></li>
+<li><p>MAC/VLAN filtering</p></li>
+<li><p>Multicast MAC filtering</p></li>
+<li><p>Generic flow API</p></li>
+<li><p>Inner and Outer Checksum offload</p></li>
+<li><p>VLAN/QinQ stripping and insertion</p></li>
+<li><p>Port hardware statistics</p></li>
+<li><p>Link state information</p></li>
+<li><p>Link flow control</p></li>
+<li><p>MTU update</p></li>
+<li><p>Scatter-Gather IO support</p></li>
+<li><p>Vector Poll mode driver</p></li>
+<li><p>Debug utilities - Context dump and error interrupt support</p></li>
+<li><p>IEEE1588 timestamping</p></li>
+<li><p>HW offloaded <cite>ethdev Rx queue</cite> to <cite>eventdev event queue</cite> packet injection</p></li>
+<li><p>Support Rx interrupt</p></li>
+<li><p>Inline IPsec processing support</p></li>
+<li><p><a class="reference internal" href="#otx2-tmapi"><span class="std std-ref">Traffic Management API</span></a></p></li>
+</ul>
+</div>
+<div class="section" id="prerequisites">
+<h2><span class="section-number">42.2. </span>Prerequisites</h2>
+<p>See <a class="reference internal" href="../platform/octeontx2.html"><span class="doc">Marvell OCTEON TX2 Platform Guide</span></a> for setup information.</p>
+</div>
+<div class="section" id="driver-compilation-and-testing">
+<h2><span class="section-number">42.3. </span>Driver compilation and testing</h2>
+<p>Refer to the document <a class="reference internal" href="build_and_test.html#pmd-build-and-test"><span class="std std-ref">compiling and testing a PMD for a NIC</span></a>
+for details.</p>
+<ol class="arabic">
+<li><p>Running testpmd:</p>
+<p>Follow instructions available in the document
+<a class="reference internal" href="build_and_test.html#pmd-build-and-test"><span class="std std-ref">compiling and testing a PMD for a NIC</span></a>
+to run testpmd.</p>
+<p>Example output:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./&lt;build_dir&gt;/app/dpdk-testpmd -c 0x300 -a 0002:02:00.0 -- --portmask=0x1 --nb-cores=1 --port-topology=loop --rxq=1 --txq=1</span>
+<span class="go">EAL: Detected 24 lcore(s)</span>
+<span class="go">EAL: Detected 1 NUMA nodes</span>
+<span class="go">EAL: Multi-process socket /var/run/dpdk/rte/mp_socket</span>
+<span class="go">EAL: No available hugepages reported in hugepages-2048kB</span>
+<span class="go">EAL: Probing VFIO support...</span>
+<span class="go">EAL: VFIO support initialized</span>
+<span class="go">EAL: PCI device 0002:02:00.0 on NUMA socket 0</span>
+<span class="go">EAL:   probe driver: 177d:a063 net_octeontx2</span>
+<span class="go">EAL:   using IOMMU type 1 (Type 1)</span>
+<span class="go">testpmd: create a new mbuf pool &lt;mbuf_pool_socket_0&gt;: n=267456, size=2176, socket=0</span>
+<span class="go">testpmd: preferred mempool ops selected: octeontx2_npa</span>
+<span class="go">Configuring Port 0 (socket 0)</span>
+<span class="go">PMD: Port 0: Link Up - speed 40000 Mbps - full-duplex</span>
+
+<span class="go">Port 0: link state change event</span>
+<span class="go">Port 0: 36:10:66:88:7A:57</span>
+<span class="go">Checking link statuses...</span>
+<span class="go">Done</span>
+<span class="go">No commandline core given, start packet forwarding</span>
+<span class="go">io packet forwarding - ports=1 - cores=1 - streams=1 - NUMA support enabled, MP allocation mode: native</span>
+<span class="go">Logical Core 9 (socket 0) forwards packets on 1 streams:</span>
+<span class="go">  RX P=0/Q=0 (socket 0) -&gt; TX P=0/Q=0 (socket 0) peer=02:00:00:00:00:00</span>
+
+<span class="go">  io packet forwarding packets/burst=32</span>
+<span class="go">  nb forwarding cores=1 - nb forwarding ports=1</span>
+<span class="go">  port 0: RX queue number: 1 Tx queue number: 1</span>
+<span class="go">    Rx offloads=0x0 Tx offloads=0x10000</span>
+<span class="go">    RX queue: 0</span>
+<span class="go">      RX desc=512 - RX free threshold=0</span>
+<span class="go">      RX threshold registers: pthresh=0 hthresh=0  wthresh=0</span>
+<span class="go">      RX Offloads=0x0</span>
+<span class="go">    TX queue: 0</span>
+<span class="go">      TX desc=512 - TX free threshold=0</span>
+<span class="go">      TX threshold registers: pthresh=0 hthresh=0  wthresh=0</span>
+<span class="go">      TX offloads=0x10000 - TX RS bit threshold=0</span>
+<span class="go">Press enter to exit</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</div>
+<div class="section" id="runtime-config-options">
+<h2><span class="section-number">42.4. </span>Runtime Config Options</h2>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Rx&amp;Tx</span> <span class="pre">scalar</span> <span class="pre">mode</span> <span class="pre">enable</span></code> (default <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p>
+<blockquote>
+<div><p>Ethdev supports both scalar and vector mode, it may be selected at runtime
+using <code class="docutils literal notranslate"><span class="pre">scalar_enable</span></code> <code class="docutils literal notranslate"><span class="pre">devargs</span></code> parameter.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RSS</span> <span class="pre">reta</span> <span class="pre">size</span></code> (default <code class="docutils literal notranslate"><span class="pre">64</span></code>)</p>
+<blockquote>
+<div><p>RSS redirection table size may be configured during runtime using <code class="docutils literal notranslate"><span class="pre">reta_size</span></code>
+<code class="docutils literal notranslate"><span class="pre">devargs</span></code> parameter.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,reta_size=256
+</pre></div>
+</div>
+<p>With the above configuration, reta table of size 256 is populated.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Flow</span> <span class="pre">priority</span> <span class="pre">levels</span></code> (default <code class="docutils literal notranslate"><span class="pre">3</span></code>)</p>
+<blockquote>
+<div><p>RTE Flow priority levels can be configured during runtime using
+<code class="docutils literal notranslate"><span class="pre">flow_max_priority</span></code> <code class="docutils literal notranslate"><span class="pre">devargs</span></code> parameter.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,flow_max_priority=10
+</pre></div>
+</div>
+<p>With the above configuration, priority level was set to 10 (0-9). Max
+priority level supported is 32.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Reserve</span> <span class="pre">Flow</span> <span class="pre">entries</span></code> (default <code class="docutils literal notranslate"><span class="pre">8</span></code>)</p>
+<blockquote>
+<div><p>RTE flow entries can be pre allocated and the size of pre allocation can be
+selected runtime using <code class="docutils literal notranslate"><span class="pre">flow_prealloc_size</span></code> <code class="docutils literal notranslate"><span class="pre">devargs</span></code> parameter.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,flow_prealloc_size=4
+</pre></div>
+</div>
+<p>With the above configuration, pre alloc size was set to 4. Max pre alloc
+size supported is 32.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Max</span> <span class="pre">SQB</span> <span class="pre">buffer</span> <span class="pre">count</span></code> (default <code class="docutils literal notranslate"><span class="pre">512</span></code>)</p>
+<blockquote>
+<div><p>Send queue descriptor buffer count may be limited during runtime using
+<code class="docutils literal notranslate"><span class="pre">max_sqb_count</span></code> <code class="docutils literal notranslate"><span class="pre">devargs</span></code> parameter.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,max_sqb_count=64
+</pre></div>
+</div>
+<p>With the above configuration, each send queue’s decscriptor buffer count is
+limited to a maximum of 64 buffers.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Switch</span> <span class="pre">header</span> <span class="pre">enable</span></code> (default <code class="docutils literal notranslate"><span class="pre">none</span></code>)</p>
+<blockquote>
+<div><p>A port can be configured to a specific switch header type by using
+<code class="docutils literal notranslate"><span class="pre">switch_header</span></code> <code class="docutils literal notranslate"><span class="pre">devargs</span></code> parameter.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,switch_header=&quot;higig2&quot;
+</pre></div>
+</div>
+<p>With the above configuration, higig2 will be enabled on that port and the
+traffic on this port should be higig2 traffic only. Supported switch header
+types are “higig2”, “dsa” and “chlen90b”.</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RSS</span> <span class="pre">tag</span> <span class="pre">as</span> <span class="pre">XOR</span></code> (default <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p>
+<blockquote>
+<div><p>C0 HW revision onward, The HW gives an option to configure the RSS adder as</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rss_adder&lt;7:0&gt;</span> <span class="pre">=</span> <span class="pre">flow_tag&lt;7:0&gt;</span> <span class="pre">^</span> <span class="pre">flow_tag&lt;15:8&gt;</span> <span class="pre">^</span> <span class="pre">flow_tag&lt;23:16&gt;</span> <span class="pre">^</span> <span class="pre">flow_tag&lt;31:24&gt;</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rss_adder&lt;7:0&gt;</span> <span class="pre">=</span> <span class="pre">flow_tag&lt;7:0&gt;</span></code></p></li>
+</ul>
+<p>Latter one aligns with standard NIC behavior vs former one is a legacy
+RSS adder scheme used in OCTEON TX2 products.</p>
+<p>By default, the driver runs in the latter mode from C0 HW revision onward.
+Setting this flag to 1 to select the legacy mode.</p>
+<p>For example to select the legacy mode(RSS tag adder as XOR):</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,tag_as_xor=1
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Max</span> <span class="pre">SPI</span> <span class="pre">for</span> <span class="pre">inbound</span> <span class="pre">inline</span> <span class="pre">IPsec</span></code> (default <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p>
+<blockquote>
+<div><p>Max SPI supported for inbound inline IPsec processing can be specified by
+<code class="docutils literal notranslate"><span class="pre">ipsec_in_max_spi</span></code> <code class="docutils literal notranslate"><span class="pre">devargs</span></code> parameter.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,ipsec_in_max_spi=128
+</pre></div>
+</div>
+<p>With the above configuration, application can enable inline IPsec processing
+on 128 SAs (SPI 0-127).</p>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Lock</span> <span class="pre">Rx</span> <span class="pre">contexts</span> <span class="pre">in</span> <span class="pre">NDC</span> <span class="pre">cache</span></code></p>
+<blockquote>
+<div><p>Lock Rx contexts in NDC cache by using <code class="docutils literal notranslate"><span class="pre">lock_rx_ctx</span></code> parameter.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,lock_rx_ctx=1
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Lock</span> <span class="pre">Tx</span> <span class="pre">contexts</span> <span class="pre">in</span> <span class="pre">NDC</span> <span class="pre">cache</span></code></p>
+<blockquote>
+<div><p>Lock Tx contexts in NDC cache by using <code class="docutils literal notranslate"><span class="pre">lock_tx_ctx</span></code> parameter.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,lock_tx_ctx=1
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Above devarg parameters are configurable per device, user needs to pass the
+parameters to all the PCIe devices if application requires to configure on
+all the ethdev ports.</p>
+</div>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Lock</span> <span class="pre">NPA</span> <span class="pre">contexts</span> <span class="pre">in</span> <span class="pre">NDC</span></code></p>
+<blockquote>
+<div><p>Lock NPA aura and pool contexts in NDC cache.
+The device args take hexadecimal bitmask where each bit represent the
+corresponding aura/pool id.</p>
+<p>For example:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>-a 0002:02:00.0,npa_lock_mask=0xf
+</pre></div>
+</div>
+</div></blockquote>
+</li>
+</ul>
+</div>
+<div class="section" id="traffic-management-api">
+<span id="otx2-tmapi"></span><h2><span class="section-number">42.5. </span>Traffic Management API</h2>
+<p>OCTEON TX2 PMD supports generic DPDK Traffic Management API which allows to
+configure the following features:</p>
+<ol class="arabic simple">
+<li><p>Hierarchical scheduling</p></li>
+<li><p>Single rate - Two color, Two rate - Three color shaping</p></li>
+</ol>
+<p>Both DWRR and Static Priority(SP) hierarchial scheduling is supported.</p>
+<p>Every parent can have atmost 10 SP Children and unlimited DWRR children.</p>
+<p>Both PF &amp; VF supports traffic management API with PF supporting 6 levels
+and VF supporting 5 levels of topology.</p>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">42.6. </span>Limitations</h2>
+<div class="section" id="mempool-octeontx2-external-mempool-handler-dependency">
+<h3><span class="section-number">42.6.1. </span><code class="docutils literal notranslate"><span class="pre">mempool_octeontx2</span></code> external mempool handler dependency</h3>
+<p>The OCTEON TX2 SoC family NIC has inbuilt HW assisted external mempool manager.
+<code class="docutils literal notranslate"><span class="pre">net_octeontx2</span></code> pmd only works with <code class="docutils literal notranslate"><span class="pre">mempool_octeontx2</span></code> mempool handler
+as it is performance wise most effective way for packet allocation and Tx buffer
+recycling on OCTEON TX2 SoC platform.</p>
+</div>
+<div class="section" id="crc-stripping">
+<h3><span class="section-number">42.6.2. </span>CRC stripping</h3>
+<p>The OCTEON TX2 SoC family NICs strip the CRC for every packet being received by
+the host interface irrespective of the offload configuration.</p>
+</div>
+<div class="section" id="multicast-mac-filtering">
+<h3><span class="section-number">42.6.3. </span>Multicast MAC filtering</h3>
+<p><code class="docutils literal notranslate"><span class="pre">net_octeontx2</span></code> pmd supports multicast mac filtering feature only on physical
+function devices.</p>
+</div>
+<div class="section" id="sdp-interface-support">
+<h3><span class="section-number">42.6.4. </span>SDP interface support</h3>
+<p>OCTEON TX2 SDP interface support is limited to PF device, No VF support.</p>
+</div>
+<div class="section" id="inline-protocol-processing">
+<h3><span class="section-number">42.6.5. </span>Inline Protocol Processing</h3>
+<p><code class="docutils literal notranslate"><span class="pre">net_octeontx2</span></code> pmd doesn’t support the following features for packets to be
+inline protocol processed.
+- TSO offload
+- VLAN/QinQ offload
+- Fragmentation</p>
+</div>
+</div>
+<div class="section" id="debugging-options">
+<h2><span class="section-number">42.7. </span>Debugging Options</h2>
+<span id="table-octeontx2-ethdev-debug-options"></span><table class="docutils align-default" id="id1">
+<caption><span class="caption-number">Table 42.1 </span><span class="caption-text">OCTEON TX2 ethdev debug options</span></caption>
+<colgroup>
+<col style="width: 4%" />
+<col style="width: 17%" />
+<col style="width: 79%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Component</p></th>
+<th class="head"><p>EAL log command</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>NIX</p></td>
+<td><p>–log-level=’pmd.net.octeontx2,8’</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>NPC</p></td>
+<td><p>–log-level=’pmd.net.octeontx2.flow,8’</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="rte-flow-support">
+<h2><span class="section-number">42.8. </span>RTE Flow Support</h2>
+<p>The OCTEON TX2 SoC family NIC has support for the following patterns and
+actions.</p>
+<p>Patterns:</p>
+<span id="table-octeontx2-supported-flow-item-types"></span><table class="docutils align-default" id="id2">
+<caption><span class="caption-number">Table 42.2 </span><span class="caption-text">Item types</span></caption>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 89%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Pattern Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_ETH</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_VLAN</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_E_TAG</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_IPV4</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_IPV6</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_ARP_ETH_IPV4</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_MPLS</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_ICMP</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_UDP</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_TCP</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_SCTP</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_ESP</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_GRE</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_NVGRE</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_VXLAN</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_GTPC</p></td>
+</tr>
+<tr class="row-even"><td><p>17</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_GTPU</p></td>
+</tr>
+<tr class="row-odd"><td><p>18</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_GENEVE</p></td>
+</tr>
+<tr class="row-even"><td><p>19</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_VXLAN_GPE</p></td>
+</tr>
+<tr class="row-odd"><td><p>20</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_IPV6_EXT</p></td>
+</tr>
+<tr class="row-even"><td><p>21</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_VOID</p></td>
+</tr>
+<tr class="row-odd"><td><p>22</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_ANY</p></td>
+</tr>
+<tr class="row-even"><td><p>23</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_GRE_KEY</p></td>
+</tr>
+<tr class="row-odd"><td><p>24</p></td>
+<td><p>RTE_FLOW_ITEM_TYPE_HIGIG2</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">RTE_FLOW_ITEM_TYPE_GRE_KEY</span></code> works only when checksum and routing
+bits in the GRE header are equal to 0.</p>
+</div>
+<p>Actions:</p>
+<span id="table-octeontx2-supported-ingress-action-types"></span><table class="docutils align-default" id="id3">
+<caption><span class="caption-number">Table 42.3 </span><span class="caption-text">Ingress action types</span></caption>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 91%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Action Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_VOID</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_MARK</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_FLAG</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_COUNT</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_DROP</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_QUEUE</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_RSS</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_SECURITY</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_PF</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_VF</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_OF_POP_VLAN</p></td>
+</tr>
+</tbody>
+</table>
+<span id="table-octeontx2-supported-egress-action-types"></span><table class="docutils align-default" id="id4">
+<caption><span class="caption-number">Table 42.4 </span><span class="caption-text">Egress action types</span></caption>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 91%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>#</p></th>
+<th class="head"><p>Action Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_COUNT</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_DROP</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_OF_PUSH_VLAN</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_OF_SET_VLAN_VID</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>RTE_FLOW_ACTION_TYPE_OF_SET_VLAN_PCP</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="pfe.html" class="btn btn-neutral float-right" title="43. PFE Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="octeontx.html" class="btn btn-neutral float-left" title="41. OCTEON TX Poll Mode driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

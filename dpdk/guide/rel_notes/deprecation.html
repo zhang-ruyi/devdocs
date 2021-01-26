@@ -1,0 +1,386 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>25. ABI and API Deprecation &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FAQ" href="../faq/index.html" />
+    <link rel="prev" title="24. Known Issues and Limitations in Legacy Releases" href="known_issues.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Release Notes</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="release_20_11.html">1. DPDK Release 20.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_20_08.html">2. DPDK Release 20.08</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_20_05.html">3. DPDK Release 20.05</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_20_02.html">4. DPDK Release 20.02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_19_11.html">5. DPDK Release 19.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_19_08.html">6. DPDK Release 19.08</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_19_05.html">7. DPDK Release 19.05</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_19_02.html">8. DPDK Release 19.02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_18_11.html">9. DPDK Release 18.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_18_08.html">10. DPDK Release 18.08</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_18_05.html">11. DPDK Release 18.05</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_18_02.html">12. DPDK Release 18.02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_17_11.html">13. DPDK Release 17.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_17_08.html">14. DPDK Release 17.08</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_17_05.html">15. DPDK Release 17.05</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_17_02.html">16. DPDK Release 17.02</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_16_11.html">17. DPDK Release 16.11</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_16_07.html">18. DPDK Release 16.07</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_16_04.html">19. DPDK Release 16.04</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_2.html">20. DPDK Release 2.2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_1.html">21. DPDK Release 2.1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_2_0.html">22. DPDK Release 2.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="release_1_8.html">23. DPDK Release 1.8</a></li>
+<li class="toctree-l2"><a class="reference internal" href="known_issues.html">24. Known Issues and Limitations in Legacy Releases</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">25. ABI and API Deprecation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#deprecation-notices">25.1. Deprecation Notices</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Release Notes</a> &raquo;</li>
+        
+      <li><span class="section-number">25. </span>ABI and API Deprecation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/rel_notes/deprecation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="abi-and-api-deprecation">
+<h1><span class="section-number">25. </span>ABI and API Deprecation</h1>
+<p>See the guidelines document for details of the <a class="reference internal" href="../contributing/abi_policy.html"><span class="doc">ABI policy</span></a>. API and ABI deprecation notices are to be posted
+here.</p>
+<div class="section" id="deprecation-notices">
+<h2><span class="section-number">25.1. </span>Deprecation Notices</h2>
+<ul>
+<li><p>build: The macros defined to indicate which DPDK libraries and drivers
+are included in the meson build are changing to a standardized format of
+<code class="docutils literal notranslate"><span class="pre">RTE_LIB_&lt;NAME&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">RTE_&lt;CLASS&gt;_&lt;NAME&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">NAME</span></code> is the
+upper-case component name, e.g. EAL, ETHDEV, IXGBE, and <code class="docutils literal notranslate"><span class="pre">CLASS</span></code> is the
+upper-case name of the device class to which a driver belongs e.g.
+<code class="docutils literal notranslate"><span class="pre">NET</span></code>, <code class="docutils literal notranslate"><span class="pre">CRYPTO</span></code>, <code class="docutils literal notranslate"><span class="pre">VDPA</span></code>. The old macros are deprecated and will be
+removed in a future release.</p></li>
+<li><p>kvargs: The function <code class="docutils literal notranslate"><span class="pre">rte_kvargs_process</span></code> will get a new parameter
+for returning key match count. It will ease handling of no-match case.</p></li>
+<li><p>eal: The function <code class="docutils literal notranslate"><span class="pre">rte_eal_remote_launch</span></code> will return new error codes
+after read or write error on the pipe, instead of calling <code class="docutils literal notranslate"><span class="pre">rte_panic</span></code>.</p></li>
+<li><p>rte_atomicNN_xxx: These APIs do not take memory order parameter. This does
+not allow for writing optimized code for all the CPU architectures supported
+in DPDK. DPDK will adopt C11 atomic operations semantics and provide wrappers
+using C11 atomic built-ins. These wrappers must be used for patches that
+need to be merged in 20.08 onwards. This change will not introduce any
+performance degradation.</p></li>
+<li><p>rte_smp_*mb: These APIs provide full barrier functionality. However, many
+use cases do not require full barriers. To support such use cases, DPDK will
+adopt C11 barrier semantics and provide wrappers using C11 atomic built-ins.
+These wrappers must be used for patches that need to be merged in 20.08
+onwards. This change will not introduce any performance degradation.</p></li>
+<li><p>lib: will fix extending some enum/define breaking the ABI. There are multiple
+samples in DPDK that enum/define terminated with a <code class="docutils literal notranslate"><span class="pre">.*MAX.*</span></code> value which is
+used by iterators, and arrays holding these values are sized with this
+<code class="docutils literal notranslate"><span class="pre">.*MAX.*</span></code> value. So extending this enum/define increases the <code class="docutils literal notranslate"><span class="pre">.*MAX.*</span></code>
+value which increases the size of the array and depending on how/where the
+array is used this may break the ABI.
+<code class="docutils literal notranslate"><span class="pre">RTE_ETH_FLOW_MAX</span></code> is one sample of the mentioned case, adding a new flow
+type will break the ABI because of <code class="docutils literal notranslate"><span class="pre">flex_mask[RTE_ETH_FLOW_MAX]</span></code> array
+usage in following public struct hierarchy:
+<code class="docutils literal notranslate"><span class="pre">rte_eth_fdir_flex_conf</span> <span class="pre">-&gt;</span> <span class="pre">rte_fdir_conf</span> <span class="pre">-&gt;</span> <span class="pre">rte_eth_conf</span> <span class="pre">(in</span> <span class="pre">the</span> <span class="pre">middle)</span></code>.
+Need to identify this kind of usages and fix in 20.11, otherwise this blocks
+us extending existing enum/define.
+One solution can be using a fixed size array instead of <code class="docutils literal notranslate"><span class="pre">.*MAX.*</span></code> value.</p></li>
+<li><p>ethdev: The flow director API, including <code class="docutils literal notranslate"><span class="pre">rte_eth_conf.fdir_conf</span></code> field,
+and the related structures (<code class="docutils literal notranslate"><span class="pre">rte_fdir_*</span></code> and <code class="docutils literal notranslate"><span class="pre">rte_eth_fdir_*</span></code>),
+will be removed in DPDK 20.11.</p></li>
+<li><p>ethdev: New offload flags <code class="docutils literal notranslate"><span class="pre">DEV_RX_OFFLOAD_FLOW_MARK</span></code> will be added in 19.11.
+This will allow application to enable or disable PMDs from updating
+<code class="docutils literal notranslate"><span class="pre">rte_mbuf::hash::fdir</span></code>.
+This scheme will allow PMDs to avoid writes to <code class="docutils literal notranslate"><span class="pre">rte_mbuf</span></code> fields on Rx and
+thereby improve Rx performance if application wishes do so.
+In 19.11 PMDs will still update the field even when the offload is not
+enabled.</p></li>
+<li><p>ethdev: <code class="docutils literal notranslate"><span class="pre">uint32_t</span> <span class="pre">max_rx_pkt_len</span></code> field of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_eth_rxmode</span></code>, will be
+replaced by a new <code class="docutils literal notranslate"><span class="pre">uint32_t</span> <span class="pre">mtu</span></code> field of <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_eth_conf</span></code> in v21.11.
+The new <code class="docutils literal notranslate"><span class="pre">mtu</span></code> field will be used to configure the initial device MTU via
+<code class="docutils literal notranslate"><span class="pre">rte_eth_dev_configure()</span></code> API.
+Later MTU can be changed by <code class="docutils literal notranslate"><span class="pre">rte_eth_dev_set_mtu()</span></code> API as done now.
+The existing <code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">rte_eth_dev)-&gt;data-&gt;mtu</span></code> variable will be used to store
+the configured <code class="docutils literal notranslate"><span class="pre">mtu</span></code> value,
+and this new <code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">rte_eth_dev)-&gt;data-&gt;dev_conf.mtu</span></code> variable will
+be used to store the user configuration request.
+Unlike <code class="docutils literal notranslate"><span class="pre">max_rx_pkt_len</span></code>, which was valid only when <code class="docutils literal notranslate"><span class="pre">JUMBO_FRAME</span></code> enabled,
+<code class="docutils literal notranslate"><span class="pre">mtu</span></code> field will be always valid.
+When <code class="docutils literal notranslate"><span class="pre">mtu</span></code> config is not provided by the application, default <code class="docutils literal notranslate"><span class="pre">RTE_ETHER_MTU</span></code>
+value will be used.
+<code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">rte_eth_dev)-&gt;data-&gt;mtu</span></code> should be updated after MTU set successfully,
+either by <code class="docutils literal notranslate"><span class="pre">rte_eth_dev_configure()</span></code> or <code class="docutils literal notranslate"><span class="pre">rte_eth_dev_set_mtu()</span></code>.</p>
+<p>An application may need to configure device for a specific Rx packet size, like for
+cases <code class="docutils literal notranslate"><span class="pre">DEV_RX_OFFLOAD_SCATTER</span></code> is not supported and device received packet size
+can’t be bigger than Rx buffer size.
+To cover these cases an application needs to know the device packet overhead to be
+able to calculate the <code class="docutils literal notranslate"><span class="pre">mtu</span></code> corresponding to a Rx buffer size, for this
+<code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">rte_eth_dev_info).max_rx_pktlen</span></code> will be kept,
+the device packet overhead can be calculated as:
+<code class="docutils literal notranslate"><span class="pre">(struct</span> <span class="pre">rte_eth_dev_info).max_rx_pktlen</span> <span class="pre">-</span> <span class="pre">(struct</span> <span class="pre">rte_eth_dev_info).max_mtu</span></code></p>
+</li>
+<li><p>ethdev: <code class="docutils literal notranslate"><span class="pre">rx_descriptor_done</span></code> dev_ops and <code class="docutils literal notranslate"><span class="pre">rte_eth_rx_descriptor_done</span></code>
+will be removed in 21.11.
+Existing <code class="docutils literal notranslate"><span class="pre">rte_eth_rx_descriptor_status</span></code> and <code class="docutils literal notranslate"><span class="pre">rte_eth_tx_descriptor_status</span></code>
+APIs can be used as replacement.</p></li>
+<li><p>ethdev: The port mirroring API can be replaced with a more fine grain flow API.
+The structs <code class="docutils literal notranslate"><span class="pre">rte_eth_mirror_conf</span></code>, <code class="docutils literal notranslate"><span class="pre">rte_eth_vlan_mirror</span></code> and the functions
+<code class="docutils literal notranslate"><span class="pre">rte_eth_mirror_rule_set</span></code>, <code class="docutils literal notranslate"><span class="pre">rte_eth_mirror_rule_reset</span></code> will be marked
+as deprecated in DPDK 20.11, along with the associated macros <code class="docutils literal notranslate"><span class="pre">ETH_MIRROR_*</span></code>.
+This API will be fully removed in DPDK 21.11.</p></li>
+<li><p>ethdev: Attribute <code class="docutils literal notranslate"><span class="pre">shared</span></code> of the <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_flow_action_count</span></code>
+is deprecated and will be removed in DPDK 21.11. Shared counters should
+be managed using shared actions API (<code class="docutils literal notranslate"><span class="pre">rte_flow_shared_action_create</span></code> etc).</p></li>
+<li><p>ethdev: The flow API matching pattern structures, <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_flow_item_*</span></code>,
+should start with relevant protocol header.
+Some matching pattern structures implements this by duplicating protocol header
+fields in the struct. To clarify the intention and to be sure protocol header
+is intact, will replace those fields with relevant protocol header struct.
+In v21.02 both individual protocol header fields and the protocol header struct
+will be added as union, target is switch usage to the protocol header by time.
+In v21.11 LTS, protocol header fields will be cleaned and only protocol header
+struct will remain.</p></li>
+<li><p>ethdev: Queue specific stats fields will be removed from <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">rte_eth_stats</span></code>.
+Mentioned fields are: <code class="docutils literal notranslate"><span class="pre">q_ipackets</span></code>, <code class="docutils literal notranslate"><span class="pre">q_opackets</span></code>, <code class="docutils literal notranslate"><span class="pre">q_ibytes</span></code>, <code class="docutils literal notranslate"><span class="pre">q_obytes</span></code>,
+<code class="docutils literal notranslate"><span class="pre">q_errors</span></code>.
+Instead queue stats will be received via xstats API. Current method support
+will be limited to maximum 256 queues.
+Also compile time flag <code class="docutils literal notranslate"><span class="pre">RTE_ETHDEV_QUEUE_STAT_CNTRS</span></code> will be removed.</p></li>
+<li><p>Broadcom bnxt PMD: NetXtreme devices belonging to the <code class="docutils literal notranslate"><span class="pre">BCM573xx</span> <span class="pre">and</span>
+<span class="pre">BCM5740x</span></code> families will no longer be supported as of DPDK 21.02.
+Specifically the support for the following Broadcom PCI IDs will be removed
+from the release: <code class="docutils literal notranslate"><span class="pre">0x16c8,</span> <span class="pre">0x16c9,</span> <span class="pre">0x16ca,</span> <span class="pre">0x16ce,</span> <span class="pre">0x16cf,</span> <span class="pre">0x16df,</span></code>
+<code class="docutils literal notranslate"><span class="pre">0x16d0,</span> <span class="pre">0x16d1,</span> <span class="pre">0x16d2,</span> <span class="pre">0x16d4,</span> <span class="pre">0x16d5,</span> <span class="pre">0x16e7,</span> <span class="pre">0x16e8,</span> <span class="pre">0x16e9</span></code>.</p></li>
+<li><p>sched: To allow more traffic classes, flexible mapping of pipe queues to
+traffic classes, and subport level configuration of pipes and queues
+changes will be made to macros, data structures and API functions defined
+in “rte_sched.h”. These changes are aligned to improvements suggested in the
+RFC <a class="reference external" href="https://mails.dpdk.org/archives/dev/2018-November/120035.html">https://mails.dpdk.org/archives/dev/2018-November/120035.html</a>.</p></li>
+<li><p>metrics: The function <code class="docutils literal notranslate"><span class="pre">rte_metrics_init</span></code> will have a non-void return
+in order to notify errors instead of calling <code class="docutils literal notranslate"><span class="pre">rte_exit</span></code>.</p></li>
+<li><p>cmdline: <code class="docutils literal notranslate"><span class="pre">cmdline</span></code> structure will be made opaque to hide platform-specific
+content. On Linux and FreeBSD, supported prior to DPDK 20.11,
+original structure will be kept until DPDK 21.11.</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../faq/index.html" class="btn btn-neutral float-right" title="FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="known_issues.html" class="btn btn-neutral float-left" title="24. Known Issues and Limitations in Legacy Releases" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

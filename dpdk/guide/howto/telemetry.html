@@ -1,0 +1,352 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>10. DPDK Telemetry User Guide &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="11. Debug &amp; Troubleshoot guide" href="debug_troubleshoot.html" />
+    <link rel="prev" title="9. DPDK pdump Library and pdump Tool" href="packet_capture_framework.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">HowTo Guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lm_bond_virtio_sriov.html">1. Live Migration of VM with SR-IOV VF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lm_virtio_vhost_user.html">2. Live Migration of VM with Virtio on host running vhost_user</a></li>
+<li class="toctree-l2"><a class="reference internal" href="flow_bifurcation.html">3. Flow Bifurcation How-to Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rte_flow.html">4. Generic flow API - examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pvp_reference_benchmark.html">5. PVP reference benchmark setup using testpmd</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vfd.html">6. VF daemon (VFd)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio_user_for_container_networking.html">7. Virtio_user for Container Networking</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio_user_as_exceptional_path.html">8. Virtio_user as Exceptional Path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="packet_capture_framework.html">9. DPDK pdump Library and pdump Tool</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">10. DPDK Telemetry User Guide</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#telemetry-interface">10.1. Telemetry Interface</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#telemetry-initialization">10.2. Telemetry Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#running-telemetry">10.3. Running Telemetry</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="debug_troubleshoot.html">11. Debug &amp; Troubleshoot guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openwrt.html">12. Enable DPDK on OpenWrt</a></li>
+<li class="toctree-l2"><a class="reference internal" href="avx512.html">13. Using AVX-512 with DPDK</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cryptodevs/index.html">Crypto Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">HowTo Guides</a> &raquo;</li>
+        
+      <li><span class="section-number">10. </span>DPDK Telemetry User Guide</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/howto/telemetry.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="dpdk-telemetry-user-guide">
+<h1><span class="section-number">10. </span>DPDK Telemetry User Guide</h1>
+<p>The Telemetry library provides users with the ability to query DPDK for
+telemetry information, currently including information such as ethdev stats,
+ethdev port list, and eal parameters.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This library is experimental and the output format may change in the future.</p>
+</div>
+<div class="section" id="telemetry-interface">
+<h2><span class="section-number">10.1. </span>Telemetry Interface</h2>
+<p>The <a class="reference internal" href="../prog_guide/telemetry_lib.html"><span class="doc">Telemetry Library</span></a> opens a socket with path
+<em>&lt;runtime_directory&gt;/dpdk_telemetry.&lt;version&gt;</em>. The version represents the
+telemetry version, the latest is v2. For example, a client would connect to a
+socket with path  <em>/var/run/dpdk/*/dpdk_telemetry.v2</em> (when the primary process
+is run by a root user).</p>
+</div>
+<div class="section" id="telemetry-initialization">
+<h2><span class="section-number">10.2. </span>Telemetry Initialization</h2>
+<p>The library is enabled by default, however an EAL flag to enable the library
+exists, to provide backward compatibility for the previous telemetry library
+interface:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--telemetry
+</pre></div>
+</div>
+<p>A flag exists to disable Telemetry also:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--no-telemetry
+</pre></div>
+</div>
+</div>
+<div class="section" id="running-telemetry">
+<h2><span class="section-number">10.3. </span>Running Telemetry</h2>
+<p>The following steps show how to run an application with telemetry support,
+and query information using the telemetry client python script.</p>
+<ol class="arabic">
+<li><p>Launch testpmd as the primary application with telemetry:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./app/dpdk-testpmd
+</pre></div>
+</div>
+</li>
+<li><p>Launch the telemetry client script:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>./usertools/dpdk-telemetry.py
+</pre></div>
+</div>
+</li>
+<li><p>When connected, the script displays the following, waiting for user input:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Connecting to /var/run/dpdk/rte/dpdk_telemetry.v2
+{&quot;version&quot;: &quot;DPDK 20.05.0-rc2&quot;, &quot;pid&quot;: 60285, &quot;max_output_len&quot;: 16384}
+--&gt;
+</pre></div>
+</div>
+</li>
+<li><p>The user can now input commands to send across the socket, and receive the
+response. Some available commands are shown below.</p>
+<ul>
+<li><p>List all commands:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--&gt; /
+{&quot;/&quot;: [&quot;/&quot;, &quot;/eal/app_params&quot;, &quot;/eal/params&quot;, &quot;/ethdev/list&quot;,
+&quot;/ethdev/link_status&quot;, &quot;/ethdev/xstats&quot;, &quot;/help&quot;, &quot;/info&quot;]}
+</pre></div>
+</div>
+</li>
+<li><p>Get the list of ethdev ports:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--&gt; /ethdev/list
+{&quot;/ethdev/list&quot;: [0, 1]}
+</pre></div>
+</div>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For commands that expect a parameter, use “,” to separate the command
+and parameter. See examples below.</p>
+</div>
+<ul>
+<li><p>Get extended statistics for an ethdev port:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--&gt; /ethdev/xstats,0
+{&quot;/ethdev/xstats&quot;: {&quot;rx_good_packets&quot;: 0, &quot;tx_good_packets&quot;: 0,
+&quot;rx_good_bytes&quot;: 0, &quot;tx_good_bytes&quot;: 0, &quot;rx_missed_errors&quot;: 0,
+...
+&quot;tx_priority7_xon_to_xoff_packets&quot;: 0}}
+</pre></div>
+</div>
+</li>
+<li><p>Get the help text for a command. This will indicate what parameters are
+required. Pass the command as a parameter:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>--&gt; /help,/ethdev/xstats
+{&quot;/help&quot;: {&quot;/ethdev/xstats&quot;: &quot;Returns the extended stats for a port.
+Parameters: int port_id&quot;}}
+</pre></div>
+</div>
+</li>
+</ul>
+</li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="debug_troubleshoot.html" class="btn btn-neutral float-right" title="11. Debug &amp; Troubleshoot guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="packet_capture_framework.html" class="btn btn-neutral float-left" title="9. DPDK pdump Library and pdump Tool" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

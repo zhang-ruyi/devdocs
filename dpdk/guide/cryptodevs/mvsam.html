@@ -1,0 +1,355 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>14. MVSAM Crypto Poll Mode Driver &mdash; Data Plane Development Kit 20.11.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="15. Marvell NITROX Crypto Poll Mode Driver" href="nitrox.html" />
+    <link rel="prev" title="13. OpenSSL Crypto Poll Mode Driver" href="openssl.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Data Plane Development Kit
+          
+
+          
+            
+            <img src="../_static/DPDK_logo_vertical_rev_small.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.11.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../linux_gsg/index.html">Getting Started Guide for Linux</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../freebsd_gsg/index.html">Getting Started Guide for FreeBSD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../windows_gsg/index.html">Getting Started Guide for Windows</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sample_app_ug/index.html">Sample Applications User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prog_guide/index.html">Programmer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../howto/index.html">HowTo Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">DPDK Tools User Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../testpmd_app_ug/index.html">Testpmd Application User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nics/index.html">Network Interface Controller Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bbdevs/index.html">Baseband Device Drivers</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Crypto Device Drivers</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="overview.html">1. Crypto Device Supported Functionality Matrices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_mb.html">2. AESN-NI Multi Buffer Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aesni_gcm.html">3. AES-NI GCM Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="armv8.html">4. ARMv8 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bcmfs.html">5. Broadcom FlexSparc Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="caam_jr.html">6. NXP CAAM JOB RING (caam_jr)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ccp.html">7. AMD CCP Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa2_sec.html">8. NXP DPAA2 CAAM (DPAA2_SEC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dpaa_sec.html">9. NXP DPAA CAAM (DPAA_SEC)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kasumi.html">10. KASUMI Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx.html">11. Cavium OCTEON TX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="octeontx2.html">12. Marvell OCTEON TX2 Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="openssl.html">13. OpenSSL Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">14. MVSAM Crypto Poll Mode Driver</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#features">14.1. Features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#limitations">14.2. Limitations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installation">14.3. Installation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialization">14.4. Initialization</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nitrox.html">15. Marvell NITROX Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="null.html">16. Null Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scheduler.html">17. Cryptodev Scheduler Poll Mode Driver Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="snow3g.html">18. SNOW 3G Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="qat.html">19. Intel(R) QuickAssist (QAT) Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="virtio.html">20. Virtio Crypto Poll Mode Driver</a></li>
+<li class="toctree-l2"><a class="reference internal" href="zuc.html">21. ZUC Crypto Poll Mode Driver</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../compressdevs/index.html">Compression Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vdpadevs/index.html">vDPA Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../regexdevs/index.html">REGEX Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../eventdevs/index.html">Event Device Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rawdevs/index.html">Rawdev Drivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mempool/index.html">Mempool Device Driver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../platform/index.html">Platform Specific Guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing/index.html">Contributor’s Guidelines</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rel_notes/index.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">FAQ</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Plane Development Kit</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Crypto Device Drivers</a> &raquo;</li>
+        
+      <li><span class="section-number">14. </span>MVSAM Crypto Poll Mode Driver</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/cryptodevs/mvsam.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mvsam-crypto-poll-mode-driver">
+<h1><span class="section-number">14. </span>MVSAM Crypto Poll Mode Driver</h1>
+<p>The MVSAM CRYPTO PMD (<strong>librte_crypto_mvsam</strong>) provides poll mode crypto driver
+support by utilizing MUSDK library, which provides cryptographic operations
+acceleration by using Security Acceleration Engine (EIP197) directly from
+user-space with minimum overhead and high performance.</p>
+<p>Detailed information about SoCs that use MVSAM crypto driver can be obtained here:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.marvell.com/embedded-processors/armada-70xx/">https://www.marvell.com/embedded-processors/armada-70xx/</a></p></li>
+<li><p><a class="reference external" href="https://www.marvell.com/embedded-processors/armada-80xx/">https://www.marvell.com/embedded-processors/armada-80xx/</a></p></li>
+<li><p><a class="reference external" href="https://www.marvell.com/embedded-processors/armada-3700/">https://www.marvell.com/embedded-processors/armada-3700/</a></p></li>
+</ul>
+<div class="section" id="features">
+<h2><span class="section-number">14.1. </span>Features</h2>
+<p>MVSAM CRYPTO PMD has support for:</p>
+<p>Cipher algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_NULL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES_CTR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_AES_ECB</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_3DES_CBC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_3DES_CTR</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_CIPHER_3DES_ECB</span></code></p></li>
+</ul>
+<p>Hash algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_NULL</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_MD5</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_MD5_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA1_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA224</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA224_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA256</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA256_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA384</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA384_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA512</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_SHA512_HMAC</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AUTH_AES_GMAC</span></code></p></li>
+</ul>
+<p>AEAD algorithms:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">RTE_CRYPTO_AEAD_AES_GCM</span></code></p></li>
+</ul>
+<p>For supported feature flags please consult <a class="reference internal" href="overview.html"><span class="doc">Crypto Device Supported Functionality Matrices</span></a>.</p>
+</div>
+<div class="section" id="limitations">
+<h2><span class="section-number">14.2. </span>Limitations</h2>
+<ul class="simple">
+<li><p>Hardware only supports scenarios where ICV (digest buffer) is placed just
+after the authenticated data. Other placement will result in error.</p></li>
+</ul>
+</div>
+<div class="section" id="installation">
+<h2><span class="section-number">14.3. </span>Installation</h2>
+<p>MVSAM CRYPTO PMD requires MUSDK built with EIP197 support thus following
+extra option must be passed to the library configuration script:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">--enable-sam [--enable-sam-statistics] [--enable-sam-debug]</span>
+</pre></div>
+</div>
+<p>For instructions how to build required kernel modules please refer
+to <cite>doc/musdk_get_started.txt</cite>.</p>
+</div>
+<div class="section" id="initialization">
+<h2><span class="section-number">14.4. </span>Initialization</h2>
+<p>After successfully building MVSAM CRYPTO PMD, the following modules need to be
+loaded:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">insmod musdk_cma.ko</span>
+<span class="go">insmod crypto_safexcel.ko rings=0,0</span>
+<span class="go">insmod mv_sam_uio.ko</span>
+</pre></div>
+</div>
+<p>The following parameters (all optional) are exported by the driver:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">max_nb_queue_pairs</span></code>: maximum number of queue pairs in the device (default: 8 - A8K, 4 - A7K/A3K).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">max_nb_sessions</span></code>: maximum number of sessions that can be created (default: 2048).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">socket_id</span></code>: socket on which to allocate the device resources on.</p></li>
+</ul>
+<p>l2fwd-crypto example application can be used to verify MVSAM CRYPTO PMD
+operation:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">./dpdk-l2fwd-crypto --vdev=eth_mvpp2,iface=eth0 --vdev=crypto_mvsam -- \</span>
+<span class="go">  --cipher_op ENCRYPT --cipher_algo aes-cbc \</span>
+<span class="go">  --cipher_key 00:01:02:03:04:05:06:07:08:09:0a:0b:0c:0d:0e:0f  \</span>
+<span class="go">  --auth_op GENERATE --auth_algo sha1-hmac \</span>
+<span class="go">  --auth_key 10:11:12:13:14:15:16:17:18:19:1a:1b:1c:1d:1e:1f</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nitrox.html" class="btn btn-neutral float-right" title="15. Marvell NITROX Crypto Poll Mode Driver" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="openssl.html" class="btn btn-neutral float-left" title="13. OpenSSL Crypto Poll Mode Driver" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
